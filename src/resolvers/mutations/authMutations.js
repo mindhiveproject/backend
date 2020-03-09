@@ -308,6 +308,9 @@ const authMutations = {
       {
         data: {
           username: args.username,
+          image: args.image,
+          largeImage: args.largeImage,
+          info: args.info,
           permissions: { set: ['STUDENT'] },
         },
       },
