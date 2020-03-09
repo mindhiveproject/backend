@@ -307,11 +307,11 @@ const authMutations = {
     const profile = await ctx.db.mutation.createProfile(
       {
         data: {
+          permissions: { set: ['STUDENT'] },
           username: args.username,
           image: args.image,
           largeImage: args.largeImage,
           info: args.info,
-          permissions: { set: ['STUDENT'] },
         },
       },
       `{ id }`

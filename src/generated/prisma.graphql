@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Mon Mar 09 2020 17:12:10 GMT+0100 (Central European Standard Time)
+# timestamp: Mon Mar 09 2020 14:56:14 GMT+0100 (Central European Standard Time)
 
 type AggregateAuthEmail {
   count: Int!
