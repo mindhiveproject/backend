@@ -51,4 +51,7 @@ type Profile {
   permissions: [Permission!]!
   results: [Result]!
   studentIn: [Class]!
+  info: Json
+  image: String
+  largeImage: String
 }
