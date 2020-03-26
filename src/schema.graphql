@@ -10,6 +10,9 @@ type Query {
   classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, first: Int): [Class]!
   myResults: [Result]!
   result(where: ResultWhereUniqueInput): Result
+  parameters: [Parameter]!
+  myParameters: [Parameter]!
+  parameter(where: ParameterWhereUniqueInput): Parameter
 }
 
 type Mutation {
@@ -33,12 +36,16 @@ type Mutation {
   joinClass(id: ID!): SuccessMessage
   leaveClass(id: ID!): SuccessMessage
 
-  createExperiment(title: String!, description: String, image: String, largeImage: String): Experiment!
+  createExperiment(title: String!, description: String, image: String, largeImage: String, parameters: Json): Experiment!
   updateExperiment(id: ID!, title: String, description: String): Experiment!
   deleteExperiment(id: ID!): Experiment
 
   addResult(experimentId: ID!, data: Json): Result!
   deleteResult(id: ID!): Result
+
+  createParameter(title: String!, experimentId: ID!, data: Json): Parameter!
+  updateParameter(id: ID!, title: String, data: Json): Parameter!
+  deleteParameter(id: ID!): Parameter
 }
 
 type SuccessMessage {

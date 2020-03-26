@@ -1,11 +1,13 @@
 const authMutations = require('./mutations/authMutations');
 const resultsMutations = require('./mutations/resultsMutations');
 const classMutations = require('./mutations/classMutations');
+const parameterMutations = require('./mutations/parameterMutations');
 
 const Mutations = {
   ...authMutations,
   ...resultsMutations,
   ...classMutations,
+  ...parameterMutations,
 
   async createSchool(parent, args, ctx, info) {
     // TODO: Check login

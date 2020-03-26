@@ -78,6 +78,7 @@ type Experiment {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   author: Profile!
+  parameters: Json
 }
 
 type Result {
@@ -88,4 +89,14 @@ type Result {
   data: Json
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+}
+
+type Parameter {
+  id: ID! @id
+  title: String!
+  experiment: Experiment!
+  author: Profile!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  data: Json
 }

@@ -12,6 +12,8 @@ const Query = {
   experiment: forwardTo('db'),
   class: forwardTo('db'),
   result: forwardTo('db'),
+  parameter: forwardTo('db'),
+  parameters: forwardTo('db'),
 
   me(parent, args, ctx, info) {
     // check if there is a current user id
@@ -60,6 +62,26 @@ const Query = {
   async classes(parent, args, ctx, info) {
     // query all classes
     return ctx.db.query.classes({}, info);
+  },
+
+  // get only parameters of the user
+  async myParameters(parent, args, ctx, info) {
+    // check if the user has permission to see all users
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in');
+    }
+
+    // query parameters where author is the current user
+    return ctx.db.query.parameters(
+      {
+        where: {
+          author: {
+            id: ctx.request.userId,
+          },
+        },
+      },
+      info
+    );
   },
 };
 
