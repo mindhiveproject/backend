@@ -65,6 +65,8 @@ const authMutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+      SameSite: 'None',
+      Secure: true,
     });
     // return user
     return updatedProfile;
@@ -101,6 +103,8 @@ const authMutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+      SameSite: 'None',
+      Secure: true,
     });
     // 5. Return the user
     return profile;
@@ -193,6 +197,8 @@ const authMutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+      SameSite: 'None',
+      Secure: true,
     });
     // 8. Return the new user
     return profile;
@@ -259,6 +265,8 @@ const authMutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+      SameSite: 'None',
+      Secure: true,
     });
     // return user
     return updatedProfile;
@@ -301,6 +309,8 @@ const authMutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+      SameSite: 'None',
+      Secure: true,
     });
     // 5. Return the user
     return profile;
@@ -378,6 +388,8 @@ const authMutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+      SameSite: 'None',
+      Secure: true,
     });
     // return user
     return updatedProfile;
@@ -422,6 +434,8 @@ const authMutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+      SameSite: 'None',
+      Secure: true,
     });
     // Return the user
     return profile;
