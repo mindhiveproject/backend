@@ -22,8 +22,8 @@ type Mutation {
   requestReset(email: String!): SuccessMessage
   resetPassword(resetToken: String!, password: String!, confirmPassword: String!): Profile!
 
-  tokenSignUp(username: String!, token: String!): Profile!
-  tokenLogin(token: String!): Profile!
+  tokenSignUp(username: String!, token: String!, email: String): Profile!
+  tokenLogin(username: String!): Profile!
 
   inviteSignUp(username: String!, invitedIn: ID!, image: String, largeImage: String, info: Json): Profile!
   inviteLogin(username: String!, invitedIn: ID!): Profile!

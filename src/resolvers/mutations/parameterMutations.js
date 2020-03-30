@@ -27,7 +27,22 @@ const parameterMutations = {
   },
 
   // update parameter
-  updateParameter(parent, args, ctx, info) {
+  async updateParameter(parent, args, ctx, info) {
+    // verify that the user has the right to update the experiment
+    const where = { id: args.id };
+    const parameter = await ctx.db.query.parameter(
+      { where },
+      `{ id title author {id} }`
+    );
+    // check whether user has permissions to delete the parameter
+    const ownsParameter = parameter.author.id === ctx.request.userId;
+    const hasPermissions = ctx.request.user.permissions.some(permission =>
+      ['ADMIN'].includes(permission)
+    );
+    if (!ownsParameter && !hasPermissions) {
+      throw new Error(`You don't have permission to do that!`);
+    }
+
     // take a copy of updates
     const updates = { ...args };
     // remove the ID from the updates

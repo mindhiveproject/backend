@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Tue Mar 24 2020 21:10:22 GMT+0100 (Central European Standard Time)
+# timestamp: Sun Mar 29 2020 19:18:02 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -901,6 +901,7 @@ type AuthToken implements Node {
   token: String!
   tokenExpiry: String
   profile: Profile!
+  email: String
 }
 
 """A connection to a list of items."""
@@ -917,6 +918,7 @@ input AuthTokenCreateInput {
   id: ID
   token: String!
   tokenExpiry: String
+  email: String
   profile: ProfileCreateOneWithoutAuthTokenInput!
 }
 
@@ -929,6 +931,7 @@ input AuthTokenCreateWithoutProfileInput {
   id: ID
   token: String!
   tokenExpiry: String
+  email: String
 }
 
 """An edge in a connection."""
@@ -947,12 +950,15 @@ enum AuthTokenOrderByInput {
   token_DESC
   tokenExpiry_ASC
   tokenExpiry_DESC
+  email_ASC
+  email_DESC
 }
 
 type AuthTokenPreviousValues {
   id: ID!
   token: String!
   tokenExpiry: String
+  email: String
 }
 
 input AuthTokenScalarWhereInput {
@@ -1084,6 +1090,46 @@ input AuthTokenScalarWhereInput {
 
   """All values not ending with the given string."""
   tokenExpiry_not_ends_with: String
+  email: String
+
+  """All values that are not equal to given value."""
+  email_not: String
+
+  """All values that are contained in given list."""
+  email_in: [String!]
+
+  """All values that are not contained in given list."""
+  email_not_in: [String!]
+
+  """All values less than the given value."""
+  email_lt: String
+
+  """All values less than or equal the given value."""
+  email_lte: String
+
+  """All values greater than the given value."""
+  email_gt: String
+
+  """All values greater than or equal the given value."""
+  email_gte: String
+
+  """All values containing the given string."""
+  email_contains: String
+
+  """All values not containing the given string."""
+  email_not_contains: String
+
+  """All values starting with the given string."""
+  email_starts_with: String
+
+  """All values not starting with the given string."""
+  email_not_starts_with: String
+
+  """All values ending with the given string."""
+  email_ends_with: String
+
+  """All values not ending with the given string."""
+  email_not_ends_with: String
 }
 
 type AuthTokenSubscriptionPayload {
@@ -1128,17 +1174,20 @@ input AuthTokenSubscriptionWhereInput {
 input AuthTokenUpdateInput {
   token: String
   tokenExpiry: String
+  email: String
   profile: ProfileUpdateOneRequiredWithoutAuthTokenInput
 }
 
 input AuthTokenUpdateManyDataInput {
   token: String
   tokenExpiry: String
+  email: String
 }
 
 input AuthTokenUpdateManyMutationInput {
   token: String
   tokenExpiry: String
+  email: String
 }
 
 input AuthTokenUpdateManyWithoutProfileInput {
@@ -1161,6 +1210,7 @@ input AuthTokenUpdateManyWithWhereNestedInput {
 input AuthTokenUpdateWithoutProfileDataInput {
   token: String
   tokenExpiry: String
+  email: String
 }
 
 input AuthTokenUpdateWithWhereUniqueWithoutProfileInput {
@@ -1303,6 +1353,46 @@ input AuthTokenWhereInput {
 
   """All values not ending with the given string."""
   tokenExpiry_not_ends_with: String
+  email: String
+
+  """All values that are not equal to given value."""
+  email_not: String
+
+  """All values that are contained in given list."""
+  email_in: [String!]
+
+  """All values that are not contained in given list."""
+  email_not_in: [String!]
+
+  """All values less than the given value."""
+  email_lt: String
+
+  """All values less than or equal the given value."""
+  email_lte: String
+
+  """All values greater than the given value."""
+  email_gt: String
+
+  """All values greater than or equal the given value."""
+  email_gte: String
+
+  """All values containing the given string."""
+  email_contains: String
+
+  """All values not containing the given string."""
+  email_not_contains: String
+
+  """All values starting with the given string."""
+  email_starts_with: String
+
+  """All values not starting with the given string."""
+  email_not_starts_with: String
+
+  """All values ending with the given string."""
+  email_ends_with: String
+
+  """All values not ending with the given string."""
+  email_not_ends_with: String
   profile: ProfileWhereInput
 }
 

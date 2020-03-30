@@ -37,6 +37,7 @@ type AuthToken {
   token: String! @unique
   tokenExpiry: String
   profile: Profile!
+  email: String
 }
 
 type AuthInvite {

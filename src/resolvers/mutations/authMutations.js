@@ -203,6 +203,7 @@ const authMutations = {
     console.log('starting token sign up');
     args.token = args.token.toLowerCase(); // lower case token
     args.username = args.username.toLowerCase(); // lower case username
+    args.email = args.email.toLowerCase(); // lower case username
 
     // TODO: if the user does not have a profile, create a profile (which will have the email auth identity)
     // create a profile (which will have the token auth identity)
@@ -216,11 +217,12 @@ const authMutations = {
       `{ id }`
     );
 
-    // create a email authentication identity
+    // create a token authentication identity
     const authToken = await ctx.db.mutation.createAuthToken(
       {
         data: {
           token: args.token,
+          email: args.email,
           profile: {
             connect: {
               id: profile.id,
@@ -263,28 +265,36 @@ const authMutations = {
   },
 
   async tokenLogin(parent, args, ctx, info) {
-    args.token = args.token.toLowerCase(); // lower case token
+    args.username = args.username.toLowerCase(); // lower case token
 
     // 1. Check if there is a token auth identity with that token
-    const authToken = await ctx.db.query.authToken(
-      {
-        where: { token: args.token },
-      },
-      `{ id token profile {id} }`
-    );
-
-    if (!authToken) {
-      throw new Error(`No such user found for token ${args.token}`);
-    }
+    // const authToken = await ctx.db.query.authToken(
+    //   {
+    //     where: { token: args.token },
+    //   },
+    //   `{ id token profile {id} }`
+    // );
+    //
+    // if (!authToken) {
+    //   throw new Error(`No such user found for token ${args.token}`);
+    // }
     // 2. Find the profile which has this auth identity
     const profile = await ctx.db.query.profile(
       {
         where: {
-          id: authToken.profile.id,
+          username: args.username,
         },
       },
       info
     );
+    // const profile = await ctx.db.query.profile(
+    //   {
+    //     where: {
+    //       id: authToken.profile.id,
+    //     },
+    //   },
+    //   info
+    // );
     // 3. Generate the JWT token
     const token = jwt.sign({ userId: profile.id }, process.env.APP_SECRET);
     // 4. Set the cookie with the token
