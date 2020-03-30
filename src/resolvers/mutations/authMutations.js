@@ -65,8 +65,8 @@ const authMutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      SameSite: 'None',
-      Secure: true,
+      sameSite: 'None',
+      secure: process.env.NODE_ENV === 'production',
     });
     // return user
     return updatedProfile;
@@ -103,8 +103,8 @@ const authMutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      SameSite: 'None',
-      Secure: true,
+      sameSite: 'None',
+      secure: process.env.NODE_ENV === 'production',
     });
     // 5. Return the user
     return profile;
@@ -197,8 +197,8 @@ const authMutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      SameSite: 'None',
-      Secure: true,
+      sameSite: 'None',
+      secure: process.env.NODE_ENV === 'production',
     });
     // 8. Return the new user
     return profile;
@@ -265,8 +265,8 @@ const authMutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      SameSite: 'None',
-      Secure: true,
+      sameSite: 'None',
+      secure: process.env.NODE_ENV === 'production',
     });
     // return user
     return updatedProfile;
@@ -309,8 +309,8 @@ const authMutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      SameSite: 'None',
-      Secure: true,
+      sameSite: 'None',
+      secure: process.env.NODE_ENV === 'production',
     });
     // 5. Return the user
     return profile;
@@ -388,8 +388,8 @@ const authMutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      SameSite: 'None',
-      Secure: true,
+      sameSite: 'None',
+      secure: process.env.NODE_ENV === 'production',
     });
     // return user
     return updatedProfile;
@@ -434,8 +434,8 @@ const authMutations = {
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      SameSite: 'None',
-      Secure: true,
+      sameSite: 'None',
+      secure: process.env.NODE_ENV === 'production',
     });
     // Return the user
     return profile;
