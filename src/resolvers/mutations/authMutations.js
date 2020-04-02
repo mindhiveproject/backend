@@ -8,7 +8,21 @@ const checkSafari = browser => {
   const re = /(iPhone; CPU iPhone OS 1[0-2]|iPad; CPU OS 1[0-2]|iPod touch; CPU iPhone OS 1[0-2]|Macintosh; Intel Mac OS X.*Version\x2F1[0-2].*Safari|Macintosh;.*Mac OS X 10_(14|15).* AppleWebKit.*Version\x2F1[0-3].*Safari)/;
   const isSafari = re.test(browser);
   console.log('insde checkSafari function browser is', browser);
-  return isSafari;
+  let settings;
+  if (isSafari) {
+    settings = {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+    };
+  } else {
+    settings = {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+      sameSite: 'None',
+      secure: process.env.NODE_ENV === 'production',
+    };
+  }
+  return settings;
 };
 
 const authMutations = {
@@ -74,7 +88,7 @@ const authMutations = {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
       sameSite: 'None',
-      secure: !isSafari && process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production',
     });
     // return user
     return updatedProfile;
@@ -113,7 +127,7 @@ const authMutations = {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
       sameSite: 'None',
-      secure: !isSafari && process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production',
     });
     // 5. Return the user
     return profile;
@@ -203,13 +217,8 @@ const authMutations = {
     // 7. Generate JWT
     const token = jwt.sign({ userId: profile.id }, process.env.APP_SECRET);
     // 8. Set the JWT cookie
-    const isSafari = checkSafari(ctx.request.headers['user-agent']);
-    ctx.response.cookie('token', token, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      sameSite: 'None',
-      secure: !isSafari && process.env.NODE_ENV === 'production',
-    });
+    const settings = checkSafari(ctx.request.headers['user-agent']);
+    ctx.response.cookie('token', token, settings);
     // 8. Return the new user
     return profile;
   },
@@ -273,14 +282,9 @@ const authMutations = {
     );
 
     // set the jwt as a cookie on response
-    const isSafari = checkSafari(ctx.request.headers['user-agent']);
-    console.log('isSafari', isSafari);
-    ctx.response.cookie('token', token, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      sameSite: 'None',
-      secure: !isSafari && process.env.NODE_ENV === 'production',
-    });
+    const settings = checkSafari(ctx.request.headers['user-agent']);
+    console.log('settings', settings);
+    ctx.response.cookie('token', token, settings);
     // return user
     return updatedProfile;
   },
@@ -324,7 +328,7 @@ const authMutations = {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
       sameSite: 'None',
-      secure: !isSafari && process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production',
     });
     // 5. Return the user
     return profile;
@@ -404,7 +408,7 @@ const authMutations = {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
       sameSite: 'None',
-      secure: !isSafari && process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production',
     });
     // return user
     return updatedProfile;
@@ -451,7 +455,7 @@ const authMutations = {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
       sameSite: 'None',
-      secure: !isSafari && process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production',
     });
     // Return the user
     return profile;
