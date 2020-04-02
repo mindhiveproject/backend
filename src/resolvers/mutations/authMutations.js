@@ -2,14 +2,12 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { randomBytes } = require('crypto');
 const { promisify } = require('util');
-const Regex = require('regex');
 const { transport, makeEmail } = require('../../mail');
 
 const checkSafari = browser => {
-  const re = new Regex(
-    /(iPhone; CPU iPhone OS 1[0-2]|iPad; CPU OS 1[0-2]|iPod touch; CPU iPhone OS 1[0-2]|Macintosh; Intel Mac OS X.*Version\x2F1[0-2].*Safari|Macintosh;.*Mac OS X 10_(14|15).* AppleWebKit.*Version\x2F1[0-3].*Safari)/
-  );
+  const re = /(iPhone; CPU iPhone OS 1[0-2]|iPad; CPU OS 1[0-2]|iPod touch; CPU iPhone OS 1[0-2]|Macintosh; Intel Mac OS X.*Version\x2F1[0-2].*Safari|Macintosh;.*Mac OS X 10_(14|15).* AppleWebKit.*Version\x2F1[0-3].*Safari)/;
   const isSafari = re.test(browser);
+  console.log('insde checkSafari function browser is', browser);
   return isSafari;
 };
 
@@ -276,6 +274,7 @@ const authMutations = {
 
     // set the jwt as a cookie on response
     const isSafari = checkSafari(ctx.request.headers['user-agent']);
+    console.log('isSafari', isSafari);
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
