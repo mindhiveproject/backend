@@ -18,6 +18,8 @@ const checkSafari = browser => {
     settings = {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+      sameSite: 'None',
+      secure: process.env.NODE_ENV === 'production',
     };
   }
   return settings;
