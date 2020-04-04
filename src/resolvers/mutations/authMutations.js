@@ -18,7 +18,7 @@ const checkSafari = browser => {
     settings = {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      sameSite: 'None',
+      sameSite: 'Strict',
       secure: process.env.NODE_ENV === 'production',
     };
   }
@@ -83,11 +83,11 @@ const authMutations = {
       process.env.APP_SECRET
     );
     // set the jwt as a cookie on response
-    const isSafari = checkSafari(ctx.request.headers['user-agent']);
+    // const isSafari = checkSafari(ctx.request.headers['user-agent']);
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      sameSite: 'None',
+      sameSite: 'Strict',
       secure: process.env.NODE_ENV === 'production',
     });
     // return user
@@ -122,11 +122,11 @@ const authMutations = {
     // 3. Generate the JWT token
     const token = jwt.sign({ userId: profile.id }, process.env.APP_SECRET);
     // 4. Set the cookie with the token
-    const isSafari = checkSafari(ctx.request.headers['user-agent']);
+    // const isSafari = checkSafari(ctx.request.headers['user-agent']);
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      sameSite: 'None',
+      sameSite: 'Strict',
       secure: process.env.NODE_ENV === 'production',
     });
     // 5. Return the user
@@ -323,11 +323,11 @@ const authMutations = {
     // 3. Generate the JWT token
     const token = jwt.sign({ userId: profile.id }, process.env.APP_SECRET);
     // 4. Set the cookie with the token
-    const isSafari = checkSafari(ctx.request.headers['user-agent']);
+    // const isSafari = checkSafari(ctx.request.headers['user-agent']);
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      sameSite: 'None',
+      sameSite: 'Strict',
       secure: process.env.NODE_ENV === 'production',
     });
     // 5. Return the user
@@ -403,11 +403,11 @@ const authMutations = {
       process.env.APP_SECRET
     );
     // set the jwt as a cookie on response
-    const isSafari = checkSafari(ctx.request.headers['user-agent']);
+    // const isSafari = checkSafari(ctx.request.headers['user-agent']);
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      sameSite: 'None',
+      sameSite: 'Strict',
       secure: process.env.NODE_ENV === 'production',
     });
     // return user
@@ -450,11 +450,11 @@ const authMutations = {
     // 3. If there was no errors then generate the JWT token
     const token = jwt.sign({ userId: profile.id }, process.env.APP_SECRET);
     // 4. Set the cookie with the token
-    const isSafari = checkSafari(ctx.request.headers['user-agent']);
+    // const isSafari = checkSafari(ctx.request.headers['user-agent']);
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      sameSite: 'None',
+      sameSite: 'Strict',
       secure: process.env.NODE_ENV === 'production',
     });
     // Return the user
