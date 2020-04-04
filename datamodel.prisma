@@ -80,6 +80,7 @@ type Experiment {
   updatedAt: DateTime! @updatedAt
   author: Profile!
   parameters: Json
+  customExperiments: [Parameter]!
 }
 
 type Result {

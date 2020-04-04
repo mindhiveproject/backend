@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Sun Mar 29 2020 19:18:02 GMT+0200 (Central European Summer Time)
+# timestamp: Sat Apr 04 2020 23:39:15 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -2207,6 +2207,7 @@ type Experiment implements Node {
   updatedAt: DateTime!
   author: Profile!
   parameters: Json
+  customExperiments(where: ParameterWhereInput, orderBy: ParameterOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Parameter!]
 }
 
 """A connection to a list of items."""
@@ -2227,11 +2228,27 @@ input ExperimentCreateInput {
   largeImage: String
   parameters: Json
   author: ProfileCreateOneInput!
+  customExperiments: ParameterCreateManyWithoutExperimentInput
 }
 
 input ExperimentCreateOneInput {
   create: ExperimentCreateInput
   connect: ExperimentWhereUniqueInput
+}
+
+input ExperimentCreateOneWithoutCustomExperimentsInput {
+  create: ExperimentCreateWithoutCustomExperimentsInput
+  connect: ExperimentWhereUniqueInput
+}
+
+input ExperimentCreateWithoutCustomExperimentsInput {
+  id: ID
+  title: String!
+  description: String
+  image: String
+  largeImage: String
+  parameters: Json
+  author: ProfileCreateOneInput!
 }
 
 """An edge in a connection."""
@@ -2319,6 +2336,7 @@ input ExperimentUpdateDataInput {
   largeImage: String
   parameters: Json
   author: ProfileUpdateOneRequiredInput
+  customExperiments: ParameterUpdateManyWithoutExperimentInput
 }
 
 input ExperimentUpdateInput {
@@ -2328,6 +2346,7 @@ input ExperimentUpdateInput {
   largeImage: String
   parameters: Json
   author: ProfileUpdateOneRequiredInput
+  customExperiments: ParameterUpdateManyWithoutExperimentInput
 }
 
 input ExperimentUpdateManyMutationInput {
@@ -2345,9 +2364,30 @@ input ExperimentUpdateOneRequiredInput {
   upsert: ExperimentUpsertNestedInput
 }
 
+input ExperimentUpdateOneRequiredWithoutCustomExperimentsInput {
+  create: ExperimentCreateWithoutCustomExperimentsInput
+  connect: ExperimentWhereUniqueInput
+  update: ExperimentUpdateWithoutCustomExperimentsDataInput
+  upsert: ExperimentUpsertWithoutCustomExperimentsInput
+}
+
+input ExperimentUpdateWithoutCustomExperimentsDataInput {
+  title: String
+  description: String
+  image: String
+  largeImage: String
+  parameters: Json
+  author: ProfileUpdateOneRequiredInput
+}
+
 input ExperimentUpsertNestedInput {
   update: ExperimentUpdateDataInput!
   create: ExperimentCreateInput!
+}
+
+input ExperimentUpsertWithoutCustomExperimentsInput {
+  update: ExperimentUpdateWithoutCustomExperimentsDataInput!
+  create: ExperimentCreateWithoutCustomExperimentsInput!
 }
 
 input ExperimentWhereInput {
@@ -2604,6 +2644,9 @@ input ExperimentWhereInput {
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
   author: ProfileWhereInput
+  customExperiments_every: ParameterWhereInput
+  customExperiments_some: ParameterWhereInput
+  customExperiments_none: ParameterWhereInput
 }
 
 input ExperimentWhereUniqueInput {
@@ -2627,8 +2670,8 @@ type Mutation {
   createClass(data: ClassCreateInput!): Class!
   createResult(data: ResultCreateInput!): Result!
   createParameter(data: ParameterCreateInput!): Parameter!
-  createProfile(data: ProfileCreateInput!): Profile!
   createExperiment(data: ExperimentCreateInput!): Experiment!
+  createProfile(data: ProfileCreateInput!): Profile!
   updateAuthEmail(data: AuthEmailUpdateInput!, where: AuthEmailWhereUniqueInput!): AuthEmail
   updateAuthToken(data: AuthTokenUpdateInput!, where: AuthTokenWhereUniqueInput!): AuthToken
   updateAuthInvite(data: AuthInviteUpdateInput!, where: AuthInviteWhereUniqueInput!): AuthInvite
@@ -2636,8 +2679,8 @@ type Mutation {
   updateClass(data: ClassUpdateInput!, where: ClassWhereUniqueInput!): Class
   updateResult(data: ResultUpdateInput!, where: ResultWhereUniqueInput!): Result
   updateParameter(data: ParameterUpdateInput!, where: ParameterWhereUniqueInput!): Parameter
-  updateProfile(data: ProfileUpdateInput!, where: ProfileWhereUniqueInput!): Profile
   updateExperiment(data: ExperimentUpdateInput!, where: ExperimentWhereUniqueInput!): Experiment
+  updateProfile(data: ProfileUpdateInput!, where: ProfileWhereUniqueInput!): Profile
   deleteAuthEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
   deleteAuthToken(where: AuthTokenWhereUniqueInput!): AuthToken
   deleteAuthInvite(where: AuthInviteWhereUniqueInput!): AuthInvite
@@ -2645,8 +2688,8 @@ type Mutation {
   deleteClass(where: ClassWhereUniqueInput!): Class
   deleteResult(where: ResultWhereUniqueInput!): Result
   deleteParameter(where: ParameterWhereUniqueInput!): Parameter
-  deleteProfile(where: ProfileWhereUniqueInput!): Profile
   deleteExperiment(where: ExperimentWhereUniqueInput!): Experiment
+  deleteProfile(where: ProfileWhereUniqueInput!): Profile
   upsertAuthEmail(where: AuthEmailWhereUniqueInput!, create: AuthEmailCreateInput!, update: AuthEmailUpdateInput!): AuthEmail!
   upsertAuthToken(where: AuthTokenWhereUniqueInput!, create: AuthTokenCreateInput!, update: AuthTokenUpdateInput!): AuthToken!
   upsertAuthInvite(where: AuthInviteWhereUniqueInput!, create: AuthInviteCreateInput!, update: AuthInviteUpdateInput!): AuthInvite!
@@ -2654,16 +2697,16 @@ type Mutation {
   upsertClass(where: ClassWhereUniqueInput!, create: ClassCreateInput!, update: ClassUpdateInput!): Class!
   upsertResult(where: ResultWhereUniqueInput!, create: ResultCreateInput!, update: ResultUpdateInput!): Result!
   upsertParameter(where: ParameterWhereUniqueInput!, create: ParameterCreateInput!, update: ParameterUpdateInput!): Parameter!
-  upsertProfile(where: ProfileWhereUniqueInput!, create: ProfileCreateInput!, update: ProfileUpdateInput!): Profile!
   upsertExperiment(where: ExperimentWhereUniqueInput!, create: ExperimentCreateInput!, update: ExperimentUpdateInput!): Experiment!
+  upsertProfile(where: ProfileWhereUniqueInput!, create: ProfileCreateInput!, update: ProfileUpdateInput!): Profile!
   updateManyAuthEmails(data: AuthEmailUpdateManyMutationInput!, where: AuthEmailWhereInput): BatchPayload!
   updateManyAuthTokens(data: AuthTokenUpdateManyMutationInput!, where: AuthTokenWhereInput): BatchPayload!
   updateManySchools(data: SchoolUpdateManyMutationInput!, where: SchoolWhereInput): BatchPayload!
   updateManyClasses(data: ClassUpdateManyMutationInput!, where: ClassWhereInput): BatchPayload!
   updateManyResults(data: ResultUpdateManyMutationInput!, where: ResultWhereInput): BatchPayload!
   updateManyParameters(data: ParameterUpdateManyMutationInput!, where: ParameterWhereInput): BatchPayload!
-  updateManyProfiles(data: ProfileUpdateManyMutationInput!, where: ProfileWhereInput): BatchPayload!
   updateManyExperiments(data: ExperimentUpdateManyMutationInput!, where: ExperimentWhereInput): BatchPayload!
+  updateManyProfiles(data: ProfileUpdateManyMutationInput!, where: ProfileWhereInput): BatchPayload!
   deleteManyAuthEmails(where: AuthEmailWhereInput): BatchPayload!
   deleteManyAuthTokens(where: AuthTokenWhereInput): BatchPayload!
   deleteManyAuthInvites(where: AuthInviteWhereInput): BatchPayload!
@@ -2671,8 +2714,8 @@ type Mutation {
   deleteManyClasses(where: ClassWhereInput): BatchPayload!
   deleteManyResults(where: ResultWhereInput): BatchPayload!
   deleteManyParameters(where: ParameterWhereInput): BatchPayload!
-  deleteManyProfiles(where: ProfileWhereInput): BatchPayload!
   deleteManyExperiments(where: ExperimentWhereInput): BatchPayload!
+  deleteManyProfiles(where: ProfileWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -2726,7 +2769,19 @@ input ParameterCreateInput {
   id: ID
   title: String!
   data: Json
-  experiment: ExperimentCreateOneInput!
+  experiment: ExperimentCreateOneWithoutCustomExperimentsInput!
+  author: ProfileCreateOneInput!
+}
+
+input ParameterCreateManyWithoutExperimentInput {
+  create: [ParameterCreateWithoutExperimentInput!]
+  connect: [ParameterWhereUniqueInput!]
+}
+
+input ParameterCreateWithoutExperimentInput {
+  id: ID
+  title: String!
+  data: Json
   author: ProfileCreateOneInput!
 }
 
@@ -2758,6 +2813,141 @@ type ParameterPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   data: Json
+}
+
+input ParameterScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ParameterScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ParameterScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ParameterScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 type ParameterSubscriptionPayload {
@@ -2802,13 +2992,52 @@ input ParameterSubscriptionWhereInput {
 input ParameterUpdateInput {
   title: String
   data: Json
-  experiment: ExperimentUpdateOneRequiredInput
+  experiment: ExperimentUpdateOneRequiredWithoutCustomExperimentsInput
   author: ProfileUpdateOneRequiredInput
+}
+
+input ParameterUpdateManyDataInput {
+  title: String
+  data: Json
 }
 
 input ParameterUpdateManyMutationInput {
   title: String
   data: Json
+}
+
+input ParameterUpdateManyWithoutExperimentInput {
+  create: [ParameterCreateWithoutExperimentInput!]
+  connect: [ParameterWhereUniqueInput!]
+  set: [ParameterWhereUniqueInput!]
+  disconnect: [ParameterWhereUniqueInput!]
+  delete: [ParameterWhereUniqueInput!]
+  update: [ParameterUpdateWithWhereUniqueWithoutExperimentInput!]
+  updateMany: [ParameterUpdateManyWithWhereNestedInput!]
+  deleteMany: [ParameterScalarWhereInput!]
+  upsert: [ParameterUpsertWithWhereUniqueWithoutExperimentInput!]
+}
+
+input ParameterUpdateManyWithWhereNestedInput {
+  where: ParameterScalarWhereInput!
+  data: ParameterUpdateManyDataInput!
+}
+
+input ParameterUpdateWithoutExperimentDataInput {
+  title: String
+  data: Json
+  author: ProfileUpdateOneRequiredInput
+}
+
+input ParameterUpdateWithWhereUniqueWithoutExperimentInput {
+  where: ParameterWhereUniqueInput!
+  data: ParameterUpdateWithoutExperimentDataInput!
+}
+
+input ParameterUpsertWithWhereUniqueWithoutExperimentInput {
+  where: ParameterWhereUniqueInput!
+  update: ParameterUpdateWithoutExperimentDataInput!
+  create: ParameterCreateWithoutExperimentInput!
 }
 
 input ParameterWhereInput {
@@ -3794,8 +4023,8 @@ type Query {
   classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class]!
   results(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Result]!
   parameters(where: ParameterWhereInput, orderBy: ParameterOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Parameter]!
-  profiles(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile]!
   experiments(where: ExperimentWhereInput, orderBy: ExperimentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Experiment]!
+  profiles(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile]!
   authEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
   authToken(where: AuthTokenWhereUniqueInput!): AuthToken
   authInvite(where: AuthInviteWhereUniqueInput!): AuthInvite
@@ -3803,8 +4032,8 @@ type Query {
   class(where: ClassWhereUniqueInput!): Class
   result(where: ResultWhereUniqueInput!): Result
   parameter(where: ParameterWhereUniqueInput!): Parameter
-  profile(where: ProfileWhereUniqueInput!): Profile
   experiment(where: ExperimentWhereUniqueInput!): Experiment
+  profile(where: ProfileWhereUniqueInput!): Profile
   authEmailsConnection(where: AuthEmailWhereInput, orderBy: AuthEmailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthEmailConnection!
   authTokensConnection(where: AuthTokenWhereInput, orderBy: AuthTokenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthTokenConnection!
   authInvitesConnection(where: AuthInviteWhereInput, orderBy: AuthInviteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthInviteConnection!
@@ -3812,8 +4041,8 @@ type Query {
   classesConnection(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClassConnection!
   resultsConnection(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ResultConnection!
   parametersConnection(where: ParameterWhereInput, orderBy: ParameterOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ParameterConnection!
-  profilesConnection(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProfileConnection!
   experimentsConnection(where: ExperimentWhereInput, orderBy: ExperimentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExperimentConnection!
+  profilesConnection(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProfileConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -4610,6 +4839,6 @@ type Subscription {
   class(where: ClassSubscriptionWhereInput): ClassSubscriptionPayload
   result(where: ResultSubscriptionWhereInput): ResultSubscriptionPayload
   parameter(where: ParameterSubscriptionWhereInput): ParameterSubscriptionPayload
-  profile(where: ProfileSubscriptionWhereInput): ProfileSubscriptionPayload
   experiment(where: ExperimentSubscriptionWhereInput): ExperimentSubscriptionPayload
+  profile(where: ProfileSubscriptionWhereInput): ProfileSubscriptionPayload
 }
