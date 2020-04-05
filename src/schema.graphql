@@ -40,7 +40,7 @@ type Mutation {
   updateExperiment(id: ID!, title: String, description: String): Experiment!
   deleteExperiment(id: ID!): Experiment
 
-  addResult(experimentId: ID!, data: Json): Result!
+  addResult(experimentId: ID!, data: Json, dataPolicy: String): Result!
   deleteResult(id: ID!): Result
 
   createParameter(title: String!, experimentId: ID!, data: Json): Parameter!

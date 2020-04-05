@@ -37,6 +37,7 @@ const resultsMutations = {
           },
           quantity: 1,
           data: args.data,
+          dataPolicy: args.dataPolicy,
         },
       },
       info

@@ -89,6 +89,7 @@ type Result {
   user: Profile! #relationship to Profile
   quantity: Int!
   data: Json
+  dataPolicy: String
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

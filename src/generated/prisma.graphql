@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Sat Apr 04 2020 23:39:15 GMT+0200 (Central European Summer Time)
+# timestamp: Sun Apr 05 2020 17:08:47 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -4057,6 +4057,7 @@ type Result implements Node {
   user: Profile!
   quantity: Int!
   data: Json
+  dataPolicy: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -4075,6 +4076,7 @@ input ResultCreateInput {
   id: ID
   quantity: Int!
   data: Json
+  dataPolicy: String
   experiment: ExperimentCreateOneInput!
   user: ProfileCreateOneWithoutResultsInput!
 }
@@ -4088,6 +4090,7 @@ input ResultCreateWithoutUserInput {
   id: ID
   quantity: Int!
   data: Json
+  dataPolicy: String
   experiment: ExperimentCreateOneInput!
 }
 
@@ -4107,6 +4110,8 @@ enum ResultOrderByInput {
   quantity_DESC
   data_ASC
   data_DESC
+  dataPolicy_ASC
+  dataPolicy_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -4117,6 +4122,7 @@ type ResultPreviousValues {
   id: ID!
   quantity: Int!
   data: Json
+  dataPolicy: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -4192,6 +4198,46 @@ input ResultScalarWhereInput {
 
   """All values greater than or equal the given value."""
   quantity_gte: Int
+  dataPolicy: String
+
+  """All values that are not equal to given value."""
+  dataPolicy_not: String
+
+  """All values that are contained in given list."""
+  dataPolicy_in: [String!]
+
+  """All values that are not contained in given list."""
+  dataPolicy_not_in: [String!]
+
+  """All values less than the given value."""
+  dataPolicy_lt: String
+
+  """All values less than or equal the given value."""
+  dataPolicy_lte: String
+
+  """All values greater than the given value."""
+  dataPolicy_gt: String
+
+  """All values greater than or equal the given value."""
+  dataPolicy_gte: String
+
+  """All values containing the given string."""
+  dataPolicy_contains: String
+
+  """All values not containing the given string."""
+  dataPolicy_not_contains: String
+
+  """All values starting with the given string."""
+  dataPolicy_starts_with: String
+
+  """All values not starting with the given string."""
+  dataPolicy_not_starts_with: String
+
+  """All values ending with the given string."""
+  dataPolicy_ends_with: String
+
+  """All values not ending with the given string."""
+  dataPolicy_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -4280,6 +4326,7 @@ input ResultSubscriptionWhereInput {
 input ResultUpdateInput {
   quantity: Int
   data: Json
+  dataPolicy: String
   experiment: ExperimentUpdateOneRequiredInput
   user: ProfileUpdateOneRequiredWithoutResultsInput
 }
@@ -4287,11 +4334,13 @@ input ResultUpdateInput {
 input ResultUpdateManyDataInput {
   quantity: Int
   data: Json
+  dataPolicy: String
 }
 
 input ResultUpdateManyMutationInput {
   quantity: Int
   data: Json
+  dataPolicy: String
 }
 
 input ResultUpdateManyWithoutUserInput {
@@ -4314,6 +4363,7 @@ input ResultUpdateManyWithWhereNestedInput {
 input ResultUpdateWithoutUserDataInput {
   quantity: Int
   data: Json
+  dataPolicy: String
   experiment: ExperimentUpdateOneRequiredInput
 }
 
@@ -4399,6 +4449,46 @@ input ResultWhereInput {
 
   """All values greater than or equal the given value."""
   quantity_gte: Int
+  dataPolicy: String
+
+  """All values that are not equal to given value."""
+  dataPolicy_not: String
+
+  """All values that are contained in given list."""
+  dataPolicy_in: [String!]
+
+  """All values that are not contained in given list."""
+  dataPolicy_not_in: [String!]
+
+  """All values less than the given value."""
+  dataPolicy_lt: String
+
+  """All values less than or equal the given value."""
+  dataPolicy_lte: String
+
+  """All values greater than the given value."""
+  dataPolicy_gt: String
+
+  """All values greater than or equal the given value."""
+  dataPolicy_gte: String
+
+  """All values containing the given string."""
+  dataPolicy_contains: String
+
+  """All values not containing the given string."""
+  dataPolicy_not_contains: String
+
+  """All values starting with the given string."""
+  dataPolicy_starts_with: String
+
+  """All values not starting with the given string."""
+  dataPolicy_not_starts_with: String
+
+  """All values ending with the given string."""
+  dataPolicy_ends_with: String
+
+  """All values not ending with the given string."""
+  dataPolicy_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""
