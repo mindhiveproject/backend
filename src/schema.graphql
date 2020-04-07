@@ -37,7 +37,7 @@ type Mutation {
   leaveClass(id: ID!): SuccessMessage
 
   createExperiment(title: String!, description: String, image: String, largeImage: String, parameters: Json): Experiment!
-  updateExperiment(id: ID!, title: String, description: String): Experiment!
+  updateExperiment(id: ID!, title: String, description: String, parameters: Json): Experiment!
   deleteExperiment(id: ID!): Experiment
 
   addResult(experimentId: ID!, data: Json, dataPolicy: String): Result!
