@@ -13,6 +13,7 @@ type Query {
   parameters: [Parameter]!
   myParameters: [Parameter]!
   parameter(where: ParameterWhereUniqueInput): Parameter
+  myClassResults(where: ClassWhereUniqueInput): [Result]!
 }
 
 type Mutation {

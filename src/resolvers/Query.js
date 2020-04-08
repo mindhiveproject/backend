@@ -1,8 +1,10 @@
 // this is place to interact with databases, external API, access the file system (e.g., csv file)
 const { forwardTo } = require('prisma-binding');
 const { hasPermission } = require('../utils');
+const resultsQueries = require('./queries/resultsQueries');
 
 const Query = {
+  ...resultsQueries,
   // async schools(parent, args, ctx, info){
   //   const schools = await ctx.db.query.schools();
   //   return schools;
