@@ -25,6 +25,7 @@ type Mutation {
 
   tokenSignUp(username: String!, token: String!, email: String): Profile!
   tokenLogin(username: String!): Profile!
+  sendParticipantUsername(email: String!): SuccessMessage
 
   inviteSignUp(username: String!, invitedIn: ID!, image: String, largeImage: String, info: Json): Profile!
   inviteLogin(username: String!, invitedIn: ID!): Profile!
@@ -44,8 +45,8 @@ type Mutation {
   addResult(experimentId: ID!, data: Json, dataPolicy: String): Result!
   deleteResult(id: ID!): Result
 
-  createParameter(title: String!, experimentId: ID!, data: Json): Parameter!
-  updateParameter(id: ID!, title: String, data: Json): Parameter!
+  createParameter(title: String!, experimentId: ID!, data: Json, settings: Json): Parameter!
+  updateParameter(id: ID!, title: String, data: Json, settings: Json): Parameter!
   deleteParameter(id: ID!): Parameter
 }
 

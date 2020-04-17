@@ -4,26 +4,26 @@ const { randomBytes } = require('crypto');
 const { promisify } = require('util');
 const { transport, makeEmail } = require('../../mail');
 
-const checkSafari = browser => {
-  const re = /(iPhone; CPU iPhone OS 1[0-2]|iPad; CPU OS 1[0-2]|iPod touch; CPU iPhone OS 1[0-2]|Macintosh; Intel Mac OS X.*Version\x2F1[0-2].*Safari|Macintosh;.*Mac OS X 10_(14|15).* AppleWebKit.*Version\x2F1[0-3].*Safari)/;
-  const isSafari = re.test(browser);
-  console.log('insde checkSafari function browser is', browser);
-  let settings;
-  if (isSafari) {
-    settings = {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-    };
-  } else {
-    settings = {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      sameSite: 'Strict',
-      secure: process.env.NODE_ENV === 'production',
-    };
-  }
-  return settings;
-};
+// const checkSafari = browser => {
+//   const re = /(iPhone; CPU iPhone OS 1[0-2]|iPad; CPU OS 1[0-2]|iPod touch; CPU iPhone OS 1[0-2]|Macintosh; Intel Mac OS X.*Version\x2F1[0-2].*Safari|Macintosh;.*Mac OS X 10_(14|15).* AppleWebKit.*Version\x2F1[0-3].*Safari)/;
+//   const isSafari = re.test(browser);
+//   console.log('insde checkSafari function browser is', browser);
+//   let settings;
+//   if (isSafari) {
+//     settings = {
+//       httpOnly: true,
+//       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+//     };
+//   } else {
+//     settings = {
+//       httpOnly: true,
+//       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+//       sameSite: 'Strict',
+//       secure: process.env.NODE_ENV === 'production',
+//     };
+//   }
+//   return settings;
+// };
 
 const authMutations = {
   // sign up a new user with email authentication identity
@@ -217,19 +217,27 @@ const authMutations = {
     // 7. Generate JWT
     const token = jwt.sign({ userId: profile.id }, process.env.APP_SECRET);
     // 8. Set the JWT cookie
-    const settings = checkSafari(ctx.request.headers['user-agent']);
-    ctx.response.cookie('token', token, settings);
+    // const settings = checkSafari(ctx.request.headers['user-agent']);
+    // ctx.response.cookie('token', token, settings);
+    ctx.response.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+      sameSite: 'Strict',
+      secure: process.env.NODE_ENV === 'production',
+    });
     // 8. Return the new user
     return profile;
   },
 
   // sign up a new user with token authentication identity
   async tokenSignUp(parent, args, ctx, info) {
-    console.log('starting token sign up');
     args.token = args.token.toLowerCase(); // lower case token
     args.username = args.username.toLowerCase(); // lower case username
-    args.email = args.email.toLowerCase(); // lower case username
-
+    if (args.email) {
+      args.email = args.email.toLowerCase(); // lower case username
+    } else {
+      args.email = null;
+    }
     // TODO: if the user does not have a profile, create a profile (which will have the email auth identity)
     // create a profile (which will have the token auth identity)
     const profile = await ctx.db.mutation.createProfile(
@@ -282,9 +290,15 @@ const authMutations = {
     );
 
     // set the jwt as a cookie on response
-    const settings = checkSafari(ctx.request.headers['user-agent']);
-    console.log('settings', settings);
-    ctx.response.cookie('token', token, settings);
+    // const settings = checkSafari(ctx.request.headers['user-agent']);
+    // console.log('settings', settings);
+    // ctx.response.cookie('token', token, settings);
+    ctx.response.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+      sameSite: 'Strict',
+      secure: process.env.NODE_ENV === 'production',
+    });
     // return user
     return updatedProfile;
   },
@@ -332,6 +346,47 @@ const authMutations = {
     });
     // 5. Return the user
     return profile;
+  },
+
+  // send the username to the email address (if it is in the participants database)
+  async sendParticipantUsername(parent, args, ctx, info) {
+    // 1. Check if it is a real participant
+    const email = args.email.toLowerCase(); // lower case username
+    const authToken = await ctx.db.query.authToken({
+      where: { email },
+    });
+    if (!authToken) {
+      throw new Error(
+        `There is no participant with the email address ${args.email}`
+      );
+    }
+
+    // 2. Get the username of the participant
+    const profiles = await ctx.db.query.profiles(
+      {
+        where: {
+          authToken_some: {
+            id: authToken.id,
+          },
+        },
+      },
+      `{id username}`
+    );
+    const usernames = profiles.map(profile => profile.username);
+
+    // 3. Email the user the usernames
+    await transport.sendMail({
+      from: 'mindhive@mindhive.com',
+      to: args.email,
+      subject: 'Your username in mindHive',
+      html: makeEmail(`Your username is
+        \n\n
+        ${usernames[0]}
+        \n\n
+        <a href="${process.env.FRONTEND_URL}/login/token">Click here to log in<a/>`),
+    });
+
+    return { message: 'Thanks' };
   },
 
   // sign up a new user with invite authentication identity

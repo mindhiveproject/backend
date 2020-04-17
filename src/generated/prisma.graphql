@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Sun Apr 05 2020 17:08:47 GMT+0200 (Central European Summer Time)
+# timestamp: Thu Apr 16 2020 15:50:25 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -1399,6 +1399,7 @@ input AuthTokenWhereInput {
 input AuthTokenWhereUniqueInput {
   id: ID
   token: String
+  email: String
 }
 
 type BatchPayload {
@@ -2753,6 +2754,7 @@ type Parameter implements Node {
   createdAt: DateTime!
   updatedAt: DateTime!
   data: Json
+  settings: Json
 }
 
 """A connection to a list of items."""
@@ -2769,6 +2771,7 @@ input ParameterCreateInput {
   id: ID
   title: String!
   data: Json
+  settings: Json
   experiment: ExperimentCreateOneWithoutCustomExperimentsInput!
   author: ProfileCreateOneInput!
 }
@@ -2782,6 +2785,7 @@ input ParameterCreateWithoutExperimentInput {
   id: ID
   title: String!
   data: Json
+  settings: Json
   author: ProfileCreateOneInput!
 }
 
@@ -2805,6 +2809,8 @@ enum ParameterOrderByInput {
   updatedAt_DESC
   data_ASC
   data_DESC
+  settings_ASC
+  settings_DESC
 }
 
 type ParameterPreviousValues {
@@ -2813,6 +2819,7 @@ type ParameterPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   data: Json
+  settings: Json
 }
 
 input ParameterScalarWhereInput {
@@ -2992,6 +2999,7 @@ input ParameterSubscriptionWhereInput {
 input ParameterUpdateInput {
   title: String
   data: Json
+  settings: Json
   experiment: ExperimentUpdateOneRequiredWithoutCustomExperimentsInput
   author: ProfileUpdateOneRequiredInput
 }
@@ -2999,11 +3007,13 @@ input ParameterUpdateInput {
 input ParameterUpdateManyDataInput {
   title: String
   data: Json
+  settings: Json
 }
 
 input ParameterUpdateManyMutationInput {
   title: String
   data: Json
+  settings: Json
 }
 
 input ParameterUpdateManyWithoutExperimentInput {
@@ -3026,6 +3036,7 @@ input ParameterUpdateManyWithWhereNestedInput {
 input ParameterUpdateWithoutExperimentDataInput {
   title: String
   data: Json
+  settings: Json
   author: ProfileUpdateOneRequiredInput
 }
 

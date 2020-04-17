@@ -20,6 +20,7 @@ const parameterMutations = {
             connect: { id: args.experimentId },
           },
           data: args.data,
+          settings: args.settings,
         },
       },
       info

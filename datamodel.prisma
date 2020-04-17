@@ -37,7 +37,7 @@ type AuthToken {
   token: String! @unique
   tokenExpiry: String
   profile: Profile!
-  email: String
+  email: String @unique
 }
 
 type AuthInvite {
@@ -102,4 +102,5 @@ type Parameter {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   data: Json
+  settings: Json
 }
