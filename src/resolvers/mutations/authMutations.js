@@ -2,6 +2,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { randomBytes } = require('crypto');
 const { promisify } = require('util');
+const postmark = require('postmark');
+
+const client = new postmark.Client(process.env.MAIL_POSTMARK_CLIENT);
 const { transport, makeEmail } = require('../../mail');
 
 // const checkSafari = browser => {
@@ -160,14 +163,71 @@ const authMutations = {
       },
     });
     // 3. Email the user the reset token
-    const mailResponse = await transport.sendMail({
-      from: 'mindhive@mindhive.com',
-      to: authEmail.email,
-      subject: 'Your password reset token',
-      html: makeEmail(`Your password reset token is here!
-        \n\n
-        <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}">Click here to reset<a/>`),
+
+    // const html = generateHTML(options.filename, options);
+    // const text = htmlToText.fromString(html);
+    // client.sendEmail({
+    //   From: `info@mindhive.com`,
+    //   To: 'info@mindhive.com',
+    //   Subject: 'Your password reset token',
+    //   HtmlBody: makeEmail(`Your password reset token is here!
+    //     \n\n
+    //     <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}">Click here to reset<a/>`),
+    // });
+    // https://www.oodlestechnologies.com/blogs/Sending-EMail-through-Postmark-in-Node-JS./
+
+    const sentEmail = await client.sendEmailWithTemplate({
+      From: 'info@mindhive.science',
+      To: authEmail.email,
+      TemplateAlias: 'password-reset',
+      TemplateModel: {
+        action_url: `${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}`,
+        support_url: `${process.env.FRONTEND_URL}/support`,
+        product_name: 'mindHIVE',
+      },
     });
+    // console.log('sentEmail', sentEmail);
+
+    // client.sendEmail({
+    //   From: 'info@mindhive.science',
+    //   To: authEmail.email,
+    //   Subject: 'Password recovery',
+    //   TextBody: 'Hello from Postmark!',
+    //   HtmlBody: makeEmail(`Your password reset token is here!
+    //       \n\n
+    //       <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}">Click here to reset<a/>`),
+    // });
+
+    // TemplateAlias: 'password-reset',
+    // TemplateModel: {
+    //   name: 'John Smith',
+    //   product_name: 'mindHive platform',
+    //   operating_system: 'operating_system',
+    //   browser_name: 'browser_name',
+    //   action_url: `${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}`,
+    // },
+    // Subject: 'Password recovery',
+    // TextBody: 'Hello from Postmark!',
+    // HtmlBody: makeEmail(`Your password reset token is here!
+    //     \n\n
+    //     <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}">Click here to reset<a/>`),
+
+    // const mailResponse = await transport.sendMail({
+    //   from: 'mindhive@mindhive.com',
+    //   to: authEmail.email,
+    //   subject: 'Your password reset token',
+    //   html: makeEmail(`Your password reset token is here!
+    //     \n\n
+    //     <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}">Click here to reset<a/>`),
+    // });
+    // const mailResponse = await transport.sendMail({
+    //   from: 'mindhive@mindhive.com',
+    //   to: authEmail.email,
+    //   subject: 'Your password reset token',
+    //   html: makeEmail(`Your password reset token is here!
+    //     \n\n
+    //     <a href="${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}">Click here to reset<a/>`),
+    // });
 
     return { message: 'Thanks' };
   },
@@ -375,16 +435,28 @@ const authMutations = {
     const usernames = profiles.map(profile => profile.username);
 
     // 3. Email the user the usernames
-    await transport.sendMail({
-      from: 'mindhive@mindhive.com',
-      to: args.email,
-      subject: 'Your username in mindHive',
-      html: makeEmail(`Your username is
-        \n\n
-        ${usernames[0]}
-        \n\n
-        <a href="${process.env.FRONTEND_URL}/login/token">Click here to log in<a/>`),
+    const sentEmail = await client.sendEmailWithTemplate({
+      From: 'info@mindhive.science',
+      To: args.email,
+      TemplateAlias: 'username-reset',
+      TemplateModel: {
+        action_url: `${process.env.FRONTEND_URL}/login/token`,
+        support_url: `${process.env.FRONTEND_URL}/support`,
+        product_name: 'mindHIVE',
+        username: usernames[0],
+      },
     });
+
+    // await transport.sendMail({
+    //   from: 'mindhive@mindhive.com',
+    //   to: args.email,
+    //   subject: 'Your username in mindHive',
+    //   html: makeEmail(`Your username is
+    //     \n\n
+    //     ${usernames[0]}
+    //     \n\n
+    //     <a href="${process.env.FRONTEND_URL}/login/token">Click here to log in<a/>`),
+    // });
 
     return { message: 'Thanks' };
   },
