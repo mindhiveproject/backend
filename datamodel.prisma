@@ -91,8 +91,11 @@ type Result {
   quantity: Int!
   data: Json
   dataPolicy: String
+  token: String @unique
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  parameters: Parameter
+  payload: String
 }
 
 type Parameter {

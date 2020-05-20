@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Sun May 10 2020 14:01:11 GMT+0200 (Central European Summer Time)
+# timestamp: Wed May 20 2020 11:20:08 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -2720,8 +2720,8 @@ type Mutation {
   createSchool(data: SchoolCreateInput!): School!
   createClass(data: ClassCreateInput!): Class!
   createResult(data: ResultCreateInput!): Result!
-  createParameter(data: ParameterCreateInput!): Parameter!
   createExperiment(data: ExperimentCreateInput!): Experiment!
+  createParameter(data: ParameterCreateInput!): Parameter!
   createProfile(data: ProfileCreateInput!): Profile!
   updateAuthEmail(data: AuthEmailUpdateInput!, where: AuthEmailWhereUniqueInput!): AuthEmail
   updateAuthToken(data: AuthTokenUpdateInput!, where: AuthTokenWhereUniqueInput!): AuthToken
@@ -2729,8 +2729,8 @@ type Mutation {
   updateSchool(data: SchoolUpdateInput!, where: SchoolWhereUniqueInput!): School
   updateClass(data: ClassUpdateInput!, where: ClassWhereUniqueInput!): Class
   updateResult(data: ResultUpdateInput!, where: ResultWhereUniqueInput!): Result
-  updateParameter(data: ParameterUpdateInput!, where: ParameterWhereUniqueInput!): Parameter
   updateExperiment(data: ExperimentUpdateInput!, where: ExperimentWhereUniqueInput!): Experiment
+  updateParameter(data: ParameterUpdateInput!, where: ParameterWhereUniqueInput!): Parameter
   updateProfile(data: ProfileUpdateInput!, where: ProfileWhereUniqueInput!): Profile
   deleteAuthEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
   deleteAuthToken(where: AuthTokenWhereUniqueInput!): AuthToken
@@ -2738,8 +2738,8 @@ type Mutation {
   deleteSchool(where: SchoolWhereUniqueInput!): School
   deleteClass(where: ClassWhereUniqueInput!): Class
   deleteResult(where: ResultWhereUniqueInput!): Result
-  deleteParameter(where: ParameterWhereUniqueInput!): Parameter
   deleteExperiment(where: ExperimentWhereUniqueInput!): Experiment
+  deleteParameter(where: ParameterWhereUniqueInput!): Parameter
   deleteProfile(where: ProfileWhereUniqueInput!): Profile
   upsertAuthEmail(where: AuthEmailWhereUniqueInput!, create: AuthEmailCreateInput!, update: AuthEmailUpdateInput!): AuthEmail!
   upsertAuthToken(where: AuthTokenWhereUniqueInput!, create: AuthTokenCreateInput!, update: AuthTokenUpdateInput!): AuthToken!
@@ -2747,16 +2747,16 @@ type Mutation {
   upsertSchool(where: SchoolWhereUniqueInput!, create: SchoolCreateInput!, update: SchoolUpdateInput!): School!
   upsertClass(where: ClassWhereUniqueInput!, create: ClassCreateInput!, update: ClassUpdateInput!): Class!
   upsertResult(where: ResultWhereUniqueInput!, create: ResultCreateInput!, update: ResultUpdateInput!): Result!
-  upsertParameter(where: ParameterWhereUniqueInput!, create: ParameterCreateInput!, update: ParameterUpdateInput!): Parameter!
   upsertExperiment(where: ExperimentWhereUniqueInput!, create: ExperimentCreateInput!, update: ExperimentUpdateInput!): Experiment!
+  upsertParameter(where: ParameterWhereUniqueInput!, create: ParameterCreateInput!, update: ParameterUpdateInput!): Parameter!
   upsertProfile(where: ProfileWhereUniqueInput!, create: ProfileCreateInput!, update: ProfileUpdateInput!): Profile!
   updateManyAuthEmails(data: AuthEmailUpdateManyMutationInput!, where: AuthEmailWhereInput): BatchPayload!
   updateManyAuthTokens(data: AuthTokenUpdateManyMutationInput!, where: AuthTokenWhereInput): BatchPayload!
   updateManySchools(data: SchoolUpdateManyMutationInput!, where: SchoolWhereInput): BatchPayload!
   updateManyClasses(data: ClassUpdateManyMutationInput!, where: ClassWhereInput): BatchPayload!
   updateManyResults(data: ResultUpdateManyMutationInput!, where: ResultWhereInput): BatchPayload!
-  updateManyParameters(data: ParameterUpdateManyMutationInput!, where: ParameterWhereInput): BatchPayload!
   updateManyExperiments(data: ExperimentUpdateManyMutationInput!, where: ExperimentWhereInput): BatchPayload!
+  updateManyParameters(data: ParameterUpdateManyMutationInput!, where: ParameterWhereInput): BatchPayload!
   updateManyProfiles(data: ProfileUpdateManyMutationInput!, where: ProfileWhereInput): BatchPayload!
   deleteManyAuthEmails(where: AuthEmailWhereInput): BatchPayload!
   deleteManyAuthTokens(where: AuthTokenWhereInput): BatchPayload!
@@ -2764,8 +2764,8 @@ type Mutation {
   deleteManySchools(where: SchoolWhereInput): BatchPayload!
   deleteManyClasses(where: ClassWhereInput): BatchPayload!
   deleteManyResults(where: ResultWhereInput): BatchPayload!
-  deleteManyParameters(where: ParameterWhereInput): BatchPayload!
   deleteManyExperiments(where: ExperimentWhereInput): BatchPayload!
+  deleteManyParameters(where: ParameterWhereInput): BatchPayload!
   deleteManyProfiles(where: ProfileWhereInput): BatchPayload!
 }
 
@@ -2829,6 +2829,11 @@ input ParameterCreateInput {
 input ParameterCreateManyWithoutExperimentInput {
   create: [ParameterCreateWithoutExperimentInput!]
   connect: [ParameterWhereUniqueInput!]
+}
+
+input ParameterCreateOneInput {
+  create: ParameterCreateInput
+  connect: ParameterWhereUniqueInput
 }
 
 input ParameterCreateWithoutExperimentInput {
@@ -3046,6 +3051,14 @@ input ParameterSubscriptionWhereInput {
   node: ParameterWhereInput
 }
 
+input ParameterUpdateDataInput {
+  title: String
+  data: Json
+  settings: Json
+  experiment: ExperimentUpdateOneRequiredWithoutCustomExperimentsInput
+  author: ProfileUpdateOneRequiredInput
+}
+
 input ParameterUpdateInput {
   title: String
   data: Json
@@ -3083,6 +3096,15 @@ input ParameterUpdateManyWithWhereNestedInput {
   data: ParameterUpdateManyDataInput!
 }
 
+input ParameterUpdateOneInput {
+  create: ParameterCreateInput
+  connect: ParameterWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ParameterUpdateDataInput
+  upsert: ParameterUpsertNestedInput
+}
+
 input ParameterUpdateWithoutExperimentDataInput {
   title: String
   data: Json
@@ -3093,6 +3115,11 @@ input ParameterUpdateWithoutExperimentDataInput {
 input ParameterUpdateWithWhereUniqueWithoutExperimentInput {
   where: ParameterWhereUniqueInput!
   data: ParameterUpdateWithoutExperimentDataInput!
+}
+
+input ParameterUpsertNestedInput {
+  update: ParameterUpdateDataInput!
+  create: ParameterCreateInput!
 }
 
 input ParameterUpsertWithWhereUniqueWithoutExperimentInput {
@@ -4083,8 +4110,8 @@ type Query {
   schools(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [School]!
   classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class]!
   results(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Result]!
-  parameters(where: ParameterWhereInput, orderBy: ParameterOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Parameter]!
   experiments(where: ExperimentWhereInput, orderBy: ExperimentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Experiment]!
+  parameters(where: ParameterWhereInput, orderBy: ParameterOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Parameter]!
   profiles(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile]!
   authEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
   authToken(where: AuthTokenWhereUniqueInput!): AuthToken
@@ -4092,8 +4119,8 @@ type Query {
   school(where: SchoolWhereUniqueInput!): School
   class(where: ClassWhereUniqueInput!): Class
   result(where: ResultWhereUniqueInput!): Result
-  parameter(where: ParameterWhereUniqueInput!): Parameter
   experiment(where: ExperimentWhereUniqueInput!): Experiment
+  parameter(where: ParameterWhereUniqueInput!): Parameter
   profile(where: ProfileWhereUniqueInput!): Profile
   authEmailsConnection(where: AuthEmailWhereInput, orderBy: AuthEmailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthEmailConnection!
   authTokensConnection(where: AuthTokenWhereInput, orderBy: AuthTokenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthTokenConnection!
@@ -4101,8 +4128,8 @@ type Query {
   schoolsConnection(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SchoolConnection!
   classesConnection(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClassConnection!
   resultsConnection(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ResultConnection!
-  parametersConnection(where: ParameterWhereInput, orderBy: ParameterOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ParameterConnection!
   experimentsConnection(where: ExperimentWhereInput, orderBy: ExperimentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExperimentConnection!
+  parametersConnection(where: ParameterWhereInput, orderBy: ParameterOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ParameterConnection!
   profilesConnection(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProfileConnection!
 
   """Fetches an object given its ID"""
@@ -4119,8 +4146,11 @@ type Result implements Node {
   quantity: Int!
   data: Json
   dataPolicy: String
+  token: String
   createdAt: DateTime!
   updatedAt: DateTime!
+  parameters: Parameter
+  payload: String
 }
 
 """A connection to a list of items."""
@@ -4138,8 +4168,11 @@ input ResultCreateInput {
   quantity: Int!
   data: Json
   dataPolicy: String
+  token: String
+  payload: String
   experiment: ExperimentCreateOneInput!
   user: ProfileCreateOneWithoutResultsInput!
+  parameters: ParameterCreateOneInput
 }
 
 input ResultCreateManyWithoutUserInput {
@@ -4152,7 +4185,10 @@ input ResultCreateWithoutUserInput {
   quantity: Int!
   data: Json
   dataPolicy: String
+  token: String
+  payload: String
   experiment: ExperimentCreateOneInput!
+  parameters: ParameterCreateOneInput
 }
 
 """An edge in a connection."""
@@ -4173,10 +4209,14 @@ enum ResultOrderByInput {
   data_DESC
   dataPolicy_ASC
   dataPolicy_DESC
+  token_ASC
+  token_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  payload_ASC
+  payload_DESC
 }
 
 type ResultPreviousValues {
@@ -4184,8 +4224,10 @@ type ResultPreviousValues {
   quantity: Int!
   data: Json
   dataPolicy: String
+  token: String
   createdAt: DateTime!
   updatedAt: DateTime!
+  payload: String
 }
 
 input ResultScalarWhereInput {
@@ -4299,6 +4341,46 @@ input ResultScalarWhereInput {
 
   """All values not ending with the given string."""
   dataPolicy_not_ends_with: String
+  token: String
+
+  """All values that are not equal to given value."""
+  token_not: String
+
+  """All values that are contained in given list."""
+  token_in: [String!]
+
+  """All values that are not contained in given list."""
+  token_not_in: [String!]
+
+  """All values less than the given value."""
+  token_lt: String
+
+  """All values less than or equal the given value."""
+  token_lte: String
+
+  """All values greater than the given value."""
+  token_gt: String
+
+  """All values greater than or equal the given value."""
+  token_gte: String
+
+  """All values containing the given string."""
+  token_contains: String
+
+  """All values not containing the given string."""
+  token_not_contains: String
+
+  """All values starting with the given string."""
+  token_starts_with: String
+
+  """All values not starting with the given string."""
+  token_not_starts_with: String
+
+  """All values ending with the given string."""
+  token_ends_with: String
+
+  """All values not ending with the given string."""
+  token_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -4343,6 +4425,46 @@ input ResultScalarWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  payload: String
+
+  """All values that are not equal to given value."""
+  payload_not: String
+
+  """All values that are contained in given list."""
+  payload_in: [String!]
+
+  """All values that are not contained in given list."""
+  payload_not_in: [String!]
+
+  """All values less than the given value."""
+  payload_lt: String
+
+  """All values less than or equal the given value."""
+  payload_lte: String
+
+  """All values greater than the given value."""
+  payload_gt: String
+
+  """All values greater than or equal the given value."""
+  payload_gte: String
+
+  """All values containing the given string."""
+  payload_contains: String
+
+  """All values not containing the given string."""
+  payload_not_contains: String
+
+  """All values starting with the given string."""
+  payload_starts_with: String
+
+  """All values not starting with the given string."""
+  payload_not_starts_with: String
+
+  """All values ending with the given string."""
+  payload_ends_with: String
+
+  """All values not ending with the given string."""
+  payload_not_ends_with: String
 }
 
 type ResultSubscriptionPayload {
@@ -4388,20 +4510,27 @@ input ResultUpdateInput {
   quantity: Int
   data: Json
   dataPolicy: String
+  token: String
+  payload: String
   experiment: ExperimentUpdateOneRequiredInput
   user: ProfileUpdateOneRequiredWithoutResultsInput
+  parameters: ParameterUpdateOneInput
 }
 
 input ResultUpdateManyDataInput {
   quantity: Int
   data: Json
   dataPolicy: String
+  token: String
+  payload: String
 }
 
 input ResultUpdateManyMutationInput {
   quantity: Int
   data: Json
   dataPolicy: String
+  token: String
+  payload: String
 }
 
 input ResultUpdateManyWithoutUserInput {
@@ -4425,7 +4554,10 @@ input ResultUpdateWithoutUserDataInput {
   quantity: Int
   data: Json
   dataPolicy: String
+  token: String
+  payload: String
   experiment: ExperimentUpdateOneRequiredInput
+  parameters: ParameterUpdateOneInput
 }
 
 input ResultUpdateWithWhereUniqueWithoutUserInput {
@@ -4550,6 +4682,46 @@ input ResultWhereInput {
 
   """All values not ending with the given string."""
   dataPolicy_not_ends_with: String
+  token: String
+
+  """All values that are not equal to given value."""
+  token_not: String
+
+  """All values that are contained in given list."""
+  token_in: [String!]
+
+  """All values that are not contained in given list."""
+  token_not_in: [String!]
+
+  """All values less than the given value."""
+  token_lt: String
+
+  """All values less than or equal the given value."""
+  token_lte: String
+
+  """All values greater than the given value."""
+  token_gt: String
+
+  """All values greater than or equal the given value."""
+  token_gte: String
+
+  """All values containing the given string."""
+  token_contains: String
+
+  """All values not containing the given string."""
+  token_not_contains: String
+
+  """All values starting with the given string."""
+  token_starts_with: String
+
+  """All values not starting with the given string."""
+  token_not_starts_with: String
+
+  """All values ending with the given string."""
+  token_ends_with: String
+
+  """All values not ending with the given string."""
+  token_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -4594,12 +4766,54 @@ input ResultWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  payload: String
+
+  """All values that are not equal to given value."""
+  payload_not: String
+
+  """All values that are contained in given list."""
+  payload_in: [String!]
+
+  """All values that are not contained in given list."""
+  payload_not_in: [String!]
+
+  """All values less than the given value."""
+  payload_lt: String
+
+  """All values less than or equal the given value."""
+  payload_lte: String
+
+  """All values greater than the given value."""
+  payload_gt: String
+
+  """All values greater than or equal the given value."""
+  payload_gte: String
+
+  """All values containing the given string."""
+  payload_contains: String
+
+  """All values not containing the given string."""
+  payload_not_contains: String
+
+  """All values starting with the given string."""
+  payload_starts_with: String
+
+  """All values not starting with the given string."""
+  payload_not_starts_with: String
+
+  """All values ending with the given string."""
+  payload_ends_with: String
+
+  """All values not ending with the given string."""
+  payload_not_ends_with: String
   experiment: ExperimentWhereInput
   user: ProfileWhereInput
+  parameters: ParameterWhereInput
 }
 
 input ResultWhereUniqueInput {
   id: ID
+  token: String
 }
 
 type School implements Node {
@@ -4989,7 +5203,7 @@ type Subscription {
   school(where: SchoolSubscriptionWhereInput): SchoolSubscriptionPayload
   class(where: ClassSubscriptionWhereInput): ClassSubscriptionPayload
   result(where: ResultSubscriptionWhereInput): ResultSubscriptionPayload
-  parameter(where: ParameterSubscriptionWhereInput): ParameterSubscriptionPayload
   experiment(where: ExperimentSubscriptionWhereInput): ExperimentSubscriptionPayload
+  parameter(where: ParameterSubscriptionWhereInput): ParameterSubscriptionPayload
   profile(where: ProfileSubscriptionWhereInput): ProfileSubscriptionPayload
 }

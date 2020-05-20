@@ -1,4 +1,53 @@
 const resultsMutations = {
+  // submit a new result from open API
+  async submitResultFromAPI(parent, args, ctx, info) {
+    const messageId = args.metadata && args.metadata.id;
+    const payload = args.metadata && args.metadata.payload;
+    const token = `${payload.slice(0, 4)}-${messageId}`;
+
+    const result = await ctx.db.query.result({
+      where: {
+        token,
+      },
+    });
+
+    if (!result) {
+      return ctx.db.mutation.createResult(
+        {
+          data: {
+            user: {
+              connect: { id: args.userId },
+            },
+            experiment: {
+              connect: { id: args.experimentId },
+            },
+            parameters: {
+              connect: { id: args.customExperimentId },
+            },
+            quantity: 1,
+            data: args.data,
+            dataPolicy: args.dataPolicy,
+            payload,
+            token,
+          },
+        },
+        info
+      );
+    }
+    const savedData = result.data;
+    const newData = [...savedData, ...args.data];
+    return ctx.db.mutation.updateResult(
+      {
+        where: { token },
+        data: {
+          data: newData,
+          quantity: result.quantity + 1,
+        },
+      },
+      info
+    );
+  },
+
   // add a new result of the experiment
   async addResult(parent, args, ctx, info) {
     // 1. Make sure that user is signed in
