@@ -1,11 +1,15 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Wed May 20 2020 11:20:08 GMT+0200 (Central European Summer Time)
+# timestamp: Fri Jun 05 2020 11:39:17 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
 }
 
 type AggregateAuthInvite {
+  count: Int!
+}
+
+type AggregateAuthParticipant {
   count: Int!
 }
 
@@ -894,6 +898,611 @@ input AuthInviteWhereInput {
 
 input AuthInviteWhereUniqueInput {
   id: ID
+}
+
+type AuthParticipant implements Node {
+  id: ID!
+  email: String
+  password: String!
+  resetToken: String
+  resetTokenExpiry: String
+  profile: Profile!
+  settings: Json
+}
+
+"""A connection to a list of items."""
+type AuthParticipantConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [AuthParticipantEdge]!
+  aggregate: AggregateAuthParticipant!
+}
+
+input AuthParticipantCreateInput {
+  id: ID
+  email: String
+  password: String!
+  resetToken: String
+  resetTokenExpiry: String
+  settings: Json
+  profile: ProfileCreateOneWithoutAuthParticipantInput!
+}
+
+input AuthParticipantCreateManyWithoutProfileInput {
+  create: [AuthParticipantCreateWithoutProfileInput!]
+  connect: [AuthParticipantWhereUniqueInput!]
+}
+
+input AuthParticipantCreateWithoutProfileInput {
+  id: ID
+  email: String
+  password: String!
+  resetToken: String
+  resetTokenExpiry: String
+  settings: Json
+}
+
+"""An edge in a connection."""
+type AuthParticipantEdge {
+  """The item at the end of the edge."""
+  node: AuthParticipant!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum AuthParticipantOrderByInput {
+  id_ASC
+  id_DESC
+  email_ASC
+  email_DESC
+  password_ASC
+  password_DESC
+  resetToken_ASC
+  resetToken_DESC
+  resetTokenExpiry_ASC
+  resetTokenExpiry_DESC
+  settings_ASC
+  settings_DESC
+}
+
+type AuthParticipantPreviousValues {
+  id: ID!
+  email: String
+  password: String!
+  resetToken: String
+  resetTokenExpiry: String
+  settings: Json
+}
+
+input AuthParticipantScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AuthParticipantScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AuthParticipantScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AuthParticipantScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  email: String
+
+  """All values that are not equal to given value."""
+  email_not: String
+
+  """All values that are contained in given list."""
+  email_in: [String!]
+
+  """All values that are not contained in given list."""
+  email_not_in: [String!]
+
+  """All values less than the given value."""
+  email_lt: String
+
+  """All values less than or equal the given value."""
+  email_lte: String
+
+  """All values greater than the given value."""
+  email_gt: String
+
+  """All values greater than or equal the given value."""
+  email_gte: String
+
+  """All values containing the given string."""
+  email_contains: String
+
+  """All values not containing the given string."""
+  email_not_contains: String
+
+  """All values starting with the given string."""
+  email_starts_with: String
+
+  """All values not starting with the given string."""
+  email_not_starts_with: String
+
+  """All values ending with the given string."""
+  email_ends_with: String
+
+  """All values not ending with the given string."""
+  email_not_ends_with: String
+  password: String
+
+  """All values that are not equal to given value."""
+  password_not: String
+
+  """All values that are contained in given list."""
+  password_in: [String!]
+
+  """All values that are not contained in given list."""
+  password_not_in: [String!]
+
+  """All values less than the given value."""
+  password_lt: String
+
+  """All values less than or equal the given value."""
+  password_lte: String
+
+  """All values greater than the given value."""
+  password_gt: String
+
+  """All values greater than or equal the given value."""
+  password_gte: String
+
+  """All values containing the given string."""
+  password_contains: String
+
+  """All values not containing the given string."""
+  password_not_contains: String
+
+  """All values starting with the given string."""
+  password_starts_with: String
+
+  """All values not starting with the given string."""
+  password_not_starts_with: String
+
+  """All values ending with the given string."""
+  password_ends_with: String
+
+  """All values not ending with the given string."""
+  password_not_ends_with: String
+  resetToken: String
+
+  """All values that are not equal to given value."""
+  resetToken_not: String
+
+  """All values that are contained in given list."""
+  resetToken_in: [String!]
+
+  """All values that are not contained in given list."""
+  resetToken_not_in: [String!]
+
+  """All values less than the given value."""
+  resetToken_lt: String
+
+  """All values less than or equal the given value."""
+  resetToken_lte: String
+
+  """All values greater than the given value."""
+  resetToken_gt: String
+
+  """All values greater than or equal the given value."""
+  resetToken_gte: String
+
+  """All values containing the given string."""
+  resetToken_contains: String
+
+  """All values not containing the given string."""
+  resetToken_not_contains: String
+
+  """All values starting with the given string."""
+  resetToken_starts_with: String
+
+  """All values not starting with the given string."""
+  resetToken_not_starts_with: String
+
+  """All values ending with the given string."""
+  resetToken_ends_with: String
+
+  """All values not ending with the given string."""
+  resetToken_not_ends_with: String
+  resetTokenExpiry: String
+
+  """All values that are not equal to given value."""
+  resetTokenExpiry_not: String
+
+  """All values that are contained in given list."""
+  resetTokenExpiry_in: [String!]
+
+  """All values that are not contained in given list."""
+  resetTokenExpiry_not_in: [String!]
+
+  """All values less than the given value."""
+  resetTokenExpiry_lt: String
+
+  """All values less than or equal the given value."""
+  resetTokenExpiry_lte: String
+
+  """All values greater than the given value."""
+  resetTokenExpiry_gt: String
+
+  """All values greater than or equal the given value."""
+  resetTokenExpiry_gte: String
+
+  """All values containing the given string."""
+  resetTokenExpiry_contains: String
+
+  """All values not containing the given string."""
+  resetTokenExpiry_not_contains: String
+
+  """All values starting with the given string."""
+  resetTokenExpiry_starts_with: String
+
+  """All values not starting with the given string."""
+  resetTokenExpiry_not_starts_with: String
+
+  """All values ending with the given string."""
+  resetTokenExpiry_ends_with: String
+
+  """All values not ending with the given string."""
+  resetTokenExpiry_not_ends_with: String
+}
+
+type AuthParticipantSubscriptionPayload {
+  mutation: MutationType!
+  node: AuthParticipant
+  updatedFields: [String!]
+  previousValues: AuthParticipantPreviousValues
+}
+
+input AuthParticipantSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AuthParticipantSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AuthParticipantSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AuthParticipantSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: AuthParticipantWhereInput
+}
+
+input AuthParticipantUpdateInput {
+  email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: String
+  settings: Json
+  profile: ProfileUpdateOneRequiredWithoutAuthParticipantInput
+}
+
+input AuthParticipantUpdateManyDataInput {
+  email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: String
+  settings: Json
+}
+
+input AuthParticipantUpdateManyMutationInput {
+  email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: String
+  settings: Json
+}
+
+input AuthParticipantUpdateManyWithoutProfileInput {
+  create: [AuthParticipantCreateWithoutProfileInput!]
+  connect: [AuthParticipantWhereUniqueInput!]
+  set: [AuthParticipantWhereUniqueInput!]
+  disconnect: [AuthParticipantWhereUniqueInput!]
+  delete: [AuthParticipantWhereUniqueInput!]
+  update: [AuthParticipantUpdateWithWhereUniqueWithoutProfileInput!]
+  updateMany: [AuthParticipantUpdateManyWithWhereNestedInput!]
+  deleteMany: [AuthParticipantScalarWhereInput!]
+  upsert: [AuthParticipantUpsertWithWhereUniqueWithoutProfileInput!]
+}
+
+input AuthParticipantUpdateManyWithWhereNestedInput {
+  where: AuthParticipantScalarWhereInput!
+  data: AuthParticipantUpdateManyDataInput!
+}
+
+input AuthParticipantUpdateWithoutProfileDataInput {
+  email: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: String
+  settings: Json
+}
+
+input AuthParticipantUpdateWithWhereUniqueWithoutProfileInput {
+  where: AuthParticipantWhereUniqueInput!
+  data: AuthParticipantUpdateWithoutProfileDataInput!
+}
+
+input AuthParticipantUpsertWithWhereUniqueWithoutProfileInput {
+  where: AuthParticipantWhereUniqueInput!
+  update: AuthParticipantUpdateWithoutProfileDataInput!
+  create: AuthParticipantCreateWithoutProfileInput!
+}
+
+input AuthParticipantWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AuthParticipantWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AuthParticipantWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AuthParticipantWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  email: String
+
+  """All values that are not equal to given value."""
+  email_not: String
+
+  """All values that are contained in given list."""
+  email_in: [String!]
+
+  """All values that are not contained in given list."""
+  email_not_in: [String!]
+
+  """All values less than the given value."""
+  email_lt: String
+
+  """All values less than or equal the given value."""
+  email_lte: String
+
+  """All values greater than the given value."""
+  email_gt: String
+
+  """All values greater than or equal the given value."""
+  email_gte: String
+
+  """All values containing the given string."""
+  email_contains: String
+
+  """All values not containing the given string."""
+  email_not_contains: String
+
+  """All values starting with the given string."""
+  email_starts_with: String
+
+  """All values not starting with the given string."""
+  email_not_starts_with: String
+
+  """All values ending with the given string."""
+  email_ends_with: String
+
+  """All values not ending with the given string."""
+  email_not_ends_with: String
+  password: String
+
+  """All values that are not equal to given value."""
+  password_not: String
+
+  """All values that are contained in given list."""
+  password_in: [String!]
+
+  """All values that are not contained in given list."""
+  password_not_in: [String!]
+
+  """All values less than the given value."""
+  password_lt: String
+
+  """All values less than or equal the given value."""
+  password_lte: String
+
+  """All values greater than the given value."""
+  password_gt: String
+
+  """All values greater than or equal the given value."""
+  password_gte: String
+
+  """All values containing the given string."""
+  password_contains: String
+
+  """All values not containing the given string."""
+  password_not_contains: String
+
+  """All values starting with the given string."""
+  password_starts_with: String
+
+  """All values not starting with the given string."""
+  password_not_starts_with: String
+
+  """All values ending with the given string."""
+  password_ends_with: String
+
+  """All values not ending with the given string."""
+  password_not_ends_with: String
+  resetToken: String
+
+  """All values that are not equal to given value."""
+  resetToken_not: String
+
+  """All values that are contained in given list."""
+  resetToken_in: [String!]
+
+  """All values that are not contained in given list."""
+  resetToken_not_in: [String!]
+
+  """All values less than the given value."""
+  resetToken_lt: String
+
+  """All values less than or equal the given value."""
+  resetToken_lte: String
+
+  """All values greater than the given value."""
+  resetToken_gt: String
+
+  """All values greater than or equal the given value."""
+  resetToken_gte: String
+
+  """All values containing the given string."""
+  resetToken_contains: String
+
+  """All values not containing the given string."""
+  resetToken_not_contains: String
+
+  """All values starting with the given string."""
+  resetToken_starts_with: String
+
+  """All values not starting with the given string."""
+  resetToken_not_starts_with: String
+
+  """All values ending with the given string."""
+  resetToken_ends_with: String
+
+  """All values not ending with the given string."""
+  resetToken_not_ends_with: String
+  resetTokenExpiry: String
+
+  """All values that are not equal to given value."""
+  resetTokenExpiry_not: String
+
+  """All values that are contained in given list."""
+  resetTokenExpiry_in: [String!]
+
+  """All values that are not contained in given list."""
+  resetTokenExpiry_not_in: [String!]
+
+  """All values less than the given value."""
+  resetTokenExpiry_lt: String
+
+  """All values less than or equal the given value."""
+  resetTokenExpiry_lte: String
+
+  """All values greater than the given value."""
+  resetTokenExpiry_gt: String
+
+  """All values greater than or equal the given value."""
+  resetTokenExpiry_gte: String
+
+  """All values containing the given string."""
+  resetTokenExpiry_contains: String
+
+  """All values not containing the given string."""
+  resetTokenExpiry_not_contains: String
+
+  """All values starting with the given string."""
+  resetTokenExpiry_starts_with: String
+
+  """All values not starting with the given string."""
+  resetTokenExpiry_not_starts_with: String
+
+  """All values ending with the given string."""
+  resetTokenExpiry_ends_with: String
+
+  """All values not ending with the given string."""
+  resetTokenExpiry_not_ends_with: String
+  profile: ProfileWhereInput
+}
+
+input AuthParticipantWhereUniqueInput {
+  id: ID
+  email: String
 }
 
 type AuthToken implements Node {
@@ -2210,6 +2819,8 @@ type Experiment implements Node {
   author: Profile!
   parameters: Json
   customExperiments(where: ParameterWhereInput, orderBy: ParameterOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Parameter!]
+  script: String
+  style: String
 }
 
 """A connection to a list of items."""
@@ -2230,6 +2841,8 @@ input ExperimentCreateInput {
   image: String
   largeImage: String
   parameters: Json
+  script: String
+  style: String
   author: ProfileCreateOneInput!
   customExperiments: ParameterCreateManyWithoutExperimentInput
 }
@@ -2252,6 +2865,8 @@ input ExperimentCreateWithoutCustomExperimentsInput {
   image: String
   largeImage: String
   parameters: Json
+  script: String
+  style: String
   author: ProfileCreateOneInput!
 }
 
@@ -2283,6 +2898,10 @@ enum ExperimentOrderByInput {
   updatedAt_DESC
   parameters_ASC
   parameters_DESC
+  script_ASC
+  script_DESC
+  style_ASC
+  style_DESC
 }
 
 type ExperimentPreviousValues {
@@ -2295,6 +2914,8 @@ type ExperimentPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   parameters: Json
+  script: String
+  style: String
 }
 
 type ExperimentSubscriptionPayload {
@@ -2343,6 +2964,8 @@ input ExperimentUpdateDataInput {
   image: String
   largeImage: String
   parameters: Json
+  script: String
+  style: String
   author: ProfileUpdateOneRequiredInput
   customExperiments: ParameterUpdateManyWithoutExperimentInput
 }
@@ -2354,6 +2977,8 @@ input ExperimentUpdateInput {
   image: String
   largeImage: String
   parameters: Json
+  script: String
+  style: String
   author: ProfileUpdateOneRequiredInput
   customExperiments: ParameterUpdateManyWithoutExperimentInput
 }
@@ -2365,6 +2990,8 @@ input ExperimentUpdateManyMutationInput {
   image: String
   largeImage: String
   parameters: Json
+  script: String
+  style: String
 }
 
 input ExperimentUpdateOneRequiredInput {
@@ -2388,6 +3015,8 @@ input ExperimentUpdateWithoutCustomExperimentsDataInput {
   image: String
   largeImage: String
   parameters: Json
+  script: String
+  style: String
   author: ProfileUpdateOneRequiredInput
 }
 
@@ -2694,6 +3323,86 @@ input ExperimentWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  script: String
+
+  """All values that are not equal to given value."""
+  script_not: String
+
+  """All values that are contained in given list."""
+  script_in: [String!]
+
+  """All values that are not contained in given list."""
+  script_not_in: [String!]
+
+  """All values less than the given value."""
+  script_lt: String
+
+  """All values less than or equal the given value."""
+  script_lte: String
+
+  """All values greater than the given value."""
+  script_gt: String
+
+  """All values greater than or equal the given value."""
+  script_gte: String
+
+  """All values containing the given string."""
+  script_contains: String
+
+  """All values not containing the given string."""
+  script_not_contains: String
+
+  """All values starting with the given string."""
+  script_starts_with: String
+
+  """All values not starting with the given string."""
+  script_not_starts_with: String
+
+  """All values ending with the given string."""
+  script_ends_with: String
+
+  """All values not ending with the given string."""
+  script_not_ends_with: String
+  style: String
+
+  """All values that are not equal to given value."""
+  style_not: String
+
+  """All values that are contained in given list."""
+  style_in: [String!]
+
+  """All values that are not contained in given list."""
+  style_not_in: [String!]
+
+  """All values less than the given value."""
+  style_lt: String
+
+  """All values less than or equal the given value."""
+  style_lte: String
+
+  """All values greater than the given value."""
+  style_gt: String
+
+  """All values greater than or equal the given value."""
+  style_gte: String
+
+  """All values containing the given string."""
+  style_contains: String
+
+  """All values not containing the given string."""
+  style_not_contains: String
+
+  """All values starting with the given string."""
+  style_starts_with: String
+
+  """All values not starting with the given string."""
+  style_not_starts_with: String
+
+  """All values ending with the given string."""
+  style_ends_with: String
+
+  """All values not ending with the given string."""
+  style_not_ends_with: String
   author: ProfileWhereInput
   customExperiments_every: ParameterWhereInput
   customExperiments_some: ParameterWhereInput
@@ -2717,6 +3426,7 @@ type Mutation {
   createAuthEmail(data: AuthEmailCreateInput!): AuthEmail!
   createAuthToken(data: AuthTokenCreateInput!): AuthToken!
   createAuthInvite(data: AuthInviteCreateInput!): AuthInvite!
+  createAuthParticipant(data: AuthParticipantCreateInput!): AuthParticipant!
   createSchool(data: SchoolCreateInput!): School!
   createClass(data: ClassCreateInput!): Class!
   createResult(data: ResultCreateInput!): Result!
@@ -2726,6 +3436,7 @@ type Mutation {
   updateAuthEmail(data: AuthEmailUpdateInput!, where: AuthEmailWhereUniqueInput!): AuthEmail
   updateAuthToken(data: AuthTokenUpdateInput!, where: AuthTokenWhereUniqueInput!): AuthToken
   updateAuthInvite(data: AuthInviteUpdateInput!, where: AuthInviteWhereUniqueInput!): AuthInvite
+  updateAuthParticipant(data: AuthParticipantUpdateInput!, where: AuthParticipantWhereUniqueInput!): AuthParticipant
   updateSchool(data: SchoolUpdateInput!, where: SchoolWhereUniqueInput!): School
   updateClass(data: ClassUpdateInput!, where: ClassWhereUniqueInput!): Class
   updateResult(data: ResultUpdateInput!, where: ResultWhereUniqueInput!): Result
@@ -2735,6 +3446,7 @@ type Mutation {
   deleteAuthEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
   deleteAuthToken(where: AuthTokenWhereUniqueInput!): AuthToken
   deleteAuthInvite(where: AuthInviteWhereUniqueInput!): AuthInvite
+  deleteAuthParticipant(where: AuthParticipantWhereUniqueInput!): AuthParticipant
   deleteSchool(where: SchoolWhereUniqueInput!): School
   deleteClass(where: ClassWhereUniqueInput!): Class
   deleteResult(where: ResultWhereUniqueInput!): Result
@@ -2744,6 +3456,7 @@ type Mutation {
   upsertAuthEmail(where: AuthEmailWhereUniqueInput!, create: AuthEmailCreateInput!, update: AuthEmailUpdateInput!): AuthEmail!
   upsertAuthToken(where: AuthTokenWhereUniqueInput!, create: AuthTokenCreateInput!, update: AuthTokenUpdateInput!): AuthToken!
   upsertAuthInvite(where: AuthInviteWhereUniqueInput!, create: AuthInviteCreateInput!, update: AuthInviteUpdateInput!): AuthInvite!
+  upsertAuthParticipant(where: AuthParticipantWhereUniqueInput!, create: AuthParticipantCreateInput!, update: AuthParticipantUpdateInput!): AuthParticipant!
   upsertSchool(where: SchoolWhereUniqueInput!, create: SchoolCreateInput!, update: SchoolUpdateInput!): School!
   upsertClass(where: ClassWhereUniqueInput!, create: ClassCreateInput!, update: ClassUpdateInput!): Class!
   upsertResult(where: ResultWhereUniqueInput!, create: ResultCreateInput!, update: ResultUpdateInput!): Result!
@@ -2752,6 +3465,7 @@ type Mutation {
   upsertProfile(where: ProfileWhereUniqueInput!, create: ProfileCreateInput!, update: ProfileUpdateInput!): Profile!
   updateManyAuthEmails(data: AuthEmailUpdateManyMutationInput!, where: AuthEmailWhereInput): BatchPayload!
   updateManyAuthTokens(data: AuthTokenUpdateManyMutationInput!, where: AuthTokenWhereInput): BatchPayload!
+  updateManyAuthParticipants(data: AuthParticipantUpdateManyMutationInput!, where: AuthParticipantWhereInput): BatchPayload!
   updateManySchools(data: SchoolUpdateManyMutationInput!, where: SchoolWhereInput): BatchPayload!
   updateManyClasses(data: ClassUpdateManyMutationInput!, where: ClassWhereInput): BatchPayload!
   updateManyResults(data: ResultUpdateManyMutationInput!, where: ResultWhereInput): BatchPayload!
@@ -2761,6 +3475,7 @@ type Mutation {
   deleteManyAuthEmails(where: AuthEmailWhereInput): BatchPayload!
   deleteManyAuthTokens(where: AuthTokenWhereInput): BatchPayload!
   deleteManyAuthInvites(where: AuthInviteWhereInput): BatchPayload!
+  deleteManyAuthParticipants(where: AuthParticipantWhereInput): BatchPayload!
   deleteManySchools(where: SchoolWhereInput): BatchPayload!
   deleteManyClasses(where: ClassWhereInput): BatchPayload!
   deleteManyResults(where: ResultWhereInput): BatchPayload!
@@ -3286,6 +4001,7 @@ type Profile implements Node {
   authEmail(where: AuthEmailWhereInput, orderBy: AuthEmailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthEmail!]
   authToken(where: AuthTokenWhereInput, orderBy: AuthTokenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthToken!]
   authInvite(where: AuthInviteWhereInput, orderBy: AuthInviteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthInvite!]
+  authParticipant(where: AuthParticipantWhereInput, orderBy: AuthParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthParticipant!]
   results(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Result!]
   teacherIn(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class!]
   studentIn(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class!]
@@ -3314,6 +4030,7 @@ input ProfileCreateInput {
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
   authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
   results: ResultCreateManyWithoutUserInput
   teacherIn: ClassCreateManyWithoutCreatorInput
   studentIn: ClassCreateManyWithoutStudentsInput
@@ -3336,6 +4053,11 @@ input ProfileCreateOneWithoutAuthEmailInput {
 
 input ProfileCreateOneWithoutAuthInviteInput {
   create: ProfileCreateWithoutAuthInviteInput
+  connect: ProfileWhereUniqueInput
+}
+
+input ProfileCreateOneWithoutAuthParticipantInput {
+  create: ProfileCreateWithoutAuthParticipantInput
   connect: ProfileWhereUniqueInput
 }
 
@@ -3367,6 +4089,7 @@ input ProfileCreateWithoutAuthEmailInput {
   permissions: ProfileCreatepermissionsInput
   authToken: AuthTokenCreateManyWithoutProfileInput
   authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
   results: ResultCreateManyWithoutUserInput
   teacherIn: ClassCreateManyWithoutCreatorInput
   studentIn: ClassCreateManyWithoutStudentsInput
@@ -3381,6 +4104,22 @@ input ProfileCreateWithoutAuthInviteInput {
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+}
+
+input ProfileCreateWithoutAuthParticipantInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
   results: ResultCreateManyWithoutUserInput
   teacherIn: ClassCreateManyWithoutCreatorInput
   studentIn: ClassCreateManyWithoutStudentsInput
@@ -3395,6 +4134,7 @@ input ProfileCreateWithoutAuthTokenInput {
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
   results: ResultCreateManyWithoutUserInput
   teacherIn: ClassCreateManyWithoutCreatorInput
   studentIn: ClassCreateManyWithoutStudentsInput
@@ -3410,6 +4150,7 @@ input ProfileCreateWithoutResultsInput {
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
   authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
   teacherIn: ClassCreateManyWithoutCreatorInput
   studentIn: ClassCreateManyWithoutStudentsInput
 }
@@ -3424,6 +4165,7 @@ input ProfileCreateWithoutStudentInInput {
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
   authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
   results: ResultCreateManyWithoutUserInput
   teacherIn: ClassCreateManyWithoutCreatorInput
 }
@@ -3438,6 +4180,7 @@ input ProfileCreateWithoutTeacherInInput {
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
   authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
   results: ResultCreateManyWithoutUserInput
   studentIn: ClassCreateManyWithoutStudentsInput
 }
@@ -3692,6 +4435,7 @@ input ProfileUpdateDataInput {
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
   authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
   results: ResultUpdateManyWithoutUserInput
   teacherIn: ClassUpdateManyWithoutCreatorInput
   studentIn: ClassUpdateManyWithoutStudentsInput
@@ -3706,6 +4450,7 @@ input ProfileUpdateInput {
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
   authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
   results: ResultUpdateManyWithoutUserInput
   teacherIn: ClassUpdateManyWithoutCreatorInput
   studentIn: ClassUpdateManyWithoutStudentsInput
@@ -3765,6 +4510,13 @@ input ProfileUpdateOneRequiredWithoutAuthInviteInput {
   upsert: ProfileUpsertWithoutAuthInviteInput
 }
 
+input ProfileUpdateOneRequiredWithoutAuthParticipantInput {
+  create: ProfileCreateWithoutAuthParticipantInput
+  connect: ProfileWhereUniqueInput
+  update: ProfileUpdateWithoutAuthParticipantDataInput
+  upsert: ProfileUpsertWithoutAuthParticipantInput
+}
+
 input ProfileUpdateOneRequiredWithoutAuthTokenInput {
   create: ProfileCreateWithoutAuthTokenInput
   connect: ProfileWhereUniqueInput
@@ -3798,6 +4550,7 @@ input ProfileUpdateWithoutAuthEmailDataInput {
   permissions: ProfileUpdatepermissionsInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
   authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
   results: ResultUpdateManyWithoutUserInput
   teacherIn: ClassUpdateManyWithoutCreatorInput
   studentIn: ClassUpdateManyWithoutStudentsInput
@@ -3811,6 +4564,21 @@ input ProfileUpdateWithoutAuthInviteDataInput {
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+}
+
+input ProfileUpdateWithoutAuthParticipantDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
   results: ResultUpdateManyWithoutUserInput
   teacherIn: ClassUpdateManyWithoutCreatorInput
   studentIn: ClassUpdateManyWithoutStudentsInput
@@ -3824,6 +4592,7 @@ input ProfileUpdateWithoutAuthTokenDataInput {
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
   results: ResultUpdateManyWithoutUserInput
   teacherIn: ClassUpdateManyWithoutCreatorInput
   studentIn: ClassUpdateManyWithoutStudentsInput
@@ -3838,6 +4607,7 @@ input ProfileUpdateWithoutResultsDataInput {
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
   authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
   teacherIn: ClassUpdateManyWithoutCreatorInput
   studentIn: ClassUpdateManyWithoutStudentsInput
 }
@@ -3851,6 +4621,7 @@ input ProfileUpdateWithoutStudentInDataInput {
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
   authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
   results: ResultUpdateManyWithoutUserInput
   teacherIn: ClassUpdateManyWithoutCreatorInput
 }
@@ -3864,6 +4635,7 @@ input ProfileUpdateWithoutTeacherInDataInput {
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
   authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
   results: ResultUpdateManyWithoutUserInput
   studentIn: ClassUpdateManyWithoutStudentsInput
 }
@@ -3886,6 +4658,11 @@ input ProfileUpsertWithoutAuthEmailInput {
 input ProfileUpsertWithoutAuthInviteInput {
   update: ProfileUpdateWithoutAuthInviteDataInput!
   create: ProfileCreateWithoutAuthInviteInput!
+}
+
+input ProfileUpsertWithoutAuthParticipantInput {
+  update: ProfileUpdateWithoutAuthParticipantDataInput!
+  create: ProfileCreateWithoutAuthParticipantInput!
 }
 
 input ProfileUpsertWithoutAuthTokenInput {
@@ -4087,6 +4864,9 @@ input ProfileWhereInput {
   authInvite_every: AuthInviteWhereInput
   authInvite_some: AuthInviteWhereInput
   authInvite_none: AuthInviteWhereInput
+  authParticipant_every: AuthParticipantWhereInput
+  authParticipant_some: AuthParticipantWhereInput
+  authParticipant_none: AuthParticipantWhereInput
   results_every: ResultWhereInput
   results_some: ResultWhereInput
   results_none: ResultWhereInput
@@ -4107,6 +4887,7 @@ type Query {
   authEmails(where: AuthEmailWhereInput, orderBy: AuthEmailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthEmail]!
   authTokens(where: AuthTokenWhereInput, orderBy: AuthTokenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthToken]!
   authInvites(where: AuthInviteWhereInput, orderBy: AuthInviteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthInvite]!
+  authParticipants(where: AuthParticipantWhereInput, orderBy: AuthParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthParticipant]!
   schools(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [School]!
   classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class]!
   results(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Result]!
@@ -4116,6 +4897,7 @@ type Query {
   authEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
   authToken(where: AuthTokenWhereUniqueInput!): AuthToken
   authInvite(where: AuthInviteWhereUniqueInput!): AuthInvite
+  authParticipant(where: AuthParticipantWhereUniqueInput!): AuthParticipant
   school(where: SchoolWhereUniqueInput!): School
   class(where: ClassWhereUniqueInput!): Class
   result(where: ResultWhereUniqueInput!): Result
@@ -4125,6 +4907,7 @@ type Query {
   authEmailsConnection(where: AuthEmailWhereInput, orderBy: AuthEmailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthEmailConnection!
   authTokensConnection(where: AuthTokenWhereInput, orderBy: AuthTokenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthTokenConnection!
   authInvitesConnection(where: AuthInviteWhereInput, orderBy: AuthInviteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthInviteConnection!
+  authParticipantsConnection(where: AuthParticipantWhereInput, orderBy: AuthParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthParticipantConnection!
   schoolsConnection(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SchoolConnection!
   classesConnection(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClassConnection!
   resultsConnection(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ResultConnection!
@@ -5200,6 +5983,7 @@ type Subscription {
   authEmail(where: AuthEmailSubscriptionWhereInput): AuthEmailSubscriptionPayload
   authToken(where: AuthTokenSubscriptionWhereInput): AuthTokenSubscriptionPayload
   authInvite(where: AuthInviteSubscriptionWhereInput): AuthInviteSubscriptionPayload
+  authParticipant(where: AuthParticipantSubscriptionWhereInput): AuthParticipantSubscriptionPayload
   school(where: SchoolSubscriptionWhereInput): SchoolSubscriptionPayload
   class(where: ClassSubscriptionWhereInput): ClassSubscriptionPayload
   result(where: ResultSubscriptionWhereInput): ResultSubscriptionPayload

@@ -5,6 +5,8 @@ const resultsMutations = {
     const payload = args.metadata && args.metadata.payload;
     const token = `${payload.slice(0, 4)}-${messageId}`;
 
+    console.log('args', args);
+
     const result = await ctx.db.query.result({
       where: {
         token,
@@ -21,9 +23,11 @@ const resultsMutations = {
             experiment: {
               connect: { id: args.experimentId },
             },
-            parameters: {
-              connect: { id: args.customExperimentId },
-            },
+            parameters: args.customExperimentId
+              ? {
+                  connect: { id: args.customExperimentId },
+                }
+              : null,
             quantity: 1,
             data: args.data,
             dataPolicy: args.dataPolicy,

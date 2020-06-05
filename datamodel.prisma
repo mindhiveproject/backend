@@ -15,6 +15,7 @@ type Profile {
   authEmail: [AuthEmail]!
   authToken: [AuthToken]!
   authInvite: [AuthInvite]! @relation(name:"Owner")
+  authParticipant: [AuthParticipant]!
   results: [Result]!
   teacherIn: [Class]! @relation(name:"Classcreator")
   studentIn: [Class]! @relation(name:"Studentofclass")
@@ -44,6 +45,16 @@ type AuthInvite {
   id: ID! @id
   profile: Profile! @relation(name:"Owner")
   invitedIn: Class! @relation(name:"Invite")
+}
+
+type AuthParticipant {
+  id: ID! @id
+  email: String @unique
+  password: String!
+  resetToken: String
+  resetTokenExpiry: String
+  profile: Profile!
+  settings: Json
 }
 
 type School {
@@ -82,6 +93,8 @@ type Experiment {
   author: Profile!
   parameters: Json
   customExperiments: [Parameter]!
+  script: String
+  style: String
 }
 
 type Result {
