@@ -14,8 +14,15 @@ const Query = {
   experiment: forwardTo('db'),
   class: forwardTo('db'),
   result: forwardTo('db'),
+  results: forwardTo('db'),
   parameter: forwardTo('db'),
   parameters: forwardTo('db'),
+  templates: forwardTo('db'),
+  template: forwardTo('db'),
+  studies: forwardTo('db'),
+  study: forwardTo('db'),
+  tasks: forwardTo('db'),
+  task: forwardTo('db'),
 
   me(parent, args, ctx, info) {
     // check if there is a current user id
@@ -75,6 +82,66 @@ const Query = {
 
     // query parameters where author is the current user
     return ctx.db.query.parameters(
+      {
+        where: {
+          author: {
+            id: ctx.request.userId,
+          },
+        },
+      },
+      info
+    );
+  },
+
+  // get only templates of the user
+  async myTemplates(parent, args, ctx, info) {
+    // check if the user has permission to see all users
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in');
+    }
+
+    // query parameters where author is the current user
+    return ctx.db.query.templates(
+      {
+        where: {
+          author: {
+            id: ctx.request.userId,
+          },
+        },
+      },
+      info
+    );
+  },
+
+  // get only tasks of the user
+  async myTasks(parent, args, ctx, info) {
+    // check if the user has permission to see all users
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in');
+    }
+
+    // query parameters where author is the current user
+    return ctx.db.query.tasks(
+      {
+        where: {
+          author: {
+            id: ctx.request.userId,
+          },
+        },
+      },
+      info
+    );
+  },
+
+  // get only studies of the user
+  async myStudies(parent, args, ctx, info) {
+    // check if the user has permission to see all users
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in');
+    }
+
+    // query parameters where author is the current user
+    return ctx.db.query.studies(
       {
         where: {
           author: {

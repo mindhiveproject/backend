@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Fri Jun 05 2020 11:39:17 GMT+0200 (Central European Summer Time)
+# timestamp: Thu Jun 11 2020 17:50:25 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -38,6 +38,18 @@ type AggregateResult {
 }
 
 type AggregateSchool {
+  count: Int!
+}
+
+type AggregateStudy {
+  count: Int!
+}
+
+type AggregateTask {
+  count: Int!
+}
+
+type AggregateTemplate {
   count: Int!
 }
 
@@ -2847,11 +2859,6 @@ input ExperimentCreateInput {
   customExperiments: ParameterCreateManyWithoutExperimentInput
 }
 
-input ExperimentCreateOneInput {
-  create: ExperimentCreateInput
-  connect: ExperimentWhereUniqueInput
-}
-
 input ExperimentCreateOneWithoutCustomExperimentsInput {
   create: ExperimentCreateWithoutCustomExperimentsInput
   connect: ExperimentWhereUniqueInput
@@ -2957,19 +2964,6 @@ input ExperimentSubscriptionWhereInput {
   node: ExperimentWhereInput
 }
 
-input ExperimentUpdateDataInput {
-  title: String
-  shortDescription: String
-  description: String
-  image: String
-  largeImage: String
-  parameters: Json
-  script: String
-  style: String
-  author: ProfileUpdateOneRequiredInput
-  customExperiments: ParameterUpdateManyWithoutExperimentInput
-}
-
 input ExperimentUpdateInput {
   title: String
   shortDescription: String
@@ -2994,13 +2988,6 @@ input ExperimentUpdateManyMutationInput {
   style: String
 }
 
-input ExperimentUpdateOneRequiredInput {
-  create: ExperimentCreateInput
-  connect: ExperimentWhereUniqueInput
-  update: ExperimentUpdateDataInput
-  upsert: ExperimentUpsertNestedInput
-}
-
 input ExperimentUpdateOneRequiredWithoutCustomExperimentsInput {
   create: ExperimentCreateWithoutCustomExperimentsInput
   connect: ExperimentWhereUniqueInput
@@ -3018,11 +3005,6 @@ input ExperimentUpdateWithoutCustomExperimentsDataInput {
   script: String
   style: String
   author: ProfileUpdateOneRequiredInput
-}
-
-input ExperimentUpsertNestedInput {
-  update: ExperimentUpdateDataInput!
-  create: ExperimentCreateInput!
 }
 
 input ExperimentUpsertWithoutCustomExperimentsInput {
@@ -3429,9 +3411,12 @@ type Mutation {
   createAuthParticipant(data: AuthParticipantCreateInput!): AuthParticipant!
   createSchool(data: SchoolCreateInput!): School!
   createClass(data: ClassCreateInput!): Class!
-  createResult(data: ResultCreateInput!): Result!
   createExperiment(data: ExperimentCreateInput!): Experiment!
+  createResult(data: ResultCreateInput!): Result!
   createParameter(data: ParameterCreateInput!): Parameter!
+  createStudy(data: StudyCreateInput!): Study!
+  createTask(data: TaskCreateInput!): Task!
+  createTemplate(data: TemplateCreateInput!): Template!
   createProfile(data: ProfileCreateInput!): Profile!
   updateAuthEmail(data: AuthEmailUpdateInput!, where: AuthEmailWhereUniqueInput!): AuthEmail
   updateAuthToken(data: AuthTokenUpdateInput!, where: AuthTokenWhereUniqueInput!): AuthToken
@@ -3439,9 +3424,12 @@ type Mutation {
   updateAuthParticipant(data: AuthParticipantUpdateInput!, where: AuthParticipantWhereUniqueInput!): AuthParticipant
   updateSchool(data: SchoolUpdateInput!, where: SchoolWhereUniqueInput!): School
   updateClass(data: ClassUpdateInput!, where: ClassWhereUniqueInput!): Class
-  updateResult(data: ResultUpdateInput!, where: ResultWhereUniqueInput!): Result
   updateExperiment(data: ExperimentUpdateInput!, where: ExperimentWhereUniqueInput!): Experiment
+  updateResult(data: ResultUpdateInput!, where: ResultWhereUniqueInput!): Result
   updateParameter(data: ParameterUpdateInput!, where: ParameterWhereUniqueInput!): Parameter
+  updateStudy(data: StudyUpdateInput!, where: StudyWhereUniqueInput!): Study
+  updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task
+  updateTemplate(data: TemplateUpdateInput!, where: TemplateWhereUniqueInput!): Template
   updateProfile(data: ProfileUpdateInput!, where: ProfileWhereUniqueInput!): Profile
   deleteAuthEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
   deleteAuthToken(where: AuthTokenWhereUniqueInput!): AuthToken
@@ -3449,9 +3437,12 @@ type Mutation {
   deleteAuthParticipant(where: AuthParticipantWhereUniqueInput!): AuthParticipant
   deleteSchool(where: SchoolWhereUniqueInput!): School
   deleteClass(where: ClassWhereUniqueInput!): Class
-  deleteResult(where: ResultWhereUniqueInput!): Result
   deleteExperiment(where: ExperimentWhereUniqueInput!): Experiment
+  deleteResult(where: ResultWhereUniqueInput!): Result
   deleteParameter(where: ParameterWhereUniqueInput!): Parameter
+  deleteStudy(where: StudyWhereUniqueInput!): Study
+  deleteTask(where: TaskWhereUniqueInput!): Task
+  deleteTemplate(where: TemplateWhereUniqueInput!): Template
   deleteProfile(where: ProfileWhereUniqueInput!): Profile
   upsertAuthEmail(where: AuthEmailWhereUniqueInput!, create: AuthEmailCreateInput!, update: AuthEmailUpdateInput!): AuthEmail!
   upsertAuthToken(where: AuthTokenWhereUniqueInput!, create: AuthTokenCreateInput!, update: AuthTokenUpdateInput!): AuthToken!
@@ -3459,18 +3450,24 @@ type Mutation {
   upsertAuthParticipant(where: AuthParticipantWhereUniqueInput!, create: AuthParticipantCreateInput!, update: AuthParticipantUpdateInput!): AuthParticipant!
   upsertSchool(where: SchoolWhereUniqueInput!, create: SchoolCreateInput!, update: SchoolUpdateInput!): School!
   upsertClass(where: ClassWhereUniqueInput!, create: ClassCreateInput!, update: ClassUpdateInput!): Class!
-  upsertResult(where: ResultWhereUniqueInput!, create: ResultCreateInput!, update: ResultUpdateInput!): Result!
   upsertExperiment(where: ExperimentWhereUniqueInput!, create: ExperimentCreateInput!, update: ExperimentUpdateInput!): Experiment!
+  upsertResult(where: ResultWhereUniqueInput!, create: ResultCreateInput!, update: ResultUpdateInput!): Result!
   upsertParameter(where: ParameterWhereUniqueInput!, create: ParameterCreateInput!, update: ParameterUpdateInput!): Parameter!
+  upsertStudy(where: StudyWhereUniqueInput!, create: StudyCreateInput!, update: StudyUpdateInput!): Study!
+  upsertTask(where: TaskWhereUniqueInput!, create: TaskCreateInput!, update: TaskUpdateInput!): Task!
+  upsertTemplate(where: TemplateWhereUniqueInput!, create: TemplateCreateInput!, update: TemplateUpdateInput!): Template!
   upsertProfile(where: ProfileWhereUniqueInput!, create: ProfileCreateInput!, update: ProfileUpdateInput!): Profile!
   updateManyAuthEmails(data: AuthEmailUpdateManyMutationInput!, where: AuthEmailWhereInput): BatchPayload!
   updateManyAuthTokens(data: AuthTokenUpdateManyMutationInput!, where: AuthTokenWhereInput): BatchPayload!
   updateManyAuthParticipants(data: AuthParticipantUpdateManyMutationInput!, where: AuthParticipantWhereInput): BatchPayload!
   updateManySchools(data: SchoolUpdateManyMutationInput!, where: SchoolWhereInput): BatchPayload!
   updateManyClasses(data: ClassUpdateManyMutationInput!, where: ClassWhereInput): BatchPayload!
-  updateManyResults(data: ResultUpdateManyMutationInput!, where: ResultWhereInput): BatchPayload!
   updateManyExperiments(data: ExperimentUpdateManyMutationInput!, where: ExperimentWhereInput): BatchPayload!
+  updateManyResults(data: ResultUpdateManyMutationInput!, where: ResultWhereInput): BatchPayload!
   updateManyParameters(data: ParameterUpdateManyMutationInput!, where: ParameterWhereInput): BatchPayload!
+  updateManyStudies(data: StudyUpdateManyMutationInput!, where: StudyWhereInput): BatchPayload!
+  updateManyTasks(data: TaskUpdateManyMutationInput!, where: TaskWhereInput): BatchPayload!
+  updateManyTemplates(data: TemplateUpdateManyMutationInput!, where: TemplateWhereInput): BatchPayload!
   updateManyProfiles(data: ProfileUpdateManyMutationInput!, where: ProfileWhereInput): BatchPayload!
   deleteManyAuthEmails(where: AuthEmailWhereInput): BatchPayload!
   deleteManyAuthTokens(where: AuthTokenWhereInput): BatchPayload!
@@ -3478,9 +3475,12 @@ type Mutation {
   deleteManyAuthParticipants(where: AuthParticipantWhereInput): BatchPayload!
   deleteManySchools(where: SchoolWhereInput): BatchPayload!
   deleteManyClasses(where: ClassWhereInput): BatchPayload!
-  deleteManyResults(where: ResultWhereInput): BatchPayload!
   deleteManyExperiments(where: ExperimentWhereInput): BatchPayload!
+  deleteManyResults(where: ResultWhereInput): BatchPayload!
   deleteManyParameters(where: ParameterWhereInput): BatchPayload!
+  deleteManyStudies(where: StudyWhereInput): BatchPayload!
+  deleteManyTasks(where: TaskWhereInput): BatchPayload!
+  deleteManyTemplates(where: TemplateWhereInput): BatchPayload!
   deleteManyProfiles(where: ProfileWhereInput): BatchPayload!
 }
 
@@ -3544,11 +3544,6 @@ input ParameterCreateInput {
 input ParameterCreateManyWithoutExperimentInput {
   create: [ParameterCreateWithoutExperimentInput!]
   connect: [ParameterWhereUniqueInput!]
-}
-
-input ParameterCreateOneInput {
-  create: ParameterCreateInput
-  connect: ParameterWhereUniqueInput
 }
 
 input ParameterCreateWithoutExperimentInput {
@@ -3766,14 +3761,6 @@ input ParameterSubscriptionWhereInput {
   node: ParameterWhereInput
 }
 
-input ParameterUpdateDataInput {
-  title: String
-  data: Json
-  settings: Json
-  experiment: ExperimentUpdateOneRequiredWithoutCustomExperimentsInput
-  author: ProfileUpdateOneRequiredInput
-}
-
 input ParameterUpdateInput {
   title: String
   data: Json
@@ -3811,15 +3798,6 @@ input ParameterUpdateManyWithWhereNestedInput {
   data: ParameterUpdateManyDataInput!
 }
 
-input ParameterUpdateOneInput {
-  create: ParameterCreateInput
-  connect: ParameterWhereUniqueInput
-  disconnect: Boolean
-  delete: Boolean
-  update: ParameterUpdateDataInput
-  upsert: ParameterUpsertNestedInput
-}
-
 input ParameterUpdateWithoutExperimentDataInput {
   title: String
   data: Json
@@ -3830,11 +3808,6 @@ input ParameterUpdateWithoutExperimentDataInput {
 input ParameterUpdateWithWhereUniqueWithoutExperimentInput {
   where: ParameterWhereUniqueInput!
   data: ParameterUpdateWithoutExperimentDataInput!
-}
-
-input ParameterUpsertNestedInput {
-  update: ParameterUpdateDataInput!
-  create: ParameterCreateInput!
 }
 
 input ParameterUpsertWithWhereUniqueWithoutExperimentInput {
@@ -4890,9 +4863,12 @@ type Query {
   authParticipants(where: AuthParticipantWhereInput, orderBy: AuthParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthParticipant]!
   schools(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [School]!
   classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class]!
-  results(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Result]!
   experiments(where: ExperimentWhereInput, orderBy: ExperimentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Experiment]!
+  results(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Result]!
   parameters(where: ParameterWhereInput, orderBy: ParameterOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Parameter]!
+  studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study]!
+  tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task]!
+  templates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Template]!
   profiles(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile]!
   authEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
   authToken(where: AuthTokenWhereUniqueInput!): AuthToken
@@ -4900,9 +4876,12 @@ type Query {
   authParticipant(where: AuthParticipantWhereUniqueInput!): AuthParticipant
   school(where: SchoolWhereUniqueInput!): School
   class(where: ClassWhereUniqueInput!): Class
-  result(where: ResultWhereUniqueInput!): Result
   experiment(where: ExperimentWhereUniqueInput!): Experiment
+  result(where: ResultWhereUniqueInput!): Result
   parameter(where: ParameterWhereUniqueInput!): Parameter
+  study(where: StudyWhereUniqueInput!): Study
+  task(where: TaskWhereUniqueInput!): Task
+  template(where: TemplateWhereUniqueInput!): Template
   profile(where: ProfileWhereUniqueInput!): Profile
   authEmailsConnection(where: AuthEmailWhereInput, orderBy: AuthEmailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthEmailConnection!
   authTokensConnection(where: AuthTokenWhereInput, orderBy: AuthTokenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthTokenConnection!
@@ -4910,9 +4889,12 @@ type Query {
   authParticipantsConnection(where: AuthParticipantWhereInput, orderBy: AuthParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthParticipantConnection!
   schoolsConnection(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SchoolConnection!
   classesConnection(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClassConnection!
-  resultsConnection(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ResultConnection!
   experimentsConnection(where: ExperimentWhereInput, orderBy: ExperimentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExperimentConnection!
+  resultsConnection(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ResultConnection!
   parametersConnection(where: ParameterWhereInput, orderBy: ParameterOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ParameterConnection!
+  studiesConnection(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StudyConnection!
+  tasksConnection(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TaskConnection!
+  templatesConnection(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TemplateConnection!
   profilesConnection(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProfileConnection!
 
   """Fetches an object given its ID"""
@@ -4924,7 +4906,8 @@ type Query {
 
 type Result implements Node {
   id: ID!
-  experiment: Experiment!
+  template: Template!
+  task: Task!
   user: Profile!
   quantity: Int!
   data: Json
@@ -4932,7 +4915,6 @@ type Result implements Node {
   token: String
   createdAt: DateTime!
   updatedAt: DateTime!
-  parameters: Parameter
   payload: String
 }
 
@@ -4953,9 +4935,9 @@ input ResultCreateInput {
   dataPolicy: String
   token: String
   payload: String
-  experiment: ExperimentCreateOneInput!
+  template: TemplateCreateOneInput!
+  task: TaskCreateOneInput!
   user: ProfileCreateOneWithoutResultsInput!
-  parameters: ParameterCreateOneInput
 }
 
 input ResultCreateManyWithoutUserInput {
@@ -4970,8 +4952,8 @@ input ResultCreateWithoutUserInput {
   dataPolicy: String
   token: String
   payload: String
-  experiment: ExperimentCreateOneInput!
-  parameters: ParameterCreateOneInput
+  template: TemplateCreateOneInput!
+  task: TaskCreateOneInput!
 }
 
 """An edge in a connection."""
@@ -5295,9 +5277,9 @@ input ResultUpdateInput {
   dataPolicy: String
   token: String
   payload: String
-  experiment: ExperimentUpdateOneRequiredInput
+  template: TemplateUpdateOneRequiredInput
+  task: TaskUpdateOneRequiredInput
   user: ProfileUpdateOneRequiredWithoutResultsInput
-  parameters: ParameterUpdateOneInput
 }
 
 input ResultUpdateManyDataInput {
@@ -5339,8 +5321,8 @@ input ResultUpdateWithoutUserDataInput {
   dataPolicy: String
   token: String
   payload: String
-  experiment: ExperimentUpdateOneRequiredInput
-  parameters: ParameterUpdateOneInput
+  template: TemplateUpdateOneRequiredInput
+  task: TaskUpdateOneRequiredInput
 }
 
 input ResultUpdateWithWhereUniqueWithoutUserInput {
@@ -5589,9 +5571,9 @@ input ResultWhereInput {
 
   """All values not ending with the given string."""
   payload_not_ends_with: String
-  experiment: ExperimentWhereInput
+  template: TemplateWhereInput
+  task: TaskWhereInput
   user: ProfileWhereInput
-  parameters: ParameterWhereInput
 }
 
 input ResultWhereUniqueInput {
@@ -5979,6 +5961,401 @@ input SchoolWhereUniqueInput {
   id: ID
 }
 
+type Study implements Node {
+  id: ID!
+  title: String!
+  slug: String!
+  shortDescription: String
+  description: String
+  author: Profile!
+  tasks: Json
+  settings: Json
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type StudyConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [StudyEdge]!
+  aggregate: AggregateStudy!
+}
+
+input StudyCreateInput {
+  id: ID
+  title: String!
+  slug: String!
+  shortDescription: String
+  description: String
+  tasks: Json
+  settings: Json
+  author: ProfileCreateOneInput!
+}
+
+"""An edge in a connection."""
+type StudyEdge {
+  """The item at the end of the edge."""
+  node: Study!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum StudyOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  slug_ASC
+  slug_DESC
+  shortDescription_ASC
+  shortDescription_DESC
+  description_ASC
+  description_DESC
+  tasks_ASC
+  tasks_DESC
+  settings_ASC
+  settings_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type StudyPreviousValues {
+  id: ID!
+  title: String!
+  slug: String!
+  shortDescription: String
+  description: String
+  tasks: Json
+  settings: Json
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type StudySubscriptionPayload {
+  mutation: MutationType!
+  node: Study
+  updatedFields: [String!]
+  previousValues: StudyPreviousValues
+}
+
+input StudySubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [StudySubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [StudySubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [StudySubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: StudyWhereInput
+}
+
+input StudyUpdateInput {
+  title: String
+  slug: String
+  shortDescription: String
+  description: String
+  tasks: Json
+  settings: Json
+  author: ProfileUpdateOneRequiredInput
+}
+
+input StudyUpdateManyMutationInput {
+  title: String
+  slug: String
+  shortDescription: String
+  description: String
+  tasks: Json
+  settings: Json
+}
+
+input StudyWhereInput {
+  """Logical AND on all given filters."""
+  AND: [StudyWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [StudyWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [StudyWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  slug: String
+
+  """All values that are not equal to given value."""
+  slug_not: String
+
+  """All values that are contained in given list."""
+  slug_in: [String!]
+
+  """All values that are not contained in given list."""
+  slug_not_in: [String!]
+
+  """All values less than the given value."""
+  slug_lt: String
+
+  """All values less than or equal the given value."""
+  slug_lte: String
+
+  """All values greater than the given value."""
+  slug_gt: String
+
+  """All values greater than or equal the given value."""
+  slug_gte: String
+
+  """All values containing the given string."""
+  slug_contains: String
+
+  """All values not containing the given string."""
+  slug_not_contains: String
+
+  """All values starting with the given string."""
+  slug_starts_with: String
+
+  """All values not starting with the given string."""
+  slug_not_starts_with: String
+
+  """All values ending with the given string."""
+  slug_ends_with: String
+
+  """All values not ending with the given string."""
+  slug_not_ends_with: String
+  shortDescription: String
+
+  """All values that are not equal to given value."""
+  shortDescription_not: String
+
+  """All values that are contained in given list."""
+  shortDescription_in: [String!]
+
+  """All values that are not contained in given list."""
+  shortDescription_not_in: [String!]
+
+  """All values less than the given value."""
+  shortDescription_lt: String
+
+  """All values less than or equal the given value."""
+  shortDescription_lte: String
+
+  """All values greater than the given value."""
+  shortDescription_gt: String
+
+  """All values greater than or equal the given value."""
+  shortDescription_gte: String
+
+  """All values containing the given string."""
+  shortDescription_contains: String
+
+  """All values not containing the given string."""
+  shortDescription_not_contains: String
+
+  """All values starting with the given string."""
+  shortDescription_starts_with: String
+
+  """All values not starting with the given string."""
+  shortDescription_not_starts_with: String
+
+  """All values ending with the given string."""
+  shortDescription_ends_with: String
+
+  """All values not ending with the given string."""
+  shortDescription_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  author: ProfileWhereInput
+}
+
+input StudyWhereUniqueInput {
+  id: ID
+  slug: String
+}
+
 type Subscription {
   authEmail(where: AuthEmailSubscriptionWhereInput): AuthEmailSubscriptionPayload
   authToken(where: AuthTokenSubscriptionWhereInput): AuthTokenSubscriptionPayload
@@ -5986,8 +6363,1332 @@ type Subscription {
   authParticipant(where: AuthParticipantSubscriptionWhereInput): AuthParticipantSubscriptionPayload
   school(where: SchoolSubscriptionWhereInput): SchoolSubscriptionPayload
   class(where: ClassSubscriptionWhereInput): ClassSubscriptionPayload
-  result(where: ResultSubscriptionWhereInput): ResultSubscriptionPayload
   experiment(where: ExperimentSubscriptionWhereInput): ExperimentSubscriptionPayload
+  result(where: ResultSubscriptionWhereInput): ResultSubscriptionPayload
   parameter(where: ParameterSubscriptionWhereInput): ParameterSubscriptionPayload
+  study(where: StudySubscriptionWhereInput): StudySubscriptionPayload
+  task(where: TaskSubscriptionWhereInput): TaskSubscriptionPayload
+  template(where: TemplateSubscriptionWhereInput): TemplateSubscriptionPayload
   profile(where: ProfileSubscriptionWhereInput): ProfileSubscriptionPayload
+}
+
+type Task implements Node {
+  id: ID!
+  title: String!
+  slug: String!
+  description: String
+  template: Template!
+  author: Profile!
+  parameters: Json
+  settings: Json
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type TaskConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TaskEdge]!
+  aggregate: AggregateTask!
+}
+
+input TaskCreateInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  parameters: Json
+  settings: Json
+  template: TemplateCreateOneWithoutTasksInput!
+  author: ProfileCreateOneInput!
+}
+
+input TaskCreateManyWithoutTemplateInput {
+  create: [TaskCreateWithoutTemplateInput!]
+  connect: [TaskWhereUniqueInput!]
+}
+
+input TaskCreateOneInput {
+  create: TaskCreateInput
+  connect: TaskWhereUniqueInput
+}
+
+input TaskCreateWithoutTemplateInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  parameters: Json
+  settings: Json
+  author: ProfileCreateOneInput!
+}
+
+"""An edge in a connection."""
+type TaskEdge {
+  """The item at the end of the edge."""
+  node: Task!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum TaskOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  slug_ASC
+  slug_DESC
+  description_ASC
+  description_DESC
+  parameters_ASC
+  parameters_DESC
+  settings_ASC
+  settings_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type TaskPreviousValues {
+  id: ID!
+  title: String!
+  slug: String!
+  description: String
+  parameters: Json
+  settings: Json
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input TaskScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TaskScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TaskScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TaskScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  slug: String
+
+  """All values that are not equal to given value."""
+  slug_not: String
+
+  """All values that are contained in given list."""
+  slug_in: [String!]
+
+  """All values that are not contained in given list."""
+  slug_not_in: [String!]
+
+  """All values less than the given value."""
+  slug_lt: String
+
+  """All values less than or equal the given value."""
+  slug_lte: String
+
+  """All values greater than the given value."""
+  slug_gt: String
+
+  """All values greater than or equal the given value."""
+  slug_gte: String
+
+  """All values containing the given string."""
+  slug_contains: String
+
+  """All values not containing the given string."""
+  slug_not_contains: String
+
+  """All values starting with the given string."""
+  slug_starts_with: String
+
+  """All values not starting with the given string."""
+  slug_not_starts_with: String
+
+  """All values ending with the given string."""
+  slug_ends_with: String
+
+  """All values not ending with the given string."""
+  slug_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+type TaskSubscriptionPayload {
+  mutation: MutationType!
+  node: Task
+  updatedFields: [String!]
+  previousValues: TaskPreviousValues
+}
+
+input TaskSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TaskSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TaskSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TaskSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: TaskWhereInput
+}
+
+input TaskUpdateDataInput {
+  title: String
+  slug: String
+  description: String
+  parameters: Json
+  settings: Json
+  template: TemplateUpdateOneRequiredWithoutTasksInput
+  author: ProfileUpdateOneRequiredInput
+}
+
+input TaskUpdateInput {
+  title: String
+  slug: String
+  description: String
+  parameters: Json
+  settings: Json
+  template: TemplateUpdateOneRequiredWithoutTasksInput
+  author: ProfileUpdateOneRequiredInput
+}
+
+input TaskUpdateManyDataInput {
+  title: String
+  slug: String
+  description: String
+  parameters: Json
+  settings: Json
+}
+
+input TaskUpdateManyMutationInput {
+  title: String
+  slug: String
+  description: String
+  parameters: Json
+  settings: Json
+}
+
+input TaskUpdateManyWithoutTemplateInput {
+  create: [TaskCreateWithoutTemplateInput!]
+  connect: [TaskWhereUniqueInput!]
+  set: [TaskWhereUniqueInput!]
+  disconnect: [TaskWhereUniqueInput!]
+  delete: [TaskWhereUniqueInput!]
+  update: [TaskUpdateWithWhereUniqueWithoutTemplateInput!]
+  updateMany: [TaskUpdateManyWithWhereNestedInput!]
+  deleteMany: [TaskScalarWhereInput!]
+  upsert: [TaskUpsertWithWhereUniqueWithoutTemplateInput!]
+}
+
+input TaskUpdateManyWithWhereNestedInput {
+  where: TaskScalarWhereInput!
+  data: TaskUpdateManyDataInput!
+}
+
+input TaskUpdateOneRequiredInput {
+  create: TaskCreateInput
+  connect: TaskWhereUniqueInput
+  update: TaskUpdateDataInput
+  upsert: TaskUpsertNestedInput
+}
+
+input TaskUpdateWithoutTemplateDataInput {
+  title: String
+  slug: String
+  description: String
+  parameters: Json
+  settings: Json
+  author: ProfileUpdateOneRequiredInput
+}
+
+input TaskUpdateWithWhereUniqueWithoutTemplateInput {
+  where: TaskWhereUniqueInput!
+  data: TaskUpdateWithoutTemplateDataInput!
+}
+
+input TaskUpsertNestedInput {
+  update: TaskUpdateDataInput!
+  create: TaskCreateInput!
+}
+
+input TaskUpsertWithWhereUniqueWithoutTemplateInput {
+  where: TaskWhereUniqueInput!
+  update: TaskUpdateWithoutTemplateDataInput!
+  create: TaskCreateWithoutTemplateInput!
+}
+
+input TaskWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TaskWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TaskWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TaskWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  slug: String
+
+  """All values that are not equal to given value."""
+  slug_not: String
+
+  """All values that are contained in given list."""
+  slug_in: [String!]
+
+  """All values that are not contained in given list."""
+  slug_not_in: [String!]
+
+  """All values less than the given value."""
+  slug_lt: String
+
+  """All values less than or equal the given value."""
+  slug_lte: String
+
+  """All values greater than the given value."""
+  slug_gt: String
+
+  """All values greater than or equal the given value."""
+  slug_gte: String
+
+  """All values containing the given string."""
+  slug_contains: String
+
+  """All values not containing the given string."""
+  slug_not_contains: String
+
+  """All values starting with the given string."""
+  slug_starts_with: String
+
+  """All values not starting with the given string."""
+  slug_not_starts_with: String
+
+  """All values ending with the given string."""
+  slug_ends_with: String
+
+  """All values not ending with the given string."""
+  slug_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  template: TemplateWhereInput
+  author: ProfileWhereInput
+}
+
+input TaskWhereUniqueInput {
+  id: ID
+  slug: String
+}
+
+type Template implements Node {
+  id: ID!
+  title: String!
+  slug: String!
+  shortDescription: String
+  description: String
+  image: String
+  largeImage: String
+  author: Profile!
+  parameters: Json
+  script: String
+  style: String
+  tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task!]
+  settings: Json
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type TemplateConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TemplateEdge]!
+  aggregate: AggregateTemplate!
+}
+
+input TemplateCreateInput {
+  id: ID
+  title: String!
+  slug: String!
+  shortDescription: String
+  description: String
+  image: String
+  largeImage: String
+  parameters: Json
+  script: String
+  style: String
+  settings: Json
+  author: ProfileCreateOneInput!
+  tasks: TaskCreateManyWithoutTemplateInput
+}
+
+input TemplateCreateOneInput {
+  create: TemplateCreateInput
+  connect: TemplateWhereUniqueInput
+}
+
+input TemplateCreateOneWithoutTasksInput {
+  create: TemplateCreateWithoutTasksInput
+  connect: TemplateWhereUniqueInput
+}
+
+input TemplateCreateWithoutTasksInput {
+  id: ID
+  title: String!
+  slug: String!
+  shortDescription: String
+  description: String
+  image: String
+  largeImage: String
+  parameters: Json
+  script: String
+  style: String
+  settings: Json
+  author: ProfileCreateOneInput!
+}
+
+"""An edge in a connection."""
+type TemplateEdge {
+  """The item at the end of the edge."""
+  node: Template!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum TemplateOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  slug_ASC
+  slug_DESC
+  shortDescription_ASC
+  shortDescription_DESC
+  description_ASC
+  description_DESC
+  image_ASC
+  image_DESC
+  largeImage_ASC
+  largeImage_DESC
+  parameters_ASC
+  parameters_DESC
+  script_ASC
+  script_DESC
+  style_ASC
+  style_DESC
+  settings_ASC
+  settings_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type TemplatePreviousValues {
+  id: ID!
+  title: String!
+  slug: String!
+  shortDescription: String
+  description: String
+  image: String
+  largeImage: String
+  parameters: Json
+  script: String
+  style: String
+  settings: Json
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type TemplateSubscriptionPayload {
+  mutation: MutationType!
+  node: Template
+  updatedFields: [String!]
+  previousValues: TemplatePreviousValues
+}
+
+input TemplateSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TemplateSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TemplateSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TemplateSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: TemplateWhereInput
+}
+
+input TemplateUpdateDataInput {
+  title: String
+  slug: String
+  shortDescription: String
+  description: String
+  image: String
+  largeImage: String
+  parameters: Json
+  script: String
+  style: String
+  settings: Json
+  author: ProfileUpdateOneRequiredInput
+  tasks: TaskUpdateManyWithoutTemplateInput
+}
+
+input TemplateUpdateInput {
+  title: String
+  slug: String
+  shortDescription: String
+  description: String
+  image: String
+  largeImage: String
+  parameters: Json
+  script: String
+  style: String
+  settings: Json
+  author: ProfileUpdateOneRequiredInput
+  tasks: TaskUpdateManyWithoutTemplateInput
+}
+
+input TemplateUpdateManyMutationInput {
+  title: String
+  slug: String
+  shortDescription: String
+  description: String
+  image: String
+  largeImage: String
+  parameters: Json
+  script: String
+  style: String
+  settings: Json
+}
+
+input TemplateUpdateOneRequiredInput {
+  create: TemplateCreateInput
+  connect: TemplateWhereUniqueInput
+  update: TemplateUpdateDataInput
+  upsert: TemplateUpsertNestedInput
+}
+
+input TemplateUpdateOneRequiredWithoutTasksInput {
+  create: TemplateCreateWithoutTasksInput
+  connect: TemplateWhereUniqueInput
+  update: TemplateUpdateWithoutTasksDataInput
+  upsert: TemplateUpsertWithoutTasksInput
+}
+
+input TemplateUpdateWithoutTasksDataInput {
+  title: String
+  slug: String
+  shortDescription: String
+  description: String
+  image: String
+  largeImage: String
+  parameters: Json
+  script: String
+  style: String
+  settings: Json
+  author: ProfileUpdateOneRequiredInput
+}
+
+input TemplateUpsertNestedInput {
+  update: TemplateUpdateDataInput!
+  create: TemplateCreateInput!
+}
+
+input TemplateUpsertWithoutTasksInput {
+  update: TemplateUpdateWithoutTasksDataInput!
+  create: TemplateCreateWithoutTasksInput!
+}
+
+input TemplateWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TemplateWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TemplateWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TemplateWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  slug: String
+
+  """All values that are not equal to given value."""
+  slug_not: String
+
+  """All values that are contained in given list."""
+  slug_in: [String!]
+
+  """All values that are not contained in given list."""
+  slug_not_in: [String!]
+
+  """All values less than the given value."""
+  slug_lt: String
+
+  """All values less than or equal the given value."""
+  slug_lte: String
+
+  """All values greater than the given value."""
+  slug_gt: String
+
+  """All values greater than or equal the given value."""
+  slug_gte: String
+
+  """All values containing the given string."""
+  slug_contains: String
+
+  """All values not containing the given string."""
+  slug_not_contains: String
+
+  """All values starting with the given string."""
+  slug_starts_with: String
+
+  """All values not starting with the given string."""
+  slug_not_starts_with: String
+
+  """All values ending with the given string."""
+  slug_ends_with: String
+
+  """All values not ending with the given string."""
+  slug_not_ends_with: String
+  shortDescription: String
+
+  """All values that are not equal to given value."""
+  shortDescription_not: String
+
+  """All values that are contained in given list."""
+  shortDescription_in: [String!]
+
+  """All values that are not contained in given list."""
+  shortDescription_not_in: [String!]
+
+  """All values less than the given value."""
+  shortDescription_lt: String
+
+  """All values less than or equal the given value."""
+  shortDescription_lte: String
+
+  """All values greater than the given value."""
+  shortDescription_gt: String
+
+  """All values greater than or equal the given value."""
+  shortDescription_gte: String
+
+  """All values containing the given string."""
+  shortDescription_contains: String
+
+  """All values not containing the given string."""
+  shortDescription_not_contains: String
+
+  """All values starting with the given string."""
+  shortDescription_starts_with: String
+
+  """All values not starting with the given string."""
+  shortDescription_not_starts_with: String
+
+  """All values ending with the given string."""
+  shortDescription_ends_with: String
+
+  """All values not ending with the given string."""
+  shortDescription_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  image: String
+
+  """All values that are not equal to given value."""
+  image_not: String
+
+  """All values that are contained in given list."""
+  image_in: [String!]
+
+  """All values that are not contained in given list."""
+  image_not_in: [String!]
+
+  """All values less than the given value."""
+  image_lt: String
+
+  """All values less than or equal the given value."""
+  image_lte: String
+
+  """All values greater than the given value."""
+  image_gt: String
+
+  """All values greater than or equal the given value."""
+  image_gte: String
+
+  """All values containing the given string."""
+  image_contains: String
+
+  """All values not containing the given string."""
+  image_not_contains: String
+
+  """All values starting with the given string."""
+  image_starts_with: String
+
+  """All values not starting with the given string."""
+  image_not_starts_with: String
+
+  """All values ending with the given string."""
+  image_ends_with: String
+
+  """All values not ending with the given string."""
+  image_not_ends_with: String
+  largeImage: String
+
+  """All values that are not equal to given value."""
+  largeImage_not: String
+
+  """All values that are contained in given list."""
+  largeImage_in: [String!]
+
+  """All values that are not contained in given list."""
+  largeImage_not_in: [String!]
+
+  """All values less than the given value."""
+  largeImage_lt: String
+
+  """All values less than or equal the given value."""
+  largeImage_lte: String
+
+  """All values greater than the given value."""
+  largeImage_gt: String
+
+  """All values greater than or equal the given value."""
+  largeImage_gte: String
+
+  """All values containing the given string."""
+  largeImage_contains: String
+
+  """All values not containing the given string."""
+  largeImage_not_contains: String
+
+  """All values starting with the given string."""
+  largeImage_starts_with: String
+
+  """All values not starting with the given string."""
+  largeImage_not_starts_with: String
+
+  """All values ending with the given string."""
+  largeImage_ends_with: String
+
+  """All values not ending with the given string."""
+  largeImage_not_ends_with: String
+  script: String
+
+  """All values that are not equal to given value."""
+  script_not: String
+
+  """All values that are contained in given list."""
+  script_in: [String!]
+
+  """All values that are not contained in given list."""
+  script_not_in: [String!]
+
+  """All values less than the given value."""
+  script_lt: String
+
+  """All values less than or equal the given value."""
+  script_lte: String
+
+  """All values greater than the given value."""
+  script_gt: String
+
+  """All values greater than or equal the given value."""
+  script_gte: String
+
+  """All values containing the given string."""
+  script_contains: String
+
+  """All values not containing the given string."""
+  script_not_contains: String
+
+  """All values starting with the given string."""
+  script_starts_with: String
+
+  """All values not starting with the given string."""
+  script_not_starts_with: String
+
+  """All values ending with the given string."""
+  script_ends_with: String
+
+  """All values not ending with the given string."""
+  script_not_ends_with: String
+  style: String
+
+  """All values that are not equal to given value."""
+  style_not: String
+
+  """All values that are contained in given list."""
+  style_in: [String!]
+
+  """All values that are not contained in given list."""
+  style_not_in: [String!]
+
+  """All values less than the given value."""
+  style_lt: String
+
+  """All values less than or equal the given value."""
+  style_lte: String
+
+  """All values greater than the given value."""
+  style_gt: String
+
+  """All values greater than or equal the given value."""
+  style_gte: String
+
+  """All values containing the given string."""
+  style_contains: String
+
+  """All values not containing the given string."""
+  style_not_contains: String
+
+  """All values starting with the given string."""
+  style_starts_with: String
+
+  """All values not starting with the given string."""
+  style_not_starts_with: String
+
+  """All values ending with the given string."""
+  style_ends_with: String
+
+  """All values not ending with the given string."""
+  style_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  author: ProfileWhereInput
+  tasks_every: TaskWhereInput
+  tasks_some: TaskWhereInput
+  tasks_none: TaskWhereInput
+}
+
+input TemplateWhereUniqueInput {
+  id: ID
+  slug: String
 }

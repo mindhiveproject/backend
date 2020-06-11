@@ -99,7 +99,8 @@ type Experiment {
 
 type Result {
   id: ID! @id
-  experiment: Experiment! #relationship to Experiment
+  template: Template! #relationship to Template
+  task: Task!
   user: Profile! #relationship to Profile
   quantity: Int!
   data: Json
@@ -107,7 +108,6 @@ type Result {
   token: String @unique
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
-  parameters: Parameter
   payload: String
 }
 
@@ -120,4 +120,48 @@ type Parameter {
   updatedAt: DateTime! @updatedAt
   data: Json
   settings: Json
+}
+
+type Study {
+  id: ID! @id
+  title: String!
+  slug: String! @unique
+  shortDescription: String
+  description: String
+  author: Profile!
+  tasks: Json
+  settings: Json
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+} 
+
+type Task {
+  id: ID! @id
+  title: String!
+  slug: String! @unique
+  description: String
+  template: Template!
+  author: Profile!
+  parameters: Json
+  settings: Json
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Template {
+  id: ID! @id
+  title: String!
+  slug: String! @unique
+  shortDescription: String
+  description: String
+  image: String
+  largeImage: String
+  author: Profile!
+  parameters: Json
+  script: String
+  style: String
+  tasks: [Task]!
+  settings: Json
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }

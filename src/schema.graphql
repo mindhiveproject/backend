@@ -5,15 +5,26 @@ type Query {
   users: [Profile]!
   schools: [School]!
   experiment(where: ExperimentWhereUniqueInput): Experiment
-  experiments (where: ExperimentWhereInput, orderBy: ExperimentOrderByInput, skip: Int, first: Int): [Experiment]!
+  experiments(where: ExperimentWhereInput, orderBy: ExperimentOrderByInput, skip: Int, first: Int): [Experiment]!
   class(where: ClassWhereUniqueInput): Class
   classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, first: Int): [Class]!
   myResults: [Result]!
   result(where: ResultWhereUniqueInput): Result
+  results: [Result]!
   parameters: [Parameter]!
   myParameters: [Parameter]!
   parameter(where: ParameterWhereUniqueInput): Parameter
   myClassResults(where: ClassWhereUniqueInput): [Result]!
+
+  template(where: TemplateWhereUniqueInput): Template
+  templates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, first: Int): [Template]!
+  myTemplates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, first: Int): [Template]!
+  study(where: StudyWhereUniqueInput): Study
+  studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, first: Int): [Study]!
+  myStudies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, first: Int): [Study]!
+  task(where: TaskWhereUniqueInput): Task
+  tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, first: Int): [Task]!
+  myTasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, first: Int): [Task]!
 }
 
 type Mutation {
@@ -30,13 +41,11 @@ type Mutation {
   inviteSignUp(username: String!, invitedIn: ID!, image: String, largeImage: String, info: Json): Profile!
   inviteLogin(username: String!, invitedIn: ID!): Profile!
 
-
   participantSignUp(username: String!, email: String, password: String!): Profile!
   participantLogin(username: String, email: String, password: String!): Profile!
   participantRequestReset(email: String!): SuccessMessage
   participantResetPassword(resetToken: String!, password: String!, confirmPassword: String!): Profile!
   participantConfirmEmail(email: String!, confirmationToken: String!): SuccessMessage
-
 
   createSchool(title: String!, description: String, image: String, largeImage: String): School!
 
@@ -50,13 +59,25 @@ type Mutation {
   updateExperiment(id: ID!, title: String, shortDescription: String, description: String, parameters: Json, script: String, style: String): Experiment!
   deleteExperiment(id: ID!): Experiment
 
-  addResult(experimentId: ID!, data: Json, dataPolicy: String): Result!
+  addResult(templateId: ID!, data: Json, dataPolicy: String): Result!
   deleteResult(id: ID!): Result
-  submitResultFromAPI(userId: ID!, experimentId: ID!, customExperimentId: ID, data: Json, metadata: Json, dataPolicy: String): Result!
+  submitResultFromAPI(userId: ID!, templateId: ID!, taskId: ID, data: Json, metadata: Json, dataPolicy: String): Result!
 
   createParameter(title: String!, experimentId: ID!, data: Json, settings: Json): Parameter!
   updateParameter(id: ID!, title: String, data: Json, settings: Json): Parameter!
   deleteParameter(id: ID!): Parameter
+
+  createTemplate(title: String!, shortDescription: String, description: String, image: String, largeImage: String, parameters: Json, script: String, style: String, settings: Json): Template!
+  updateTemplate(id: ID!, title: String, shortDescription: String, description: String, parameters: Json, script: String, style: String, settings: Json): Template!
+  deleteTemplate(id: ID!): Template
+  createTask(title: String!, templateId: ID!, description: String,  parameters: Json, settings: Json): Task!
+  updateTask(id: ID!, title: String, description: String, parameters: Json, settings: Json): Task!
+  deleteTask(id: ID!): Task
+  createStudy(title: String!, shortDescription: String, description: String, settings: Json): Study!
+  updateStudy(id: ID!, title: String, shortDescription: String, description: String, settings: Json): Study!
+  deleteStudy(id: ID!): Study
+  buildStudy(id: ID!, tasks: Json): Study!
+
 }
 
 type SuccessMessage {
