@@ -19,6 +19,8 @@ type Profile {
   results: [Result]!
   teacherIn: [Class]! @relation(name:"Classcreator")
   studentIn: [Class]! @relation(name:"Studentofclass")
+  participantIn: [Study]! @relation(name:"Participantofstudy")
+  researcherIn: [Study]! @relation(name:"Creatorofstudy")
   image: String
   largeImage: String
   info: Json
@@ -109,6 +111,7 @@ type Result {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   payload: String
+  study: Study #relationship to Study
 }
 
 type Parameter {
@@ -128,22 +131,27 @@ type Study {
   slug: String! @unique
   shortDescription: String
   description: String
-  author: Profile!
-  tasks: Json
+  author: Profile! @relation(name:"Creatorofstudy")
+  tasks: [Task]!
   settings: Json
+  participants: [Profile]! @relation(name:"Participantofstudy")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
-} 
+  image: String
+  largeImage: String
+  info: Json
+}
 
 type Task {
   id: ID! @id
   title: String!
   slug: String! @unique
   description: String
-  template: Template!
+  template: Template
   author: Profile!
   parameters: Json
   settings: Json
+  link: String
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

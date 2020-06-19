@@ -85,35 +85,37 @@ const studyMutations = {
 
   // update the study
   async buildStudy(parent, args, ctx, info) {
-    const { tasks } = args;
-    console.log('tasks', tasks);
-    // const tasks = args.tasks.map(task => ({ id: task }));
-    //
-    // const study = await ctx.db.query.study(
-    //   {
-    //     where: { id: args.id },
-    //   },
-    //   `{ id tasks { id } }`
-    // );
-    // // remove previous connections
-    // await ctx.db.mutation.updateStudy(
-    //   {
-    //     data: {
-    //       tasks: {
-    //         disconnect: study.tasks,
-    //       },
-    //     },
-    //     where: {
-    //       id: args.id,
-    //     },
-    //   },
-    //   `{ id }`
-    // );
+    // const { tasks } = args;
+    // console.log('tasks', tasks);
+    const tasks = args.tasks.map(task => ({ id: task }));
+
+    const study = await ctx.db.query.study(
+      {
+        where: { id: args.id },
+      },
+      `{ id tasks { id } }`
+    );
+    // remove previous connections
+    await ctx.db.mutation.updateStudy(
+      {
+        data: {
+          tasks: {
+            disconnect: study.tasks,
+          },
+        },
+        where: {
+          id: args.id,
+        },
+      },
+      `{ id }`
+    );
     // run the update method
     return ctx.db.mutation.updateStudy(
       {
         data: {
-          tasks,
+          tasks: {
+            connect: tasks,
+          },
         },
         where: {
           id: args.id,
@@ -121,6 +123,45 @@ const studyMutations = {
       },
       info
     );
+  },
+
+  // join the study (for participants)
+  async joinStudy(parent, args, ctx, info) {
+    // Check login
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    console.log('args', args);
+    const profile = await ctx.db.query.profile(
+      {
+        where: { id: ctx.request.userId },
+      },
+      `{ id info }`
+    );
+    console.log('profile', profile);
+    const information = { ...profile.info, [args.id]: args.info };
+    console.log('information', information);
+
+    // connect user and the class
+    const updatedProfile = await ctx.db.mutation.updateProfile(
+      {
+        data: {
+          participantIn: {
+            connect: {
+              id: args.id,
+            },
+          },
+          info: information,
+        },
+        where: {
+          id: ctx.request.userId,
+        },
+      },
+      `{ id username permissions }`
+    );
+    // console.log('updateProfile', updatedProfile);
+
+    return { message: 'You joined the study!' };
   },
 };
 

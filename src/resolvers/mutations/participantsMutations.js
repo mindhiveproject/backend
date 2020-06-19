@@ -9,6 +9,7 @@ const { transport, makeEmail } = require('../../mail');
 
 const participantsMutations = {
   async participantSignUp(parent, args, ctx, info) {
+    console.log('args', args);
     args.username = args.username.toLowerCase().trim(); // lower case username
     if (args.email) {
       args.email = args.email.toLowerCase().trim(); // lower case username
@@ -17,16 +18,18 @@ const participantsMutations = {
     }
 
     // check whether the email is already in the system
-    const existingParticipant = await ctx.db.query.authParticipant(
-      {
-        where: { email: args.email },
-      },
-      `{ id }`
-    );
-    if (existingParticipant) {
-      throw new Error(
-        `Email ${args.email} is taken. Already have an account? Login here.`
+    if (args.email) {
+      const existingParticipant = await ctx.db.query.authParticipant(
+        {
+          where: { email: args.email },
+        },
+        `{ id }`
       );
+      if (existingParticipant) {
+        throw new Error(
+          `Email ${args.email} is taken. Already have an account? Login here.`
+        );
+      }
     }
 
     // hash the password

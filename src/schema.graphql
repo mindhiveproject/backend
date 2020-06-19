@@ -61,7 +61,7 @@ type Mutation {
 
   addResult(templateId: ID!, data: Json, dataPolicy: String): Result!
   deleteResult(id: ID!): Result
-  submitResultFromAPI(userId: ID!, templateId: ID!, taskId: ID, data: Json, metadata: Json, dataPolicy: String): Result!
+  submitResultFromAPI(userId: ID!, templateId: ID!, taskId: ID, studyId: ID, data: Json, metadata: Json, dataPolicy: String): SuccessMessage
 
   createParameter(title: String!, experimentId: ID!, data: Json, settings: Json): Parameter!
   updateParameter(id: ID!, title: String, data: Json, settings: Json): Parameter!
@@ -70,13 +70,14 @@ type Mutation {
   createTemplate(title: String!, shortDescription: String, description: String, image: String, largeImage: String, parameters: Json, script: String, style: String, settings: Json): Template!
   updateTemplate(id: ID!, title: String, shortDescription: String, description: String, parameters: Json, script: String, style: String, settings: Json): Template!
   deleteTemplate(id: ID!): Template
-  createTask(title: String!, templateId: ID!, description: String,  parameters: Json, settings: Json): Task!
-  updateTask(id: ID!, title: String, description: String, parameters: Json, settings: Json): Task!
+  createTask(title: String!, templateId: ID, description: String,  parameters: Json, settings: Json, link: String): Task!
+  updateTask(id: ID!, title: String, description: String, parameters: Json, settings: Json, link: String): Task!
   deleteTask(id: ID!): Task
-  createStudy(title: String!, shortDescription: String, description: String, settings: Json): Study!
-  updateStudy(id: ID!, title: String, shortDescription: String, description: String, settings: Json): Study!
+  createStudy(title: String!, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json): Study!
+  updateStudy(id: ID!, title: String, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json): Study!
   deleteStudy(id: ID!): Study
-  buildStudy(id: ID!, tasks: Json): Study!
+  buildStudy(id: ID!, tasks: [ID]!): Study!
+  joinStudy(id: ID!, info: Json): SuccessMessage
 
 }
 
@@ -93,4 +94,5 @@ type Profile {
   info: Json
   image: String
   largeImage: String
+  participantIn: [Study]!
 }

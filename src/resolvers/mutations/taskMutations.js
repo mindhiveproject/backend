@@ -33,14 +33,18 @@ const taskMutations = {
         data: {
           title: args.title,
           slug: args.slug,
+          description: args.description,
           author: {
             connect: { id: userId },
           },
-          template: {
-            connect: { id: args.templateId },
-          },
+          template: args.templateId
+            ? {
+                connect: { id: args.templateId },
+              }
+            : null,
           parameters: args.parameters,
           settings: args.settings,
+          link: args.link,
         },
       },
       info

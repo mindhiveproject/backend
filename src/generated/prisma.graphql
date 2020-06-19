@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Thu Jun 11 2020 17:50:25 GMT+0200 (Central European Summer Time)
+# timestamp: Fri Jun 19 2020 11:12:50 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -3415,8 +3415,8 @@ type Mutation {
   createResult(data: ResultCreateInput!): Result!
   createParameter(data: ParameterCreateInput!): Parameter!
   createStudy(data: StudyCreateInput!): Study!
-  createTask(data: TaskCreateInput!): Task!
   createTemplate(data: TemplateCreateInput!): Template!
+  createTask(data: TaskCreateInput!): Task!
   createProfile(data: ProfileCreateInput!): Profile!
   updateAuthEmail(data: AuthEmailUpdateInput!, where: AuthEmailWhereUniqueInput!): AuthEmail
   updateAuthToken(data: AuthTokenUpdateInput!, where: AuthTokenWhereUniqueInput!): AuthToken
@@ -3428,8 +3428,8 @@ type Mutation {
   updateResult(data: ResultUpdateInput!, where: ResultWhereUniqueInput!): Result
   updateParameter(data: ParameterUpdateInput!, where: ParameterWhereUniqueInput!): Parameter
   updateStudy(data: StudyUpdateInput!, where: StudyWhereUniqueInput!): Study
-  updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task
   updateTemplate(data: TemplateUpdateInput!, where: TemplateWhereUniqueInput!): Template
+  updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task
   updateProfile(data: ProfileUpdateInput!, where: ProfileWhereUniqueInput!): Profile
   deleteAuthEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
   deleteAuthToken(where: AuthTokenWhereUniqueInput!): AuthToken
@@ -3441,8 +3441,8 @@ type Mutation {
   deleteResult(where: ResultWhereUniqueInput!): Result
   deleteParameter(where: ParameterWhereUniqueInput!): Parameter
   deleteStudy(where: StudyWhereUniqueInput!): Study
-  deleteTask(where: TaskWhereUniqueInput!): Task
   deleteTemplate(where: TemplateWhereUniqueInput!): Template
+  deleteTask(where: TaskWhereUniqueInput!): Task
   deleteProfile(where: ProfileWhereUniqueInput!): Profile
   upsertAuthEmail(where: AuthEmailWhereUniqueInput!, create: AuthEmailCreateInput!, update: AuthEmailUpdateInput!): AuthEmail!
   upsertAuthToken(where: AuthTokenWhereUniqueInput!, create: AuthTokenCreateInput!, update: AuthTokenUpdateInput!): AuthToken!
@@ -3454,8 +3454,8 @@ type Mutation {
   upsertResult(where: ResultWhereUniqueInput!, create: ResultCreateInput!, update: ResultUpdateInput!): Result!
   upsertParameter(where: ParameterWhereUniqueInput!, create: ParameterCreateInput!, update: ParameterUpdateInput!): Parameter!
   upsertStudy(where: StudyWhereUniqueInput!, create: StudyCreateInput!, update: StudyUpdateInput!): Study!
-  upsertTask(where: TaskWhereUniqueInput!, create: TaskCreateInput!, update: TaskUpdateInput!): Task!
   upsertTemplate(where: TemplateWhereUniqueInput!, create: TemplateCreateInput!, update: TemplateUpdateInput!): Template!
+  upsertTask(where: TaskWhereUniqueInput!, create: TaskCreateInput!, update: TaskUpdateInput!): Task!
   upsertProfile(where: ProfileWhereUniqueInput!, create: ProfileCreateInput!, update: ProfileUpdateInput!): Profile!
   updateManyAuthEmails(data: AuthEmailUpdateManyMutationInput!, where: AuthEmailWhereInput): BatchPayload!
   updateManyAuthTokens(data: AuthTokenUpdateManyMutationInput!, where: AuthTokenWhereInput): BatchPayload!
@@ -3466,8 +3466,8 @@ type Mutation {
   updateManyResults(data: ResultUpdateManyMutationInput!, where: ResultWhereInput): BatchPayload!
   updateManyParameters(data: ParameterUpdateManyMutationInput!, where: ParameterWhereInput): BatchPayload!
   updateManyStudies(data: StudyUpdateManyMutationInput!, where: StudyWhereInput): BatchPayload!
-  updateManyTasks(data: TaskUpdateManyMutationInput!, where: TaskWhereInput): BatchPayload!
   updateManyTemplates(data: TemplateUpdateManyMutationInput!, where: TemplateWhereInput): BatchPayload!
+  updateManyTasks(data: TaskUpdateManyMutationInput!, where: TaskWhereInput): BatchPayload!
   updateManyProfiles(data: ProfileUpdateManyMutationInput!, where: ProfileWhereInput): BatchPayload!
   deleteManyAuthEmails(where: AuthEmailWhereInput): BatchPayload!
   deleteManyAuthTokens(where: AuthTokenWhereInput): BatchPayload!
@@ -3479,8 +3479,8 @@ type Mutation {
   deleteManyResults(where: ResultWhereInput): BatchPayload!
   deleteManyParameters(where: ParameterWhereInput): BatchPayload!
   deleteManyStudies(where: StudyWhereInput): BatchPayload!
-  deleteManyTasks(where: TaskWhereInput): BatchPayload!
   deleteManyTemplates(where: TemplateWhereInput): BatchPayload!
+  deleteManyTasks(where: TaskWhereInput): BatchPayload!
   deleteManyProfiles(where: ProfileWhereInput): BatchPayload!
 }
 
@@ -3978,6 +3978,8 @@ type Profile implements Node {
   results(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Result!]
   teacherIn(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class!]
   studentIn(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class!]
+  participantIn(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study!]
+  researcherIn(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study!]
   image: String
   largeImage: String
   info: Json
@@ -4007,6 +4009,13 @@ input ProfileCreateInput {
   results: ResultCreateManyWithoutUserInput
   teacherIn: ClassCreateManyWithoutCreatorInput
   studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+}
+
+input ProfileCreateManyWithoutParticipantInInput {
+  create: [ProfileCreateWithoutParticipantInInput!]
+  connect: [ProfileWhereUniqueInput!]
 }
 
 input ProfileCreateManyWithoutStudentInInput {
@@ -4039,6 +4048,11 @@ input ProfileCreateOneWithoutAuthTokenInput {
   connect: ProfileWhereUniqueInput
 }
 
+input ProfileCreateOneWithoutResearcherInInput {
+  create: ProfileCreateWithoutResearcherInInput
+  connect: ProfileWhereUniqueInput
+}
+
 input ProfileCreateOneWithoutResultsInput {
   create: ProfileCreateWithoutResultsInput
   connect: ProfileWhereUniqueInput
@@ -4066,6 +4080,8 @@ input ProfileCreateWithoutAuthEmailInput {
   results: ResultCreateManyWithoutUserInput
   teacherIn: ClassCreateManyWithoutCreatorInput
   studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthInviteInput {
@@ -4081,6 +4097,8 @@ input ProfileCreateWithoutAuthInviteInput {
   results: ResultCreateManyWithoutUserInput
   teacherIn: ClassCreateManyWithoutCreatorInput
   studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthParticipantInput {
@@ -4096,6 +4114,8 @@ input ProfileCreateWithoutAuthParticipantInput {
   results: ResultCreateManyWithoutUserInput
   teacherIn: ClassCreateManyWithoutCreatorInput
   studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthTokenInput {
@@ -4111,6 +4131,42 @@ input ProfileCreateWithoutAuthTokenInput {
   results: ResultCreateManyWithoutUserInput
   teacherIn: ClassCreateManyWithoutCreatorInput
   studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+}
+
+input ProfileCreateWithoutParticipantInInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+}
+
+input ProfileCreateWithoutResearcherInInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
 }
 
 input ProfileCreateWithoutResultsInput {
@@ -4126,6 +4182,8 @@ input ProfileCreateWithoutResultsInput {
   authParticipant: AuthParticipantCreateManyWithoutProfileInput
   teacherIn: ClassCreateManyWithoutCreatorInput
   studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutStudentInInput {
@@ -4141,6 +4199,8 @@ input ProfileCreateWithoutStudentInInput {
   authParticipant: AuthParticipantCreateManyWithoutProfileInput
   results: ResultCreateManyWithoutUserInput
   teacherIn: ClassCreateManyWithoutCreatorInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutTeacherInInput {
@@ -4156,6 +4216,8 @@ input ProfileCreateWithoutTeacherInInput {
   authParticipant: AuthParticipantCreateManyWithoutProfileInput
   results: ResultCreateManyWithoutUserInput
   studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
 }
 
 """An edge in a connection."""
@@ -4412,6 +4474,8 @@ input ProfileUpdateDataInput {
   results: ResultUpdateManyWithoutUserInput
   teacherIn: ClassUpdateManyWithoutCreatorInput
   studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateInput {
@@ -4427,6 +4491,8 @@ input ProfileUpdateInput {
   results: ResultUpdateManyWithoutUserInput
   teacherIn: ClassUpdateManyWithoutCreatorInput
   studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateManyDataInput {
@@ -4443,6 +4509,18 @@ input ProfileUpdateManyMutationInput {
   largeImage: String
   info: Json
   permissions: ProfileUpdatepermissionsInput
+}
+
+input ProfileUpdateManyWithoutParticipantInInput {
+  create: [ProfileCreateWithoutParticipantInInput!]
+  connect: [ProfileWhereUniqueInput!]
+  set: [ProfileWhereUniqueInput!]
+  disconnect: [ProfileWhereUniqueInput!]
+  delete: [ProfileWhereUniqueInput!]
+  update: [ProfileUpdateWithWhereUniqueWithoutParticipantInInput!]
+  updateMany: [ProfileUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProfileScalarWhereInput!]
+  upsert: [ProfileUpsertWithWhereUniqueWithoutParticipantInInput!]
 }
 
 input ProfileUpdateManyWithoutStudentInInput {
@@ -4497,6 +4575,13 @@ input ProfileUpdateOneRequiredWithoutAuthTokenInput {
   upsert: ProfileUpsertWithoutAuthTokenInput
 }
 
+input ProfileUpdateOneRequiredWithoutResearcherInInput {
+  create: ProfileCreateWithoutResearcherInInput
+  connect: ProfileWhereUniqueInput
+  update: ProfileUpdateWithoutResearcherInDataInput
+  upsert: ProfileUpsertWithoutResearcherInInput
+}
+
 input ProfileUpdateOneRequiredWithoutResultsInput {
   create: ProfileCreateWithoutResultsInput
   connect: ProfileWhereUniqueInput
@@ -4527,6 +4612,8 @@ input ProfileUpdateWithoutAuthEmailDataInput {
   results: ResultUpdateManyWithoutUserInput
   teacherIn: ClassUpdateManyWithoutCreatorInput
   studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthInviteDataInput {
@@ -4541,6 +4628,8 @@ input ProfileUpdateWithoutAuthInviteDataInput {
   results: ResultUpdateManyWithoutUserInput
   teacherIn: ClassUpdateManyWithoutCreatorInput
   studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthParticipantDataInput {
@@ -4555,6 +4644,8 @@ input ProfileUpdateWithoutAuthParticipantDataInput {
   results: ResultUpdateManyWithoutUserInput
   teacherIn: ClassUpdateManyWithoutCreatorInput
   studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthTokenDataInput {
@@ -4569,6 +4660,40 @@ input ProfileUpdateWithoutAuthTokenDataInput {
   results: ResultUpdateManyWithoutUserInput
   teacherIn: ClassUpdateManyWithoutCreatorInput
   studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+}
+
+input ProfileUpdateWithoutParticipantInDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+}
+
+input ProfileUpdateWithoutResearcherInDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
 }
 
 input ProfileUpdateWithoutResultsDataInput {
@@ -4583,6 +4708,8 @@ input ProfileUpdateWithoutResultsDataInput {
   authParticipant: AuthParticipantUpdateManyWithoutProfileInput
   teacherIn: ClassUpdateManyWithoutCreatorInput
   studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutStudentInDataInput {
@@ -4597,6 +4724,8 @@ input ProfileUpdateWithoutStudentInDataInput {
   authParticipant: AuthParticipantUpdateManyWithoutProfileInput
   results: ResultUpdateManyWithoutUserInput
   teacherIn: ClassUpdateManyWithoutCreatorInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutTeacherInDataInput {
@@ -4611,6 +4740,13 @@ input ProfileUpdateWithoutTeacherInDataInput {
   authParticipant: AuthParticipantUpdateManyWithoutProfileInput
   results: ResultUpdateManyWithoutUserInput
   studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+}
+
+input ProfileUpdateWithWhereUniqueWithoutParticipantInInput {
+  where: ProfileWhereUniqueInput!
+  data: ProfileUpdateWithoutParticipantInDataInput!
 }
 
 input ProfileUpdateWithWhereUniqueWithoutStudentInInput {
@@ -4643,6 +4779,11 @@ input ProfileUpsertWithoutAuthTokenInput {
   create: ProfileCreateWithoutAuthTokenInput!
 }
 
+input ProfileUpsertWithoutResearcherInInput {
+  update: ProfileUpdateWithoutResearcherInDataInput!
+  create: ProfileCreateWithoutResearcherInInput!
+}
+
 input ProfileUpsertWithoutResultsInput {
   update: ProfileUpdateWithoutResultsDataInput!
   create: ProfileCreateWithoutResultsInput!
@@ -4651,6 +4792,12 @@ input ProfileUpsertWithoutResultsInput {
 input ProfileUpsertWithoutTeacherInInput {
   update: ProfileUpdateWithoutTeacherInDataInput!
   create: ProfileCreateWithoutTeacherInInput!
+}
+
+input ProfileUpsertWithWhereUniqueWithoutParticipantInInput {
+  where: ProfileWhereUniqueInput!
+  update: ProfileUpdateWithoutParticipantInDataInput!
+  create: ProfileCreateWithoutParticipantInInput!
 }
 
 input ProfileUpsertWithWhereUniqueWithoutStudentInInput {
@@ -4849,6 +4996,12 @@ input ProfileWhereInput {
   studentIn_every: ClassWhereInput
   studentIn_some: ClassWhereInput
   studentIn_none: ClassWhereInput
+  participantIn_every: StudyWhereInput
+  participantIn_some: StudyWhereInput
+  participantIn_none: StudyWhereInput
+  researcherIn_every: StudyWhereInput
+  researcherIn_some: StudyWhereInput
+  researcherIn_none: StudyWhereInput
 }
 
 input ProfileWhereUniqueInput {
@@ -4867,8 +5020,8 @@ type Query {
   results(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Result]!
   parameters(where: ParameterWhereInput, orderBy: ParameterOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Parameter]!
   studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study]!
-  tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task]!
   templates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Template]!
+  tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task]!
   profiles(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile]!
   authEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
   authToken(where: AuthTokenWhereUniqueInput!): AuthToken
@@ -4880,8 +5033,8 @@ type Query {
   result(where: ResultWhereUniqueInput!): Result
   parameter(where: ParameterWhereUniqueInput!): Parameter
   study(where: StudyWhereUniqueInput!): Study
-  task(where: TaskWhereUniqueInput!): Task
   template(where: TemplateWhereUniqueInput!): Template
+  task(where: TaskWhereUniqueInput!): Task
   profile(where: ProfileWhereUniqueInput!): Profile
   authEmailsConnection(where: AuthEmailWhereInput, orderBy: AuthEmailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthEmailConnection!
   authTokensConnection(where: AuthTokenWhereInput, orderBy: AuthTokenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthTokenConnection!
@@ -4893,8 +5046,8 @@ type Query {
   resultsConnection(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ResultConnection!
   parametersConnection(where: ParameterWhereInput, orderBy: ParameterOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ParameterConnection!
   studiesConnection(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StudyConnection!
-  tasksConnection(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TaskConnection!
   templatesConnection(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TemplateConnection!
+  tasksConnection(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TaskConnection!
   profilesConnection(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProfileConnection!
 
   """Fetches an object given its ID"""
@@ -4916,6 +5069,7 @@ type Result implements Node {
   createdAt: DateTime!
   updatedAt: DateTime!
   payload: String
+  study: Study
 }
 
 """A connection to a list of items."""
@@ -4938,6 +5092,7 @@ input ResultCreateInput {
   template: TemplateCreateOneInput!
   task: TaskCreateOneInput!
   user: ProfileCreateOneWithoutResultsInput!
+  study: StudyCreateOneInput
 }
 
 input ResultCreateManyWithoutUserInput {
@@ -4954,6 +5109,7 @@ input ResultCreateWithoutUserInput {
   payload: String
   template: TemplateCreateOneInput!
   task: TaskCreateOneInput!
+  study: StudyCreateOneInput
 }
 
 """An edge in a connection."""
@@ -5280,6 +5436,7 @@ input ResultUpdateInput {
   template: TemplateUpdateOneRequiredInput
   task: TaskUpdateOneRequiredInput
   user: ProfileUpdateOneRequiredWithoutResultsInput
+  study: StudyUpdateOneInput
 }
 
 input ResultUpdateManyDataInput {
@@ -5323,6 +5480,7 @@ input ResultUpdateWithoutUserDataInput {
   payload: String
   template: TemplateUpdateOneRequiredInput
   task: TaskUpdateOneRequiredInput
+  study: StudyUpdateOneInput
 }
 
 input ResultUpdateWithWhereUniqueWithoutUserInput {
@@ -5574,6 +5732,7 @@ input ResultWhereInput {
   template: TemplateWhereInput
   task: TaskWhereInput
   user: ProfileWhereInput
+  study: StudyWhereInput
 }
 
 input ResultWhereUniqueInput {
@@ -5968,10 +6127,14 @@ type Study implements Node {
   shortDescription: String
   description: String
   author: Profile!
-  tasks: Json
+  tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task!]
   settings: Json
+  participants(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
   createdAt: DateTime!
   updatedAt: DateTime!
+  image: String
+  largeImage: String
+  info: Json
 }
 
 """A connection to a list of items."""
@@ -5990,9 +6153,56 @@ input StudyCreateInput {
   slug: String!
   shortDescription: String
   description: String
-  tasks: Json
   settings: Json
-  author: ProfileCreateOneInput!
+  image: String
+  largeImage: String
+  info: Json
+  author: ProfileCreateOneWithoutResearcherInInput!
+  tasks: TaskCreateManyInput
+  participants: ProfileCreateManyWithoutParticipantInInput
+}
+
+input StudyCreateManyWithoutAuthorInput {
+  create: [StudyCreateWithoutAuthorInput!]
+  connect: [StudyWhereUniqueInput!]
+}
+
+input StudyCreateManyWithoutParticipantsInput {
+  create: [StudyCreateWithoutParticipantsInput!]
+  connect: [StudyWhereUniqueInput!]
+}
+
+input StudyCreateOneInput {
+  create: StudyCreateInput
+  connect: StudyWhereUniqueInput
+}
+
+input StudyCreateWithoutAuthorInput {
+  id: ID
+  title: String!
+  slug: String!
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  tasks: TaskCreateManyInput
+  participants: ProfileCreateManyWithoutParticipantInInput
+}
+
+input StudyCreateWithoutParticipantsInput {
+  id: ID
+  title: String!
+  slug: String!
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  author: ProfileCreateOneWithoutResearcherInInput!
+  tasks: TaskCreateManyInput
 }
 
 """An edge in a connection."""
@@ -6015,14 +6225,18 @@ enum StudyOrderByInput {
   shortDescription_DESC
   description_ASC
   description_DESC
-  tasks_ASC
-  tasks_DESC
   settings_ASC
   settings_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  image_ASC
+  image_DESC
+  largeImage_ASC
+  largeImage_DESC
+  info_ASC
+  info_DESC
 }
 
 type StudyPreviousValues {
@@ -6031,10 +6245,347 @@ type StudyPreviousValues {
   slug: String!
   shortDescription: String
   description: String
-  tasks: Json
   settings: Json
   createdAt: DateTime!
   updatedAt: DateTime!
+  image: String
+  largeImage: String
+  info: Json
+}
+
+input StudyScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [StudyScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [StudyScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [StudyScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  slug: String
+
+  """All values that are not equal to given value."""
+  slug_not: String
+
+  """All values that are contained in given list."""
+  slug_in: [String!]
+
+  """All values that are not contained in given list."""
+  slug_not_in: [String!]
+
+  """All values less than the given value."""
+  slug_lt: String
+
+  """All values less than or equal the given value."""
+  slug_lte: String
+
+  """All values greater than the given value."""
+  slug_gt: String
+
+  """All values greater than or equal the given value."""
+  slug_gte: String
+
+  """All values containing the given string."""
+  slug_contains: String
+
+  """All values not containing the given string."""
+  slug_not_contains: String
+
+  """All values starting with the given string."""
+  slug_starts_with: String
+
+  """All values not starting with the given string."""
+  slug_not_starts_with: String
+
+  """All values ending with the given string."""
+  slug_ends_with: String
+
+  """All values not ending with the given string."""
+  slug_not_ends_with: String
+  shortDescription: String
+
+  """All values that are not equal to given value."""
+  shortDescription_not: String
+
+  """All values that are contained in given list."""
+  shortDescription_in: [String!]
+
+  """All values that are not contained in given list."""
+  shortDescription_not_in: [String!]
+
+  """All values less than the given value."""
+  shortDescription_lt: String
+
+  """All values less than or equal the given value."""
+  shortDescription_lte: String
+
+  """All values greater than the given value."""
+  shortDescription_gt: String
+
+  """All values greater than or equal the given value."""
+  shortDescription_gte: String
+
+  """All values containing the given string."""
+  shortDescription_contains: String
+
+  """All values not containing the given string."""
+  shortDescription_not_contains: String
+
+  """All values starting with the given string."""
+  shortDescription_starts_with: String
+
+  """All values not starting with the given string."""
+  shortDescription_not_starts_with: String
+
+  """All values ending with the given string."""
+  shortDescription_ends_with: String
+
+  """All values not ending with the given string."""
+  shortDescription_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  image: String
+
+  """All values that are not equal to given value."""
+  image_not: String
+
+  """All values that are contained in given list."""
+  image_in: [String!]
+
+  """All values that are not contained in given list."""
+  image_not_in: [String!]
+
+  """All values less than the given value."""
+  image_lt: String
+
+  """All values less than or equal the given value."""
+  image_lte: String
+
+  """All values greater than the given value."""
+  image_gt: String
+
+  """All values greater than or equal the given value."""
+  image_gte: String
+
+  """All values containing the given string."""
+  image_contains: String
+
+  """All values not containing the given string."""
+  image_not_contains: String
+
+  """All values starting with the given string."""
+  image_starts_with: String
+
+  """All values not starting with the given string."""
+  image_not_starts_with: String
+
+  """All values ending with the given string."""
+  image_ends_with: String
+
+  """All values not ending with the given string."""
+  image_not_ends_with: String
+  largeImage: String
+
+  """All values that are not equal to given value."""
+  largeImage_not: String
+
+  """All values that are contained in given list."""
+  largeImage_in: [String!]
+
+  """All values that are not contained in given list."""
+  largeImage_not_in: [String!]
+
+  """All values less than the given value."""
+  largeImage_lt: String
+
+  """All values less than or equal the given value."""
+  largeImage_lte: String
+
+  """All values greater than the given value."""
+  largeImage_gt: String
+
+  """All values greater than or equal the given value."""
+  largeImage_gte: String
+
+  """All values containing the given string."""
+  largeImage_contains: String
+
+  """All values not containing the given string."""
+  largeImage_not_contains: String
+
+  """All values starting with the given string."""
+  largeImage_starts_with: String
+
+  """All values not starting with the given string."""
+  largeImage_not_starts_with: String
+
+  """All values ending with the given string."""
+  largeImage_ends_with: String
+
+  """All values not ending with the given string."""
+  largeImage_not_ends_with: String
 }
 
 type StudySubscriptionPayload {
@@ -6076,14 +6627,43 @@ input StudySubscriptionWhereInput {
   node: StudyWhereInput
 }
 
+input StudyUpdateDataInput {
+  title: String
+  slug: String
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  author: ProfileUpdateOneRequiredWithoutResearcherInInput
+  tasks: TaskUpdateManyInput
+  participants: ProfileUpdateManyWithoutParticipantInInput
+}
+
 input StudyUpdateInput {
   title: String
   slug: String
   shortDescription: String
   description: String
-  tasks: Json
   settings: Json
-  author: ProfileUpdateOneRequiredInput
+  image: String
+  largeImage: String
+  info: Json
+  author: ProfileUpdateOneRequiredWithoutResearcherInInput
+  tasks: TaskUpdateManyInput
+  participants: ProfileUpdateManyWithoutParticipantInInput
+}
+
+input StudyUpdateManyDataInput {
+  title: String
+  slug: String
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
 }
 
 input StudyUpdateManyMutationInput {
@@ -6091,8 +6671,101 @@ input StudyUpdateManyMutationInput {
   slug: String
   shortDescription: String
   description: String
-  tasks: Json
   settings: Json
+  image: String
+  largeImage: String
+  info: Json
+}
+
+input StudyUpdateManyWithoutAuthorInput {
+  create: [StudyCreateWithoutAuthorInput!]
+  connect: [StudyWhereUniqueInput!]
+  set: [StudyWhereUniqueInput!]
+  disconnect: [StudyWhereUniqueInput!]
+  delete: [StudyWhereUniqueInput!]
+  update: [StudyUpdateWithWhereUniqueWithoutAuthorInput!]
+  updateMany: [StudyUpdateManyWithWhereNestedInput!]
+  deleteMany: [StudyScalarWhereInput!]
+  upsert: [StudyUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input StudyUpdateManyWithoutParticipantsInput {
+  create: [StudyCreateWithoutParticipantsInput!]
+  connect: [StudyWhereUniqueInput!]
+  set: [StudyWhereUniqueInput!]
+  disconnect: [StudyWhereUniqueInput!]
+  delete: [StudyWhereUniqueInput!]
+  update: [StudyUpdateWithWhereUniqueWithoutParticipantsInput!]
+  updateMany: [StudyUpdateManyWithWhereNestedInput!]
+  deleteMany: [StudyScalarWhereInput!]
+  upsert: [StudyUpsertWithWhereUniqueWithoutParticipantsInput!]
+}
+
+input StudyUpdateManyWithWhereNestedInput {
+  where: StudyScalarWhereInput!
+  data: StudyUpdateManyDataInput!
+}
+
+input StudyUpdateOneInput {
+  create: StudyCreateInput
+  connect: StudyWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: StudyUpdateDataInput
+  upsert: StudyUpsertNestedInput
+}
+
+input StudyUpdateWithoutAuthorDataInput {
+  title: String
+  slug: String
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  tasks: TaskUpdateManyInput
+  participants: ProfileUpdateManyWithoutParticipantInInput
+}
+
+input StudyUpdateWithoutParticipantsDataInput {
+  title: String
+  slug: String
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  author: ProfileUpdateOneRequiredWithoutResearcherInInput
+  tasks: TaskUpdateManyInput
+}
+
+input StudyUpdateWithWhereUniqueWithoutAuthorInput {
+  where: StudyWhereUniqueInput!
+  data: StudyUpdateWithoutAuthorDataInput!
+}
+
+input StudyUpdateWithWhereUniqueWithoutParticipantsInput {
+  where: StudyWhereUniqueInput!
+  data: StudyUpdateWithoutParticipantsDataInput!
+}
+
+input StudyUpsertNestedInput {
+  update: StudyUpdateDataInput!
+  create: StudyCreateInput!
+}
+
+input StudyUpsertWithWhereUniqueWithoutAuthorInput {
+  where: StudyWhereUniqueInput!
+  update: StudyUpdateWithoutAuthorDataInput!
+  create: StudyCreateWithoutAuthorInput!
+}
+
+input StudyUpsertWithWhereUniqueWithoutParticipantsInput {
+  where: StudyWhereUniqueInput!
+  update: StudyUpdateWithoutParticipantsDataInput!
+  create: StudyCreateWithoutParticipantsInput!
 }
 
 input StudyWhereInput {
@@ -6348,7 +7021,93 @@ input StudyWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  image: String
+
+  """All values that are not equal to given value."""
+  image_not: String
+
+  """All values that are contained in given list."""
+  image_in: [String!]
+
+  """All values that are not contained in given list."""
+  image_not_in: [String!]
+
+  """All values less than the given value."""
+  image_lt: String
+
+  """All values less than or equal the given value."""
+  image_lte: String
+
+  """All values greater than the given value."""
+  image_gt: String
+
+  """All values greater than or equal the given value."""
+  image_gte: String
+
+  """All values containing the given string."""
+  image_contains: String
+
+  """All values not containing the given string."""
+  image_not_contains: String
+
+  """All values starting with the given string."""
+  image_starts_with: String
+
+  """All values not starting with the given string."""
+  image_not_starts_with: String
+
+  """All values ending with the given string."""
+  image_ends_with: String
+
+  """All values not ending with the given string."""
+  image_not_ends_with: String
+  largeImage: String
+
+  """All values that are not equal to given value."""
+  largeImage_not: String
+
+  """All values that are contained in given list."""
+  largeImage_in: [String!]
+
+  """All values that are not contained in given list."""
+  largeImage_not_in: [String!]
+
+  """All values less than the given value."""
+  largeImage_lt: String
+
+  """All values less than or equal the given value."""
+  largeImage_lte: String
+
+  """All values greater than the given value."""
+  largeImage_gt: String
+
+  """All values greater than or equal the given value."""
+  largeImage_gte: String
+
+  """All values containing the given string."""
+  largeImage_contains: String
+
+  """All values not containing the given string."""
+  largeImage_not_contains: String
+
+  """All values starting with the given string."""
+  largeImage_starts_with: String
+
+  """All values not starting with the given string."""
+  largeImage_not_starts_with: String
+
+  """All values ending with the given string."""
+  largeImage_ends_with: String
+
+  """All values not ending with the given string."""
+  largeImage_not_ends_with: String
   author: ProfileWhereInput
+  tasks_every: TaskWhereInput
+  tasks_some: TaskWhereInput
+  tasks_none: TaskWhereInput
+  participants_every: ProfileWhereInput
+  participants_some: ProfileWhereInput
+  participants_none: ProfileWhereInput
 }
 
 input StudyWhereUniqueInput {
@@ -6367,8 +7126,8 @@ type Subscription {
   result(where: ResultSubscriptionWhereInput): ResultSubscriptionPayload
   parameter(where: ParameterSubscriptionWhereInput): ParameterSubscriptionPayload
   study(where: StudySubscriptionWhereInput): StudySubscriptionPayload
-  task(where: TaskSubscriptionWhereInput): TaskSubscriptionPayload
   template(where: TemplateSubscriptionWhereInput): TemplateSubscriptionPayload
+  task(where: TaskSubscriptionWhereInput): TaskSubscriptionPayload
   profile(where: ProfileSubscriptionWhereInput): ProfileSubscriptionPayload
 }
 
@@ -6377,10 +7136,11 @@ type Task implements Node {
   title: String!
   slug: String!
   description: String
-  template: Template!
+  template: Template
   author: Profile!
   parameters: Json
   settings: Json
+  link: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -6402,8 +7162,14 @@ input TaskCreateInput {
   description: String
   parameters: Json
   settings: Json
-  template: TemplateCreateOneWithoutTasksInput!
+  link: String
+  template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneInput!
+}
+
+input TaskCreateManyInput {
+  create: [TaskCreateInput!]
+  connect: [TaskWhereUniqueInput!]
 }
 
 input TaskCreateManyWithoutTemplateInput {
@@ -6423,6 +7189,7 @@ input TaskCreateWithoutTemplateInput {
   description: String
   parameters: Json
   settings: Json
+  link: String
   author: ProfileCreateOneInput!
 }
 
@@ -6448,6 +7215,8 @@ enum TaskOrderByInput {
   parameters_DESC
   settings_ASC
   settings_DESC
+  link_ASC
+  link_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -6461,6 +7230,7 @@ type TaskPreviousValues {
   description: String
   parameters: Json
   settings: Json
+  link: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -6634,6 +7404,46 @@ input TaskScalarWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
+  link: String
+
+  """All values that are not equal to given value."""
+  link_not: String
+
+  """All values that are contained in given list."""
+  link_in: [String!]
+
+  """All values that are not contained in given list."""
+  link_not_in: [String!]
+
+  """All values less than the given value."""
+  link_lt: String
+
+  """All values less than or equal the given value."""
+  link_lte: String
+
+  """All values greater than the given value."""
+  link_gt: String
+
+  """All values greater than or equal the given value."""
+  link_gte: String
+
+  """All values containing the given string."""
+  link_contains: String
+
+  """All values not containing the given string."""
+  link_not_contains: String
+
+  """All values starting with the given string."""
+  link_starts_with: String
+
+  """All values not starting with the given string."""
+  link_not_starts_with: String
+
+  """All values ending with the given string."""
+  link_ends_with: String
+
+  """All values not ending with the given string."""
+  link_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -6725,7 +7535,8 @@ input TaskUpdateDataInput {
   description: String
   parameters: Json
   settings: Json
-  template: TemplateUpdateOneRequiredWithoutTasksInput
+  link: String
+  template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredInput
 }
 
@@ -6735,7 +7546,8 @@ input TaskUpdateInput {
   description: String
   parameters: Json
   settings: Json
-  template: TemplateUpdateOneRequiredWithoutTasksInput
+  link: String
+  template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredInput
 }
 
@@ -6745,6 +7557,19 @@ input TaskUpdateManyDataInput {
   description: String
   parameters: Json
   settings: Json
+  link: String
+}
+
+input TaskUpdateManyInput {
+  create: [TaskCreateInput!]
+  connect: [TaskWhereUniqueInput!]
+  set: [TaskWhereUniqueInput!]
+  disconnect: [TaskWhereUniqueInput!]
+  delete: [TaskWhereUniqueInput!]
+  update: [TaskUpdateWithWhereUniqueNestedInput!]
+  updateMany: [TaskUpdateManyWithWhereNestedInput!]
+  deleteMany: [TaskScalarWhereInput!]
+  upsert: [TaskUpsertWithWhereUniqueNestedInput!]
 }
 
 input TaskUpdateManyMutationInput {
@@ -6753,6 +7578,7 @@ input TaskUpdateManyMutationInput {
   description: String
   parameters: Json
   settings: Json
+  link: String
 }
 
 input TaskUpdateManyWithoutTemplateInput {
@@ -6785,7 +7611,13 @@ input TaskUpdateWithoutTemplateDataInput {
   description: String
   parameters: Json
   settings: Json
+  link: String
   author: ProfileUpdateOneRequiredInput
+}
+
+input TaskUpdateWithWhereUniqueNestedInput {
+  where: TaskWhereUniqueInput!
+  data: TaskUpdateDataInput!
 }
 
 input TaskUpdateWithWhereUniqueWithoutTemplateInput {
@@ -6794,6 +7626,12 @@ input TaskUpdateWithWhereUniqueWithoutTemplateInput {
 }
 
 input TaskUpsertNestedInput {
+  update: TaskUpdateDataInput!
+  create: TaskCreateInput!
+}
+
+input TaskUpsertWithWhereUniqueNestedInput {
+  where: TaskWhereUniqueInput!
   update: TaskUpdateDataInput!
   create: TaskCreateInput!
 }
@@ -6973,6 +7811,46 @@ input TaskWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
+  link: String
+
+  """All values that are not equal to given value."""
+  link_not: String
+
+  """All values that are contained in given list."""
+  link_in: [String!]
+
+  """All values that are not contained in given list."""
+  link_not_in: [String!]
+
+  """All values less than the given value."""
+  link_lt: String
+
+  """All values less than or equal the given value."""
+  link_lte: String
+
+  """All values greater than the given value."""
+  link_gt: String
+
+  """All values greater than or equal the given value."""
+  link_gte: String
+
+  """All values containing the given string."""
+  link_contains: String
+
+  """All values not containing the given string."""
+  link_not_contains: String
+
+  """All values starting with the given string."""
+  link_starts_with: String
+
+  """All values not starting with the given string."""
+  link_not_starts_with: String
+
+  """All values ending with the given string."""
+  link_ends_with: String
+
+  """All values not ending with the given string."""
+  link_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -7238,9 +8116,11 @@ input TemplateUpdateOneRequiredInput {
   upsert: TemplateUpsertNestedInput
 }
 
-input TemplateUpdateOneRequiredWithoutTasksInput {
+input TemplateUpdateOneWithoutTasksInput {
   create: TemplateCreateWithoutTasksInput
   connect: TemplateWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
   update: TemplateUpdateWithoutTasksDataInput
   upsert: TemplateUpsertWithoutTasksInput
 }

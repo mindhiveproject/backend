@@ -4,9 +4,8 @@ const resultsMutations = {
     const messageId = args.metadata && args.metadata.id;
     const payload = args.metadata && args.metadata.payload;
     const token = `${payload.slice(0, 4)}-${messageId}`;
-
-    console.log('args', args);
-
+    // console.log('args', args);
+    // console.log('args.studyId', args.studyId);
     const result = await ctx.db.query.result({
       where: {
         token,
@@ -14,7 +13,7 @@ const resultsMutations = {
     });
 
     if (!result) {
-      return ctx.db.mutation.createResult(
+      const createdResult = await ctx.db.mutation.createResult(
         {
           data: {
             user: {
@@ -28,6 +27,11 @@ const resultsMutations = {
                   connect: { id: args.taskId },
                 }
               : null,
+            study: args.studyId
+              ? {
+                  connect: { id: args.studyId },
+                }
+              : null,
             quantity: 1,
             data: args.data,
             dataPolicy: args.dataPolicy,
@@ -35,12 +39,22 @@ const resultsMutations = {
             token,
           },
         },
-        info
+        `{ id }`
       );
+      // delete incremental data if payload is full
+      // if (payload === 'full') {
+      //   const tokenToDelete = `incr-${messageId}`;
+      //   console.log('tokenToDelete', tokenToDelete);
+      //   const where = { token: tokenToDelete };
+      //   await ctx.db.mutation.deleteResult({ where }, info);
+      // }
+      return { message: 'Created' };
     }
+
     const savedData = result.data;
     const newData = [...savedData, ...args.data];
-    return ctx.db.mutation.updateResult(
+
+    const updatedResult = await ctx.db.mutation.updateResult(
       {
         where: { token },
         data: {
@@ -48,8 +62,10 @@ const resultsMutations = {
           quantity: result.quantity + 1,
         },
       },
-      info
+      `{ id }`
     );
+
+    return { message: 'Updated' };
   },
 
   // // add a new result of the experiment
