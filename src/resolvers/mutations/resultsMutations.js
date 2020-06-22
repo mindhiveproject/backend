@@ -5,7 +5,7 @@ const resultsMutations = {
     const payload = args.metadata && args.metadata.payload;
     const token = `${payload.slice(0, 4)}-${messageId}`;
     // console.log('args', args);
-    // console.log('args.studyId', args.studyId);
+    console.log('args.studyId', args.studyId);
     const result = await ctx.db.query.result({
       where: {
         token,

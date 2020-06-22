@@ -35,6 +35,16 @@ type AuthEmail {
   profile: Profile!
 }
 
+type AuthParticipant {
+  id: ID! @id
+  email: String @unique
+  password: String!
+  resetToken: String
+  resetTokenExpiry: String
+  profile: Profile!
+  settings: Json
+}
+
 type AuthToken {
   id: ID! @id
   token: String! @unique
@@ -47,16 +57,6 @@ type AuthInvite {
   id: ID! @id
   profile: Profile! @relation(name:"Owner")
   invitedIn: Class! @relation(name:"Invite")
-}
-
-type AuthParticipant {
-  id: ID! @id
-  email: String @unique
-  password: String!
-  resetToken: String
-  resetTokenExpiry: String
-  profile: Profile!
-  settings: Json
 }
 
 type School {

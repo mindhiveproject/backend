@@ -9,7 +9,7 @@ const { transport, makeEmail } = require('../../mail');
 
 const participantsMutations = {
   async participantSignUp(parent, args, ctx, info) {
-    console.log('args', args);
+    // console.log('participantSignUp args', args);
     args.username = args.username.toLowerCase().trim(); // lower case username
     if (args.email) {
       args.email = args.email.toLowerCase().trim(); // lower case username
@@ -77,6 +77,27 @@ const participantsMutations = {
       },
       `{ id username permissions }`
     );
+
+    // join a study if there is a study to join (user, study are present in the args)
+    if (args.study && args.user) {
+      const information = { [args.study.id]: args.user };
+      await ctx.db.mutation.updateProfile(
+        {
+          data: {
+            participantIn: {
+              connect: {
+                id: args.study.id,
+              },
+            },
+            info: information,
+          },
+          where: {
+            id: profile.id,
+          },
+        },
+        `{ id username permissions }`
+      );
+    }
 
     // create the JWT token for user
     const token = jwt.sign(
@@ -174,6 +195,32 @@ const participantsMutations = {
         },
         info
       );
+
+      // join a study if there is a study to join (user, study are present in the args)
+      console.log('args participant login', args);
+      if (args.study && args.user && Object.keys(args.user).length > 0) {
+        // do not update the info, if it is already there
+        // TODO - create a special method to update consent, but do not update for accidental reason
+        const information = { [args.study.id]: args.user, ...profile.info };
+        console.log('information', information);
+        await ctx.db.mutation.updateProfile(
+          {
+            data: {
+              participantIn: {
+                connect: {
+                  id: args.study.id,
+                },
+              },
+              info: information,
+            },
+            where: {
+              id: profile.id,
+            },
+          },
+          `{ id username permissions }`
+        );
+      }
+
       // 3. Generate the JWT token
       const token = jwt.sign({ userId: profile.id }, process.env.APP_SECRET);
       // 4. Set the cookie with the token
@@ -198,6 +245,27 @@ const participantsMutations = {
         },
         info
       );
+
+      // join a study if there is a study to join (user, study are present in the args)
+      if (args.study && args.user && Object.keys(args.user).length > 0) {
+        const information = { [args.study.id]: args.user, ...profile.info };
+        await ctx.db.mutation.updateProfile(
+          {
+            data: {
+              participantIn: {
+                connect: {
+                  id: args.study.id,
+                },
+              },
+              info: information,
+            },
+            where: {
+              id: profile.id,
+            },
+          },
+          `{ id username permissions }`
+        );
+      }
 
       const [authParticipant] = await ctx.db.query.authParticipants(
         {

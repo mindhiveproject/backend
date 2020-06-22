@@ -7,28 +7,163 @@ const postmark = require('postmark');
 const client = new postmark.Client(process.env.MAIL_POSTMARK_CLIENT);
 const { transport, makeEmail } = require('../../mail');
 
-// const checkSafari = browser => {
-//   const re = /(iPhone; CPU iPhone OS 1[0-2]|iPad; CPU OS 1[0-2]|iPod touch; CPU iPhone OS 1[0-2]|Macintosh; Intel Mac OS X.*Version\x2F1[0-2].*Safari|Macintosh;.*Mac OS X 10_(14|15).* AppleWebKit.*Version\x2F1[0-3].*Safari)/;
-//   const isSafari = re.test(browser);
-//   console.log('insde checkSafari function browser is', browser);
-//   let settings;
-//   if (isSafari) {
-//     settings = {
-//       httpOnly: true,
-//       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-//     };
-//   } else {
-//     settings = {
-//       httpOnly: true,
-//       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-//       sameSite: 'Strict',
-//       secure: process.env.NODE_ENV === 'production',
-//     };
-//   }
-//   return settings;
-// };
-
 const authMutations = {
+  // general login for everyone with username or password
+  async login(parent, args, ctx, info) {
+    if (args.username) {
+      args.username = args.username.toLowerCase().trim();
+    } else {
+      args.username = null;
+    }
+    if (args.email) {
+      args.email = args.email.toLowerCase().trim();
+    } else {
+      args.email = null;
+    }
+
+    // first, try to login the user with the username
+    if (args.username) {
+      // Find the profile which has this auth identity
+      const profile = await ctx.db.query.profile(
+        {
+          where: {
+            username: args.username,
+          },
+        },
+        info
+      );
+
+      // check the main role of the user and try to authorize using this main role
+      const role = profile && profile.permissions && profile.permissions[0];
+      console.log('role', role);
+
+      let user;
+      switch (role) {
+        case 'TEACHER':
+        case 'SCIENTIST':
+          [user] = await ctx.db.query.authEmails(
+            {
+              where: { profile: { id: profile.id } },
+            },
+            `{ id password }`
+          );
+          break;
+        case 'PARTICIPANT':
+        default:
+          [user] = await ctx.db.query.authParticipants(
+            {
+              where: { profile: { id: profile.id } },
+            },
+            `{ id password }`
+          );
+          break;
+      }
+
+      if (!user) {
+        throw new Error(`No such user found for username ${args.username}`);
+      }
+
+      // check password
+      const valid = await bcrypt.compare(args.password, user.password);
+      if (!valid) {
+        throw new Error(`Invalid password!`);
+      }
+
+      const token = jwt.sign({ userId: profile.id }, process.env.APP_SECRET);
+      ctx.response.cookie('token', token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+        sameSite: 'Strict',
+        secure: process.env.NODE_ENV === 'production',
+      });
+      // return the user
+      return profile;
+    }
+
+    if (args.email) {
+      // 1. Check if there is a participant auth identity with that email
+
+      const authParticipant = await ctx.db.query.authParticipant(
+        {
+          where: { email: args.email },
+        },
+        `{ id password profile {id} }`
+      );
+
+      const authEmail = await ctx.db.query.authEmail(
+        {
+          where: { email: args.email },
+        },
+        `{ id password profile {id} }`
+      );
+
+      if (!authParticipant && !authEmail) {
+        throw new Error(`No such user found for email ${email}`);
+      }
+
+      // 2. Check whether the password is correct
+      // 3. Find the profile which has this auth identity
+      let authProfile;
+      let validAuthParticipant;
+      let validAuthEmail;
+      if (authParticipant) {
+        validAuthParticipant = await bcrypt.compare(
+          args.password,
+          authParticipant.password
+        );
+        if (validAuthParticipant) {
+          authProfile = await ctx.db.query.profile(
+            {
+              where: {
+                id: authParticipant.profile.id,
+              },
+            },
+            info
+          );
+        }
+      }
+
+      if (authEmail) {
+        validAuthEmail = await bcrypt.compare(
+          args.password,
+          authEmail.password
+        );
+        if (validAuthEmail) {
+          authProfile = await ctx.db.query.profile(
+            {
+              where: {
+                id: authEmail.profile.id,
+              },
+            },
+            info
+          );
+        }
+      }
+
+      if (!validAuthParticipant && !validAuthEmail) {
+        throw new Error(`Invalid password!`);
+      }
+
+      // 3. Generate the JWT token
+      const token = jwt.sign(
+        { userId: authProfile.id },
+        process.env.APP_SECRET
+      );
+      // 4. Set the cookie with the token
+      // const isSafari = checkSafari(ctx.request.headers['user-agent']);
+      ctx.response.cookie('token', token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+        sameSite: 'Strict',
+        secure: process.env.NODE_ENV === 'production',
+      });
+      // 5. Return the user
+      return authProfile;
+    }
+
+    throw new Error(`Missing username or email`);
+  },
+
   // sign up a new user with email authentication identity
   async emailSignUp(parent, args, ctx, info) {
     args.email = args.email.toLowerCase(); // lower case email address

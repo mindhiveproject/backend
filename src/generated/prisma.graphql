@@ -1,5 +1,5 @@
-# source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Fri Jun 19 2020 11:12:50 GMT+0200 (Central European Summer Time)
+# source: https://mindhive-production-b2502bdee8.herokuapp.com/mindhive-prod/dev
+# timestamp: Mon Jun 22 2020 15:05:25 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!

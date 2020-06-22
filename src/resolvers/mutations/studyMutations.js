@@ -139,7 +139,7 @@ const studyMutations = {
       `{ id info }`
     );
     console.log('profile', profile);
-    const information = { ...profile.info, [args.id]: args.info };
+    const information = { [args.id]: args.info, ...profile.info };
     console.log('information', information);
 
     // connect user and the class
