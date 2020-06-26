@@ -43,7 +43,7 @@ type Mutation {
   inviteSignUp(username: String!, invitedIn: ID!, image: String, largeImage: String, info: Json): Profile!
   inviteLogin(username: String!, invitedIn: ID!): Profile!
 
-  participantSignUp(username: String!, email: String, password: String!, user: Json, study: Json): Profile!
+  participantSignUp(username: String!, email: String, password: String!, user: Json, study: Json, info: Json): Profile!
   participantLogin(username: String, email: String, password: String!, user: Json, study: Json): Profile!
   participantRequestReset(email: String!): SuccessMessage
   participantResetPassword(resetToken: String!, password: String!, confirmPassword: String!): Profile!

@@ -41,6 +41,7 @@ const participantsMutations = {
         data: {
           username: args.username,
           permissions: { set: ['PARTICIPANT'] },
+          info: { general: args.info },
         },
       },
       `{ id }`
@@ -75,12 +76,15 @@ const participantsMutations = {
           id: profile.id,
         },
       },
-      `{ id username permissions }`
+      `{ id username permissions info}`
     );
 
     // join a study if there is a study to join (user, study are present in the args)
     if (args.study && args.user) {
-      const information = { [args.study.id]: args.user };
+      const information = {
+        ...updatedProfile.info,
+        [args.study.id]: args.user,
+      };
       await ctx.db.mutation.updateProfile(
         {
           data: {
