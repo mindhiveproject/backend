@@ -1,11 +1,12 @@
 const resultsMutations = {
   // submit a new result from open API
   async submitResultFromAPI(parent, args, ctx, info) {
+    // console.log('args', args);
     const messageId = args.metadata && args.metadata.id;
     const payload = args.metadata && args.metadata.payload;
     const token = `${payload.slice(0, 4)}-${messageId}`;
-    // console.log('args', args);
-    console.log('args.studyId', args.studyId);
+
+    // console.log('args.studyId', args.studyId);
     const result = await ctx.db.query.result({
       where: {
         token,
@@ -19,9 +20,11 @@ const resultsMutations = {
             user: {
               connect: { id: args.userId },
             },
-            template: {
-              connect: { id: args.templateId },
-            },
+            template: args.templateId
+              ? {
+                  connect: { id: args.templateId },
+                }
+              : null,
             task: args.taskId
               ? {
                   connect: { id: args.taskId },

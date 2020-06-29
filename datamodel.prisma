@@ -101,7 +101,7 @@ type Experiment {
 
 type Result {
   id: ID! @id
-  template: Template! #relationship to Template
+  template: Template #relationship to Template
   task: Task!
   user: Profile! #relationship to Profile
   quantity: Int!

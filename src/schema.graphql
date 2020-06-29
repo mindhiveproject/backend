@@ -63,7 +63,7 @@ type Mutation {
 
   addResult(templateId: ID!, data: Json, dataPolicy: String): Result!
   deleteResult(id: ID!): Result
-  submitResultFromAPI(userId: ID!, templateId: ID!, taskId: ID, studyId: ID, data: Json, metadata: Json, dataPolicy: String): SuccessMessage
+  submitResultFromAPI(userId: ID!, templateId: ID, taskId: ID, studyId: ID, data: Json, metadata: Json, dataPolicy: String): SuccessMessage
 
   createParameter(title: String!, experimentId: ID!, data: Json, settings: Json): Parameter!
   updateParameter(id: ID!, title: String, data: Json, settings: Json): Parameter!

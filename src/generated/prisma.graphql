@@ -1,5 +1,5 @@
-# source: https://mindhive-production-b2502bdee8.herokuapp.com/mindhive-prod/dev
-# timestamp: Mon Jun 22 2020 15:05:25 GMT+0200 (Central European Summer Time)
+# source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
+# timestamp: Mon Jun 29 2020 17:32:08 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -3406,9 +3406,9 @@ scalar Long
 
 type Mutation {
   createAuthEmail(data: AuthEmailCreateInput!): AuthEmail!
+  createAuthParticipant(data: AuthParticipantCreateInput!): AuthParticipant!
   createAuthToken(data: AuthTokenCreateInput!): AuthToken!
   createAuthInvite(data: AuthInviteCreateInput!): AuthInvite!
-  createAuthParticipant(data: AuthParticipantCreateInput!): AuthParticipant!
   createSchool(data: SchoolCreateInput!): School!
   createClass(data: ClassCreateInput!): Class!
   createExperiment(data: ExperimentCreateInput!): Experiment!
@@ -3419,9 +3419,9 @@ type Mutation {
   createTask(data: TaskCreateInput!): Task!
   createProfile(data: ProfileCreateInput!): Profile!
   updateAuthEmail(data: AuthEmailUpdateInput!, where: AuthEmailWhereUniqueInput!): AuthEmail
+  updateAuthParticipant(data: AuthParticipantUpdateInput!, where: AuthParticipantWhereUniqueInput!): AuthParticipant
   updateAuthToken(data: AuthTokenUpdateInput!, where: AuthTokenWhereUniqueInput!): AuthToken
   updateAuthInvite(data: AuthInviteUpdateInput!, where: AuthInviteWhereUniqueInput!): AuthInvite
-  updateAuthParticipant(data: AuthParticipantUpdateInput!, where: AuthParticipantWhereUniqueInput!): AuthParticipant
   updateSchool(data: SchoolUpdateInput!, where: SchoolWhereUniqueInput!): School
   updateClass(data: ClassUpdateInput!, where: ClassWhereUniqueInput!): Class
   updateExperiment(data: ExperimentUpdateInput!, where: ExperimentWhereUniqueInput!): Experiment
@@ -3432,9 +3432,9 @@ type Mutation {
   updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task
   updateProfile(data: ProfileUpdateInput!, where: ProfileWhereUniqueInput!): Profile
   deleteAuthEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
+  deleteAuthParticipant(where: AuthParticipantWhereUniqueInput!): AuthParticipant
   deleteAuthToken(where: AuthTokenWhereUniqueInput!): AuthToken
   deleteAuthInvite(where: AuthInviteWhereUniqueInput!): AuthInvite
-  deleteAuthParticipant(where: AuthParticipantWhereUniqueInput!): AuthParticipant
   deleteSchool(where: SchoolWhereUniqueInput!): School
   deleteClass(where: ClassWhereUniqueInput!): Class
   deleteExperiment(where: ExperimentWhereUniqueInput!): Experiment
@@ -3445,9 +3445,9 @@ type Mutation {
   deleteTask(where: TaskWhereUniqueInput!): Task
   deleteProfile(where: ProfileWhereUniqueInput!): Profile
   upsertAuthEmail(where: AuthEmailWhereUniqueInput!, create: AuthEmailCreateInput!, update: AuthEmailUpdateInput!): AuthEmail!
+  upsertAuthParticipant(where: AuthParticipantWhereUniqueInput!, create: AuthParticipantCreateInput!, update: AuthParticipantUpdateInput!): AuthParticipant!
   upsertAuthToken(where: AuthTokenWhereUniqueInput!, create: AuthTokenCreateInput!, update: AuthTokenUpdateInput!): AuthToken!
   upsertAuthInvite(where: AuthInviteWhereUniqueInput!, create: AuthInviteCreateInput!, update: AuthInviteUpdateInput!): AuthInvite!
-  upsertAuthParticipant(where: AuthParticipantWhereUniqueInput!, create: AuthParticipantCreateInput!, update: AuthParticipantUpdateInput!): AuthParticipant!
   upsertSchool(where: SchoolWhereUniqueInput!, create: SchoolCreateInput!, update: SchoolUpdateInput!): School!
   upsertClass(where: ClassWhereUniqueInput!, create: ClassCreateInput!, update: ClassUpdateInput!): Class!
   upsertExperiment(where: ExperimentWhereUniqueInput!, create: ExperimentCreateInput!, update: ExperimentUpdateInput!): Experiment!
@@ -3458,8 +3458,8 @@ type Mutation {
   upsertTask(where: TaskWhereUniqueInput!, create: TaskCreateInput!, update: TaskUpdateInput!): Task!
   upsertProfile(where: ProfileWhereUniqueInput!, create: ProfileCreateInput!, update: ProfileUpdateInput!): Profile!
   updateManyAuthEmails(data: AuthEmailUpdateManyMutationInput!, where: AuthEmailWhereInput): BatchPayload!
-  updateManyAuthTokens(data: AuthTokenUpdateManyMutationInput!, where: AuthTokenWhereInput): BatchPayload!
   updateManyAuthParticipants(data: AuthParticipantUpdateManyMutationInput!, where: AuthParticipantWhereInput): BatchPayload!
+  updateManyAuthTokens(data: AuthTokenUpdateManyMutationInput!, where: AuthTokenWhereInput): BatchPayload!
   updateManySchools(data: SchoolUpdateManyMutationInput!, where: SchoolWhereInput): BatchPayload!
   updateManyClasses(data: ClassUpdateManyMutationInput!, where: ClassWhereInput): BatchPayload!
   updateManyExperiments(data: ExperimentUpdateManyMutationInput!, where: ExperimentWhereInput): BatchPayload!
@@ -3470,9 +3470,9 @@ type Mutation {
   updateManyTasks(data: TaskUpdateManyMutationInput!, where: TaskWhereInput): BatchPayload!
   updateManyProfiles(data: ProfileUpdateManyMutationInput!, where: ProfileWhereInput): BatchPayload!
   deleteManyAuthEmails(where: AuthEmailWhereInput): BatchPayload!
+  deleteManyAuthParticipants(where: AuthParticipantWhereInput): BatchPayload!
   deleteManyAuthTokens(where: AuthTokenWhereInput): BatchPayload!
   deleteManyAuthInvites(where: AuthInviteWhereInput): BatchPayload!
-  deleteManyAuthParticipants(where: AuthParticipantWhereInput): BatchPayload!
   deleteManySchools(where: SchoolWhereInput): BatchPayload!
   deleteManyClasses(where: ClassWhereInput): BatchPayload!
   deleteManyExperiments(where: ExperimentWhereInput): BatchPayload!
@@ -5011,9 +5011,9 @@ input ProfileWhereUniqueInput {
 
 type Query {
   authEmails(where: AuthEmailWhereInput, orderBy: AuthEmailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthEmail]!
+  authParticipants(where: AuthParticipantWhereInput, orderBy: AuthParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthParticipant]!
   authTokens(where: AuthTokenWhereInput, orderBy: AuthTokenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthToken]!
   authInvites(where: AuthInviteWhereInput, orderBy: AuthInviteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthInvite]!
-  authParticipants(where: AuthParticipantWhereInput, orderBy: AuthParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthParticipant]!
   schools(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [School]!
   classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class]!
   experiments(where: ExperimentWhereInput, orderBy: ExperimentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Experiment]!
@@ -5024,9 +5024,9 @@ type Query {
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task]!
   profiles(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile]!
   authEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
+  authParticipant(where: AuthParticipantWhereUniqueInput!): AuthParticipant
   authToken(where: AuthTokenWhereUniqueInput!): AuthToken
   authInvite(where: AuthInviteWhereUniqueInput!): AuthInvite
-  authParticipant(where: AuthParticipantWhereUniqueInput!): AuthParticipant
   school(where: SchoolWhereUniqueInput!): School
   class(where: ClassWhereUniqueInput!): Class
   experiment(where: ExperimentWhereUniqueInput!): Experiment
@@ -5037,9 +5037,9 @@ type Query {
   task(where: TaskWhereUniqueInput!): Task
   profile(where: ProfileWhereUniqueInput!): Profile
   authEmailsConnection(where: AuthEmailWhereInput, orderBy: AuthEmailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthEmailConnection!
+  authParticipantsConnection(where: AuthParticipantWhereInput, orderBy: AuthParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthParticipantConnection!
   authTokensConnection(where: AuthTokenWhereInput, orderBy: AuthTokenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthTokenConnection!
   authInvitesConnection(where: AuthInviteWhereInput, orderBy: AuthInviteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthInviteConnection!
-  authParticipantsConnection(where: AuthParticipantWhereInput, orderBy: AuthParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthParticipantConnection!
   schoolsConnection(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SchoolConnection!
   classesConnection(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClassConnection!
   experimentsConnection(where: ExperimentWhereInput, orderBy: ExperimentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExperimentConnection!
@@ -5059,7 +5059,7 @@ type Query {
 
 type Result implements Node {
   id: ID!
-  template: Template!
+  template: Template
   task: Task!
   user: Profile!
   quantity: Int!
@@ -5089,7 +5089,7 @@ input ResultCreateInput {
   dataPolicy: String
   token: String
   payload: String
-  template: TemplateCreateOneInput!
+  template: TemplateCreateOneInput
   task: TaskCreateOneInput!
   user: ProfileCreateOneWithoutResultsInput!
   study: StudyCreateOneInput
@@ -5107,7 +5107,7 @@ input ResultCreateWithoutUserInput {
   dataPolicy: String
   token: String
   payload: String
-  template: TemplateCreateOneInput!
+  template: TemplateCreateOneInput
   task: TaskCreateOneInput!
   study: StudyCreateOneInput
 }
@@ -5433,7 +5433,7 @@ input ResultUpdateInput {
   dataPolicy: String
   token: String
   payload: String
-  template: TemplateUpdateOneRequiredInput
+  template: TemplateUpdateOneInput
   task: TaskUpdateOneRequiredInput
   user: ProfileUpdateOneRequiredWithoutResultsInput
   study: StudyUpdateOneInput
@@ -5478,7 +5478,7 @@ input ResultUpdateWithoutUserDataInput {
   dataPolicy: String
   token: String
   payload: String
-  template: TemplateUpdateOneRequiredInput
+  template: TemplateUpdateOneInput
   task: TaskUpdateOneRequiredInput
   study: StudyUpdateOneInput
 }
@@ -7117,9 +7117,9 @@ input StudyWhereUniqueInput {
 
 type Subscription {
   authEmail(where: AuthEmailSubscriptionWhereInput): AuthEmailSubscriptionPayload
+  authParticipant(where: AuthParticipantSubscriptionWhereInput): AuthParticipantSubscriptionPayload
   authToken(where: AuthTokenSubscriptionWhereInput): AuthTokenSubscriptionPayload
   authInvite(where: AuthInviteSubscriptionWhereInput): AuthInviteSubscriptionPayload
-  authParticipant(where: AuthParticipantSubscriptionWhereInput): AuthParticipantSubscriptionPayload
   school(where: SchoolSubscriptionWhereInput): SchoolSubscriptionPayload
   class(where: ClassSubscriptionWhereInput): ClassSubscriptionPayload
   experiment(where: ExperimentSubscriptionWhereInput): ExperimentSubscriptionPayload
@@ -8109,9 +8109,11 @@ input TemplateUpdateManyMutationInput {
   settings: Json
 }
 
-input TemplateUpdateOneRequiredInput {
+input TemplateUpdateOneInput {
   create: TemplateCreateInput
   connect: TemplateWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
   update: TemplateUpdateDataInput
   upsert: TemplateUpsertNestedInput
 }
