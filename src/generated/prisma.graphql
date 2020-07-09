@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Mon Jun 29 2020 17:32:08 GMT+0200 (Central European Summer Time)
+# timestamp: Tue Jul 07 2020 13:58:39 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -55,11 +55,12 @@ type AggregateTemplate {
 
 type AuthEmail implements Node {
   id: ID!
-  email: String!
+  email: String
   password: String!
   resetToken: String
   resetTokenExpiry: String
   profile: Profile!
+  settings: Json
 }
 
 """A connection to a list of items."""
@@ -74,10 +75,11 @@ type AuthEmailConnection {
 
 input AuthEmailCreateInput {
   id: ID
-  email: String!
+  email: String
   password: String!
   resetToken: String
   resetTokenExpiry: String
+  settings: Json
   profile: ProfileCreateOneWithoutAuthEmailInput!
 }
 
@@ -88,10 +90,11 @@ input AuthEmailCreateManyWithoutProfileInput {
 
 input AuthEmailCreateWithoutProfileInput {
   id: ID
-  email: String!
+  email: String
   password: String!
   resetToken: String
   resetTokenExpiry: String
+  settings: Json
 }
 
 """An edge in a connection."""
@@ -114,14 +117,17 @@ enum AuthEmailOrderByInput {
   resetToken_DESC
   resetTokenExpiry_ASC
   resetTokenExpiry_DESC
+  settings_ASC
+  settings_DESC
 }
 
 type AuthEmailPreviousValues {
   id: ID!
-  email: String!
+  email: String
   password: String!
   resetToken: String
   resetTokenExpiry: String
+  settings: Json
 }
 
 input AuthEmailScalarWhereInput {
@@ -379,6 +385,7 @@ input AuthEmailUpdateInput {
   password: String
   resetToken: String
   resetTokenExpiry: String
+  settings: Json
   profile: ProfileUpdateOneRequiredWithoutAuthEmailInput
 }
 
@@ -387,6 +394,7 @@ input AuthEmailUpdateManyDataInput {
   password: String
   resetToken: String
   resetTokenExpiry: String
+  settings: Json
 }
 
 input AuthEmailUpdateManyMutationInput {
@@ -394,6 +402,7 @@ input AuthEmailUpdateManyMutationInput {
   password: String
   resetToken: String
   resetTokenExpiry: String
+  settings: Json
 }
 
 input AuthEmailUpdateManyWithoutProfileInput {
@@ -418,6 +427,7 @@ input AuthEmailUpdateWithoutProfileDataInput {
   password: String
   resetToken: String
   resetTokenExpiry: String
+  settings: Json
 }
 
 input AuthEmailUpdateWithWhereUniqueWithoutProfileInput {
@@ -2030,6 +2040,7 @@ type BatchPayload {
 
 type Class implements Node {
   id: ID!
+  code: String!
   title: String!
   description: String
   image: String
@@ -2053,6 +2064,7 @@ type ClassConnection {
 
 input ClassCreateInput {
   id: ID
+  code: String!
   title: String!
   description: String
   image: String
@@ -2079,6 +2091,7 @@ input ClassCreateOneWithoutInvitesInput {
 
 input ClassCreateWithoutCreatorInput {
   id: ID
+  code: String!
   title: String!
   description: String
   image: String
@@ -2089,6 +2102,7 @@ input ClassCreateWithoutCreatorInput {
 
 input ClassCreateWithoutInvitesInput {
   id: ID
+  code: String!
   title: String!
   description: String
   image: String
@@ -2099,6 +2113,7 @@ input ClassCreateWithoutInvitesInput {
 
 input ClassCreateWithoutStudentsInput {
   id: ID
+  code: String!
   title: String!
   description: String
   image: String
@@ -2119,6 +2134,8 @@ type ClassEdge {
 enum ClassOrderByInput {
   id_ASC
   id_DESC
+  code_ASC
+  code_DESC
   title_ASC
   title_DESC
   description_ASC
@@ -2135,6 +2152,7 @@ enum ClassOrderByInput {
 
 type ClassPreviousValues {
   id: ID!
+  code: String!
   title: String!
   description: String
   image: String
@@ -2192,6 +2210,46 @@ input ClassScalarWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
+  code: String
+
+  """All values that are not equal to given value."""
+  code_not: String
+
+  """All values that are contained in given list."""
+  code_in: [String!]
+
+  """All values that are not contained in given list."""
+  code_not_in: [String!]
+
+  """All values less than the given value."""
+  code_lt: String
+
+  """All values less than or equal the given value."""
+  code_lte: String
+
+  """All values greater than the given value."""
+  code_gt: String
+
+  """All values greater than or equal the given value."""
+  code_gte: String
+
+  """All values containing the given string."""
+  code_contains: String
+
+  """All values not containing the given string."""
+  code_not_contains: String
+
+  """All values starting with the given string."""
+  code_starts_with: String
+
+  """All values not starting with the given string."""
+  code_not_starts_with: String
+
+  """All values ending with the given string."""
+  code_ends_with: String
+
+  """All values not ending with the given string."""
+  code_not_ends_with: String
   title: String
 
   """All values that are not equal to given value."""
@@ -2438,6 +2496,7 @@ input ClassSubscriptionWhereInput {
 }
 
 input ClassUpdateInput {
+  code: String
   title: String
   description: String
   image: String
@@ -2448,6 +2507,7 @@ input ClassUpdateInput {
 }
 
 input ClassUpdateManyDataInput {
+  code: String
   title: String
   description: String
   image: String
@@ -2455,6 +2515,7 @@ input ClassUpdateManyDataInput {
 }
 
 input ClassUpdateManyMutationInput {
+  code: String
   title: String
   description: String
   image: String
@@ -2498,6 +2559,7 @@ input ClassUpdateOneRequiredWithoutInvitesInput {
 }
 
 input ClassUpdateWithoutCreatorDataInput {
+  code: String
   title: String
   description: String
   image: String
@@ -2507,6 +2569,7 @@ input ClassUpdateWithoutCreatorDataInput {
 }
 
 input ClassUpdateWithoutInvitesDataInput {
+  code: String
   title: String
   description: String
   image: String
@@ -2516,6 +2579,7 @@ input ClassUpdateWithoutInvitesDataInput {
 }
 
 input ClassUpdateWithoutStudentsDataInput {
+  code: String
   title: String
   description: String
   image: String
@@ -2600,6 +2664,46 @@ input ClassWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
+  code: String
+
+  """All values that are not equal to given value."""
+  code_not: String
+
+  """All values that are contained in given list."""
+  code_in: [String!]
+
+  """All values that are not contained in given list."""
+  code_not_in: [String!]
+
+  """All values less than the given value."""
+  code_lt: String
+
+  """All values less than or equal the given value."""
+  code_lte: String
+
+  """All values greater than the given value."""
+  code_gt: String
+
+  """All values greater than or equal the given value."""
+  code_gte: String
+
+  """All values containing the given string."""
+  code_contains: String
+
+  """All values not containing the given string."""
+  code_not_contains: String
+
+  """All values starting with the given string."""
+  code_starts_with: String
+
+  """All values not starting with the given string."""
+  code_not_starts_with: String
+
+  """All values ending with the given string."""
+  code_ends_with: String
+
+  """All values not ending with the given string."""
+  code_not_ends_with: String
   title: String
 
   """All values that are not equal to given value."""
@@ -2815,6 +2919,7 @@ input ClassWhereInput {
 
 input ClassWhereUniqueInput {
   id: ID
+  code: String
 }
 
 scalar DateTime

@@ -28,11 +28,12 @@ type Profile {
 
 type AuthEmail {
   id: ID! @id
-  email: String! @unique
+  email: String @unique
   password: String!
   resetToken: String
   resetTokenExpiry: String
   profile: Profile!
+  settings: Json
 }
 
 type AuthParticipant {
@@ -72,6 +73,7 @@ type School {
 
 type Class {
   id: ID! @id
+  code: String! @unique
   title: String!
   description: String
   image: String

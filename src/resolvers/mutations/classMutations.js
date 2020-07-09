@@ -1,3 +1,5 @@
+const slugify = require('slugify');
+
 const classMutations = {
   // create new class
   async createClass(parent, args, ctx, info) {
@@ -6,6 +8,7 @@ const classMutations = {
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');
     }
+    args.code = slugify(args.title);
 
     const schoolclass = await ctx.db.mutation.createClass(
       {

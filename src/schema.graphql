@@ -28,12 +28,14 @@ type Query {
 }
 
 type Mutation {
-  login(username: String, email: String, password: String!): Profile!
+  login(usernameEmail: String!, password: String!): Profile!
+  signUp(username: String!, email: String, password: String!, user: Json, study: Json, class: Json, info: Json, permissions: [Permission]): Profile!
+  requestReset(usernameEmail: String!): SuccessMessage
 
-  emailSignUp(email: String!, password: String!, username: String!): Profile!
+  emailSignUp(email: String!, password: String!, username: String!, permissions: [Permission]): Profile!
   emailLogin(email: String!, password: String!): Profile!
   signout: SuccessMessage
-  requestReset(email: String!): SuccessMessage
+
   resetPassword(resetToken: String!, password: String!, confirmPassword: String!): Profile!
 
   tokenSignUp(username: String!, token: String!, email: String): Profile!
