@@ -8,6 +8,7 @@ type Query {
   experiments(where: ExperimentWhereInput, orderBy: ExperimentOrderByInput, skip: Int, first: Int): [Experiment]!
   class(where: ClassWhereUniqueInput): Class
   classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, first: Int): [Class]!
+  myClasses: [Class]!
   myResults: [Result]!
   result(where: ResultWhereUniqueInput): Result
   results: [Result]!

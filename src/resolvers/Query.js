@@ -73,6 +73,24 @@ const Query = {
     return ctx.db.query.classes({}, info);
   },
 
+  async myClasses(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in');
+    }
+
+    // query parameters where author is the current user
+    return ctx.db.query.classes(
+      {
+        where: {
+          creator: {
+            id: ctx.request.userId,
+          },
+        },
+      },
+      info
+    );
+  },
+
   // get only parameters of the user
   async myParameters(parent, args, ctx, info) {
     // check if the user has permission to see all users
