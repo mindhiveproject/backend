@@ -8,6 +8,7 @@ const client = new postmark.Client(process.env.MAIL_POSTMARK_CLIENT);
 const { transport, makeEmail } = require('../../mail');
 
 const participantsMutations = {
+  // this one should be deprecated, as participants sign up via a general flow
   async participantSignUp(parent, args, ctx, info) {
     // console.log('participantSignUp args', args);
     args.username = args.username.toLowerCase().trim(); // lower case username
@@ -159,246 +160,174 @@ const participantsMutations = {
 
   // login for participants
   async participantLogin(parent, args, ctx, info) {
-    if (args.username) {
-      args.username = args.username.toLowerCase().trim();
+    console.log('162 args participantLogin', args);
+
+    console.log('args', args);
+    if (args.usernameEmail) {
+      args.usernameEmail = args.usernameEmail.toLowerCase().trim();
     } else {
-      args.username = null;
+      throw new Error(`Invalid login details!`);
     }
-    if (args.email) {
-      args.email = args.email.toLowerCase().trim();
-    } else {
-      args.email = null;
-    }
-
-    if (args.email) {
-      // 1. Check if there is a email auth identity with that email
-      const authParticipant = await ctx.db.query.authParticipant(
-        {
-          where: { email: args.email },
-        },
-        `{ id password profile {id} }`
-      );
-      if (!authParticipant) {
-        throw new Error(`No such user found for email ${email}`);
-      }
-
-      // 2. Check whether the password is correct
-      const valid = await bcrypt.compare(
-        args.password,
-        authParticipant.password
-      );
-      if (!valid) {
-        throw new Error(`Invalid password!`);
-      }
-      // 3. Find the profile which has this auth identity
-      const profile = await ctx.db.query.profile(
-        {
-          where: {
-            id: authParticipant.profile.id,
-          },
-        },
-        info
-      );
-
-      // join a study if there is a study to join (user, study are present in the args)
-      console.log('args participant login', args);
-      if (args.study && args.user && Object.keys(args.user).length > 0) {
-        // do not update the info, if it is already there
-        // TODO - create a special method to update consent, but do not update for accidental reason
-        const information = { [args.study.id]: args.user, ...profile.info };
-        console.log('information', information);
-        await ctx.db.mutation.updateProfile(
-          {
-            data: {
-              participantIn: {
-                connect: {
-                  id: args.study.id,
-                },
-              },
-              info: information,
-            },
-            where: {
-              id: profile.id,
-            },
-          },
-          `{ id username permissions }`
-        );
-      }
-
-      // 3. Generate the JWT token
-      const token = jwt.sign({ userId: profile.id }, process.env.APP_SECRET);
-      // 4. Set the cookie with the token
-      // const isSafari = checkSafari(ctx.request.headers['user-agent']);
-      ctx.response.cookie('token', token, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-        sameSite: 'Strict',
-        secure: process.env.NODE_ENV === 'production',
-      });
-      // 5. Return the user
-      return profile;
-    }
-
-    if (args.username) {
-      // Find the profile which has this auth identity
-      const profile = await ctx.db.query.profile(
-        {
-          where: {
-            username: args.username,
-          },
-        },
-        info
-      );
-
-      // join a study if there is a study to join (user, study are present in the args)
-      if (args.study && args.user && Object.keys(args.user).length > 0) {
-        const information = { [args.study.id]: args.user, ...profile.info };
-        await ctx.db.mutation.updateProfile(
-          {
-            data: {
-              participantIn: {
-                connect: {
-                  id: args.study.id,
-                },
-              },
-              info: information,
-            },
-            where: {
-              id: profile.id,
-            },
-          },
-          `{ id username permissions }`
-        );
-      }
-
-      const [authParticipant] = await ctx.db.query.authParticipants(
-        {
-          where: { profile: { id: profile.id } },
-        },
-        `{ id password }`
-      );
-      if (!authParticipant) {
-        throw new Error(
-          `No such participant found for username ${args.username}`
-        );
-      }
-
-      // check password
-      const valid = await bcrypt.compare(
-        args.password,
-        authParticipant.password
-      );
-      if (!valid) {
-        throw new Error(`Invalid password!`);
-      }
-
-      const token = jwt.sign({ userId: profile.id }, process.env.APP_SECRET);
-      ctx.response.cookie('token', token, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-        sameSite: 'Strict',
-        secure: process.env.NODE_ENV === 'production',
-      });
-      // return the user
-      return profile;
-    }
-
-    throw new Error(`Missing username or email`);
-  },
-
-  async participantRequestReset(parent, args, ctx, info) {
-    // 1. Check if it is a real user
-    const authParticipant = await ctx.db.query.authParticipant({
-      where: { email: args.email },
-    });
-    if (!authParticipant) {
-      throw new Error(`There is no user with the email address ${args.email}`);
-    }
-    // 2. Set a reset token and expiry on that user
-    const randomBytesPromise = promisify(randomBytes);
-    const resetToken = (await randomBytesPromise(25)).toString('hex');
-    const resetTokenExpiry = Date.now() + 1000 * 60 * 60; // 1 hour
-    const res = await ctx.db.mutation.updateAuthParticipant({
-      where: {
-        email: args.email,
-      },
-      data: {
-        resetToken,
-        resetTokenExpiry,
-      },
-    });
-
-    const sentEmail = await client.sendEmailWithTemplate({
-      From: 'info@mindhive.science',
-      To: authParticipant.email,
-      TemplateAlias: 'password-reset',
-      TemplateModel: {
-        action_url: `${process.env.FRONTEND_URL}/reset/participant?resetToken=${resetToken}`,
-        support_url: `${process.env.FRONTEND_URL}/support`,
-        product_name: 'mindHIVE',
-      },
-    });
-    console.log('sentEmail', sentEmail);
-
-    return { message: 'Thanks' };
-  },
-
-  async participantResetPassword(parent, args, ctx, info) {
-    // 1. Check if the passwords match
-    if (args.password !== args.confirmPassword) {
-      throw new Error('Your passwords do not match!');
-    }
-    // 2. Check if the reset token is legit
-    // 3. Check if it is expired
-    const [authParticipant] = await ctx.db.query.authParticipants({
-      where: {
-        resetToken: args.resetToken,
-        resetTokenExpiry_gte: Date.now - 1000 * 60 * 60, // 1 hour
-      },
-    });
-    if (!authParticipant) {
-      throw new Error('This token is either invalid or expired.');
-    }
-    // 4. Hash new password
-    const password = await bcrypt.hash(args.password, 10);
-    // 5. Save new password, remove old reset token fields
-    const updatedAuthParticipant = await ctx.db.mutation.updateAuthParticipant(
+    let profile;
+    let storedPassword;
+    profile = await ctx.db.query.profile(
       {
         where: {
-          email: authParticipant.email,
-        },
-        data: {
-          password,
-          resetToken: null,
-          resetTokenExpiry: null,
+          username: args.usernameEmail,
         },
       },
-      `{ id profile {id} }`
+      `{ id username authEmail { id password } permissions }`
     );
-    // 6. Find a profile
-    const profile = await ctx.db.query.profile(
-      {
-        where: {
-          id: updatedAuthParticipant.profile.id,
+    // if there is no profile found, try login as an email
+    if (!profile) {
+      const authEmail = await ctx.db.query.authEmail(
+        {
+          where: { email: args.usernameEmail },
         },
-      },
-      info
-    );
+        `{ id password profile { id username permissions } }`
+      );
+      if (!authEmail) {
+        throw new Error(`No such user found for ${args.usernameEmail}`);
+      }
+      profile = authEmail.profile;
+      storedPassword = authEmail.password;
+    } else {
+      storedPassword = profile.authEmail[0].password;
+    }
 
-    // 7. Generate JWT
+    // check password
+    const valid = await bcrypt.compare(args.password, storedPassword);
+    if (!valid) {
+      throw new Error(`Invalid password!`);
+    }
+
+    // join a study if there is a study to join (user, study are present in the args)
+    if (args.study && args.user && Object.keys(args.user).length > 0) {
+      // do not update the info, if it is already there
+      // TODO - create a special method to update consent, but do not update for accidental reason
+      const information = { [args.study.id]: args.user, ...profile.info };
+      console.log('information', information);
+      await ctx.db.mutation.updateProfile(
+        {
+          data: {
+            participantIn: {
+              connect: {
+                id: args.study.id,
+              },
+            },
+            info: information,
+          },
+          where: {
+            id: profile.id,
+          },
+        },
+        `{ id username permissions }`
+      );
+    }
+
     const token = jwt.sign({ userId: profile.id }, process.env.APP_SECRET);
-    // 8. Set the JWT cookie
-    // const settings = checkSafari(ctx.request.headers['user-agent']);
-    // ctx.response.cookie('token', token, settings);
     ctx.response.cookie('token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
       sameSite: 'Strict',
       secure: process.env.NODE_ENV === 'production',
     });
-    // 8. Return the new user
     return profile;
   },
+
+  // async participantRequestReset(parent, args, ctx, info) {
+  //   // 1. Check if it is a real user
+  //   const authParticipant = await ctx.db.query.authParticipant({
+  //     where: { email: args.email },
+  //   });
+  //   if (!authParticipant) {
+  //     throw new Error(`There is no user with the email address ${args.email}`);
+  //   }
+  //   // 2. Set a reset token and expiry on that user
+  //   const randomBytesPromise = promisify(randomBytes);
+  //   const resetToken = (await randomBytesPromise(25)).toString('hex');
+  //   const resetTokenExpiry = Date.now() + 1000 * 60 * 60; // 1 hour
+  //   const res = await ctx.db.mutation.updateAuthParticipant({
+  //     where: {
+  //       email: args.email,
+  //     },
+  //     data: {
+  //       resetToken,
+  //       resetTokenExpiry,
+  //     },
+  //   });
+  //
+  //   const sentEmail = await client.sendEmailWithTemplate({
+  //     From: 'info@mindhive.science',
+  //     To: authParticipant.email,
+  //     TemplateAlias: 'password-reset',
+  //     TemplateModel: {
+  //       action_url: `${process.env.FRONTEND_URL}/reset/participant?resetToken=${resetToken}`,
+  //       support_url: `${process.env.FRONTEND_URL}/support`,
+  //       product_name: 'mindHIVE',
+  //     },
+  //   });
+  //   console.log('sentEmail', sentEmail);
+  //
+  //   return { message: 'Thanks' };
+  // },
+  //
+  // async participantResetPassword(parent, args, ctx, info) {
+  //   // 1. Check if the passwords match
+  //   if (args.password !== args.confirmPassword) {
+  //     throw new Error('Your passwords do not match!');
+  //   }
+  //   // 2. Check if the reset token is legit
+  //   // 3. Check if it is expired
+  //   const [authParticipant] = await ctx.db.query.authParticipants({
+  //     where: {
+  //       resetToken: args.resetToken,
+  //       resetTokenExpiry_gte: Date.now - 1000 * 60 * 60, // 1 hour
+  //     },
+  //   });
+  //   if (!authParticipant) {
+  //     throw new Error('This token is either invalid or expired.');
+  //   }
+  //   // 4. Hash new password
+  //   const password = await bcrypt.hash(args.password, 10);
+  //   // 5. Save new password, remove old reset token fields
+  //   const updatedAuthParticipant = await ctx.db.mutation.updateAuthParticipant(
+  //     {
+  //       where: {
+  //         email: authParticipant.email,
+  //       },
+  //       data: {
+  //         password,
+  //         resetToken: null,
+  //         resetTokenExpiry: null,
+  //       },
+  //     },
+  //     `{ id profile {id} }`
+  //   );
+  //   // 6. Find a profile
+  //   const profile = await ctx.db.query.profile(
+  //     {
+  //       where: {
+  //         id: updatedAuthParticipant.profile.id,
+  //       },
+  //     },
+  //     info
+  //   );
+  //
+  //   // 7. Generate JWT
+  //   const token = jwt.sign({ userId: profile.id }, process.env.APP_SECRET);
+  //   // 8. Set the JWT cookie
+  //   // const settings = checkSafari(ctx.request.headers['user-agent']);
+  //   // ctx.response.cookie('token', token, settings);
+  //   ctx.response.cookie('token', token, {
+  //     httpOnly: true,
+  //     maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+  //     sameSite: 'Strict',
+  //     secure: process.env.NODE_ENV === 'production',
+  //   });
+  //   // 8. Return the new user
+  //   return profile;
+  // },
 
   async participantConfirmEmail(parent, args, ctx, info) {
     const authParticipant = await ctx.db.query.authParticipant(

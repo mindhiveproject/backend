@@ -32,12 +32,15 @@ type Mutation {
   login(usernameEmail: String!, password: String!): Profile!
   signUp(username: String!, email: String, password: String!, user: Json, study: Json, class: Json, info: Json, permissions: [Permission]): Profile!
   requestReset(usernameEmail: String!): SuccessMessage
+  resetPassword(resetToken: String!, password: String!, confirmPassword: String!): Profile!
+  confirmEmail(email: String!, confirmationToken: String!): SuccessMessage
 
   emailSignUp(email: String!, password: String!, username: String!, permissions: [Permission]): Profile!
   emailLogin(email: String!, password: String!): Profile!
   signout: SuccessMessage
 
-  resetPassword(resetToken: String!, password: String!, confirmPassword: String!): Profile!
+  participantSignUp(username: String!, email: String, password: String!, user: Json, study: Json, info: Json): Profile!
+  participantLogin(usernameEmail: String!, password: String!, user: Json, study: Json): Profile!
 
   tokenSignUp(username: String!, token: String!, email: String): Profile!
   tokenLogin(username: String!): Profile!
@@ -46,10 +49,6 @@ type Mutation {
   inviteSignUp(username: String!, invitedIn: ID!, image: String, largeImage: String, info: Json): Profile!
   inviteLogin(username: String!, invitedIn: ID!): Profile!
 
-  participantSignUp(username: String!, email: String, password: String!, user: Json, study: Json, info: Json): Profile!
-  participantLogin(username: String, email: String, password: String!, user: Json, study: Json): Profile!
-  participantRequestReset(email: String!): SuccessMessage
-  participantResetPassword(resetToken: String!, password: String!, confirmPassword: String!): Profile!
   participantConfirmEmail(email: String!, confirmationToken: String!): SuccessMessage
 
   createSchool(title: String!, description: String, image: String, largeImage: String): School!
