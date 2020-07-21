@@ -44,7 +44,45 @@ const studyMutations = {
   },
 
   // update the study
-  updateStudy(parent, args, ctx, info) {
+  async updateStudy(parent, args, ctx, info) {
+    let collaborators = [];
+    if (args.collaborators && args.collaborators.length) {
+      collaborators = await Promise.all(
+        args.collaborators.map(username =>
+          ctx.db.query.profile({ where: { username } }, `{ id }`)
+        )
+      );
+      args.collaborators = [];
+      collaborators = collaborators.filter(c => c);
+    }
+
+    const study = await ctx.db.query.study(
+      {
+        where: { id: args.id },
+      },
+      `{ id collaborators { id } }`
+    );
+
+    if (
+      collaborators &&
+      study.collaborators &&
+      collaborators.length !== study.collaborators.length
+    ) {
+      // remove previous connections
+      await ctx.db.mutation.updateStudy(
+        {
+          data: {
+            collaborators: {
+              disconnect: study.collaborators,
+            },
+          },
+          where: {
+            id: args.id,
+          },
+        },
+        `{ id }`
+      );
+    }
     // take a copy of updates
     const updates = { ...args };
     // remove the ID from the updates
@@ -52,7 +90,12 @@ const studyMutations = {
     // run the update method
     return ctx.db.mutation.updateStudy(
       {
-        data: updates,
+        data: {
+          ...updates,
+          collaborators: {
+            connect: collaborators,
+          },
+        },
         where: {
           id: args.id,
         },

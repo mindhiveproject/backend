@@ -307,7 +307,7 @@ const authMutations = {
       TemplateModel: {
         action_url: `${process.env.FRONTEND_URL}/reset?t=${resetToken}`,
         support_url: `${process.env.FRONTEND_URL}/support`,
-        product_name: 'mindHIVE',
+        product_name: 'MindHive',
       },
     });
 

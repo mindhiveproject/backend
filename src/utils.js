@@ -15,3 +15,7 @@ function hasPermission(user, permissionsNeeded) {
 }
 
 exports.hasPermission = hasPermission;
+
+// collaboratorInTask: [Task]! @relation(name:"Taskcollaborator")
+
+// collaborators: [Profile]! @relation(name:"Taskcollaborator")

@@ -1,5 +1,5 @@
-# source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Tue Jul 07 2020 13:58:39 GMT+0200 (Central European Summer Time)
+# source: https://mindhive-production-b2502bdee8.herokuapp.com/mindhive-prod/dev
+# timestamp: Tue Jul 21 2020 16:22:27 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -4085,6 +4085,9 @@ type Profile implements Node {
   studentIn(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class!]
   participantIn(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study!]
   researcherIn(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study!]
+  taskCreatorIn(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task!]
+  collaboratorInStudy(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study!]
+  collaboratorInTask(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task!]
   image: String
   largeImage: String
   info: Json
@@ -4116,6 +4119,19 @@ input ProfileCreateInput {
   studentIn: ClassCreateManyWithoutStudentsInput
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+}
+
+input ProfileCreateManyWithoutCollaboratorInStudyInput {
+  create: [ProfileCreateWithoutCollaboratorInStudyInput!]
+  connect: [ProfileWhereUniqueInput!]
+}
+
+input ProfileCreateManyWithoutCollaboratorInTaskInput {
+  create: [ProfileCreateWithoutCollaboratorInTaskInput!]
+  connect: [ProfileWhereUniqueInput!]
 }
 
 input ProfileCreateManyWithoutParticipantInInput {
@@ -4163,6 +4179,11 @@ input ProfileCreateOneWithoutResultsInput {
   connect: ProfileWhereUniqueInput
 }
 
+input ProfileCreateOneWithoutTaskCreatorInInput {
+  create: ProfileCreateWithoutTaskCreatorInInput
+  connect: ProfileWhereUniqueInput
+}
+
 input ProfileCreateOneWithoutTeacherInInput {
   create: ProfileCreateWithoutTeacherInInput
   connect: ProfileWhereUniqueInput
@@ -4187,6 +4208,9 @@ input ProfileCreateWithoutAuthEmailInput {
   studentIn: ClassCreateManyWithoutStudentsInput
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
 }
 
 input ProfileCreateWithoutAuthInviteInput {
@@ -4204,6 +4228,9 @@ input ProfileCreateWithoutAuthInviteInput {
   studentIn: ClassCreateManyWithoutStudentsInput
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
 }
 
 input ProfileCreateWithoutAuthParticipantInput {
@@ -4221,6 +4248,9 @@ input ProfileCreateWithoutAuthParticipantInput {
   studentIn: ClassCreateManyWithoutStudentsInput
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
 }
 
 input ProfileCreateWithoutAuthTokenInput {
@@ -4238,6 +4268,49 @@ input ProfileCreateWithoutAuthTokenInput {
   studentIn: ClassCreateManyWithoutStudentsInput
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+}
+
+input ProfileCreateWithoutCollaboratorInStudyInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+}
+
+input ProfileCreateWithoutCollaboratorInTaskInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
 }
 
 input ProfileCreateWithoutParticipantInInput {
@@ -4255,6 +4328,9 @@ input ProfileCreateWithoutParticipantInInput {
   teacherIn: ClassCreateManyWithoutCreatorInput
   studentIn: ClassCreateManyWithoutStudentsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
 }
 
 input ProfileCreateWithoutResearcherInInput {
@@ -4272,6 +4348,9 @@ input ProfileCreateWithoutResearcherInInput {
   teacherIn: ClassCreateManyWithoutCreatorInput
   studentIn: ClassCreateManyWithoutStudentsInput
   participantIn: StudyCreateManyWithoutParticipantsInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
 }
 
 input ProfileCreateWithoutResultsInput {
@@ -4289,6 +4368,9 @@ input ProfileCreateWithoutResultsInput {
   studentIn: ClassCreateManyWithoutStudentsInput
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
 }
 
 input ProfileCreateWithoutStudentInInput {
@@ -4306,6 +4388,29 @@ input ProfileCreateWithoutStudentInInput {
   teacherIn: ClassCreateManyWithoutCreatorInput
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+}
+
+input ProfileCreateWithoutTaskCreatorInInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
 }
 
 input ProfileCreateWithoutTeacherInInput {
@@ -4323,6 +4428,9 @@ input ProfileCreateWithoutTeacherInInput {
   studentIn: ClassCreateManyWithoutStudentsInput
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
 }
 
 """An edge in a connection."""
@@ -4581,6 +4689,9 @@ input ProfileUpdateDataInput {
   studentIn: ClassUpdateManyWithoutStudentsInput
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
 }
 
 input ProfileUpdateInput {
@@ -4598,6 +4709,9 @@ input ProfileUpdateInput {
   studentIn: ClassUpdateManyWithoutStudentsInput
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
 }
 
 input ProfileUpdateManyDataInput {
@@ -4614,6 +4728,30 @@ input ProfileUpdateManyMutationInput {
   largeImage: String
   info: Json
   permissions: ProfileUpdatepermissionsInput
+}
+
+input ProfileUpdateManyWithoutCollaboratorInStudyInput {
+  create: [ProfileCreateWithoutCollaboratorInStudyInput!]
+  connect: [ProfileWhereUniqueInput!]
+  set: [ProfileWhereUniqueInput!]
+  disconnect: [ProfileWhereUniqueInput!]
+  delete: [ProfileWhereUniqueInput!]
+  update: [ProfileUpdateWithWhereUniqueWithoutCollaboratorInStudyInput!]
+  updateMany: [ProfileUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProfileScalarWhereInput!]
+  upsert: [ProfileUpsertWithWhereUniqueWithoutCollaboratorInStudyInput!]
+}
+
+input ProfileUpdateManyWithoutCollaboratorInTaskInput {
+  create: [ProfileCreateWithoutCollaboratorInTaskInput!]
+  connect: [ProfileWhereUniqueInput!]
+  set: [ProfileWhereUniqueInput!]
+  disconnect: [ProfileWhereUniqueInput!]
+  delete: [ProfileWhereUniqueInput!]
+  update: [ProfileUpdateWithWhereUniqueWithoutCollaboratorInTaskInput!]
+  updateMany: [ProfileUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProfileScalarWhereInput!]
+  upsert: [ProfileUpsertWithWhereUniqueWithoutCollaboratorInTaskInput!]
 }
 
 input ProfileUpdateManyWithoutParticipantInInput {
@@ -4694,6 +4832,13 @@ input ProfileUpdateOneRequiredWithoutResultsInput {
   upsert: ProfileUpsertWithoutResultsInput
 }
 
+input ProfileUpdateOneRequiredWithoutTaskCreatorInInput {
+  create: ProfileCreateWithoutTaskCreatorInInput
+  connect: ProfileWhereUniqueInput
+  update: ProfileUpdateWithoutTaskCreatorInDataInput
+  upsert: ProfileUpsertWithoutTaskCreatorInInput
+}
+
 input ProfileUpdateOneRequiredWithoutTeacherInInput {
   create: ProfileCreateWithoutTeacherInInput
   connect: ProfileWhereUniqueInput
@@ -4719,6 +4864,9 @@ input ProfileUpdateWithoutAuthEmailDataInput {
   studentIn: ClassUpdateManyWithoutStudentsInput
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
 }
 
 input ProfileUpdateWithoutAuthInviteDataInput {
@@ -4735,6 +4883,9 @@ input ProfileUpdateWithoutAuthInviteDataInput {
   studentIn: ClassUpdateManyWithoutStudentsInput
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
 }
 
 input ProfileUpdateWithoutAuthParticipantDataInput {
@@ -4751,6 +4902,9 @@ input ProfileUpdateWithoutAuthParticipantDataInput {
   studentIn: ClassUpdateManyWithoutStudentsInput
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
 }
 
 input ProfileUpdateWithoutAuthTokenDataInput {
@@ -4767,6 +4921,47 @@ input ProfileUpdateWithoutAuthTokenDataInput {
   studentIn: ClassUpdateManyWithoutStudentsInput
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+}
+
+input ProfileUpdateWithoutCollaboratorInStudyDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+}
+
+input ProfileUpdateWithoutCollaboratorInTaskDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
 }
 
 input ProfileUpdateWithoutParticipantInDataInput {
@@ -4783,6 +4978,9 @@ input ProfileUpdateWithoutParticipantInDataInput {
   teacherIn: ClassUpdateManyWithoutCreatorInput
   studentIn: ClassUpdateManyWithoutStudentsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
 }
 
 input ProfileUpdateWithoutResearcherInDataInput {
@@ -4799,6 +4997,9 @@ input ProfileUpdateWithoutResearcherInDataInput {
   teacherIn: ClassUpdateManyWithoutCreatorInput
   studentIn: ClassUpdateManyWithoutStudentsInput
   participantIn: StudyUpdateManyWithoutParticipantsInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
 }
 
 input ProfileUpdateWithoutResultsDataInput {
@@ -4815,6 +5016,9 @@ input ProfileUpdateWithoutResultsDataInput {
   studentIn: ClassUpdateManyWithoutStudentsInput
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
 }
 
 input ProfileUpdateWithoutStudentInDataInput {
@@ -4831,6 +5035,28 @@ input ProfileUpdateWithoutStudentInDataInput {
   teacherIn: ClassUpdateManyWithoutCreatorInput
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+}
+
+input ProfileUpdateWithoutTaskCreatorInDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
 }
 
 input ProfileUpdateWithoutTeacherInDataInput {
@@ -4847,6 +5073,19 @@ input ProfileUpdateWithoutTeacherInDataInput {
   studentIn: ClassUpdateManyWithoutStudentsInput
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+}
+
+input ProfileUpdateWithWhereUniqueWithoutCollaboratorInStudyInput {
+  where: ProfileWhereUniqueInput!
+  data: ProfileUpdateWithoutCollaboratorInStudyDataInput!
+}
+
+input ProfileUpdateWithWhereUniqueWithoutCollaboratorInTaskInput {
+  where: ProfileWhereUniqueInput!
+  data: ProfileUpdateWithoutCollaboratorInTaskDataInput!
 }
 
 input ProfileUpdateWithWhereUniqueWithoutParticipantInInput {
@@ -4894,9 +5133,26 @@ input ProfileUpsertWithoutResultsInput {
   create: ProfileCreateWithoutResultsInput!
 }
 
+input ProfileUpsertWithoutTaskCreatorInInput {
+  update: ProfileUpdateWithoutTaskCreatorInDataInput!
+  create: ProfileCreateWithoutTaskCreatorInInput!
+}
+
 input ProfileUpsertWithoutTeacherInInput {
   update: ProfileUpdateWithoutTeacherInDataInput!
   create: ProfileCreateWithoutTeacherInInput!
+}
+
+input ProfileUpsertWithWhereUniqueWithoutCollaboratorInStudyInput {
+  where: ProfileWhereUniqueInput!
+  update: ProfileUpdateWithoutCollaboratorInStudyDataInput!
+  create: ProfileCreateWithoutCollaboratorInStudyInput!
+}
+
+input ProfileUpsertWithWhereUniqueWithoutCollaboratorInTaskInput {
+  where: ProfileWhereUniqueInput!
+  update: ProfileUpdateWithoutCollaboratorInTaskDataInput!
+  create: ProfileCreateWithoutCollaboratorInTaskInput!
 }
 
 input ProfileUpsertWithWhereUniqueWithoutParticipantInInput {
@@ -5107,6 +5363,15 @@ input ProfileWhereInput {
   researcherIn_every: StudyWhereInput
   researcherIn_some: StudyWhereInput
   researcherIn_none: StudyWhereInput
+  taskCreatorIn_every: TaskWhereInput
+  taskCreatorIn_some: TaskWhereInput
+  taskCreatorIn_none: TaskWhereInput
+  collaboratorInStudy_every: StudyWhereInput
+  collaboratorInStudy_some: StudyWhereInput
+  collaboratorInStudy_none: StudyWhereInput
+  collaboratorInTask_every: TaskWhereInput
+  collaboratorInTask_some: TaskWhereInput
+  collaboratorInTask_none: TaskWhereInput
 }
 
 input ProfileWhereUniqueInput {
@@ -6240,6 +6505,7 @@ type Study implements Node {
   image: String
   largeImage: String
   info: Json
+  collaborators(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
 }
 
 """A connection to a list of items."""
@@ -6265,10 +6531,16 @@ input StudyCreateInput {
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
+  collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
 }
 
 input StudyCreateManyWithoutAuthorInput {
   create: [StudyCreateWithoutAuthorInput!]
+  connect: [StudyWhereUniqueInput!]
+}
+
+input StudyCreateManyWithoutCollaboratorsInput {
+  create: [StudyCreateWithoutCollaboratorsInput!]
   connect: [StudyWhereUniqueInput!]
 }
 
@@ -6294,6 +6566,22 @@ input StudyCreateWithoutAuthorInput {
   info: Json
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
+  collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
+}
+
+input StudyCreateWithoutCollaboratorsInput {
+  id: ID
+  title: String!
+  slug: String!
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  author: ProfileCreateOneWithoutResearcherInInput!
+  tasks: TaskCreateManyInput
+  participants: ProfileCreateManyWithoutParticipantInInput
 }
 
 input StudyCreateWithoutParticipantsInput {
@@ -6308,6 +6596,7 @@ input StudyCreateWithoutParticipantsInput {
   info: Json
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
+  collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
 }
 
 """An edge in a connection."""
@@ -6744,6 +7033,7 @@ input StudyUpdateDataInput {
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
 }
 
 input StudyUpdateInput {
@@ -6758,6 +7048,7 @@ input StudyUpdateInput {
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
 }
 
 input StudyUpdateManyDataInput {
@@ -6792,6 +7083,18 @@ input StudyUpdateManyWithoutAuthorInput {
   updateMany: [StudyUpdateManyWithWhereNestedInput!]
   deleteMany: [StudyScalarWhereInput!]
   upsert: [StudyUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input StudyUpdateManyWithoutCollaboratorsInput {
+  create: [StudyCreateWithoutCollaboratorsInput!]
+  connect: [StudyWhereUniqueInput!]
+  set: [StudyWhereUniqueInput!]
+  disconnect: [StudyWhereUniqueInput!]
+  delete: [StudyWhereUniqueInput!]
+  update: [StudyUpdateWithWhereUniqueWithoutCollaboratorsInput!]
+  updateMany: [StudyUpdateManyWithWhereNestedInput!]
+  deleteMany: [StudyScalarWhereInput!]
+  upsert: [StudyUpsertWithWhereUniqueWithoutCollaboratorsInput!]
 }
 
 input StudyUpdateManyWithoutParticipantsInput {
@@ -6831,6 +7134,21 @@ input StudyUpdateWithoutAuthorDataInput {
   info: Json
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
+}
+
+input StudyUpdateWithoutCollaboratorsDataInput {
+  title: String
+  slug: String
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  author: ProfileUpdateOneRequiredWithoutResearcherInInput
+  tasks: TaskUpdateManyInput
+  participants: ProfileUpdateManyWithoutParticipantInInput
 }
 
 input StudyUpdateWithoutParticipantsDataInput {
@@ -6844,11 +7162,17 @@ input StudyUpdateWithoutParticipantsDataInput {
   info: Json
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
 }
 
 input StudyUpdateWithWhereUniqueWithoutAuthorInput {
   where: StudyWhereUniqueInput!
   data: StudyUpdateWithoutAuthorDataInput!
+}
+
+input StudyUpdateWithWhereUniqueWithoutCollaboratorsInput {
+  where: StudyWhereUniqueInput!
+  data: StudyUpdateWithoutCollaboratorsDataInput!
 }
 
 input StudyUpdateWithWhereUniqueWithoutParticipantsInput {
@@ -6865,6 +7189,12 @@ input StudyUpsertWithWhereUniqueWithoutAuthorInput {
   where: StudyWhereUniqueInput!
   update: StudyUpdateWithoutAuthorDataInput!
   create: StudyCreateWithoutAuthorInput!
+}
+
+input StudyUpsertWithWhereUniqueWithoutCollaboratorsInput {
+  where: StudyWhereUniqueInput!
+  update: StudyUpdateWithoutCollaboratorsDataInput!
+  create: StudyCreateWithoutCollaboratorsInput!
 }
 
 input StudyUpsertWithWhereUniqueWithoutParticipantsInput {
@@ -7213,6 +7543,9 @@ input StudyWhereInput {
   participants_every: ProfileWhereInput
   participants_some: ProfileWhereInput
   participants_none: ProfileWhereInput
+  collaborators_every: ProfileWhereInput
+  collaborators_some: ProfileWhereInput
+  collaborators_none: ProfileWhereInput
 }
 
 input StudyWhereUniqueInput {
@@ -7248,6 +7581,7 @@ type Task implements Node {
   link: String
   createdAt: DateTime!
   updatedAt: DateTime!
+  collaborators(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
 }
 
 """A connection to a list of items."""
@@ -7269,11 +7603,22 @@ input TaskCreateInput {
   settings: Json
   link: String
   template: TemplateCreateOneWithoutTasksInput
-  author: ProfileCreateOneInput!
+  author: ProfileCreateOneWithoutTaskCreatorInInput!
+  collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
 }
 
 input TaskCreateManyInput {
   create: [TaskCreateInput!]
+  connect: [TaskWhereUniqueInput!]
+}
+
+input TaskCreateManyWithoutAuthorInput {
+  create: [TaskCreateWithoutAuthorInput!]
+  connect: [TaskWhereUniqueInput!]
+}
+
+input TaskCreateManyWithoutCollaboratorsInput {
+  create: [TaskCreateWithoutCollaboratorsInput!]
   connect: [TaskWhereUniqueInput!]
 }
 
@@ -7287,6 +7632,30 @@ input TaskCreateOneInput {
   connect: TaskWhereUniqueInput
 }
 
+input TaskCreateWithoutAuthorInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  parameters: Json
+  settings: Json
+  link: String
+  template: TemplateCreateOneWithoutTasksInput
+  collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
+}
+
+input TaskCreateWithoutCollaboratorsInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  parameters: Json
+  settings: Json
+  link: String
+  template: TemplateCreateOneWithoutTasksInput
+  author: ProfileCreateOneWithoutTaskCreatorInInput!
+}
+
 input TaskCreateWithoutTemplateInput {
   id: ID
   title: String!
@@ -7295,7 +7664,8 @@ input TaskCreateWithoutTemplateInput {
   parameters: Json
   settings: Json
   link: String
-  author: ProfileCreateOneInput!
+  author: ProfileCreateOneWithoutTaskCreatorInInput!
+  collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
 }
 
 """An edge in a connection."""
@@ -7642,7 +8012,8 @@ input TaskUpdateDataInput {
   settings: Json
   link: String
   template: TemplateUpdateOneWithoutTasksInput
-  author: ProfileUpdateOneRequiredInput
+  author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
 }
 
 input TaskUpdateInput {
@@ -7653,7 +8024,8 @@ input TaskUpdateInput {
   settings: Json
   link: String
   template: TemplateUpdateOneWithoutTasksInput
-  author: ProfileUpdateOneRequiredInput
+  author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
 }
 
 input TaskUpdateManyDataInput {
@@ -7686,6 +8058,30 @@ input TaskUpdateManyMutationInput {
   link: String
 }
 
+input TaskUpdateManyWithoutAuthorInput {
+  create: [TaskCreateWithoutAuthorInput!]
+  connect: [TaskWhereUniqueInput!]
+  set: [TaskWhereUniqueInput!]
+  disconnect: [TaskWhereUniqueInput!]
+  delete: [TaskWhereUniqueInput!]
+  update: [TaskUpdateWithWhereUniqueWithoutAuthorInput!]
+  updateMany: [TaskUpdateManyWithWhereNestedInput!]
+  deleteMany: [TaskScalarWhereInput!]
+  upsert: [TaskUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input TaskUpdateManyWithoutCollaboratorsInput {
+  create: [TaskCreateWithoutCollaboratorsInput!]
+  connect: [TaskWhereUniqueInput!]
+  set: [TaskWhereUniqueInput!]
+  disconnect: [TaskWhereUniqueInput!]
+  delete: [TaskWhereUniqueInput!]
+  update: [TaskUpdateWithWhereUniqueWithoutCollaboratorsInput!]
+  updateMany: [TaskUpdateManyWithWhereNestedInput!]
+  deleteMany: [TaskScalarWhereInput!]
+  upsert: [TaskUpsertWithWhereUniqueWithoutCollaboratorsInput!]
+}
+
 input TaskUpdateManyWithoutTemplateInput {
   create: [TaskCreateWithoutTemplateInput!]
   connect: [TaskWhereUniqueInput!]
@@ -7710,6 +8106,28 @@ input TaskUpdateOneRequiredInput {
   upsert: TaskUpsertNestedInput
 }
 
+input TaskUpdateWithoutAuthorDataInput {
+  title: String
+  slug: String
+  description: String
+  parameters: Json
+  settings: Json
+  link: String
+  template: TemplateUpdateOneWithoutTasksInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
+}
+
+input TaskUpdateWithoutCollaboratorsDataInput {
+  title: String
+  slug: String
+  description: String
+  parameters: Json
+  settings: Json
+  link: String
+  template: TemplateUpdateOneWithoutTasksInput
+  author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
+}
+
 input TaskUpdateWithoutTemplateDataInput {
   title: String
   slug: String
@@ -7717,12 +8135,23 @@ input TaskUpdateWithoutTemplateDataInput {
   parameters: Json
   settings: Json
   link: String
-  author: ProfileUpdateOneRequiredInput
+  author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
 }
 
 input TaskUpdateWithWhereUniqueNestedInput {
   where: TaskWhereUniqueInput!
   data: TaskUpdateDataInput!
+}
+
+input TaskUpdateWithWhereUniqueWithoutAuthorInput {
+  where: TaskWhereUniqueInput!
+  data: TaskUpdateWithoutAuthorDataInput!
+}
+
+input TaskUpdateWithWhereUniqueWithoutCollaboratorsInput {
+  where: TaskWhereUniqueInput!
+  data: TaskUpdateWithoutCollaboratorsDataInput!
 }
 
 input TaskUpdateWithWhereUniqueWithoutTemplateInput {
@@ -7739,6 +8168,18 @@ input TaskUpsertWithWhereUniqueNestedInput {
   where: TaskWhereUniqueInput!
   update: TaskUpdateDataInput!
   create: TaskCreateInput!
+}
+
+input TaskUpsertWithWhereUniqueWithoutAuthorInput {
+  where: TaskWhereUniqueInput!
+  update: TaskUpdateWithoutAuthorDataInput!
+  create: TaskCreateWithoutAuthorInput!
+}
+
+input TaskUpsertWithWhereUniqueWithoutCollaboratorsInput {
+  where: TaskWhereUniqueInput!
+  update: TaskUpdateWithoutCollaboratorsDataInput!
+  create: TaskCreateWithoutCollaboratorsInput!
 }
 
 input TaskUpsertWithWhereUniqueWithoutTemplateInput {
@@ -8002,6 +8443,9 @@ input TaskWhereInput {
   updatedAt_gte: DateTime
   template: TemplateWhereInput
   author: ProfileWhereInput
+  collaborators_every: ProfileWhereInput
+  collaborators_some: ProfileWhereInput
+  collaborators_none: ProfileWhereInput
 }
 
 input TaskWhereUniqueInput {

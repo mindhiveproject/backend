@@ -21,6 +21,9 @@ type Profile {
   studentIn: [Class]! @relation(name:"Studentofclass")
   participantIn: [Study]! @relation(name:"Participantofstudy")
   researcherIn: [Study]! @relation(name:"Creatorofstudy")
+  taskCreatorIn: [Task]! @relation(name:"Creatoroftask")
+  collaboratorInStudy: [Study]! @relation(name:"Studycollaborator")
+  collaboratorInTask: [Task]! @relation(name:"Taskcollaborator")
   image: String
   largeImage: String
   info: Json
@@ -142,6 +145,7 @@ type Study {
   image: String
   largeImage: String
   info: Json
+  collaborators: [Profile]! @relation(name:"Studycollaborator")
 }
 
 type Task {
@@ -150,12 +154,13 @@ type Task {
   slug: String! @unique
   description: String
   template: Template
-  author: Profile!
+  author: Profile! @relation(name:"Creatoroftask")
   parameters: Json
   settings: Json
   link: String
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  collaborators: [Profile]! @relation(name:"Taskcollaborator")
 }
 
 type Template {

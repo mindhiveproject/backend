@@ -78,7 +78,7 @@ type Mutation {
   updateTask(id: ID!, title: String, description: String, parameters: Json, settings: Json, link: String): Task!
   deleteTask(id: ID!): Task
   createStudy(title: String!, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json): Study!
-  updateStudy(id: ID!, title: String, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json): Study!
+  updateStudy(id: ID!, title: String, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json, collaborators: [String]): Study!
   deleteStudy(id: ID!): Study
   buildStudy(id: ID!, tasks: [ID]!): Study!
   joinStudy(id: ID!, info: Json): SuccessMessage
