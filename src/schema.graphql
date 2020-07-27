@@ -39,6 +39,9 @@ type Mutation {
   emailLogin(email: String!, password: String!): Profile!
   signout: SuccessMessage
 
+  serviceSignUp(token: String!, user: Json, study: Json, class: Json, info: Json, permissions: [Permission]): Profile!
+  serviceLogin(token: String!): Profile!
+
   participantSignUp(username: String!, email: String, password: String!, user: Json, study: Json, info: Json): Profile!
   participantLogin(usernameEmail: String!, password: String!, user: Json, study: Json): Profile!
 
