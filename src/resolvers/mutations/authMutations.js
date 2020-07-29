@@ -101,7 +101,7 @@ const authMutations = {
           info: { general: args.info },
         },
       },
-      `{ id }`
+      info
     );
 
     // create an email authentication identity
@@ -120,7 +120,7 @@ const authMutations = {
       `{ id }`
     );
     // connect the participant auth identity to profile
-    const updatedProfile = await ctx.db.mutation.updateProfile(
+    let updatedProfile = await ctx.db.mutation.updateProfile(
       {
         data: {
           authEmail: {
@@ -133,7 +133,7 @@ const authMutations = {
           id: profile.id,
         },
       },
-      `{ id username permissions info}`
+      info
     );
 
     // join a study if there is a study to join (user, study are present in the args)
@@ -142,7 +142,7 @@ const authMutations = {
         ...updatedProfile.info,
         [args.study.id]: args.user,
       };
-      await ctx.db.mutation.updateProfile(
+      updatedProfile = await ctx.db.mutation.updateProfile(
         {
           data: {
             participantIn: {
@@ -156,13 +156,13 @@ const authMutations = {
             id: profile.id,
           },
         },
-        `{ id username permissions }`
+        info
       );
     }
 
     // join a class if there is a class in args.class
     if (args.class && args.class.code) {
-      await ctx.db.mutation.updateProfile(
+      updatedProfile = await ctx.db.mutation.updateProfile(
         {
           data: {
             studentIn: {
@@ -175,7 +175,7 @@ const authMutations = {
             id: profile.id,
           },
         },
-        `{ id username permissions }`
+        info
       );
     }
 
@@ -417,8 +417,6 @@ const authMutations = {
   },
 
   async serviceSignUp(parent, args, ctx, info) {
-    // console.log('419 serviceSignUp args', args);
-
     const clientID = process.env.GOOGLE_CLIENT_ID;
     const googleClient = new OAuth2Client(clientID);
     const ticket = await googleClient.verifyIdToken({
@@ -445,7 +443,7 @@ const authMutations = {
       );
       if (existingEmail) {
         throw new Error(
-          `Email ${args.email} is taken. If you already have an account, please log in.`
+          `Email ${args.email} is already taken. If you have an account, please log in.`
         );
       }
     }
@@ -484,7 +482,7 @@ const authMutations = {
       `{ id }`
     );
     // connect the participant auth identity to profile
-    const updatedProfile = await ctx.db.mutation.updateProfile(
+    let updatedProfile = await ctx.db.mutation.updateProfile(
       {
         data: {
           authEmail: {
@@ -497,7 +495,7 @@ const authMutations = {
           id: profile.id,
         },
       },
-      `{ id username permissions info}`
+      info
     );
 
     // join a study if there is a study to join (user, study are present in the args)
@@ -506,7 +504,7 @@ const authMutations = {
         ...updatedProfile.info,
         [args.study.id]: args.user,
       };
-      await ctx.db.mutation.updateProfile(
+      updatedProfile = await ctx.db.mutation.updateProfile(
         {
           data: {
             participantIn: {
@@ -520,13 +518,13 @@ const authMutations = {
             id: profile.id,
           },
         },
-        `{ id username permissions }`
+        info
       );
     }
 
     // join a class if there is a class in args.class
     if (args.class && args.class.code) {
-      await ctx.db.mutation.updateProfile(
+      updatedProfile = await ctx.db.mutation.updateProfile(
         {
           data: {
             studentIn: {
@@ -539,7 +537,7 @@ const authMutations = {
             id: profile.id,
           },
         },
-        `{ id username permissions }`
+        info
       );
     }
 
@@ -586,7 +584,7 @@ const authMutations = {
           username: args.username,
         },
       },
-      `{ id username permissions }`
+      info
     );
 
     if (!profile && args.email) {
@@ -594,7 +592,7 @@ const authMutations = {
         {
           where: { email: args.email },
         },
-        `{ id password profile { id username permissions } }`
+        `{ id password profile { id username permissions info } }`
       );
       if (!authEmail) {
         throw new Error(`No user profile found! Please sign up first.`);

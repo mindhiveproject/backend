@@ -55,14 +55,60 @@ const taskMutations = {
   async updateTask(parent, args, ctx, info) {
     // verify that the user has the right to update the template
     const where = { id: args.id };
-    const task = await ctx.db.query.task({ where }, `{ id title author {id} }`);
+    const preTask = await ctx.db.query.task(
+      { where },
+      `{ id title author {id} collaborators {id} }`
+    );
     // check whether user has permissions to delete the task
-    const ownsTask = task.author.id === ctx.request.userId;
+    const ownsTask = preTask.author.id === ctx.request.userId;
     const hasPermissions = ctx.request.user.permissions.some(permission =>
       ['ADMIN'].includes(permission)
     );
-    if (!ownsTask && !hasPermissions) {
+    const isCollaborator = preTask.collaborators
+      .map(collaborator => collaborator.id)
+      .includes(ctx.request.userId);
+    console.log('isCollaborator', isCollaborator);
+    if (!ownsTask && !hasPermissions && !isCollaborator) {
       throw new Error(`You don't have permission to do that!`);
+    }
+
+    let collaborators = [];
+    if (args.collaborators && args.collaborators.length) {
+      collaborators = await Promise.all(
+        args.collaborators.map(username =>
+          ctx.db.query.profile({ where: { username } }, `{ id }`)
+        )
+      );
+      args.collaborators = [];
+      collaborators = collaborators.filter(c => c);
+    }
+
+    const task = await ctx.db.query.task(
+      {
+        where: { id: args.id },
+      },
+      `{ id collaborators { id } }`
+    );
+
+    if (
+      collaborators &&
+      task.collaborators &&
+      collaborators.length !== task.collaborators.length
+    ) {
+      // remove previous connections
+      await ctx.db.mutation.updateTask(
+        {
+          data: {
+            collaborators: {
+              disconnect: task.collaborators,
+            },
+          },
+          where: {
+            id: args.id,
+          },
+        },
+        `{ id }`
+      );
     }
 
     // take a copy of updates
@@ -72,7 +118,12 @@ const taskMutations = {
     // run the update method
     return ctx.db.mutation.updateTask(
       {
-        data: updates,
+        data: {
+          ...updates,
+          collaborators: {
+            connect: collaborators,
+          },
+        },
         where: {
           id: args.id,
         },
