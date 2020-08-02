@@ -117,6 +117,7 @@ type Result {
   updatedAt: DateTime! @updatedAt
   payload: String
   study: Study #relationship to Study
+  info: Json
 }
 
 type Parameter {

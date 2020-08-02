@@ -1,5 +1,5 @@
-# source: https://mindhive-production-b2502bdee8.herokuapp.com/mindhive-prod/dev
-# timestamp: Tue Jul 21 2020 16:22:27 GMT+0200 (Central European Summer Time)
+# source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
+# timestamp: Sun Aug 02 2020 16:15:51 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -5440,6 +5440,7 @@ type Result implements Node {
   updatedAt: DateTime!
   payload: String
   study: Study
+  info: Json
 }
 
 """A connection to a list of items."""
@@ -5459,6 +5460,7 @@ input ResultCreateInput {
   dataPolicy: String
   token: String
   payload: String
+  info: Json
   template: TemplateCreateOneInput
   task: TaskCreateOneInput!
   user: ProfileCreateOneWithoutResultsInput!
@@ -5477,6 +5479,7 @@ input ResultCreateWithoutUserInput {
   dataPolicy: String
   token: String
   payload: String
+  info: Json
   template: TemplateCreateOneInput
   task: TaskCreateOneInput!
   study: StudyCreateOneInput
@@ -5508,6 +5511,8 @@ enum ResultOrderByInput {
   updatedAt_DESC
   payload_ASC
   payload_DESC
+  info_ASC
+  info_DESC
 }
 
 type ResultPreviousValues {
@@ -5519,6 +5524,7 @@ type ResultPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   payload: String
+  info: Json
 }
 
 input ResultScalarWhereInput {
@@ -5803,6 +5809,7 @@ input ResultUpdateInput {
   dataPolicy: String
   token: String
   payload: String
+  info: Json
   template: TemplateUpdateOneInput
   task: TaskUpdateOneRequiredInput
   user: ProfileUpdateOneRequiredWithoutResultsInput
@@ -5815,6 +5822,7 @@ input ResultUpdateManyDataInput {
   dataPolicy: String
   token: String
   payload: String
+  info: Json
 }
 
 input ResultUpdateManyMutationInput {
@@ -5823,6 +5831,7 @@ input ResultUpdateManyMutationInput {
   dataPolicy: String
   token: String
   payload: String
+  info: Json
 }
 
 input ResultUpdateManyWithoutUserInput {
@@ -5848,6 +5857,7 @@ input ResultUpdateWithoutUserDataInput {
   dataPolicy: String
   token: String
   payload: String
+  info: Json
   template: TemplateUpdateOneInput
   task: TaskUpdateOneRequiredInput
   study: StudyUpdateOneInput

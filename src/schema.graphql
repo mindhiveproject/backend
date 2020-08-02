@@ -52,8 +52,6 @@ type Mutation {
   inviteSignUp(username: String!, invitedIn: ID!, image: String, largeImage: String, info: Json): Profile!
   inviteLogin(username: String!, invitedIn: ID!): Profile!
 
-  participantConfirmEmail(email: String!, confirmationToken: String!): SuccessMessage
-
   createSchool(title: String!, description: String, image: String, largeImage: String): School!
 
   createClass(title: String!, description: String, image: String, largeImage: String): Class!
@@ -62,13 +60,10 @@ type Mutation {
   joinClass(id: ID!): SuccessMessage
   leaveClass(id: ID!): SuccessMessage
 
-  createExperiment(title: String!, shortDescription: String, description: String, image: String, largeImage: String, parameters: Json, script: String, style: String): Experiment!
-  updateExperiment(id: ID!, title: String, shortDescription: String, description: String, parameters: Json, script: String, style: String): Experiment!
-  deleteExperiment(id: ID!): Experiment
-
   addResult(templateId: ID!, data: Json, dataPolicy: String): Result!
   deleteResult(id: ID!): Result
   submitResultFromAPI(userId: ID!, templateId: ID, taskId: ID, studyId: ID, data: Json, metadata: Json, dataPolicy: String): SuccessMessage
+  updateResultsInfo(id: ID!, info: Json): SuccessMessage
 
   createParameter(title: String!, experimentId: ID!, data: Json, settings: Json): Parameter!
   updateParameter(id: ID!, title: String, data: Json, settings: Json): Parameter!

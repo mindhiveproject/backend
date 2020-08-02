@@ -71,51 +71,6 @@ const resultsMutations = {
     return { message: 'Updated' };
   },
 
-  // // add a new result of the experiment
-  // async addResult(parent, args, ctx, info) {
-  //   // 1. Make sure that user is signed in
-  //   const { userId } = ctx.request;
-  //   if (!userId) {
-  //     throw new Error(`You are not signed in`);
-  //   }
-  //   // 2. Query the user current results
-  //   // const [existingResults] = await ctx.db.query.results({
-  //   //   where: {
-  //   //     user: { id: userId },
-  //   //     experiment: { id: args.experimentId },
-  //   //   },
-  //   // });
-  //   // console.log('data', args.data);
-  //   // // if there are existing results
-  //   // if (existingResults) {
-  //   //   console.log('there are already results');
-  //   //   return ctx.db.mutation.updateResult(
-  //   //     {
-  //   //       where: { id: existingResults.id },
-  //   //       data: { quantity: existingResults.quantity + 1, data: args.data },
-  //   //     },
-  //   //     info
-  //   //   );
-  //   // }
-  //   // if there are no existing results
-  //   return ctx.db.mutation.createResult(
-  //     {
-  //       data: {
-  //         user: {
-  //           connect: { id: userId },
-  //         },
-  //         experiment: {
-  //           connect: { id: args.experimentId },
-  //         },
-  //         quantity: 1,
-  //         data: args.data,
-  //         dataPolicy: args.dataPolicy,
-  //       },
-  //     },
-  //     info
-  //   );
-  // },
-
   // delete result
   async deleteResult(parent, args, ctx, info) {
     const where = { id: args.id };
@@ -131,6 +86,67 @@ const resultsMutations = {
     }
     // delete it
     return ctx.db.mutation.deleteResult({ where }, info);
+  },
+
+  // update the information about results
+  async updateResultsInfo(parent, args, ctx, info) {
+    // console.log('args', args);
+    const whereFull = { token: `full-${args.id}` };
+    const whereIncr = { token: `incr-${args.id}` };
+    const hasPermissions = ctx.request.user.permissions.some(permission =>
+      ['ADMIN'].includes(permission)
+    );
+
+    // 1. find full result, check ownership and update the info on it, delete incremental result
+    const fullResult = await ctx.db.query.result(
+      {
+        where: whereFull,
+      },
+      `{ id user {id} }`
+    );
+    if (fullResult) {
+      const ownsFullResult = fullResult.user.id === ctx.request.userId;
+      if (!ownsFullResult && !hasPermissions) {
+        throw new Error(`You don't have permission to do that!`);
+      }
+      await ctx.db.mutation.updateResult(
+        {
+          where: whereFull,
+          data: {
+            info: args.info,
+          },
+        },
+        `{ id }`
+      );
+      await ctx.db.mutation.deleteResult({ where: whereIncr }, info);
+    }
+
+    // 2. if there is no full result, find incremental results, check ownership and update info on it
+    if (!fullResult) {
+      const incrResult = await ctx.db.query.result(
+        {
+          where: whereIncr,
+        },
+        `{ id user {id} }`
+      );
+      if (incrResult) {
+        const ownsIncrResult = incrResult.user.id === ctx.request.userId;
+        if (!ownsIncrResult && !hasPermissions) {
+          throw new Error(`You don't have permission to do that!`);
+        }
+        await ctx.db.mutation.updateResult(
+          {
+            where: whereIncr,
+            data: {
+              info: args.info,
+            },
+          },
+          `{ id }`
+        );
+      }
+    }
+
+    return { message: 'Updated' };
   },
 };
 
