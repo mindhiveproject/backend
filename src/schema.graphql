@@ -16,6 +16,7 @@ type Query {
   myParameters: [Parameter]!
   parameter(where: ParameterWhereUniqueInput): Parameter
   myClassResults(where: ClassWhereUniqueInput): [Result]!
+  myStudyResults(where: StudyWhereUniqueInput): [Result]!
 
   template(where: TemplateWhereUniqueInput): Template
   templates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, first: Int): [Template]!
