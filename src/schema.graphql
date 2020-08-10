@@ -73,7 +73,7 @@ type Mutation {
   createTemplate(title: String!, shortDescription: String, description: String, image: String, largeImage: String, parameters: Json, script: String, style: String, settings: Json): Template!
   updateTemplate(id: ID!, title: String, shortDescription: String, description: String, parameters: Json, script: String, style: String, settings: Json): Template!
   deleteTemplate(id: ID!): Template
-  createTask(title: String!, templateId: ID, description: String,  parameters: Json, settings: Json, link: String): Task!
+  createTask(title: String!, templateId: ID, description: String,  parameters: Json, settings: Json, link: String, collaborators: [String]): Task!
   updateTask(id: ID!, title: String, description: String, parameters: Json, settings: Json, link: String, collaborators: [String]): Task!
   deleteTask(id: ID!): Task
   createStudy(title: String!, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json): Study!

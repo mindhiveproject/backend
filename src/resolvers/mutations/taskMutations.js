@@ -27,6 +27,16 @@ const taskMutations = {
       );
     }
 
+    let collaborators = [];
+    if (args.collaborators && args.collaborators.length) {
+      collaborators = await Promise.all(
+        args.collaborators.map(username =>
+          ctx.db.query.profile({ where: { username } }, `{ id }`)
+        )
+      );
+      collaborators = collaborators.filter(c => c);
+    }
+
     // 2. Create a new set of tasks
     return ctx.db.mutation.createTask(
       {
@@ -45,6 +55,9 @@ const taskMutations = {
           parameters: args.parameters,
           settings: args.settings,
           link: args.link,
+          collaborators: {
+            connect: collaborators,
+          },
         },
       },
       info
