@@ -6,11 +6,14 @@ const resultsMutations = {
     const token = `${payload.slice(0, 4)}-${messageId}`;
 
     // console.log('args.studyId', args.studyId);
-    const result = await ctx.db.query.result({
-      where: {
-        token,
+    const result = await ctx.db.query.result(
+      {
+        where: {
+          token,
+        },
       },
-    });
+      `{ id }`
+    );
 
     if (!result) {
       const createdResult = await ctx.db.mutation.createResult(
@@ -52,7 +55,6 @@ const resultsMutations = {
       // }
       return { message: 'Created' };
     }
-
     const savedData = result.data;
     const newData = [...savedData, ...args.data];
 

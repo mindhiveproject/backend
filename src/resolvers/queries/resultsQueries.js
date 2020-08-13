@@ -79,6 +79,43 @@ const resultsQueries = {
       info
     );
   },
+
+  // task results
+  async myTaskResults(parent, args, ctx, info) {
+    // 1. check if the user has permission to see the test results (owns this test of a collaborator) or Admin
+    const { where } = args;
+    const mytask = await ctx.db.query.task(
+      { where },
+      `{ id title author {id} collaborators {id}}`
+    );
+    const ownsTask = mytask.author.id === ctx.request.userId;
+    const hasPermissions = ctx.request.user.permissions.some(permission =>
+      ['ADMIN'].includes(permission)
+    );
+    let collaboratorInTask;
+    if (mytask.collaborators) {
+      const collaboratorsIds = mytask.collaborators.map(
+        collaborator => collaborator.id
+      );
+      collaboratorInTask = collaboratorsIds.includes(ctx.request.userId);
+    }
+
+    if (!ownsTask && !hasPermissions && !collaboratorInTask) {
+      throw new Error(`You don't have permission to do that!`);
+    }
+
+    // 2. query all results of the task
+    return ctx.db.query.results(
+      {
+        where: {
+          task: {
+            id: mytask.id,
+          },
+        },
+      },
+      info
+    );
+  },
 };
 
 module.exports = resultsQueries;
