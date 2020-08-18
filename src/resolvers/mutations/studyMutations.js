@@ -206,6 +206,90 @@ const studyMutations = {
 
     return { message: 'You joined the study!' };
   },
+
+  // leave the study (for participants)
+  async leaveStudy(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+
+    const profile = await ctx.db.query.profile(
+      {
+        where: { id: ctx.request.userId },
+      },
+      `{ id info }`
+    );
+
+    // delete the information about the study in the user profile
+    const information = profile.info;
+    if (information[args.id]) {
+      delete information[args.id];
+    }
+
+    // disconnect user and the study
+    await ctx.db.mutation.updateProfile(
+      {
+        data: {
+          participantIn: {
+            disconnect: {
+              id: args.id,
+            },
+          },
+          info: information,
+        },
+        where: {
+          id: ctx.request.userId,
+        },
+      },
+      `{ id username permissions }`
+    );
+
+    return { message: 'You left the study!' };
+  },
+
+  // update the study consent (for participants)
+  async updateStudyConsent(parent, args, ctx, info) {
+    // Check login
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    console.log('args', args);
+    const profile = await ctx.db.query.profile(
+      {
+        where: { id: ctx.request.userId },
+      },
+      `{ id info }`
+    );
+
+    const information = profile.info;
+    console.log('information', information);
+    if (information[args.id]) {
+      information[args.id] = args.info;
+    }
+    console.log('information', information);
+
+    // update the information
+    await ctx.db.mutation.updateProfile(
+      {
+        data: {
+          info: information,
+        },
+        where: {
+          id: ctx.request.userId,
+        },
+      },
+      `{ id username permissions }`
+    );
+
+    const study = await ctx.db.query.study(
+      {
+        where: { id: args.id },
+      },
+      info
+    );
+
+    return study;
+  },
 };
 
 module.exports = studyMutations;

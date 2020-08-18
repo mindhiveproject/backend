@@ -24,6 +24,7 @@ type Query {
   myTemplates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, first: Int): [Template]!
   study(where: StudyWhereUniqueInput): Study
   studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, first: Int): [Study]!
+
   myStudies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, first: Int): [Study]!
   task(where: TaskWhereUniqueInput): Task
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, first: Int): [Task]!
@@ -82,6 +83,8 @@ type Mutation {
   deleteStudy(id: ID!): Study
   buildStudy(id: ID!, tasks: [ID]!): Study!
   joinStudy(id: ID!, info: Json): SuccessMessage
+  leaveStudy(id: ID!): SuccessMessage
+  updateStudyConsent(id: ID!, info: Json): Study!
 
 }
 
