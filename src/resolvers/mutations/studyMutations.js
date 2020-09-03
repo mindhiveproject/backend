@@ -2,7 +2,7 @@ const slugify = require('slugify');
 
 const studyMutations = {
   async createStudy(parent, args, ctx, info) {
-    // console.log('args', args);
+    console.log('5 args', args);
     // Check login
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');
@@ -28,28 +28,31 @@ const studyMutations = {
     }
 
     // create a new IRB consent
-    const consent = await ctx.db.mutation.createConsent(
-      {
-        data: {
-          title: args.title,
-          slug: args.slug,
-          info: {
-            consentForm: args.info
-              .filter(i => i.name === 'consentForm')
-              .map(i => i.text)[0],
-            consentFormForParents: args.info
-              .filter(i => i.name === 'consentFormForParents')
-              .map(i => i.text)[0],
-          },
-          author: {
-            connect: {
-              id: ctx.request.userId,
+    let consent;
+    if (args.settings.consentObtained) {
+      consent = await ctx.db.mutation.createConsent(
+        {
+          data: {
+            title: args.title,
+            slug: args.slug,
+            info: {
+              consentForm: args.info
+                .filter(i => i.name === 'consentForm')
+                .map(i => i.text)[0],
+              consentFormForParents: args.info
+                .filter(i => i.name === 'consentFormForParents')
+                .map(i => i.text)[0],
+            },
+            author: {
+              connect: {
+                id: ctx.request.userId,
+              },
             },
           },
         },
-      },
-      `{ id }`
-    );
+        `{ id }`
+      );
+    }
 
     const study = await ctx.db.mutation.createStudy(
       {
@@ -60,11 +63,13 @@ const studyMutations = {
               id: ctx.request.userId,
             },
           },
-          consent: {
-            connect: {
-              id: consent.id,
-            },
-          },
+          consent: consent
+            ? {
+                connect: {
+                  id: consent.id,
+                },
+              }
+            : null,
           ...args,
         },
       },
@@ -75,6 +80,12 @@ const studyMutations = {
 
   // update the study
   async updateStudy(parent, args, ctx, info) {
+    const slug = slugify(args.title, {
+      replacement: '-', // replace spaces with replacement character, defaults to `-`
+      remove: /[^a-zA-Z\d\s:]/g, // remove characters that match regex, defaults to `undefined`
+      lower: true, // convert to lower case, defaults to `false`
+    });
+
     let collaborators = [];
     if (args.collaborators && args.collaborators.length) {
       collaborators = await Promise.all(
@@ -90,8 +101,76 @@ const studyMutations = {
       {
         where: { id: args.id },
       },
-      `{ id collaborators { id } }`
+      `{ id collaborators { id } consent { id } }`
     );
+
+    let consent;
+    if (args.settings.consentObtained) {
+      if (study.consent) {
+        // update consent
+        await ctx.db.mutation.updateConsent(
+          {
+            data: {
+              info: {
+                consentForm: args.info
+                  .filter(i => i.name === 'consentForm')
+                  .map(i => i.text)[0],
+                consentFormForParents: args.info
+                  .filter(i => i.name === 'consentFormForParents')
+                  .map(i => i.text)[0],
+              },
+            },
+            where: {
+              id: study.consent.id,
+            },
+          },
+          `{ id }`
+        );
+      } else {
+        // make new consent
+        consent = await ctx.db.mutation.createConsent(
+          {
+            data: {
+              title: args.title,
+              slug,
+              info: {
+                consentForm: args.info
+                  .filter(i => i.name === 'consentForm')
+                  .map(i => i.text)[0],
+                consentFormForParents: args.info
+                  .filter(i => i.name === 'consentFormForParents')
+                  .map(i => i.text)[0],
+              },
+              author: {
+                connect: {
+                  id: ctx.request.userId,
+                },
+              },
+            },
+          },
+          `{ id }`
+        );
+      }
+    } else if (study.consent) {
+      // disconnect and delete the consent
+      await ctx.db.mutation.updateStudy(
+        {
+          data: {
+            consent: {
+              disconnect: study.consent.id,
+            },
+          },
+          where: {
+            id: args.id,
+          },
+        },
+        `{ id }`
+      );
+      await ctx.db.mutation.deleteConsent(
+        { where: { id: study.consent.id } },
+        `{ id }`
+      );
+    }
 
     if (
       collaborators &&
@@ -125,6 +204,13 @@ const studyMutations = {
           collaborators: {
             connect: collaborators,
           },
+          consent: consent
+            ? {
+                connect: {
+                  id: consent.id,
+                },
+              }
+            : null,
         },
         where: {
           id: args.id,
