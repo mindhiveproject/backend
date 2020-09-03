@@ -68,7 +68,7 @@ const resultsQueries = {
     }
 
     // 2. query all results of the study
-    return ctx.db.query.results(
+    const results = await ctx.db.query.results(
       {
         where: {
           study: {
@@ -78,6 +78,8 @@ const resultsQueries = {
       },
       info
     );
+
+    return results;
   },
 
   // task results

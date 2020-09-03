@@ -92,13 +92,16 @@ const authMutations = {
     // hash the password
     const password = await bcrypt.hash(args.password, 10);
 
+    const generalInfo = { ...args.info, ...args.user, data: 'science' };
+
     // create a profile (which will have the participant auth identity)
+    // save general information about the person
     const profile = await ctx.db.mutation.createProfile(
       {
         data: {
           username: args.username,
           permissions: { set: args.permissions },
-          info: { general: args.info },
+          generalInfo,
         },
       },
       info
@@ -138,10 +141,29 @@ const authMutations = {
 
     // join a study if there is a study to join (user, study are present in the args)
     if (args.study && args.user) {
-      const information = {
-        ...updatedProfile.info,
+      const studyInformation = {
+        ...updatedProfile.studiesInfo,
         [args.study.id]: args.user,
       };
+      const consentId =
+        (args.user.consentGiven &&
+          args.study.consent &&
+          args.study.consent.id) ||
+        null;
+      let consentInformation;
+      if (consentId) {
+        consentInformation = {
+          ...updatedProfile.consentsInfo,
+          [consentId]: {
+            saveCoveredConsent: args.user.saveCoveredConsent,
+          },
+        };
+      } else {
+        consentInformation = {
+          ...updatedProfile.consentsInfo,
+        };
+      }
+
       updatedProfile = await ctx.db.mutation.updateProfile(
         {
           data: {
@@ -150,7 +172,13 @@ const authMutations = {
                 id: args.study.id,
               },
             },
-            info: information,
+            studiesInfo: studyInformation,
+            consentsInfo: consentInformation,
+            consentGivenFor: consentId
+              ? {
+                  connect: { id: consentId },
+                }
+              : null,
           },
           where: {
             id: profile.id,
@@ -193,7 +221,8 @@ const authMutations = {
     });
 
     // send confirmation email
-    if (privateAddress && args.email) {
+    // TODO remove false later!
+    if (false && privateAddress && args.email) {
       const randomBytesPromise = promisify(randomBytes);
       const confirmationToken = (await randomBytesPromise(25)).toString('hex');
       const confirmationTokenExpiry = Date.now() + 1000 * 60 * 60 * 24; // 24 hour
@@ -451,13 +480,16 @@ const authMutations = {
     // hash the password
     const password = await bcrypt.hash(args.token, 10);
 
+    const generalInfo = { ...args.info, ...args.user, data: 'science' };
+    console.log('generalInfo', generalInfo);
+
     // create a profile (which will have the participant auth identity)
     const profile = await ctx.db.mutation.createProfile(
       {
         data: {
           username: args.username,
           permissions: { set: args.permissions },
-          info: { general: args.info },
+          generalInfo,
         },
       },
       info
@@ -500,10 +532,29 @@ const authMutations = {
 
     // join a study if there is a study to join (user, study are present in the args)
     if (args.study && args.user) {
-      const information = {
-        ...updatedProfile.info,
+      const studyInformation = {
+        ...updatedProfile.studiesInfo,
         [args.study.id]: args.user,
       };
+      const consentId =
+        (args.user.consentGiven &&
+          args.study.consent &&
+          args.study.consent.id) ||
+        null;
+      let consentInformation;
+      if (consentId) {
+        consentInformation = {
+          ...updatedProfile.consentsInfo,
+          [consentId]: {
+            saveCoveredConsent: args.user.saveCoveredConsent,
+          },
+        };
+      } else {
+        consentInformation = {
+          ...updatedProfile.consentsInfo,
+        };
+      }
+
       updatedProfile = await ctx.db.mutation.updateProfile(
         {
           data: {
@@ -512,7 +563,13 @@ const authMutations = {
                 id: args.study.id,
               },
             },
-            info: information,
+            studiesInfo: studyInformation,
+            consentsInfo: consentInformation,
+            consentGivenFor: consentId
+              ? {
+                  connect: { id: consentId },
+                }
+              : null,
           },
           where: {
             id: profile.id,
@@ -559,8 +616,6 @@ const authMutations = {
   },
 
   async serviceLogin(parent, args, ctx, info) {
-    // console.log('564 serviceLogin args', args);
-
     const clientID = process.env.GOOGLE_CLIENT_ID;
     const googleClient = new OAuth2Client(clientID);
     const ticket = await googleClient.verifyIdToken({
@@ -584,7 +639,7 @@ const authMutations = {
           username: args.username,
         },
       },
-      info
+      `{ id username permissions studiesInfo consentsInfo }`
     );
 
     if (!profile && args.email) {
@@ -592,7 +647,7 @@ const authMutations = {
         {
           where: { email: args.email },
         },
-        `{ id password profile { id username permissions info } }`
+        `{ id password profile { id username permissions studiesInfo consentsInfo } }`
       );
       if (!authEmail) {
         throw new Error(`No user profile found! Please sign up first.`);
@@ -602,6 +657,58 @@ const authMutations = {
 
     if (!profile) {
       throw new Error(`No user profile found! Please sign up first.`);
+    }
+
+    // join a study if there is a study to join (user, study are present in the args)
+    if (args.study && args.user) {
+      const generalInfo = { ...args.info, ...args.user };
+      console.log('generalInfo', generalInfo);
+      const studyInformation = {
+        ...profile.studiesInfo,
+        [args.study.id]: args.user,
+      };
+      const consentId =
+        (args.user.consentGiven &&
+          args.study.consent &&
+          args.study.consent.id) ||
+        null;
+      let consentInformation;
+      if (consentId) {
+        consentInformation = {
+          ...profile.consentsInfo,
+          [consentId]: {
+            saveCoveredConsent: args.user.saveCoveredConsent,
+          },
+        };
+      } else {
+        consentInformation = {
+          ...profile.consentsInfo,
+        };
+      }
+
+      await ctx.db.mutation.updateProfile(
+        {
+          data: {
+            participantIn: {
+              connect: {
+                id: args.study.id,
+              },
+            },
+            generalInfo,
+            studiesInfo: studyInformation,
+            consentsInfo: consentInformation,
+            consentGivenFor: consentId
+              ? {
+                  connect: { id: consentId },
+                }
+              : null,
+          },
+          where: {
+            id: profile.id,
+          },
+        },
+        `{ id username permissions }`
+      );
     }
 
     const token = jwt.sign({ userId: profile.id }, process.env.APP_SECRET);

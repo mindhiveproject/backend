@@ -2,6 +2,7 @@ const slugify = require('slugify');
 
 const studyMutations = {
   async createStudy(parent, args, ctx, info) {
+    // console.log('args', args);
     // Check login
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');
@@ -26,6 +27,30 @@ const studyMutations = {
       );
     }
 
+    // create a new IRB consent
+    const consent = await ctx.db.mutation.createConsent(
+      {
+        data: {
+          title: args.title,
+          slug: args.slug,
+          info: {
+            consentForm: args.info
+              .filter(i => i.name === 'consentForm')
+              .map(i => i.text)[0],
+            consentFormForParents: args.info
+              .filter(i => i.name === 'consentFormForParents')
+              .map(i => i.text)[0],
+          },
+          author: {
+            connect: {
+              id: ctx.request.userId,
+            },
+          },
+        },
+      },
+      `{ id }`
+    );
+
     const study = await ctx.db.mutation.createStudy(
       {
         data: {
@@ -33,6 +58,11 @@ const studyMutations = {
           author: {
             connect: {
               id: ctx.request.userId,
+            },
+          },
+          consent: {
+            connect: {
+              id: consent.id,
             },
           },
           ...args,
@@ -136,8 +166,9 @@ const studyMutations = {
       {
         where: { id: args.id },
       },
-      `{ id tasks { id } }`
+      `{ id tasks { id } consent { id } }`
     );
+
     // remove previous connections
     await ctx.db.mutation.updateStudy(
       {
@@ -179,30 +210,62 @@ const studyMutations = {
       {
         where: { id: ctx.request.userId },
       },
-      `{ id info }`
+      `{ id info studiesInfo consentsInfo }`
     );
     console.log('profile', profile);
-    const information = { [args.id]: args.info, ...profile.info };
-    console.log('information', information);
 
-    // connect user and the class
-    const updatedProfile = await ctx.db.mutation.updateProfile(
-      {
-        data: {
-          participantIn: {
-            connect: {
-              id: args.id,
-            },
+    if (args.study && args.user) {
+      const generalInfo = { ...args.info, ...args.user };
+      console.log('generalInfo', generalInfo);
+
+      const studyInformation = {
+        ...profile.studiesInfo,
+        [args.study.id]: args.user,
+      };
+      const consentId =
+        (args.user.consentGiven &&
+          args.study.consent &&
+          args.study.consent.id) ||
+        null;
+      let consentInformation;
+      if (consentId) {
+        consentInformation = {
+          ...profile.consentsInfo,
+          [consentId]: {
+            saveCoveredConsent: args.user.saveCoveredConsent,
           },
-          info: information,
+        };
+      } else {
+        consentInformation = profile.consentsInfo;
+      }
+
+      console.log('consentId', consentId);
+
+      // connect user and the study
+      await ctx.db.mutation.updateProfile(
+        {
+          data: {
+            participantIn: {
+              connect: {
+                id: args.id,
+              },
+            },
+            generalInfo,
+            studiesInfo: studyInformation,
+            consentsInfo: consentInformation,
+            consentGivenFor: consentId
+              ? {
+                  connect: { id: consentId },
+                }
+              : null,
+          },
+          where: {
+            id: ctx.request.userId,
+          },
         },
-        where: {
-          id: ctx.request.userId,
-        },
-      },
-      `{ id username permissions }`
-    );
-    // console.log('updateProfile', updatedProfile);
+        `{ id username permissions }`
+      );
+    }
 
     return { message: 'You joined the study!' };
   },
@@ -217,11 +280,11 @@ const studyMutations = {
       {
         where: { id: ctx.request.userId },
       },
-      `{ id info }`
+      `{ id studiesInfo }`
     );
 
     // delete the information about the study in the user profile
-    const information = profile.info;
+    const information = profile.studiesInfo;
     if (information[args.id]) {
       delete information[args.id];
     }
@@ -235,7 +298,7 @@ const studyMutations = {
               id: args.id,
             },
           },
-          info: information,
+          studiesInfo: information,
         },
         where: {
           id: ctx.request.userId,
@@ -253,7 +316,6 @@ const studyMutations = {
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');
     }
-    console.log('args', args);
     const profile = await ctx.db.query.profile(
       {
         where: { id: ctx.request.userId },
@@ -262,11 +324,9 @@ const studyMutations = {
     );
 
     const information = profile.info;
-    console.log('information', information);
     if (information[args.id]) {
       information[args.id] = args.info;
     }
-    console.log('information', information);
 
     // update the information
     await ctx.db.mutation.updateProfile(

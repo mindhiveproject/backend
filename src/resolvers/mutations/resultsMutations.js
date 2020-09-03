@@ -1,6 +1,7 @@
 const resultsMutations = {
   // submit a new result from open API
   async submitResultFromAPI(parent, args, ctx, info) {
+    // console.log('args', args);
     const messageId = args.metadata && args.metadata.id;
     const payload = args.metadata && args.metadata.payload;
     const token = `${payload.slice(0, 4)}-${messageId}`;
@@ -10,6 +11,15 @@ const resultsMutations = {
       {
         where: {
           token,
+        },
+      },
+      `{ id data quantity }`
+    );
+
+    const data = await ctx.db.mutation.createData(
+      {
+        data: {
+          content: args.dataString,
         },
       },
       `{ id }`
@@ -42,6 +52,18 @@ const resultsMutations = {
             dataPolicy: args.dataPolicy,
             payload,
             token,
+            incrementalData:
+              payload === 'incremental'
+                ? {
+                    connect: { id: data.id },
+                  }
+                : null,
+            fullData:
+              payload === 'full'
+                ? {
+                    connect: { id: data.id },
+                  }
+                : null,
           },
         },
         `{ id }`
@@ -64,6 +86,12 @@ const resultsMutations = {
         data: {
           data: newData,
           quantity: result.quantity + 1,
+          incrementalData:
+            payload === 'incremental'
+              ? {
+                  connect: { id: data.id },
+                }
+              : null,
         },
       },
       `{ id }`
@@ -91,6 +119,78 @@ const resultsMutations = {
 
   // update the information about results
   async updateResultsInfo(parent, args, ctx, info) {
+    console.log('args', args);
+
+    // update the user email if there is an email
+    const profile = await ctx.db.query.profile(
+      {
+        where: { id: ctx.request.userId },
+      },
+      `{ id authEmail { id } consentsInfo tasksInfo }`
+    );
+
+    if (args.info && args.info.email) {
+      const { email } = args.info;
+      const updatedAuthEmail = await ctx.db.mutation.updateAuthEmail(
+        {
+          data: {
+            email,
+          },
+          where: {
+            id: profile.authEmail[0].id,
+          },
+        },
+        `{ id email }`
+      );
+      console.log('updated email auth', updatedAuthEmail);
+    }
+
+    if (args.info && args.info.data && args.info.data === 'no') {
+      // TODO delete the data from the database
+    }
+
+    // update profile
+    const taskInformation = {
+      ...profile.tasksInfo,
+      [args.info.task.id]: args.info.task,
+    };
+
+    const consentId = args.info.consent && args.info.consent.id;
+    let consentInformation;
+    if (consentId) {
+      consentInformation = {
+        ...profile.consentsInfo,
+        [consentId]: {
+          consentGiven: args.info.consent.consentGiven,
+          saveCoveredConsent: args.info.consent.saveCoveredConsent,
+        },
+      };
+    } else {
+      consentInformation = {
+        ...profile.consentsInfo,
+      };
+    }
+
+    // TODO connect the user to the consent
+    const updatedProfile = await ctx.db.mutation.updateProfile(
+      {
+        data: {
+          tasksInfo: taskInformation,
+          consentsInfo: consentInformation,
+          consentGivenFor: consentId
+            ? {
+                connect: { id: consentId },
+              }
+            : null,
+        },
+        where: {
+          id: ctx.request.userId,
+        },
+      },
+      `{ id consentGivenFor { id } }`
+    );
+    console.log('updated profile', updatedProfile);
+
     // console.log('args', args);
     const whereFull = { token: `full-${args.id}` };
     const whereIncr = { token: `incr-${args.id}` };
@@ -114,11 +214,23 @@ const resultsMutations = {
         {
           where: whereFull,
           data: {
-            info: args.info,
+            dataPolicy: args.info.data,
+            info: args.info.task,
           },
         },
         `{ id }`
       );
+      // delete all incremental data
+      const incrementalResult = await ctx.db.query.result(
+        {
+          where: whereIncr,
+        },
+        `{ id incrementalData { id } }`
+      );
+      incrementalResult.incrementalData.map(data =>
+        ctx.db.mutation.deleteData({ where: { id: data.id } }, `{ id }`)
+      );
+
       await ctx.db.mutation.deleteResult({ where: whereIncr }, info);
     }
 
@@ -139,7 +251,8 @@ const resultsMutations = {
           {
             where: whereIncr,
             data: {
-              info: args.info,
+              dataPolicy: args.info.data,
+              info: args.info.task,
             },
           },
           `{ id }`

@@ -8,156 +8,6 @@ const client = new postmark.Client(process.env.MAIL_POSTMARK_CLIENT);
 const { transport, makeEmail } = require('../../mail');
 
 const participantsMutations = {
-  // this one should be deprecated, as participants sign up via a general flow
-  // async participantSignUp(parent, args, ctx, info) {
-  //   // console.log('participantSignUp args', args);
-  //   args.username = args.username.toLowerCase().trim(); // lower case username
-  //   if (args.email) {
-  //     args.email = args.email.toLowerCase().trim(); // lower case username
-  //   } else {
-  //     args.email = null;
-  //   }
-  //
-  //   // check whether the email is already in the system
-  //   if (args.email) {
-  //     const existingParticipant = await ctx.db.query.authParticipant(
-  //       {
-  //         where: { email: args.email },
-  //       },
-  //       `{ id }`
-  //     );
-  //     if (existingParticipant) {
-  //       throw new Error(
-  //         `Email ${args.email} is taken. Already have an account? Login here.`
-  //       );
-  //     }
-  //   }
-  //
-  //   // hash the password
-  //   const password = await bcrypt.hash(args.password, 10);
-  //
-  //   // create a profile (which will have the participant auth identity)
-  //   const profile = await ctx.db.mutation.createProfile(
-  //     {
-  //       data: {
-  //         username: args.username,
-  //         permissions: { set: ['PARTICIPANT'] },
-  //         info: { general: args.info },
-  //       },
-  //     },
-  //     `{ id }`
-  //   );
-  //
-  //   // create a participant authentication identity
-  //   const authParticipant = await ctx.db.mutation.createAuthParticipant(
-  //     {
-  //       data: {
-  //         email: args.email,
-  //         password,
-  //         profile: {
-  //           connect: {
-  //             id: profile.id,
-  //           },
-  //         },
-  //       },
-  //     },
-  //     `{ id }`
-  //   );
-  //   // connect the participant auth identity to profile
-  //   const updatedProfile = await ctx.db.mutation.updateProfile(
-  //     {
-  //       data: {
-  //         authParticipant: {
-  //           connect: {
-  //             id: authParticipant.id,
-  //           },
-  //         },
-  //       },
-  //       where: {
-  //         id: profile.id,
-  //       },
-  //     },
-  //     `{ id username permissions info}`
-  //   );
-  //
-  //   // join a study if there is a study to join (user, study are present in the args)
-  //   if (args.study && args.user) {
-  //     const information = {
-  //       ...updatedProfile.info,
-  //       [args.study.id]: args.user,
-  //     };
-  //     await ctx.db.mutation.updateProfile(
-  //       {
-  //         data: {
-  //           participantIn: {
-  //             connect: {
-  //               id: args.study.id,
-  //             },
-  //           },
-  //           info: information,
-  //         },
-  //         where: {
-  //           id: profile.id,
-  //         },
-  //       },
-  //       `{ id username permissions }`
-  //     );
-  //   }
-  //
-  //   // create the JWT token for user
-  //   const token = jwt.sign(
-  //     { userId: updatedProfile.id },
-  //     process.env.APP_SECRET
-  //   );
-  //   // set the jwt as a cookie on response
-  //   ctx.response.cookie('token', token, {
-  //     httpOnly: true,
-  //     maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-  //     sameSite: 'Strict',
-  //     secure: process.env.NODE_ENV === 'production',
-  //   });
-  //
-  //   // send confirmation email
-  //   if (args.email) {
-  //     const randomBytesPromise = promisify(randomBytes);
-  //     const confirmationToken = (await randomBytesPromise(25)).toString('hex');
-  //     const confirmationTokenExpiry = Date.now() + 1000 * 60 * 60 * 24; // 24 hour
-  //
-  //     const res = await ctx.db.mutation.updateAuthParticipant({
-  //       where: {
-  //         email: args.email,
-  //       },
-  //       data: {
-  //         settings: {
-  //           emailConfirmation: {
-  //             token: confirmationToken,
-  //             tokenExpiry: confirmationTokenExpiry,
-  //           },
-  //         },
-  //       },
-  //     });
-  //
-  //     const sentEmail = await client.sendEmailWithTemplate({
-  //       From: 'info@mindhive.science',
-  //       To: args.email,
-  //       TemplateAlias: 'welcome',
-  //       TemplateModel: {
-  //         username: args.username,
-  //         action_url: `${process.env.FRONTEND_URL}/confirm/participant?email=${args.email}&token=${confirmationToken}`,
-  //         login_url: `${process.env.FRONTEND_URL}/login/participant`,
-  //         support_url: `${process.env.FRONTEND_URL}/support`,
-  //         product_name: 'mindHIVE',
-  //         support_email: 'info@mindhive.science',
-  //         help_url: `${process.env.FRONTEND_URL}/help/participants`,
-  //       },
-  //     });
-  //     console.log('sentEmail', sentEmail);
-  //   }
-  //
-  //   // return user
-  //   return updatedProfile;
-  // },
-
   // login for participants
   async participantLogin(parent, args, ctx, info) {
     console.log('162 args participantLogin', args);
@@ -175,7 +25,7 @@ const participantsMutations = {
           username: args.usernameEmail,
         },
       },
-      `{ id username authEmail { id password } permissions }`
+      `{ id username authEmail { id password } permissions studiesInfo consentsInfo }`
     );
     // if there is no profile found, try login as an email
     if (!profile) {
@@ -183,7 +33,7 @@ const participantsMutations = {
         {
           where: { email: args.usernameEmail },
         },
-        `{ id password profile { id username permissions } }`
+        `{ id password profile { id username permissions studiesInfo consentsInfo } }`
       );
       if (!authEmail) {
         throw new Error(`No such user found for ${args.usernameEmail}`);
@@ -201,16 +51,39 @@ const participantsMutations = {
     }
 
     // join a study if there is a study to join (user, study are present in the args)
-    if (
-      args.study &&
-      args.user &&
-      args.user.data &&
-      Object.keys(args.user).length > 0
-    ) {
+    if (args.study && args.user) {
       // do not update the info, if it is already there
       // TODO - create a special method to update consent, but do not update for accidental reason
-      const information = { [args.study.id]: args.user, ...profile.info };
-      console.log('information', information);
+      // const information = { [args.study.id]: args.user, ...profile.info };
+      // console.log('information', information);
+      // const generalInformation = {
+      //   zipCode: args.user && args.user.zipCode,
+      //   age: args.user && args.user.age,
+      //   under18: args.user && args.user.under18,
+      //   englishComprehension: args.user && args.user.englishComprehension,
+      //   sharePersonalDataWithOtherStudies:
+      //     args.user && args.user.sharePersonalDataWithOtherStudies,
+      // };
+      const generalInfo = { ...args.info, ...args.user };
+      console.log('generalInfo', generalInfo);
+
+      const studyInformation = {
+        ...profile.studiesInfo,
+        [args.study.id]: args.user,
+      };
+      const consentId =
+        (args.user.consentGiven &&
+          args.study.consent &&
+          args.study.consent.length &&
+          args.study.consent[0].id) ||
+        null;
+      const consentInformation = {
+        ...profile.consentsInfo,
+        [consentId]: {
+          saveCoveredConsent: args.user.saveCoveredConsent,
+        },
+      };
+
       await ctx.db.mutation.updateProfile(
         {
           data: {
@@ -219,7 +92,14 @@ const participantsMutations = {
                 id: args.study.id,
               },
             },
-            info: information,
+            generalInfo,
+            studiesInfo: studyInformation,
+            consentsInfo: consentInformation,
+            consentGivenFor: consentId
+              ? {
+                  connect: { id: consentId },
+                }
+              : null,
           },
           where: {
             id: profile.id,
@@ -237,6 +117,66 @@ const participantsMutations = {
       secure: process.env.NODE_ENV === 'production',
     });
     return profile;
+  },
+
+  async emailMyStudyParticipants(parent, args, ctx, info) {
+    const { where } = args;
+    const mystudy = await ctx.db.query.study(
+      { where },
+      `{ id title author {id} collaborators {id}}`
+    );
+
+    const ownsStudy = mystudy.author.id === ctx.request.userId;
+    const hasPermissions = ctx.request.user.permissions.some(permission =>
+      ['ADMIN'].includes(permission)
+    );
+    let collaboratorInStudy;
+    if (mystudy.collaborators) {
+      const collaboratorsIds = mystudy.collaborators.map(
+        collaborator => collaborator.id
+      );
+      collaboratorInStudy = collaboratorsIds.includes(ctx.request.userId);
+    }
+
+    if (!ownsStudy && !hasPermissions && !collaboratorInStudy) {
+      throw new Error(`You don't have permission to do that!`);
+    }
+
+    const study = await ctx.db.query.study(
+      { where },
+      `{ id participants { authEmail {email} } }`
+    );
+
+    const emails = study.participants
+      .filter(
+        participant =>
+          participant.authEmail &&
+          participant.authEmail.length &&
+          participant.authEmail[0] &&
+          participant.authEmail[0].email
+      )
+      .map(participant => participant.authEmail[0].email);
+
+    const messages = emails.map(email => ({
+      From: 'info@mindhive.science',
+      To: email,
+      TemplateAlias: 'welcome-1',
+      TemplateModel: {
+        task_name: 'New test test',
+        username: args.username,
+        action_url: `${process.env.FRONTEND_URL}/study/all`,
+        login_url: `${process.env.FRONTEND_URL}/login`,
+        support_url: `${process.env.FRONTEND_URL}/support`,
+        product_name: 'MindHive',
+        support_email: 'info@mindhive.science',
+        help_url: `${process.env.FRONTEND_URL}/help/participants`,
+      },
+    }));
+
+    console.log('emails', emails);
+    console.log('args.info', args.info);
+    // const sentEmail = await client.sendEmailBatchWithTemplates(messages);
+    return { message: 'You emailed your participants!' };
   },
 
   // async participantConfirmEmail(parent, args, ctx, info) {

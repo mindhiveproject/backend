@@ -22,11 +22,18 @@ type Profile {
   participantIn: [Study]! @relation(name:"Participantofstudy")
   researcherIn: [Study]! @relation(name:"Creatorofstudy")
   taskCreatorIn: [Task]! @relation(name:"Creatoroftask")
+  consentCreatorIn: [Consent]! @relation(name:"Creatorofconsent")
   collaboratorInStudy: [Study]! @relation(name:"Studycollaborator")
   collaboratorInTask: [Task]! @relation(name:"Taskcollaborator")
+  collaboratorInConsent: [Consent]! @relation(name:"Consentcollaborator")
+  consentGivenFor: [Consent]! @relation(name:"Consentparticipant")
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
 }
 
 type AuthEmail {
@@ -88,22 +95,6 @@ type Class {
   invites: [AuthInvite]! @relation(name:"Invite")
 }
 
-type Experiment {
-  id: ID! @id
-  title: String!
-  shortDescription: String
-  description: String
-  image: String
-  largeImage: String
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
-  author: Profile!
-  parameters: Json
-  customExperiments: [Parameter]!
-  script: String
-  style: String
-}
-
 type Result {
   id: ID! @id
   template: Template #relationship to Template
@@ -118,17 +109,13 @@ type Result {
   payload: String
   study: Study #relationship to Study
   info: Json
+  incrementalData: [Data] @relation(name:"Incrementaldata")
+  fullData: Data  @relation(name:"Fulldata")
 }
 
-type Parameter {
+type Data {
   id: ID! @id
-  title: String!
-  experiment: Experiment!
-  author: Profile!
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
-  data: Json
-  settings: Json
+  content: String
 }
 
 type Study {
@@ -147,6 +134,7 @@ type Study {
   largeImage: String
   info: Json
   collaborators: [Profile]! @relation(name:"Studycollaborator")
+  consent: Consent
 }
 
 type Task {
@@ -162,6 +150,7 @@ type Task {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   collaborators: [Profile]! @relation(name:"Taskcollaborator")
+  consent: Consent
 }
 
 type Template {
@@ -178,6 +167,22 @@ type Template {
   style: String
   tasks: [Task]!
   settings: Json
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Consent {
+  id: ID! @id
+  title: String!
+  slug: String! @unique
+  description: String
+  info: Json
+  settings: Json
+  author: Profile! @relation(name:"Creatorofconsent")
+  collaborators: [Profile]! @relation(name:"Consentcollaborator")
+  participants: [Profile]! @relation(name:"Consentparticipant")
+  studies: [Study]!
+  tasks: [Task]!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

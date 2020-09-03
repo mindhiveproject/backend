@@ -2,27 +2,28 @@
 const { forwardTo } = require('prisma-binding');
 const { hasPermission } = require('../utils');
 const resultsQueries = require('./queries/resultsQueries');
+const usersQueries = require('./queries/usersQueries');
 
 const Query = {
   ...resultsQueries,
+  ...usersQueries,
   // async schools(parent, args, ctx, info){
   //   const schools = await ctx.db.query.schools();
   //   return schools;
   // },
   schools: forwardTo('db'),
-  experiments: forwardTo('db'),
-  experiment: forwardTo('db'),
+  // experiments: forwardTo('db'),
+  // experiment: forwardTo('db'),
   class: forwardTo('db'),
   result: forwardTo('db'),
   results: forwardTo('db'),
-  parameter: forwardTo('db'),
-  parameters: forwardTo('db'),
   templates: forwardTo('db'),
   template: forwardTo('db'),
   studies: forwardTo('db'),
   study: forwardTo('db'),
   tasks: forwardTo('db'),
   task: forwardTo('db'),
+  consents: forwardTo('db'),
 
   me(parent, args, ctx, info) {
     // check if there is a current user id
@@ -83,26 +84,6 @@ const Query = {
       {
         where: {
           creator: {
-            id: ctx.request.userId,
-          },
-        },
-      },
-      info
-    );
-  },
-
-  // get only parameters of the user
-  async myParameters(parent, args, ctx, info) {
-    // check if the user has permission to see all users
-    if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
-    }
-
-    // query parameters where author is the current user
-    return ctx.db.query.parameters(
-      {
-        where: {
-          author: {
             id: ctx.request.userId,
           },
         },

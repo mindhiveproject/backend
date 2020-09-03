@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Sun Aug 02 2020 16:15:51 GMT+0200 (Central European Summer Time)
+# timestamp: Wed Sep 02 2020 21:03:18 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -21,11 +21,11 @@ type AggregateClass {
   count: Int!
 }
 
-type AggregateExperiment {
+type AggregateConsent {
   count: Int!
 }
 
-type AggregateParameter {
+type AggregateData {
   count: Int!
 }
 
@@ -2922,210 +2922,184 @@ input ClassWhereUniqueInput {
   code: String
 }
 
-scalar DateTime
-
-type Experiment implements Node {
+type Consent implements Node {
   id: ID!
   title: String!
-  shortDescription: String
+  slug: String!
   description: String
-  image: String
-  largeImage: String
+  info: Json
+  settings: Json
+  author: Profile!
+  collaborators(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
+  participants(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
+  studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study!]
+  tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task!]
   createdAt: DateTime!
   updatedAt: DateTime!
-  author: Profile!
-  parameters: Json
-  customExperiments(where: ParameterWhereInput, orderBy: ParameterOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Parameter!]
-  script: String
-  style: String
 }
 
 """A connection to a list of items."""
-type ExperimentConnection {
+type ConsentConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [ExperimentEdge]!
-  aggregate: AggregateExperiment!
+  edges: [ConsentEdge]!
+  aggregate: AggregateConsent!
 }
 
-input ExperimentCreateInput {
+input ConsentCreateInput {
   id: ID
   title: String!
-  shortDescription: String
+  slug: String!
   description: String
-  image: String
-  largeImage: String
-  parameters: Json
-  script: String
-  style: String
-  author: ProfileCreateOneInput!
-  customExperiments: ParameterCreateManyWithoutExperimentInput
+  info: Json
+  settings: Json
+  author: ProfileCreateOneWithoutConsentCreatorInInput!
+  collaborators: ProfileCreateManyWithoutCollaboratorInConsentInput
+  participants: ProfileCreateManyWithoutConsentGivenForInput
+  studies: StudyCreateManyWithoutConsentInput
+  tasks: TaskCreateManyWithoutConsentInput
 }
 
-input ExperimentCreateOneWithoutCustomExperimentsInput {
-  create: ExperimentCreateWithoutCustomExperimentsInput
-  connect: ExperimentWhereUniqueInput
+input ConsentCreateManyWithoutAuthorInput {
+  create: [ConsentCreateWithoutAuthorInput!]
+  connect: [ConsentWhereUniqueInput!]
 }
 
-input ExperimentCreateWithoutCustomExperimentsInput {
+input ConsentCreateManyWithoutCollaboratorsInput {
+  create: [ConsentCreateWithoutCollaboratorsInput!]
+  connect: [ConsentWhereUniqueInput!]
+}
+
+input ConsentCreateManyWithoutParticipantsInput {
+  create: [ConsentCreateWithoutParticipantsInput!]
+  connect: [ConsentWhereUniqueInput!]
+}
+
+input ConsentCreateOneWithoutStudiesInput {
+  create: ConsentCreateWithoutStudiesInput
+  connect: ConsentWhereUniqueInput
+}
+
+input ConsentCreateOneWithoutTasksInput {
+  create: ConsentCreateWithoutTasksInput
+  connect: ConsentWhereUniqueInput
+}
+
+input ConsentCreateWithoutAuthorInput {
   id: ID
   title: String!
-  shortDescription: String
+  slug: String!
   description: String
-  image: String
-  largeImage: String
-  parameters: Json
-  script: String
-  style: String
-  author: ProfileCreateOneInput!
+  info: Json
+  settings: Json
+  collaborators: ProfileCreateManyWithoutCollaboratorInConsentInput
+  participants: ProfileCreateManyWithoutConsentGivenForInput
+  studies: StudyCreateManyWithoutConsentInput
+  tasks: TaskCreateManyWithoutConsentInput
+}
+
+input ConsentCreateWithoutCollaboratorsInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  info: Json
+  settings: Json
+  author: ProfileCreateOneWithoutConsentCreatorInInput!
+  participants: ProfileCreateManyWithoutConsentGivenForInput
+  studies: StudyCreateManyWithoutConsentInput
+  tasks: TaskCreateManyWithoutConsentInput
+}
+
+input ConsentCreateWithoutParticipantsInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  info: Json
+  settings: Json
+  author: ProfileCreateOneWithoutConsentCreatorInInput!
+  collaborators: ProfileCreateManyWithoutCollaboratorInConsentInput
+  studies: StudyCreateManyWithoutConsentInput
+  tasks: TaskCreateManyWithoutConsentInput
+}
+
+input ConsentCreateWithoutStudiesInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  info: Json
+  settings: Json
+  author: ProfileCreateOneWithoutConsentCreatorInInput!
+  collaborators: ProfileCreateManyWithoutCollaboratorInConsentInput
+  participants: ProfileCreateManyWithoutConsentGivenForInput
+  tasks: TaskCreateManyWithoutConsentInput
+}
+
+input ConsentCreateWithoutTasksInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  info: Json
+  settings: Json
+  author: ProfileCreateOneWithoutConsentCreatorInInput!
+  collaborators: ProfileCreateManyWithoutCollaboratorInConsentInput
+  participants: ProfileCreateManyWithoutConsentGivenForInput
+  studies: StudyCreateManyWithoutConsentInput
 }
 
 """An edge in a connection."""
-type ExperimentEdge {
+type ConsentEdge {
   """The item at the end of the edge."""
-  node: Experiment!
+  node: Consent!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum ExperimentOrderByInput {
+enum ConsentOrderByInput {
   id_ASC
   id_DESC
   title_ASC
   title_DESC
-  shortDescription_ASC
-  shortDescription_DESC
+  slug_ASC
+  slug_DESC
   description_ASC
   description_DESC
-  image_ASC
-  image_DESC
-  largeImage_ASC
-  largeImage_DESC
+  info_ASC
+  info_DESC
+  settings_ASC
+  settings_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
-  parameters_ASC
-  parameters_DESC
-  script_ASC
-  script_DESC
-  style_ASC
-  style_DESC
 }
 
-type ExperimentPreviousValues {
+type ConsentPreviousValues {
   id: ID!
   title: String!
-  shortDescription: String
+  slug: String!
   description: String
-  image: String
-  largeImage: String
+  info: Json
+  settings: Json
   createdAt: DateTime!
   updatedAt: DateTime!
-  parameters: Json
-  script: String
-  style: String
 }
 
-type ExperimentSubscriptionPayload {
-  mutation: MutationType!
-  node: Experiment
-  updatedFields: [String!]
-  previousValues: ExperimentPreviousValues
-}
-
-input ExperimentSubscriptionWhereInput {
+input ConsentScalarWhereInput {
   """Logical AND on all given filters."""
-  AND: [ExperimentSubscriptionWhereInput!]
+  AND: [ConsentScalarWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [ExperimentSubscriptionWhereInput!]
+  OR: [ConsentScalarWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [ExperimentSubscriptionWhereInput!]
-
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: ExperimentWhereInput
-}
-
-input ExperimentUpdateInput {
-  title: String
-  shortDescription: String
-  description: String
-  image: String
-  largeImage: String
-  parameters: Json
-  script: String
-  style: String
-  author: ProfileUpdateOneRequiredInput
-  customExperiments: ParameterUpdateManyWithoutExperimentInput
-}
-
-input ExperimentUpdateManyMutationInput {
-  title: String
-  shortDescription: String
-  description: String
-  image: String
-  largeImage: String
-  parameters: Json
-  script: String
-  style: String
-}
-
-input ExperimentUpdateOneRequiredWithoutCustomExperimentsInput {
-  create: ExperimentCreateWithoutCustomExperimentsInput
-  connect: ExperimentWhereUniqueInput
-  update: ExperimentUpdateWithoutCustomExperimentsDataInput
-  upsert: ExperimentUpsertWithoutCustomExperimentsInput
-}
-
-input ExperimentUpdateWithoutCustomExperimentsDataInput {
-  title: String
-  shortDescription: String
-  description: String
-  image: String
-  largeImage: String
-  parameters: Json
-  script: String
-  style: String
-  author: ProfileUpdateOneRequiredInput
-}
-
-input ExperimentUpsertWithoutCustomExperimentsInput {
-  update: ExperimentUpdateWithoutCustomExperimentsDataInput!
-  create: ExperimentCreateWithoutCustomExperimentsInput!
-}
-
-input ExperimentWhereInput {
-  """Logical AND on all given filters."""
-  AND: [ExperimentWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [ExperimentWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [ExperimentWhereInput!]
+  NOT: [ConsentScalarWhereInput!]
   id: ID
 
   """All values that are not equal to given value."""
@@ -3206,46 +3180,46 @@ input ExperimentWhereInput {
 
   """All values not ending with the given string."""
   title_not_ends_with: String
-  shortDescription: String
+  slug: String
 
   """All values that are not equal to given value."""
-  shortDescription_not: String
+  slug_not: String
 
   """All values that are contained in given list."""
-  shortDescription_in: [String!]
+  slug_in: [String!]
 
   """All values that are not contained in given list."""
-  shortDescription_not_in: [String!]
+  slug_not_in: [String!]
 
   """All values less than the given value."""
-  shortDescription_lt: String
+  slug_lt: String
 
   """All values less than or equal the given value."""
-  shortDescription_lte: String
+  slug_lte: String
 
   """All values greater than the given value."""
-  shortDescription_gt: String
+  slug_gt: String
 
   """All values greater than or equal the given value."""
-  shortDescription_gte: String
+  slug_gte: String
 
   """All values containing the given string."""
-  shortDescription_contains: String
+  slug_contains: String
 
   """All values not containing the given string."""
-  shortDescription_not_contains: String
+  slug_not_contains: String
 
   """All values starting with the given string."""
-  shortDescription_starts_with: String
+  slug_starts_with: String
 
   """All values not starting with the given string."""
-  shortDescription_not_starts_with: String
+  slug_not_starts_with: String
 
   """All values ending with the given string."""
-  shortDescription_ends_with: String
+  slug_ends_with: String
 
   """All values not ending with the given string."""
-  shortDescription_not_ends_with: String
+  slug_not_ends_with: String
   description: String
 
   """All values that are not equal to given value."""
@@ -3286,86 +3260,6 @@ input ExperimentWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
-  image: String
-
-  """All values that are not equal to given value."""
-  image_not: String
-
-  """All values that are contained in given list."""
-  image_in: [String!]
-
-  """All values that are not contained in given list."""
-  image_not_in: [String!]
-
-  """All values less than the given value."""
-  image_lt: String
-
-  """All values less than or equal the given value."""
-  image_lte: String
-
-  """All values greater than the given value."""
-  image_gt: String
-
-  """All values greater than or equal the given value."""
-  image_gte: String
-
-  """All values containing the given string."""
-  image_contains: String
-
-  """All values not containing the given string."""
-  image_not_contains: String
-
-  """All values starting with the given string."""
-  image_starts_with: String
-
-  """All values not starting with the given string."""
-  image_not_starts_with: String
-
-  """All values ending with the given string."""
-  image_ends_with: String
-
-  """All values not ending with the given string."""
-  image_not_ends_with: String
-  largeImage: String
-
-  """All values that are not equal to given value."""
-  largeImage_not: String
-
-  """All values that are contained in given list."""
-  largeImage_in: [String!]
-
-  """All values that are not contained in given list."""
-  largeImage_not_in: [String!]
-
-  """All values less than the given value."""
-  largeImage_lt: String
-
-  """All values less than or equal the given value."""
-  largeImage_lte: String
-
-  """All values greater than the given value."""
-  largeImage_gt: String
-
-  """All values greater than or equal the given value."""
-  largeImage_gte: String
-
-  """All values containing the given string."""
-  largeImage_contains: String
-
-  """All values not containing the given string."""
-  largeImage_not_contains: String
-
-  """All values starting with the given string."""
-  largeImage_starts_with: String
-
-  """All values not starting with the given string."""
-  largeImage_not_starts_with: String
-
-  """All values ending with the given string."""
-  largeImage_ends_with: String
-
-  """All values not ending with the given string."""
-  largeImage_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -3410,95 +3304,806 @@ input ExperimentWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
-  script: String
-
-  """All values that are not equal to given value."""
-  script_not: String
-
-  """All values that are contained in given list."""
-  script_in: [String!]
-
-  """All values that are not contained in given list."""
-  script_not_in: [String!]
-
-  """All values less than the given value."""
-  script_lt: String
-
-  """All values less than or equal the given value."""
-  script_lte: String
-
-  """All values greater than the given value."""
-  script_gt: String
-
-  """All values greater than or equal the given value."""
-  script_gte: String
-
-  """All values containing the given string."""
-  script_contains: String
-
-  """All values not containing the given string."""
-  script_not_contains: String
-
-  """All values starting with the given string."""
-  script_starts_with: String
-
-  """All values not starting with the given string."""
-  script_not_starts_with: String
-
-  """All values ending with the given string."""
-  script_ends_with: String
-
-  """All values not ending with the given string."""
-  script_not_ends_with: String
-  style: String
-
-  """All values that are not equal to given value."""
-  style_not: String
-
-  """All values that are contained in given list."""
-  style_in: [String!]
-
-  """All values that are not contained in given list."""
-  style_not_in: [String!]
-
-  """All values less than the given value."""
-  style_lt: String
-
-  """All values less than or equal the given value."""
-  style_lte: String
-
-  """All values greater than the given value."""
-  style_gt: String
-
-  """All values greater than or equal the given value."""
-  style_gte: String
-
-  """All values containing the given string."""
-  style_contains: String
-
-  """All values not containing the given string."""
-  style_not_contains: String
-
-  """All values starting with the given string."""
-  style_starts_with: String
-
-  """All values not starting with the given string."""
-  style_not_starts_with: String
-
-  """All values ending with the given string."""
-  style_ends_with: String
-
-  """All values not ending with the given string."""
-  style_not_ends_with: String
-  author: ProfileWhereInput
-  customExperiments_every: ParameterWhereInput
-  customExperiments_some: ParameterWhereInput
-  customExperiments_none: ParameterWhereInput
 }
 
-input ExperimentWhereUniqueInput {
+type ConsentSubscriptionPayload {
+  mutation: MutationType!
+  node: Consent
+  updatedFields: [String!]
+  previousValues: ConsentPreviousValues
+}
+
+input ConsentSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ConsentSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ConsentSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ConsentSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ConsentWhereInput
+}
+
+input ConsentUpdateInput {
+  title: String
+  slug: String
+  description: String
+  info: Json
+  settings: Json
+  author: ProfileUpdateOneRequiredWithoutConsentCreatorInInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInConsentInput
+  participants: ProfileUpdateManyWithoutConsentGivenForInput
+  studies: StudyUpdateManyWithoutConsentInput
+  tasks: TaskUpdateManyWithoutConsentInput
+}
+
+input ConsentUpdateManyDataInput {
+  title: String
+  slug: String
+  description: String
+  info: Json
+  settings: Json
+}
+
+input ConsentUpdateManyMutationInput {
+  title: String
+  slug: String
+  description: String
+  info: Json
+  settings: Json
+}
+
+input ConsentUpdateManyWithoutAuthorInput {
+  create: [ConsentCreateWithoutAuthorInput!]
+  connect: [ConsentWhereUniqueInput!]
+  set: [ConsentWhereUniqueInput!]
+  disconnect: [ConsentWhereUniqueInput!]
+  delete: [ConsentWhereUniqueInput!]
+  update: [ConsentUpdateWithWhereUniqueWithoutAuthorInput!]
+  updateMany: [ConsentUpdateManyWithWhereNestedInput!]
+  deleteMany: [ConsentScalarWhereInput!]
+  upsert: [ConsentUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input ConsentUpdateManyWithoutCollaboratorsInput {
+  create: [ConsentCreateWithoutCollaboratorsInput!]
+  connect: [ConsentWhereUniqueInput!]
+  set: [ConsentWhereUniqueInput!]
+  disconnect: [ConsentWhereUniqueInput!]
+  delete: [ConsentWhereUniqueInput!]
+  update: [ConsentUpdateWithWhereUniqueWithoutCollaboratorsInput!]
+  updateMany: [ConsentUpdateManyWithWhereNestedInput!]
+  deleteMany: [ConsentScalarWhereInput!]
+  upsert: [ConsentUpsertWithWhereUniqueWithoutCollaboratorsInput!]
+}
+
+input ConsentUpdateManyWithoutParticipantsInput {
+  create: [ConsentCreateWithoutParticipantsInput!]
+  connect: [ConsentWhereUniqueInput!]
+  set: [ConsentWhereUniqueInput!]
+  disconnect: [ConsentWhereUniqueInput!]
+  delete: [ConsentWhereUniqueInput!]
+  update: [ConsentUpdateWithWhereUniqueWithoutParticipantsInput!]
+  updateMany: [ConsentUpdateManyWithWhereNestedInput!]
+  deleteMany: [ConsentScalarWhereInput!]
+  upsert: [ConsentUpsertWithWhereUniqueWithoutParticipantsInput!]
+}
+
+input ConsentUpdateManyWithWhereNestedInput {
+  where: ConsentScalarWhereInput!
+  data: ConsentUpdateManyDataInput!
+}
+
+input ConsentUpdateOneWithoutStudiesInput {
+  create: ConsentCreateWithoutStudiesInput
+  connect: ConsentWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ConsentUpdateWithoutStudiesDataInput
+  upsert: ConsentUpsertWithoutStudiesInput
+}
+
+input ConsentUpdateOneWithoutTasksInput {
+  create: ConsentCreateWithoutTasksInput
+  connect: ConsentWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ConsentUpdateWithoutTasksDataInput
+  upsert: ConsentUpsertWithoutTasksInput
+}
+
+input ConsentUpdateWithoutAuthorDataInput {
+  title: String
+  slug: String
+  description: String
+  info: Json
+  settings: Json
+  collaborators: ProfileUpdateManyWithoutCollaboratorInConsentInput
+  participants: ProfileUpdateManyWithoutConsentGivenForInput
+  studies: StudyUpdateManyWithoutConsentInput
+  tasks: TaskUpdateManyWithoutConsentInput
+}
+
+input ConsentUpdateWithoutCollaboratorsDataInput {
+  title: String
+  slug: String
+  description: String
+  info: Json
+  settings: Json
+  author: ProfileUpdateOneRequiredWithoutConsentCreatorInInput
+  participants: ProfileUpdateManyWithoutConsentGivenForInput
+  studies: StudyUpdateManyWithoutConsentInput
+  tasks: TaskUpdateManyWithoutConsentInput
+}
+
+input ConsentUpdateWithoutParticipantsDataInput {
+  title: String
+  slug: String
+  description: String
+  info: Json
+  settings: Json
+  author: ProfileUpdateOneRequiredWithoutConsentCreatorInInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInConsentInput
+  studies: StudyUpdateManyWithoutConsentInput
+  tasks: TaskUpdateManyWithoutConsentInput
+}
+
+input ConsentUpdateWithoutStudiesDataInput {
+  title: String
+  slug: String
+  description: String
+  info: Json
+  settings: Json
+  author: ProfileUpdateOneRequiredWithoutConsentCreatorInInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInConsentInput
+  participants: ProfileUpdateManyWithoutConsentGivenForInput
+  tasks: TaskUpdateManyWithoutConsentInput
+}
+
+input ConsentUpdateWithoutTasksDataInput {
+  title: String
+  slug: String
+  description: String
+  info: Json
+  settings: Json
+  author: ProfileUpdateOneRequiredWithoutConsentCreatorInInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInConsentInput
+  participants: ProfileUpdateManyWithoutConsentGivenForInput
+  studies: StudyUpdateManyWithoutConsentInput
+}
+
+input ConsentUpdateWithWhereUniqueWithoutAuthorInput {
+  where: ConsentWhereUniqueInput!
+  data: ConsentUpdateWithoutAuthorDataInput!
+}
+
+input ConsentUpdateWithWhereUniqueWithoutCollaboratorsInput {
+  where: ConsentWhereUniqueInput!
+  data: ConsentUpdateWithoutCollaboratorsDataInput!
+}
+
+input ConsentUpdateWithWhereUniqueWithoutParticipantsInput {
+  where: ConsentWhereUniqueInput!
+  data: ConsentUpdateWithoutParticipantsDataInput!
+}
+
+input ConsentUpsertWithoutStudiesInput {
+  update: ConsentUpdateWithoutStudiesDataInput!
+  create: ConsentCreateWithoutStudiesInput!
+}
+
+input ConsentUpsertWithoutTasksInput {
+  update: ConsentUpdateWithoutTasksDataInput!
+  create: ConsentCreateWithoutTasksInput!
+}
+
+input ConsentUpsertWithWhereUniqueWithoutAuthorInput {
+  where: ConsentWhereUniqueInput!
+  update: ConsentUpdateWithoutAuthorDataInput!
+  create: ConsentCreateWithoutAuthorInput!
+}
+
+input ConsentUpsertWithWhereUniqueWithoutCollaboratorsInput {
+  where: ConsentWhereUniqueInput!
+  update: ConsentUpdateWithoutCollaboratorsDataInput!
+  create: ConsentCreateWithoutCollaboratorsInput!
+}
+
+input ConsentUpsertWithWhereUniqueWithoutParticipantsInput {
+  where: ConsentWhereUniqueInput!
+  update: ConsentUpdateWithoutParticipantsDataInput!
+  create: ConsentCreateWithoutParticipantsInput!
+}
+
+input ConsentWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ConsentWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ConsentWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ConsentWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  slug: String
+
+  """All values that are not equal to given value."""
+  slug_not: String
+
+  """All values that are contained in given list."""
+  slug_in: [String!]
+
+  """All values that are not contained in given list."""
+  slug_not_in: [String!]
+
+  """All values less than the given value."""
+  slug_lt: String
+
+  """All values less than or equal the given value."""
+  slug_lte: String
+
+  """All values greater than the given value."""
+  slug_gt: String
+
+  """All values greater than or equal the given value."""
+  slug_gte: String
+
+  """All values containing the given string."""
+  slug_contains: String
+
+  """All values not containing the given string."""
+  slug_not_contains: String
+
+  """All values starting with the given string."""
+  slug_starts_with: String
+
+  """All values not starting with the given string."""
+  slug_not_starts_with: String
+
+  """All values ending with the given string."""
+  slug_ends_with: String
+
+  """All values not ending with the given string."""
+  slug_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  author: ProfileWhereInput
+  collaborators_every: ProfileWhereInput
+  collaborators_some: ProfileWhereInput
+  collaborators_none: ProfileWhereInput
+  participants_every: ProfileWhereInput
+  participants_some: ProfileWhereInput
+  participants_none: ProfileWhereInput
+  studies_every: StudyWhereInput
+  studies_some: StudyWhereInput
+  studies_none: StudyWhereInput
+  tasks_every: TaskWhereInput
+  tasks_some: TaskWhereInput
+  tasks_none: TaskWhereInput
+}
+
+input ConsentWhereUniqueInput {
+  id: ID
+  slug: String
+}
+
+type Data implements Node {
+  id: ID!
+  content: String
+}
+
+"""A connection to a list of items."""
+type DataConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [DataEdge]!
+  aggregate: AggregateData!
+}
+
+input DataCreateInput {
+  id: ID
+  content: String
+}
+
+input DataCreateManyInput {
+  create: [DataCreateInput!]
+  connect: [DataWhereUniqueInput!]
+}
+
+input DataCreateOneInput {
+  create: DataCreateInput
+  connect: DataWhereUniqueInput
+}
+
+"""An edge in a connection."""
+type DataEdge {
+  """The item at the end of the edge."""
+  node: Data!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum DataOrderByInput {
+  id_ASC
+  id_DESC
+  content_ASC
+  content_DESC
+}
+
+type DataPreviousValues {
+  id: ID!
+  content: String
+}
+
+input DataScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [DataScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [DataScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [DataScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  content: String
+
+  """All values that are not equal to given value."""
+  content_not: String
+
+  """All values that are contained in given list."""
+  content_in: [String!]
+
+  """All values that are not contained in given list."""
+  content_not_in: [String!]
+
+  """All values less than the given value."""
+  content_lt: String
+
+  """All values less than or equal the given value."""
+  content_lte: String
+
+  """All values greater than the given value."""
+  content_gt: String
+
+  """All values greater than or equal the given value."""
+  content_gte: String
+
+  """All values containing the given string."""
+  content_contains: String
+
+  """All values not containing the given string."""
+  content_not_contains: String
+
+  """All values starting with the given string."""
+  content_starts_with: String
+
+  """All values not starting with the given string."""
+  content_not_starts_with: String
+
+  """All values ending with the given string."""
+  content_ends_with: String
+
+  """All values not ending with the given string."""
+  content_not_ends_with: String
+}
+
+type DataSubscriptionPayload {
+  mutation: MutationType!
+  node: Data
+  updatedFields: [String!]
+  previousValues: DataPreviousValues
+}
+
+input DataSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [DataSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [DataSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [DataSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: DataWhereInput
+}
+
+input DataUpdateDataInput {
+  content: String
+}
+
+input DataUpdateInput {
+  content: String
+}
+
+input DataUpdateManyDataInput {
+  content: String
+}
+
+input DataUpdateManyInput {
+  create: [DataCreateInput!]
+  connect: [DataWhereUniqueInput!]
+  set: [DataWhereUniqueInput!]
+  disconnect: [DataWhereUniqueInput!]
+  delete: [DataWhereUniqueInput!]
+  update: [DataUpdateWithWhereUniqueNestedInput!]
+  updateMany: [DataUpdateManyWithWhereNestedInput!]
+  deleteMany: [DataScalarWhereInput!]
+  upsert: [DataUpsertWithWhereUniqueNestedInput!]
+}
+
+input DataUpdateManyMutationInput {
+  content: String
+}
+
+input DataUpdateManyWithWhereNestedInput {
+  where: DataScalarWhereInput!
+  data: DataUpdateManyDataInput!
+}
+
+input DataUpdateOneInput {
+  create: DataCreateInput
+  connect: DataWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: DataUpdateDataInput
+  upsert: DataUpsertNestedInput
+}
+
+input DataUpdateWithWhereUniqueNestedInput {
+  where: DataWhereUniqueInput!
+  data: DataUpdateDataInput!
+}
+
+input DataUpsertNestedInput {
+  update: DataUpdateDataInput!
+  create: DataCreateInput!
+}
+
+input DataUpsertWithWhereUniqueNestedInput {
+  where: DataWhereUniqueInput!
+  update: DataUpdateDataInput!
+  create: DataCreateInput!
+}
+
+input DataWhereInput {
+  """Logical AND on all given filters."""
+  AND: [DataWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [DataWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [DataWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  content: String
+
+  """All values that are not equal to given value."""
+  content_not: String
+
+  """All values that are contained in given list."""
+  content_in: [String!]
+
+  """All values that are not contained in given list."""
+  content_not_in: [String!]
+
+  """All values less than the given value."""
+  content_lt: String
+
+  """All values less than or equal the given value."""
+  content_lte: String
+
+  """All values greater than the given value."""
+  content_gt: String
+
+  """All values greater than or equal the given value."""
+  content_gte: String
+
+  """All values containing the given string."""
+  content_contains: String
+
+  """All values not containing the given string."""
+  content_not_contains: String
+
+  """All values starting with the given string."""
+  content_starts_with: String
+
+  """All values not starting with the given string."""
+  content_not_starts_with: String
+
+  """All values ending with the given string."""
+  content_ends_with: String
+
+  """All values not ending with the given string."""
+  content_not_ends_with: String
+}
+
+input DataWhereUniqueInput {
   id: ID
 }
+
+scalar DateTime
 
 """Raw JSON value"""
 scalar Json
@@ -3516,77 +4121,77 @@ type Mutation {
   createAuthInvite(data: AuthInviteCreateInput!): AuthInvite!
   createSchool(data: SchoolCreateInput!): School!
   createClass(data: ClassCreateInput!): Class!
-  createExperiment(data: ExperimentCreateInput!): Experiment!
   createResult(data: ResultCreateInput!): Result!
-  createParameter(data: ParameterCreateInput!): Parameter!
+  createConsent(data: ConsentCreateInput!): Consent!
   createStudy(data: StudyCreateInput!): Study!
+  createProfile(data: ProfileCreateInput!): Profile!
   createTemplate(data: TemplateCreateInput!): Template!
   createTask(data: TaskCreateInput!): Task!
-  createProfile(data: ProfileCreateInput!): Profile!
+  createData(data: DataCreateInput!): Data!
   updateAuthEmail(data: AuthEmailUpdateInput!, where: AuthEmailWhereUniqueInput!): AuthEmail
   updateAuthParticipant(data: AuthParticipantUpdateInput!, where: AuthParticipantWhereUniqueInput!): AuthParticipant
   updateAuthToken(data: AuthTokenUpdateInput!, where: AuthTokenWhereUniqueInput!): AuthToken
   updateAuthInvite(data: AuthInviteUpdateInput!, where: AuthInviteWhereUniqueInput!): AuthInvite
   updateSchool(data: SchoolUpdateInput!, where: SchoolWhereUniqueInput!): School
   updateClass(data: ClassUpdateInput!, where: ClassWhereUniqueInput!): Class
-  updateExperiment(data: ExperimentUpdateInput!, where: ExperimentWhereUniqueInput!): Experiment
   updateResult(data: ResultUpdateInput!, where: ResultWhereUniqueInput!): Result
-  updateParameter(data: ParameterUpdateInput!, where: ParameterWhereUniqueInput!): Parameter
+  updateConsent(data: ConsentUpdateInput!, where: ConsentWhereUniqueInput!): Consent
   updateStudy(data: StudyUpdateInput!, where: StudyWhereUniqueInput!): Study
+  updateProfile(data: ProfileUpdateInput!, where: ProfileWhereUniqueInput!): Profile
   updateTemplate(data: TemplateUpdateInput!, where: TemplateWhereUniqueInput!): Template
   updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task
-  updateProfile(data: ProfileUpdateInput!, where: ProfileWhereUniqueInput!): Profile
+  updateData(data: DataUpdateInput!, where: DataWhereUniqueInput!): Data
   deleteAuthEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
   deleteAuthParticipant(where: AuthParticipantWhereUniqueInput!): AuthParticipant
   deleteAuthToken(where: AuthTokenWhereUniqueInput!): AuthToken
   deleteAuthInvite(where: AuthInviteWhereUniqueInput!): AuthInvite
   deleteSchool(where: SchoolWhereUniqueInput!): School
   deleteClass(where: ClassWhereUniqueInput!): Class
-  deleteExperiment(where: ExperimentWhereUniqueInput!): Experiment
   deleteResult(where: ResultWhereUniqueInput!): Result
-  deleteParameter(where: ParameterWhereUniqueInput!): Parameter
+  deleteConsent(where: ConsentWhereUniqueInput!): Consent
   deleteStudy(where: StudyWhereUniqueInput!): Study
+  deleteProfile(where: ProfileWhereUniqueInput!): Profile
   deleteTemplate(where: TemplateWhereUniqueInput!): Template
   deleteTask(where: TaskWhereUniqueInput!): Task
-  deleteProfile(where: ProfileWhereUniqueInput!): Profile
+  deleteData(where: DataWhereUniqueInput!): Data
   upsertAuthEmail(where: AuthEmailWhereUniqueInput!, create: AuthEmailCreateInput!, update: AuthEmailUpdateInput!): AuthEmail!
   upsertAuthParticipant(where: AuthParticipantWhereUniqueInput!, create: AuthParticipantCreateInput!, update: AuthParticipantUpdateInput!): AuthParticipant!
   upsertAuthToken(where: AuthTokenWhereUniqueInput!, create: AuthTokenCreateInput!, update: AuthTokenUpdateInput!): AuthToken!
   upsertAuthInvite(where: AuthInviteWhereUniqueInput!, create: AuthInviteCreateInput!, update: AuthInviteUpdateInput!): AuthInvite!
   upsertSchool(where: SchoolWhereUniqueInput!, create: SchoolCreateInput!, update: SchoolUpdateInput!): School!
   upsertClass(where: ClassWhereUniqueInput!, create: ClassCreateInput!, update: ClassUpdateInput!): Class!
-  upsertExperiment(where: ExperimentWhereUniqueInput!, create: ExperimentCreateInput!, update: ExperimentUpdateInput!): Experiment!
   upsertResult(where: ResultWhereUniqueInput!, create: ResultCreateInput!, update: ResultUpdateInput!): Result!
-  upsertParameter(where: ParameterWhereUniqueInput!, create: ParameterCreateInput!, update: ParameterUpdateInput!): Parameter!
+  upsertConsent(where: ConsentWhereUniqueInput!, create: ConsentCreateInput!, update: ConsentUpdateInput!): Consent!
   upsertStudy(where: StudyWhereUniqueInput!, create: StudyCreateInput!, update: StudyUpdateInput!): Study!
+  upsertProfile(where: ProfileWhereUniqueInput!, create: ProfileCreateInput!, update: ProfileUpdateInput!): Profile!
   upsertTemplate(where: TemplateWhereUniqueInput!, create: TemplateCreateInput!, update: TemplateUpdateInput!): Template!
   upsertTask(where: TaskWhereUniqueInput!, create: TaskCreateInput!, update: TaskUpdateInput!): Task!
-  upsertProfile(where: ProfileWhereUniqueInput!, create: ProfileCreateInput!, update: ProfileUpdateInput!): Profile!
+  upsertData(where: DataWhereUniqueInput!, create: DataCreateInput!, update: DataUpdateInput!): Data!
   updateManyAuthEmails(data: AuthEmailUpdateManyMutationInput!, where: AuthEmailWhereInput): BatchPayload!
   updateManyAuthParticipants(data: AuthParticipantUpdateManyMutationInput!, where: AuthParticipantWhereInput): BatchPayload!
   updateManyAuthTokens(data: AuthTokenUpdateManyMutationInput!, where: AuthTokenWhereInput): BatchPayload!
   updateManySchools(data: SchoolUpdateManyMutationInput!, where: SchoolWhereInput): BatchPayload!
   updateManyClasses(data: ClassUpdateManyMutationInput!, where: ClassWhereInput): BatchPayload!
-  updateManyExperiments(data: ExperimentUpdateManyMutationInput!, where: ExperimentWhereInput): BatchPayload!
   updateManyResults(data: ResultUpdateManyMutationInput!, where: ResultWhereInput): BatchPayload!
-  updateManyParameters(data: ParameterUpdateManyMutationInput!, where: ParameterWhereInput): BatchPayload!
+  updateManyConsents(data: ConsentUpdateManyMutationInput!, where: ConsentWhereInput): BatchPayload!
   updateManyStudies(data: StudyUpdateManyMutationInput!, where: StudyWhereInput): BatchPayload!
+  updateManyProfiles(data: ProfileUpdateManyMutationInput!, where: ProfileWhereInput): BatchPayload!
   updateManyTemplates(data: TemplateUpdateManyMutationInput!, where: TemplateWhereInput): BatchPayload!
   updateManyTasks(data: TaskUpdateManyMutationInput!, where: TaskWhereInput): BatchPayload!
-  updateManyProfiles(data: ProfileUpdateManyMutationInput!, where: ProfileWhereInput): BatchPayload!
+  updateManyDatas(data: DataUpdateManyMutationInput!, where: DataWhereInput): BatchPayload!
   deleteManyAuthEmails(where: AuthEmailWhereInput): BatchPayload!
   deleteManyAuthParticipants(where: AuthParticipantWhereInput): BatchPayload!
   deleteManyAuthTokens(where: AuthTokenWhereInput): BatchPayload!
   deleteManyAuthInvites(where: AuthInviteWhereInput): BatchPayload!
   deleteManySchools(where: SchoolWhereInput): BatchPayload!
   deleteManyClasses(where: ClassWhereInput): BatchPayload!
-  deleteManyExperiments(where: ExperimentWhereInput): BatchPayload!
   deleteManyResults(where: ResultWhereInput): BatchPayload!
-  deleteManyParameters(where: ParameterWhereInput): BatchPayload!
+  deleteManyConsents(where: ConsentWhereInput): BatchPayload!
   deleteManyStudies(where: StudyWhereInput): BatchPayload!
+  deleteManyProfiles(where: ProfileWhereInput): BatchPayload!
   deleteManyTemplates(where: TemplateWhereInput): BatchPayload!
   deleteManyTasks(where: TaskWhereInput): BatchPayload!
-  deleteManyProfiles(where: ProfileWhereInput): BatchPayload!
+  deleteManyDatas(where: DataWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -3616,452 +4221,6 @@ type PageInfo {
   endCursor: String
 }
 
-type Parameter implements Node {
-  id: ID!
-  title: String!
-  experiment: Experiment!
-  author: Profile!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  data: Json
-  settings: Json
-}
-
-"""A connection to a list of items."""
-type ParameterConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [ParameterEdge]!
-  aggregate: AggregateParameter!
-}
-
-input ParameterCreateInput {
-  id: ID
-  title: String!
-  data: Json
-  settings: Json
-  experiment: ExperimentCreateOneWithoutCustomExperimentsInput!
-  author: ProfileCreateOneInput!
-}
-
-input ParameterCreateManyWithoutExperimentInput {
-  create: [ParameterCreateWithoutExperimentInput!]
-  connect: [ParameterWhereUniqueInput!]
-}
-
-input ParameterCreateWithoutExperimentInput {
-  id: ID
-  title: String!
-  data: Json
-  settings: Json
-  author: ProfileCreateOneInput!
-}
-
-"""An edge in a connection."""
-type ParameterEdge {
-  """The item at the end of the edge."""
-  node: Parameter!
-
-  """A cursor for use in pagination."""
-  cursor: String!
-}
-
-enum ParameterOrderByInput {
-  id_ASC
-  id_DESC
-  title_ASC
-  title_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  data_ASC
-  data_DESC
-  settings_ASC
-  settings_DESC
-}
-
-type ParameterPreviousValues {
-  id: ID!
-  title: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  data: Json
-  settings: Json
-}
-
-input ParameterScalarWhereInput {
-  """Logical AND on all given filters."""
-  AND: [ParameterScalarWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [ParameterScalarWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [ParameterScalarWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  title: String
-
-  """All values that are not equal to given value."""
-  title_not: String
-
-  """All values that are contained in given list."""
-  title_in: [String!]
-
-  """All values that are not contained in given list."""
-  title_not_in: [String!]
-
-  """All values less than the given value."""
-  title_lt: String
-
-  """All values less than or equal the given value."""
-  title_lte: String
-
-  """All values greater than the given value."""
-  title_gt: String
-
-  """All values greater than or equal the given value."""
-  title_gte: String
-
-  """All values containing the given string."""
-  title_contains: String
-
-  """All values not containing the given string."""
-  title_not_contains: String
-
-  """All values starting with the given string."""
-  title_starts_with: String
-
-  """All values not starting with the given string."""
-  title_not_starts_with: String
-
-  """All values ending with the given string."""
-  title_ends_with: String
-
-  """All values not ending with the given string."""
-  title_not_ends_with: String
-  createdAt: DateTime
-
-  """All values that are not equal to given value."""
-  createdAt_not: DateTime
-
-  """All values that are contained in given list."""
-  createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  createdAt_lte: DateTime
-
-  """All values greater than the given value."""
-  createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-
-  """All values that are not equal to given value."""
-  updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
-  updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
-  updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  updatedAt_gte: DateTime
-}
-
-type ParameterSubscriptionPayload {
-  mutation: MutationType!
-  node: Parameter
-  updatedFields: [String!]
-  previousValues: ParameterPreviousValues
-}
-
-input ParameterSubscriptionWhereInput {
-  """Logical AND on all given filters."""
-  AND: [ParameterSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [ParameterSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [ParameterSubscriptionWhereInput!]
-
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: ParameterWhereInput
-}
-
-input ParameterUpdateInput {
-  title: String
-  data: Json
-  settings: Json
-  experiment: ExperimentUpdateOneRequiredWithoutCustomExperimentsInput
-  author: ProfileUpdateOneRequiredInput
-}
-
-input ParameterUpdateManyDataInput {
-  title: String
-  data: Json
-  settings: Json
-}
-
-input ParameterUpdateManyMutationInput {
-  title: String
-  data: Json
-  settings: Json
-}
-
-input ParameterUpdateManyWithoutExperimentInput {
-  create: [ParameterCreateWithoutExperimentInput!]
-  connect: [ParameterWhereUniqueInput!]
-  set: [ParameterWhereUniqueInput!]
-  disconnect: [ParameterWhereUniqueInput!]
-  delete: [ParameterWhereUniqueInput!]
-  update: [ParameterUpdateWithWhereUniqueWithoutExperimentInput!]
-  updateMany: [ParameterUpdateManyWithWhereNestedInput!]
-  deleteMany: [ParameterScalarWhereInput!]
-  upsert: [ParameterUpsertWithWhereUniqueWithoutExperimentInput!]
-}
-
-input ParameterUpdateManyWithWhereNestedInput {
-  where: ParameterScalarWhereInput!
-  data: ParameterUpdateManyDataInput!
-}
-
-input ParameterUpdateWithoutExperimentDataInput {
-  title: String
-  data: Json
-  settings: Json
-  author: ProfileUpdateOneRequiredInput
-}
-
-input ParameterUpdateWithWhereUniqueWithoutExperimentInput {
-  where: ParameterWhereUniqueInput!
-  data: ParameterUpdateWithoutExperimentDataInput!
-}
-
-input ParameterUpsertWithWhereUniqueWithoutExperimentInput {
-  where: ParameterWhereUniqueInput!
-  update: ParameterUpdateWithoutExperimentDataInput!
-  create: ParameterCreateWithoutExperimentInput!
-}
-
-input ParameterWhereInput {
-  """Logical AND on all given filters."""
-  AND: [ParameterWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [ParameterWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [ParameterWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  title: String
-
-  """All values that are not equal to given value."""
-  title_not: String
-
-  """All values that are contained in given list."""
-  title_in: [String!]
-
-  """All values that are not contained in given list."""
-  title_not_in: [String!]
-
-  """All values less than the given value."""
-  title_lt: String
-
-  """All values less than or equal the given value."""
-  title_lte: String
-
-  """All values greater than the given value."""
-  title_gt: String
-
-  """All values greater than or equal the given value."""
-  title_gte: String
-
-  """All values containing the given string."""
-  title_contains: String
-
-  """All values not containing the given string."""
-  title_not_contains: String
-
-  """All values starting with the given string."""
-  title_starts_with: String
-
-  """All values not starting with the given string."""
-  title_not_starts_with: String
-
-  """All values ending with the given string."""
-  title_ends_with: String
-
-  """All values not ending with the given string."""
-  title_not_ends_with: String
-  createdAt: DateTime
-
-  """All values that are not equal to given value."""
-  createdAt_not: DateTime
-
-  """All values that are contained in given list."""
-  createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  createdAt_lte: DateTime
-
-  """All values greater than the given value."""
-  createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-
-  """All values that are not equal to given value."""
-  updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
-  updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
-  updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
-  updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
-  updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
-  updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
-  updatedAt_gte: DateTime
-  experiment: ExperimentWhereInput
-  author: ProfileWhereInput
-}
-
-input ParameterWhereUniqueInput {
-  id: ID
-}
-
 enum Permission {
   IT
   ADMIN
@@ -4086,11 +4245,18 @@ type Profile implements Node {
   participantIn(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study!]
   researcherIn(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study!]
   taskCreatorIn(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task!]
+  consentCreatorIn(where: ConsentWhereInput, orderBy: ConsentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Consent!]
   collaboratorInStudy(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study!]
   collaboratorInTask(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task!]
+  collaboratorInConsent(where: ConsentWhereInput, orderBy: ConsentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Consent!]
+  consentGivenFor(where: ConsentWhereInput, orderBy: ConsentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Consent!]
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
 }
 
 """A connection to a list of items."""
@@ -4109,6 +4275,10 @@ input ProfileCreateInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -4120,8 +4290,16 @@ input ProfileCreateInput {
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
   taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
   collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+}
+
+input ProfileCreateManyWithoutCollaboratorInConsentInput {
+  create: [ProfileCreateWithoutCollaboratorInConsentInput!]
+  connect: [ProfileWhereUniqueInput!]
 }
 
 input ProfileCreateManyWithoutCollaboratorInStudyInput {
@@ -4131,6 +4309,11 @@ input ProfileCreateManyWithoutCollaboratorInStudyInput {
 
 input ProfileCreateManyWithoutCollaboratorInTaskInput {
   create: [ProfileCreateWithoutCollaboratorInTaskInput!]
+  connect: [ProfileWhereUniqueInput!]
+}
+
+input ProfileCreateManyWithoutConsentGivenForInput {
+  create: [ProfileCreateWithoutConsentGivenForInput!]
   connect: [ProfileWhereUniqueInput!]
 }
 
@@ -4169,6 +4352,11 @@ input ProfileCreateOneWithoutAuthTokenInput {
   connect: ProfileWhereUniqueInput
 }
 
+input ProfileCreateOneWithoutConsentCreatorInInput {
+  create: ProfileCreateWithoutConsentCreatorInInput
+  connect: ProfileWhereUniqueInput
+}
+
 input ProfileCreateOneWithoutResearcherInInput {
   create: ProfileCreateWithoutResearcherInInput
   connect: ProfileWhereUniqueInput
@@ -4199,6 +4387,10 @@ input ProfileCreateWithoutAuthEmailInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileCreatepermissionsInput
   authToken: AuthTokenCreateManyWithoutProfileInput
   authInvite: AuthInviteCreateManyWithoutProfileInput
@@ -4209,8 +4401,11 @@ input ProfileCreateWithoutAuthEmailInput {
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
   taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
   collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
 }
 
 input ProfileCreateWithoutAuthInviteInput {
@@ -4219,6 +4414,10 @@ input ProfileCreateWithoutAuthInviteInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -4229,8 +4428,11 @@ input ProfileCreateWithoutAuthInviteInput {
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
   taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
   collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
 }
 
 input ProfileCreateWithoutAuthParticipantInput {
@@ -4239,6 +4441,10 @@ input ProfileCreateWithoutAuthParticipantInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -4249,8 +4455,11 @@ input ProfileCreateWithoutAuthParticipantInput {
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
   taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
   collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
 }
 
 input ProfileCreateWithoutAuthTokenInput {
@@ -4259,6 +4468,10 @@ input ProfileCreateWithoutAuthTokenInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authInvite: AuthInviteCreateManyWithoutProfileInput
@@ -4269,8 +4482,38 @@ input ProfileCreateWithoutAuthTokenInput {
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
   taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
   collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+}
+
+input ProfileCreateWithoutCollaboratorInConsentInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
 }
 
 input ProfileCreateWithoutCollaboratorInStudyInput {
@@ -4279,6 +4522,10 @@ input ProfileCreateWithoutCollaboratorInStudyInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -4290,7 +4537,10 @@ input ProfileCreateWithoutCollaboratorInStudyInput {
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
   taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
 }
 
 input ProfileCreateWithoutCollaboratorInTaskInput {
@@ -4299,6 +4549,37 @@ input ProfileCreateWithoutCollaboratorInTaskInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+}
+
+input ProfileCreateWithoutConsentCreatorInInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -4311,6 +4592,36 @@ input ProfileCreateWithoutCollaboratorInTaskInput {
   researcherIn: StudyCreateManyWithoutAuthorInput
   taskCreatorIn: TaskCreateManyWithoutAuthorInput
   collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+}
+
+input ProfileCreateWithoutConsentGivenForInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
 }
 
 input ProfileCreateWithoutParticipantInInput {
@@ -4319,6 +4630,10 @@ input ProfileCreateWithoutParticipantInInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -4329,8 +4644,11 @@ input ProfileCreateWithoutParticipantInInput {
   studentIn: ClassCreateManyWithoutStudentsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
   taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
   collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
 }
 
 input ProfileCreateWithoutResearcherInInput {
@@ -4339,6 +4657,10 @@ input ProfileCreateWithoutResearcherInInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -4349,8 +4671,11 @@ input ProfileCreateWithoutResearcherInInput {
   studentIn: ClassCreateManyWithoutStudentsInput
   participantIn: StudyCreateManyWithoutParticipantsInput
   taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
   collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
 }
 
 input ProfileCreateWithoutResultsInput {
@@ -4359,6 +4684,10 @@ input ProfileCreateWithoutResultsInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -4369,8 +4698,11 @@ input ProfileCreateWithoutResultsInput {
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
   taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
   collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
 }
 
 input ProfileCreateWithoutStudentInInput {
@@ -4379,6 +4711,10 @@ input ProfileCreateWithoutStudentInInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -4389,8 +4725,11 @@ input ProfileCreateWithoutStudentInInput {
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
   taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
   collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
 }
 
 input ProfileCreateWithoutTaskCreatorInInput {
@@ -4399,6 +4738,10 @@ input ProfileCreateWithoutTaskCreatorInInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -4409,8 +4752,11 @@ input ProfileCreateWithoutTaskCreatorInInput {
   studentIn: ClassCreateManyWithoutStudentsInput
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
   collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
 }
 
 input ProfileCreateWithoutTeacherInInput {
@@ -4419,6 +4765,10 @@ input ProfileCreateWithoutTeacherInInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -4429,8 +4779,11 @@ input ProfileCreateWithoutTeacherInInput {
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
   taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
   collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
 }
 
 """An edge in a connection."""
@@ -4453,6 +4806,14 @@ enum ProfileOrderByInput {
   largeImage_DESC
   info_ASC
   info_DESC
+  generalInfo_ASC
+  generalInfo_DESC
+  tasksInfo_ASC
+  tasksInfo_DESC
+  studiesInfo_ASC
+  studiesInfo_DESC
+  consentsInfo_ASC
+  consentsInfo_DESC
 }
 
 type ProfilePreviousValues {
@@ -4462,6 +4823,10 @@ type ProfilePreviousValues {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
 }
 
 input ProfileScalarWhereInput {
@@ -4679,6 +5044,10 @@ input ProfileUpdateDataInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -4690,8 +5059,11 @@ input ProfileUpdateDataInput {
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
   taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
   collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
 }
 
 input ProfileUpdateInput {
@@ -4699,6 +5071,10 @@ input ProfileUpdateInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -4710,8 +5086,11 @@ input ProfileUpdateInput {
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
   taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
   collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
 }
 
 input ProfileUpdateManyDataInput {
@@ -4719,6 +5098,10 @@ input ProfileUpdateManyDataInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileUpdatepermissionsInput
 }
 
@@ -4727,7 +5110,23 @@ input ProfileUpdateManyMutationInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileUpdatepermissionsInput
+}
+
+input ProfileUpdateManyWithoutCollaboratorInConsentInput {
+  create: [ProfileCreateWithoutCollaboratorInConsentInput!]
+  connect: [ProfileWhereUniqueInput!]
+  set: [ProfileWhereUniqueInput!]
+  disconnect: [ProfileWhereUniqueInput!]
+  delete: [ProfileWhereUniqueInput!]
+  update: [ProfileUpdateWithWhereUniqueWithoutCollaboratorInConsentInput!]
+  updateMany: [ProfileUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProfileScalarWhereInput!]
+  upsert: [ProfileUpsertWithWhereUniqueWithoutCollaboratorInConsentInput!]
 }
 
 input ProfileUpdateManyWithoutCollaboratorInStudyInput {
@@ -4752,6 +5151,18 @@ input ProfileUpdateManyWithoutCollaboratorInTaskInput {
   updateMany: [ProfileUpdateManyWithWhereNestedInput!]
   deleteMany: [ProfileScalarWhereInput!]
   upsert: [ProfileUpsertWithWhereUniqueWithoutCollaboratorInTaskInput!]
+}
+
+input ProfileUpdateManyWithoutConsentGivenForInput {
+  create: [ProfileCreateWithoutConsentGivenForInput!]
+  connect: [ProfileWhereUniqueInput!]
+  set: [ProfileWhereUniqueInput!]
+  disconnect: [ProfileWhereUniqueInput!]
+  delete: [ProfileWhereUniqueInput!]
+  update: [ProfileUpdateWithWhereUniqueWithoutConsentGivenForInput!]
+  updateMany: [ProfileUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProfileScalarWhereInput!]
+  upsert: [ProfileUpsertWithWhereUniqueWithoutConsentGivenForInput!]
 }
 
 input ProfileUpdateManyWithoutParticipantInInput {
@@ -4818,6 +5229,13 @@ input ProfileUpdateOneRequiredWithoutAuthTokenInput {
   upsert: ProfileUpsertWithoutAuthTokenInput
 }
 
+input ProfileUpdateOneRequiredWithoutConsentCreatorInInput {
+  create: ProfileCreateWithoutConsentCreatorInInput
+  connect: ProfileWhereUniqueInput
+  update: ProfileUpdateWithoutConsentCreatorInDataInput
+  upsert: ProfileUpsertWithoutConsentCreatorInInput
+}
+
 input ProfileUpdateOneRequiredWithoutResearcherInInput {
   create: ProfileCreateWithoutResearcherInInput
   connect: ProfileWhereUniqueInput
@@ -4855,6 +5273,10 @@ input ProfileUpdateWithoutAuthEmailDataInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileUpdatepermissionsInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
   authInvite: AuthInviteUpdateManyWithoutProfileInput
@@ -4865,8 +5287,11 @@ input ProfileUpdateWithoutAuthEmailDataInput {
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
   taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
   collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
 }
 
 input ProfileUpdateWithoutAuthInviteDataInput {
@@ -4874,6 +5299,10 @@ input ProfileUpdateWithoutAuthInviteDataInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -4884,8 +5313,11 @@ input ProfileUpdateWithoutAuthInviteDataInput {
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
   taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
   collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
 }
 
 input ProfileUpdateWithoutAuthParticipantDataInput {
@@ -4893,6 +5325,10 @@ input ProfileUpdateWithoutAuthParticipantDataInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -4903,8 +5339,11 @@ input ProfileUpdateWithoutAuthParticipantDataInput {
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
   taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
   collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
 }
 
 input ProfileUpdateWithoutAuthTokenDataInput {
@@ -4912,6 +5351,10 @@ input ProfileUpdateWithoutAuthTokenDataInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authInvite: AuthInviteUpdateManyWithoutProfileInput
@@ -4922,8 +5365,37 @@ input ProfileUpdateWithoutAuthTokenDataInput {
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
   taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
   collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+}
+
+input ProfileUpdateWithoutCollaboratorInConsentDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
 }
 
 input ProfileUpdateWithoutCollaboratorInStudyDataInput {
@@ -4931,6 +5403,10 @@ input ProfileUpdateWithoutCollaboratorInStudyDataInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -4942,7 +5418,10 @@ input ProfileUpdateWithoutCollaboratorInStudyDataInput {
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
   taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
 }
 
 input ProfileUpdateWithoutCollaboratorInTaskDataInput {
@@ -4950,6 +5429,36 @@ input ProfileUpdateWithoutCollaboratorInTaskDataInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+}
+
+input ProfileUpdateWithoutConsentCreatorInDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -4962,6 +5471,35 @@ input ProfileUpdateWithoutCollaboratorInTaskDataInput {
   researcherIn: StudyUpdateManyWithoutAuthorInput
   taskCreatorIn: TaskUpdateManyWithoutAuthorInput
   collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+}
+
+input ProfileUpdateWithoutConsentGivenForDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
 }
 
 input ProfileUpdateWithoutParticipantInDataInput {
@@ -4969,6 +5507,10 @@ input ProfileUpdateWithoutParticipantInDataInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -4979,8 +5521,11 @@ input ProfileUpdateWithoutParticipantInDataInput {
   studentIn: ClassUpdateManyWithoutStudentsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
   taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
   collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
 }
 
 input ProfileUpdateWithoutResearcherInDataInput {
@@ -4988,6 +5533,10 @@ input ProfileUpdateWithoutResearcherInDataInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -4998,8 +5547,11 @@ input ProfileUpdateWithoutResearcherInDataInput {
   studentIn: ClassUpdateManyWithoutStudentsInput
   participantIn: StudyUpdateManyWithoutParticipantsInput
   taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
   collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
 }
 
 input ProfileUpdateWithoutResultsDataInput {
@@ -5007,6 +5559,10 @@ input ProfileUpdateWithoutResultsDataInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -5017,8 +5573,11 @@ input ProfileUpdateWithoutResultsDataInput {
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
   taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
   collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
 }
 
 input ProfileUpdateWithoutStudentInDataInput {
@@ -5026,6 +5585,10 @@ input ProfileUpdateWithoutStudentInDataInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -5036,8 +5599,11 @@ input ProfileUpdateWithoutStudentInDataInput {
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
   taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
   collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
 }
 
 input ProfileUpdateWithoutTaskCreatorInDataInput {
@@ -5045,6 +5611,10 @@ input ProfileUpdateWithoutTaskCreatorInDataInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -5055,8 +5625,11 @@ input ProfileUpdateWithoutTaskCreatorInDataInput {
   studentIn: ClassUpdateManyWithoutStudentsInput
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
   collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
 }
 
 input ProfileUpdateWithoutTeacherInDataInput {
@@ -5064,6 +5637,10 @@ input ProfileUpdateWithoutTeacherInDataInput {
   image: String
   largeImage: String
   info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -5074,8 +5651,16 @@ input ProfileUpdateWithoutTeacherInDataInput {
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
   taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
   collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+}
+
+input ProfileUpdateWithWhereUniqueWithoutCollaboratorInConsentInput {
+  where: ProfileWhereUniqueInput!
+  data: ProfileUpdateWithoutCollaboratorInConsentDataInput!
 }
 
 input ProfileUpdateWithWhereUniqueWithoutCollaboratorInStudyInput {
@@ -5086,6 +5671,11 @@ input ProfileUpdateWithWhereUniqueWithoutCollaboratorInStudyInput {
 input ProfileUpdateWithWhereUniqueWithoutCollaboratorInTaskInput {
   where: ProfileWhereUniqueInput!
   data: ProfileUpdateWithoutCollaboratorInTaskDataInput!
+}
+
+input ProfileUpdateWithWhereUniqueWithoutConsentGivenForInput {
+  where: ProfileWhereUniqueInput!
+  data: ProfileUpdateWithoutConsentGivenForDataInput!
 }
 
 input ProfileUpdateWithWhereUniqueWithoutParticipantInInput {
@@ -5123,6 +5713,11 @@ input ProfileUpsertWithoutAuthTokenInput {
   create: ProfileCreateWithoutAuthTokenInput!
 }
 
+input ProfileUpsertWithoutConsentCreatorInInput {
+  update: ProfileUpdateWithoutConsentCreatorInDataInput!
+  create: ProfileCreateWithoutConsentCreatorInInput!
+}
+
 input ProfileUpsertWithoutResearcherInInput {
   update: ProfileUpdateWithoutResearcherInDataInput!
   create: ProfileCreateWithoutResearcherInInput!
@@ -5143,6 +5738,12 @@ input ProfileUpsertWithoutTeacherInInput {
   create: ProfileCreateWithoutTeacherInInput!
 }
 
+input ProfileUpsertWithWhereUniqueWithoutCollaboratorInConsentInput {
+  where: ProfileWhereUniqueInput!
+  update: ProfileUpdateWithoutCollaboratorInConsentDataInput!
+  create: ProfileCreateWithoutCollaboratorInConsentInput!
+}
+
 input ProfileUpsertWithWhereUniqueWithoutCollaboratorInStudyInput {
   where: ProfileWhereUniqueInput!
   update: ProfileUpdateWithoutCollaboratorInStudyDataInput!
@@ -5153,6 +5754,12 @@ input ProfileUpsertWithWhereUniqueWithoutCollaboratorInTaskInput {
   where: ProfileWhereUniqueInput!
   update: ProfileUpdateWithoutCollaboratorInTaskDataInput!
   create: ProfileCreateWithoutCollaboratorInTaskInput!
+}
+
+input ProfileUpsertWithWhereUniqueWithoutConsentGivenForInput {
+  where: ProfileWhereUniqueInput!
+  update: ProfileUpdateWithoutConsentGivenForDataInput!
+  create: ProfileCreateWithoutConsentGivenForInput!
 }
 
 input ProfileUpsertWithWhereUniqueWithoutParticipantInInput {
@@ -5366,12 +5973,21 @@ input ProfileWhereInput {
   taskCreatorIn_every: TaskWhereInput
   taskCreatorIn_some: TaskWhereInput
   taskCreatorIn_none: TaskWhereInput
+  consentCreatorIn_every: ConsentWhereInput
+  consentCreatorIn_some: ConsentWhereInput
+  consentCreatorIn_none: ConsentWhereInput
   collaboratorInStudy_every: StudyWhereInput
   collaboratorInStudy_some: StudyWhereInput
   collaboratorInStudy_none: StudyWhereInput
   collaboratorInTask_every: TaskWhereInput
   collaboratorInTask_some: TaskWhereInput
   collaboratorInTask_none: TaskWhereInput
+  collaboratorInConsent_every: ConsentWhereInput
+  collaboratorInConsent_some: ConsentWhereInput
+  collaboratorInConsent_none: ConsentWhereInput
+  consentGivenFor_every: ConsentWhereInput
+  consentGivenFor_some: ConsentWhereInput
+  consentGivenFor_none: ConsentWhereInput
 }
 
 input ProfileWhereUniqueInput {
@@ -5386,39 +6002,39 @@ type Query {
   authInvites(where: AuthInviteWhereInput, orderBy: AuthInviteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthInvite]!
   schools(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [School]!
   classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class]!
-  experiments(where: ExperimentWhereInput, orderBy: ExperimentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Experiment]!
   results(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Result]!
-  parameters(where: ParameterWhereInput, orderBy: ParameterOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Parameter]!
+  consents(where: ConsentWhereInput, orderBy: ConsentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Consent]!
   studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study]!
+  profiles(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile]!
   templates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Template]!
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task]!
-  profiles(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile]!
+  datas(where: DataWhereInput, orderBy: DataOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Data]!
   authEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
   authParticipant(where: AuthParticipantWhereUniqueInput!): AuthParticipant
   authToken(where: AuthTokenWhereUniqueInput!): AuthToken
   authInvite(where: AuthInviteWhereUniqueInput!): AuthInvite
   school(where: SchoolWhereUniqueInput!): School
   class(where: ClassWhereUniqueInput!): Class
-  experiment(where: ExperimentWhereUniqueInput!): Experiment
   result(where: ResultWhereUniqueInput!): Result
-  parameter(where: ParameterWhereUniqueInput!): Parameter
+  consent(where: ConsentWhereUniqueInput!): Consent
   study(where: StudyWhereUniqueInput!): Study
+  profile(where: ProfileWhereUniqueInput!): Profile
   template(where: TemplateWhereUniqueInput!): Template
   task(where: TaskWhereUniqueInput!): Task
-  profile(where: ProfileWhereUniqueInput!): Profile
+  data(where: DataWhereUniqueInput!): Data
   authEmailsConnection(where: AuthEmailWhereInput, orderBy: AuthEmailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthEmailConnection!
   authParticipantsConnection(where: AuthParticipantWhereInput, orderBy: AuthParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthParticipantConnection!
   authTokensConnection(where: AuthTokenWhereInput, orderBy: AuthTokenOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthTokenConnection!
   authInvitesConnection(where: AuthInviteWhereInput, orderBy: AuthInviteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthInviteConnection!
   schoolsConnection(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SchoolConnection!
   classesConnection(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClassConnection!
-  experimentsConnection(where: ExperimentWhereInput, orderBy: ExperimentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExperimentConnection!
   resultsConnection(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ResultConnection!
-  parametersConnection(where: ParameterWhereInput, orderBy: ParameterOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ParameterConnection!
+  consentsConnection(where: ConsentWhereInput, orderBy: ConsentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ConsentConnection!
   studiesConnection(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StudyConnection!
+  profilesConnection(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProfileConnection!
   templatesConnection(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TemplateConnection!
   tasksConnection(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TaskConnection!
-  profilesConnection(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProfileConnection!
+  datasConnection(where: DataWhereInput, orderBy: DataOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DataConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -5441,6 +6057,8 @@ type Result implements Node {
   payload: String
   study: Study
   info: Json
+  incrementalData(where: DataWhereInput, orderBy: DataOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Data!]
+  fullData: Data
 }
 
 """A connection to a list of items."""
@@ -5465,6 +6083,8 @@ input ResultCreateInput {
   task: TaskCreateOneInput!
   user: ProfileCreateOneWithoutResultsInput!
   study: StudyCreateOneInput
+  incrementalData: DataCreateManyInput
+  fullData: DataCreateOneInput
 }
 
 input ResultCreateManyWithoutUserInput {
@@ -5483,6 +6103,8 @@ input ResultCreateWithoutUserInput {
   template: TemplateCreateOneInput
   task: TaskCreateOneInput!
   study: StudyCreateOneInput
+  incrementalData: DataCreateManyInput
+  fullData: DataCreateOneInput
 }
 
 """An edge in a connection."""
@@ -5814,6 +6436,8 @@ input ResultUpdateInput {
   task: TaskUpdateOneRequiredInput
   user: ProfileUpdateOneRequiredWithoutResultsInput
   study: StudyUpdateOneInput
+  incrementalData: DataUpdateManyInput
+  fullData: DataUpdateOneInput
 }
 
 input ResultUpdateManyDataInput {
@@ -5861,6 +6485,8 @@ input ResultUpdateWithoutUserDataInput {
   template: TemplateUpdateOneInput
   task: TaskUpdateOneRequiredInput
   study: StudyUpdateOneInput
+  incrementalData: DataUpdateManyInput
+  fullData: DataUpdateOneInput
 }
 
 input ResultUpdateWithWhereUniqueWithoutUserInput {
@@ -6113,6 +6739,10 @@ input ResultWhereInput {
   task: TaskWhereInput
   user: ProfileWhereInput
   study: StudyWhereInput
+  incrementalData_every: DataWhereInput
+  incrementalData_some: DataWhereInput
+  incrementalData_none: DataWhereInput
+  fullData: DataWhereInput
 }
 
 input ResultWhereUniqueInput {
@@ -6516,6 +7146,7 @@ type Study implements Node {
   largeImage: String
   info: Json
   collaborators(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
+  consent: Consent
 }
 
 """A connection to a list of items."""
@@ -6542,6 +7173,7 @@ input StudyCreateInput {
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
+  consent: ConsentCreateOneWithoutStudiesInput
 }
 
 input StudyCreateManyWithoutAuthorInput {
@@ -6551,6 +7183,11 @@ input StudyCreateManyWithoutAuthorInput {
 
 input StudyCreateManyWithoutCollaboratorsInput {
   create: [StudyCreateWithoutCollaboratorsInput!]
+  connect: [StudyWhereUniqueInput!]
+}
+
+input StudyCreateManyWithoutConsentInput {
+  create: [StudyCreateWithoutConsentInput!]
   connect: [StudyWhereUniqueInput!]
 }
 
@@ -6577,6 +7214,7 @@ input StudyCreateWithoutAuthorInput {
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
+  consent: ConsentCreateOneWithoutStudiesInput
 }
 
 input StudyCreateWithoutCollaboratorsInput {
@@ -6592,6 +7230,23 @@ input StudyCreateWithoutCollaboratorsInput {
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
+  consent: ConsentCreateOneWithoutStudiesInput
+}
+
+input StudyCreateWithoutConsentInput {
+  id: ID
+  title: String!
+  slug: String!
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  author: ProfileCreateOneWithoutResearcherInInput!
+  tasks: TaskCreateManyInput
+  participants: ProfileCreateManyWithoutParticipantInInput
+  collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
 }
 
 input StudyCreateWithoutParticipantsInput {
@@ -6607,6 +7262,7 @@ input StudyCreateWithoutParticipantsInput {
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
+  consent: ConsentCreateOneWithoutStudiesInput
 }
 
 """An edge in a connection."""
@@ -7044,6 +7700,7 @@ input StudyUpdateDataInput {
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
+  consent: ConsentUpdateOneWithoutStudiesInput
 }
 
 input StudyUpdateInput {
@@ -7059,6 +7716,7 @@ input StudyUpdateInput {
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
+  consent: ConsentUpdateOneWithoutStudiesInput
 }
 
 input StudyUpdateManyDataInput {
@@ -7107,6 +7765,18 @@ input StudyUpdateManyWithoutCollaboratorsInput {
   upsert: [StudyUpsertWithWhereUniqueWithoutCollaboratorsInput!]
 }
 
+input StudyUpdateManyWithoutConsentInput {
+  create: [StudyCreateWithoutConsentInput!]
+  connect: [StudyWhereUniqueInput!]
+  set: [StudyWhereUniqueInput!]
+  disconnect: [StudyWhereUniqueInput!]
+  delete: [StudyWhereUniqueInput!]
+  update: [StudyUpdateWithWhereUniqueWithoutConsentInput!]
+  updateMany: [StudyUpdateManyWithWhereNestedInput!]
+  deleteMany: [StudyScalarWhereInput!]
+  upsert: [StudyUpsertWithWhereUniqueWithoutConsentInput!]
+}
+
 input StudyUpdateManyWithoutParticipantsInput {
   create: [StudyCreateWithoutParticipantsInput!]
   connect: [StudyWhereUniqueInput!]
@@ -7145,6 +7815,7 @@ input StudyUpdateWithoutAuthorDataInput {
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
+  consent: ConsentUpdateOneWithoutStudiesInput
 }
 
 input StudyUpdateWithoutCollaboratorsDataInput {
@@ -7159,6 +7830,22 @@ input StudyUpdateWithoutCollaboratorsDataInput {
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
+  consent: ConsentUpdateOneWithoutStudiesInput
+}
+
+input StudyUpdateWithoutConsentDataInput {
+  title: String
+  slug: String
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  author: ProfileUpdateOneRequiredWithoutResearcherInInput
+  tasks: TaskUpdateManyInput
+  participants: ProfileUpdateManyWithoutParticipantInInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
 }
 
 input StudyUpdateWithoutParticipantsDataInput {
@@ -7173,6 +7860,7 @@ input StudyUpdateWithoutParticipantsDataInput {
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
+  consent: ConsentUpdateOneWithoutStudiesInput
 }
 
 input StudyUpdateWithWhereUniqueWithoutAuthorInput {
@@ -7183,6 +7871,11 @@ input StudyUpdateWithWhereUniqueWithoutAuthorInput {
 input StudyUpdateWithWhereUniqueWithoutCollaboratorsInput {
   where: StudyWhereUniqueInput!
   data: StudyUpdateWithoutCollaboratorsDataInput!
+}
+
+input StudyUpdateWithWhereUniqueWithoutConsentInput {
+  where: StudyWhereUniqueInput!
+  data: StudyUpdateWithoutConsentDataInput!
 }
 
 input StudyUpdateWithWhereUniqueWithoutParticipantsInput {
@@ -7205,6 +7898,12 @@ input StudyUpsertWithWhereUniqueWithoutCollaboratorsInput {
   where: StudyWhereUniqueInput!
   update: StudyUpdateWithoutCollaboratorsDataInput!
   create: StudyCreateWithoutCollaboratorsInput!
+}
+
+input StudyUpsertWithWhereUniqueWithoutConsentInput {
+  where: StudyWhereUniqueInput!
+  update: StudyUpdateWithoutConsentDataInput!
+  create: StudyCreateWithoutConsentInput!
 }
 
 input StudyUpsertWithWhereUniqueWithoutParticipantsInput {
@@ -7556,6 +8255,7 @@ input StudyWhereInput {
   collaborators_every: ProfileWhereInput
   collaborators_some: ProfileWhereInput
   collaborators_none: ProfileWhereInput
+  consent: ConsentWhereInput
 }
 
 input StudyWhereUniqueInput {
@@ -7570,13 +8270,13 @@ type Subscription {
   authInvite(where: AuthInviteSubscriptionWhereInput): AuthInviteSubscriptionPayload
   school(where: SchoolSubscriptionWhereInput): SchoolSubscriptionPayload
   class(where: ClassSubscriptionWhereInput): ClassSubscriptionPayload
-  experiment(where: ExperimentSubscriptionWhereInput): ExperimentSubscriptionPayload
   result(where: ResultSubscriptionWhereInput): ResultSubscriptionPayload
-  parameter(where: ParameterSubscriptionWhereInput): ParameterSubscriptionPayload
+  consent(where: ConsentSubscriptionWhereInput): ConsentSubscriptionPayload
   study(where: StudySubscriptionWhereInput): StudySubscriptionPayload
+  profile(where: ProfileSubscriptionWhereInput): ProfileSubscriptionPayload
   template(where: TemplateSubscriptionWhereInput): TemplateSubscriptionPayload
   task(where: TaskSubscriptionWhereInput): TaskSubscriptionPayload
-  profile(where: ProfileSubscriptionWhereInput): ProfileSubscriptionPayload
+  data(where: DataSubscriptionWhereInput): DataSubscriptionPayload
 }
 
 type Task implements Node {
@@ -7592,6 +8292,7 @@ type Task implements Node {
   createdAt: DateTime!
   updatedAt: DateTime!
   collaborators(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
+  consent: Consent
 }
 
 """A connection to a list of items."""
@@ -7615,6 +8316,7 @@ input TaskCreateInput {
   template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
+  consent: ConsentCreateOneWithoutTasksInput
 }
 
 input TaskCreateManyInput {
@@ -7629,6 +8331,11 @@ input TaskCreateManyWithoutAuthorInput {
 
 input TaskCreateManyWithoutCollaboratorsInput {
   create: [TaskCreateWithoutCollaboratorsInput!]
+  connect: [TaskWhereUniqueInput!]
+}
+
+input TaskCreateManyWithoutConsentInput {
+  create: [TaskCreateWithoutConsentInput!]
   connect: [TaskWhereUniqueInput!]
 }
 
@@ -7652,6 +8359,7 @@ input TaskCreateWithoutAuthorInput {
   link: String
   template: TemplateCreateOneWithoutTasksInput
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
+  consent: ConsentCreateOneWithoutTasksInput
 }
 
 input TaskCreateWithoutCollaboratorsInput {
@@ -7664,6 +8372,20 @@ input TaskCreateWithoutCollaboratorsInput {
   link: String
   template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneWithoutTaskCreatorInInput!
+  consent: ConsentCreateOneWithoutTasksInput
+}
+
+input TaskCreateWithoutConsentInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  parameters: Json
+  settings: Json
+  link: String
+  template: TemplateCreateOneWithoutTasksInput
+  author: ProfileCreateOneWithoutTaskCreatorInInput!
+  collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
 }
 
 input TaskCreateWithoutTemplateInput {
@@ -7676,6 +8398,7 @@ input TaskCreateWithoutTemplateInput {
   link: String
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
+  consent: ConsentCreateOneWithoutTasksInput
 }
 
 """An edge in a connection."""
@@ -8024,6 +8747,7 @@ input TaskUpdateDataInput {
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
+  consent: ConsentUpdateOneWithoutTasksInput
 }
 
 input TaskUpdateInput {
@@ -8036,6 +8760,7 @@ input TaskUpdateInput {
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
+  consent: ConsentUpdateOneWithoutTasksInput
 }
 
 input TaskUpdateManyDataInput {
@@ -8092,6 +8817,18 @@ input TaskUpdateManyWithoutCollaboratorsInput {
   upsert: [TaskUpsertWithWhereUniqueWithoutCollaboratorsInput!]
 }
 
+input TaskUpdateManyWithoutConsentInput {
+  create: [TaskCreateWithoutConsentInput!]
+  connect: [TaskWhereUniqueInput!]
+  set: [TaskWhereUniqueInput!]
+  disconnect: [TaskWhereUniqueInput!]
+  delete: [TaskWhereUniqueInput!]
+  update: [TaskUpdateWithWhereUniqueWithoutConsentInput!]
+  updateMany: [TaskUpdateManyWithWhereNestedInput!]
+  deleteMany: [TaskScalarWhereInput!]
+  upsert: [TaskUpsertWithWhereUniqueWithoutConsentInput!]
+}
+
 input TaskUpdateManyWithoutTemplateInput {
   create: [TaskCreateWithoutTemplateInput!]
   connect: [TaskWhereUniqueInput!]
@@ -8125,6 +8862,7 @@ input TaskUpdateWithoutAuthorDataInput {
   link: String
   template: TemplateUpdateOneWithoutTasksInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
+  consent: ConsentUpdateOneWithoutTasksInput
 }
 
 input TaskUpdateWithoutCollaboratorsDataInput {
@@ -8136,6 +8874,19 @@ input TaskUpdateWithoutCollaboratorsDataInput {
   link: String
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
+  consent: ConsentUpdateOneWithoutTasksInput
+}
+
+input TaskUpdateWithoutConsentDataInput {
+  title: String
+  slug: String
+  description: String
+  parameters: Json
+  settings: Json
+  link: String
+  template: TemplateUpdateOneWithoutTasksInput
+  author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
 }
 
 input TaskUpdateWithoutTemplateDataInput {
@@ -8147,6 +8898,7 @@ input TaskUpdateWithoutTemplateDataInput {
   link: String
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
+  consent: ConsentUpdateOneWithoutTasksInput
 }
 
 input TaskUpdateWithWhereUniqueNestedInput {
@@ -8162,6 +8914,11 @@ input TaskUpdateWithWhereUniqueWithoutAuthorInput {
 input TaskUpdateWithWhereUniqueWithoutCollaboratorsInput {
   where: TaskWhereUniqueInput!
   data: TaskUpdateWithoutCollaboratorsDataInput!
+}
+
+input TaskUpdateWithWhereUniqueWithoutConsentInput {
+  where: TaskWhereUniqueInput!
+  data: TaskUpdateWithoutConsentDataInput!
 }
 
 input TaskUpdateWithWhereUniqueWithoutTemplateInput {
@@ -8190,6 +8947,12 @@ input TaskUpsertWithWhereUniqueWithoutCollaboratorsInput {
   where: TaskWhereUniqueInput!
   update: TaskUpdateWithoutCollaboratorsDataInput!
   create: TaskCreateWithoutCollaboratorsInput!
+}
+
+input TaskUpsertWithWhereUniqueWithoutConsentInput {
+  where: TaskWhereUniqueInput!
+  update: TaskUpdateWithoutConsentDataInput!
+  create: TaskCreateWithoutConsentInput!
 }
 
 input TaskUpsertWithWhereUniqueWithoutTemplateInput {
@@ -8456,6 +9219,7 @@ input TaskWhereInput {
   collaborators_every: ProfileWhereInput
   collaborators_some: ProfileWhereInput
   collaborators_none: ProfileWhereInput
+  consent: ConsentWhereInput
 }
 
 input TaskWhereUniqueInput {

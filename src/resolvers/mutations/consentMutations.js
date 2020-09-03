@@ -1,7 +1,7 @@
 const slugify = require('slugify');
 
-const taskMutations = {
-  async createTask(parent, args, ctx, info) {
+const consentMutations = {
+  async createConsent(parent, args, ctx, info) {
     // 1. Make sure that user is signed in
     const { userId } = ctx.request;
     if (!userId) {
@@ -15,15 +15,15 @@ const taskMutations = {
     });
 
     // check whether the slug is already in the system
-    const existingTask = await ctx.db.query.task(
+    const existingConsent = await ctx.db.query.consent(
       {
         where: { slug: args.slug },
       },
       `{ id }`
     );
-    if (existingTask) {
+    if (existingConsent) {
       throw new Error(
-        `The task name ${args.title} is already taken. Please try to come up with another name.`
+        `The consent name ${args.title} is already taken. Please try to come up with another name.`
       );
     }
 
@@ -37,58 +37,45 @@ const taskMutations = {
       collaborators = collaborators.filter(c => c);
     }
 
-    // 2. Create a new set of tasks
-    return ctx.db.mutation.createTask(
+    // 2. Create a new consent
+    return ctx.db.mutation.createConsent(
       {
         data: {
           title: args.title,
           slug: args.slug,
           description: args.description,
+          info: args.info,
+          settings: args.settings,
           author: {
             connect: { id: userId },
           },
-          template: args.templateId
-            ? {
-                connect: { id: args.templateId },
-              }
-            : null,
-          parameters: args.parameters,
-          settings: args.settings,
-          link: args.link,
           collaborators: {
             connect: collaborators,
           },
-          consent:
-            args.consent && args.consent !== 'no'
-              ? {
-                  connect: { id: args.consent },
-                }
-              : null,
         },
       },
       info
     );
   },
 
-  // update task
-  async updateTask(parent, args, ctx, info) {
-    console.log('args', args);
+  // update consent
+  async updateConsent(parent, args, ctx, info) {
     // verify that the user has the right to update the template
     const where = { id: args.id };
-    const preTask = await ctx.db.query.task(
+    const preConsent = await ctx.db.query.consent(
       { where },
       `{ id title author {id} collaborators {id} }`
     );
-    // check whether user has permissions to delete the task
-    const ownsTask = preTask.author.id === ctx.request.userId;
+    // check whether user has permissions to delete the consent
+    const ownsConsent = preConsent.author.id === ctx.request.userId;
     const hasPermissions = ctx.request.user.permissions.some(permission =>
       ['ADMIN'].includes(permission)
     );
-    const isCollaborator = preTask.collaborators
+    const isCollaborator = preConsent.collaborators
       .map(collaborator => collaborator.id)
       .includes(ctx.request.userId);
     console.log('isCollaborator', isCollaborator);
-    if (!ownsTask && !hasPermissions && !isCollaborator) {
+    if (!ownsConsent && !hasPermissions && !isCollaborator) {
       throw new Error(`You don't have permission to do that!`);
     }
 
@@ -103,24 +90,24 @@ const taskMutations = {
       collaborators = collaborators.filter(c => c);
     }
 
-    const task = await ctx.db.query.task(
+    const consent = await ctx.db.query.consent(
       {
         where: { id: args.id },
       },
-      `{ id collaborators { id } consent { id } }`
+      `{ id collaborators { id } }`
     );
 
     if (
       collaborators &&
-      task.collaborators &&
-      collaborators.length !== task.collaborators.length
+      consent.collaborators &&
+      collaborators.length !== consent.collaborators.length
     ) {
       // remove previous connections
-      await ctx.db.mutation.updateTask(
+      await ctx.db.mutation.updateConsent(
         {
           data: {
             collaborators: {
-              disconnect: task.collaborators,
+              disconnect: consent.collaborators,
             },
           },
           where: {
@@ -136,22 +123,13 @@ const taskMutations = {
     // remove the ID from the updates
     delete updates.id;
     // run the update method
-    return ctx.db.mutation.updateTask(
+    return ctx.db.mutation.updateConsent(
       {
         data: {
           ...updates,
           collaborators: {
             connect: collaborators,
           },
-          consent: args.consent
-            ? args.consent === 'no'
-              ? {
-                  disconnect: { id: task.consent.id },
-                }
-              : {
-                  connect: { id: args.consent },
-                }
-            : null,
         },
         where: {
           id: args.id,
@@ -161,22 +139,25 @@ const taskMutations = {
     );
   },
 
-  // delete task (meaning delete a custom experiment)
-  async deleteTask(parent, args, ctx, info) {
+  // delete consent (meaning delete a custom experiment)
+  async deleteConsent(parent, args, ctx, info) {
     const where = { id: args.id };
     // find experiment
-    const task = await ctx.db.query.task({ where }, `{ id title author {id} }`);
-    // check whether user has permissions to delete the task
-    const ownsTask = task.author.id === ctx.request.userId;
+    const consent = await ctx.db.query.consent(
+      { where },
+      `{ id title author {id} }`
+    );
+    // check whether user has permissions to delete the consent
+    const ownsConsent = consent.author.id === ctx.request.userId;
     const hasPermissions = ctx.request.user.permissions.some(permission =>
       ['ADMIN'].includes(permission)
     );
-    if (!ownsTask && !hasPermissions) {
+    if (!ownsConsent && !hasPermissions) {
       throw new Error(`You don't have permission to do that!`);
     }
     // delete it
-    return ctx.db.mutation.deleteTask({ where }, info);
+    return ctx.db.mutation.deleteConsent({ where }, info);
   },
 };
 
-module.exports = taskMutations;
+module.exports = consentMutations;
