@@ -24,6 +24,7 @@ const Query = {
   tasks: forwardTo('db'),
   task: forwardTo('db'),
   consents: forwardTo('db'),
+  messages: forwardTo('db'),
 
   me(parent, args, ctx, info) {
     // check if there is a current user id

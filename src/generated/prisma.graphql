@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Wed Sep 02 2020 21:03:18 GMT+0200 (Central European Summer Time)
+# timestamp: Tue Sep 08 2020 16:20:44 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -26,6 +26,10 @@ type AggregateConsent {
 }
 
 type AggregateData {
+  count: Int!
+}
+
+type AggregateMessage {
   count: Int!
 }
 
@@ -4114,6 +4118,488 @@ Long can represent values between -(2^63) and 2^63 - 1.
 """
 scalar Long
 
+type Message implements Node {
+  id: ID!
+  content: String!
+  info: Json
+  settings: Json
+  expireAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type MessageConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [MessageEdge]!
+  aggregate: AggregateMessage!
+}
+
+input MessageCreateInput {
+  id: ID
+  content: String!
+  info: Json
+  settings: Json
+  expireAt: DateTime
+}
+
+input MessageCreateManyInput {
+  create: [MessageCreateInput!]
+  connect: [MessageWhereUniqueInput!]
+}
+
+"""An edge in a connection."""
+type MessageEdge {
+  """The item at the end of the edge."""
+  node: Message!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum MessageOrderByInput {
+  id_ASC
+  id_DESC
+  content_ASC
+  content_DESC
+  info_ASC
+  info_DESC
+  settings_ASC
+  settings_DESC
+  expireAt_ASC
+  expireAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type MessagePreviousValues {
+  id: ID!
+  content: String!
+  info: Json
+  settings: Json
+  expireAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input MessageScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [MessageScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [MessageScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [MessageScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  content: String
+
+  """All values that are not equal to given value."""
+  content_not: String
+
+  """All values that are contained in given list."""
+  content_in: [String!]
+
+  """All values that are not contained in given list."""
+  content_not_in: [String!]
+
+  """All values less than the given value."""
+  content_lt: String
+
+  """All values less than or equal the given value."""
+  content_lte: String
+
+  """All values greater than the given value."""
+  content_gt: String
+
+  """All values greater than or equal the given value."""
+  content_gte: String
+
+  """All values containing the given string."""
+  content_contains: String
+
+  """All values not containing the given string."""
+  content_not_contains: String
+
+  """All values starting with the given string."""
+  content_starts_with: String
+
+  """All values not starting with the given string."""
+  content_not_starts_with: String
+
+  """All values ending with the given string."""
+  content_ends_with: String
+
+  """All values not ending with the given string."""
+  content_not_ends_with: String
+  expireAt: DateTime
+
+  """All values that are not equal to given value."""
+  expireAt_not: DateTime
+
+  """All values that are contained in given list."""
+  expireAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  expireAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  expireAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  expireAt_lte: DateTime
+
+  """All values greater than the given value."""
+  expireAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  expireAt_gte: DateTime
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+type MessageSubscriptionPayload {
+  mutation: MutationType!
+  node: Message
+  updatedFields: [String!]
+  previousValues: MessagePreviousValues
+}
+
+input MessageSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [MessageSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [MessageSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [MessageSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: MessageWhereInput
+}
+
+input MessageUpdateDataInput {
+  content: String
+  info: Json
+  settings: Json
+  expireAt: DateTime
+}
+
+input MessageUpdateInput {
+  content: String
+  info: Json
+  settings: Json
+  expireAt: DateTime
+}
+
+input MessageUpdateManyDataInput {
+  content: String
+  info: Json
+  settings: Json
+  expireAt: DateTime
+}
+
+input MessageUpdateManyInput {
+  create: [MessageCreateInput!]
+  connect: [MessageWhereUniqueInput!]
+  set: [MessageWhereUniqueInput!]
+  disconnect: [MessageWhereUniqueInput!]
+  delete: [MessageWhereUniqueInput!]
+  update: [MessageUpdateWithWhereUniqueNestedInput!]
+  updateMany: [MessageUpdateManyWithWhereNestedInput!]
+  deleteMany: [MessageScalarWhereInput!]
+  upsert: [MessageUpsertWithWhereUniqueNestedInput!]
+}
+
+input MessageUpdateManyMutationInput {
+  content: String
+  info: Json
+  settings: Json
+  expireAt: DateTime
+}
+
+input MessageUpdateManyWithWhereNestedInput {
+  where: MessageScalarWhereInput!
+  data: MessageUpdateManyDataInput!
+}
+
+input MessageUpdateWithWhereUniqueNestedInput {
+  where: MessageWhereUniqueInput!
+  data: MessageUpdateDataInput!
+}
+
+input MessageUpsertWithWhereUniqueNestedInput {
+  where: MessageWhereUniqueInput!
+  update: MessageUpdateDataInput!
+  create: MessageCreateInput!
+}
+
+input MessageWhereInput {
+  """Logical AND on all given filters."""
+  AND: [MessageWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [MessageWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [MessageWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  content: String
+
+  """All values that are not equal to given value."""
+  content_not: String
+
+  """All values that are contained in given list."""
+  content_in: [String!]
+
+  """All values that are not contained in given list."""
+  content_not_in: [String!]
+
+  """All values less than the given value."""
+  content_lt: String
+
+  """All values less than or equal the given value."""
+  content_lte: String
+
+  """All values greater than the given value."""
+  content_gt: String
+
+  """All values greater than or equal the given value."""
+  content_gte: String
+
+  """All values containing the given string."""
+  content_contains: String
+
+  """All values not containing the given string."""
+  content_not_contains: String
+
+  """All values starting with the given string."""
+  content_starts_with: String
+
+  """All values not starting with the given string."""
+  content_not_starts_with: String
+
+  """All values ending with the given string."""
+  content_ends_with: String
+
+  """All values not ending with the given string."""
+  content_not_ends_with: String
+  expireAt: DateTime
+
+  """All values that are not equal to given value."""
+  expireAt_not: DateTime
+
+  """All values that are contained in given list."""
+  expireAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  expireAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  expireAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  expireAt_lte: DateTime
+
+  """All values greater than the given value."""
+  expireAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  expireAt_gte: DateTime
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+input MessageWhereUniqueInput {
+  id: ID
+}
+
 type Mutation {
   createAuthEmail(data: AuthEmailCreateInput!): AuthEmail!
   createAuthParticipant(data: AuthParticipantCreateInput!): AuthParticipant!
@@ -4127,6 +4613,7 @@ type Mutation {
   createProfile(data: ProfileCreateInput!): Profile!
   createTemplate(data: TemplateCreateInput!): Template!
   createTask(data: TaskCreateInput!): Task!
+  createMessage(data: MessageCreateInput!): Message!
   createData(data: DataCreateInput!): Data!
   updateAuthEmail(data: AuthEmailUpdateInput!, where: AuthEmailWhereUniqueInput!): AuthEmail
   updateAuthParticipant(data: AuthParticipantUpdateInput!, where: AuthParticipantWhereUniqueInput!): AuthParticipant
@@ -4140,6 +4627,7 @@ type Mutation {
   updateProfile(data: ProfileUpdateInput!, where: ProfileWhereUniqueInput!): Profile
   updateTemplate(data: TemplateUpdateInput!, where: TemplateWhereUniqueInput!): Template
   updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task
+  updateMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
   updateData(data: DataUpdateInput!, where: DataWhereUniqueInput!): Data
   deleteAuthEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
   deleteAuthParticipant(where: AuthParticipantWhereUniqueInput!): AuthParticipant
@@ -4153,6 +4641,7 @@ type Mutation {
   deleteProfile(where: ProfileWhereUniqueInput!): Profile
   deleteTemplate(where: TemplateWhereUniqueInput!): Template
   deleteTask(where: TaskWhereUniqueInput!): Task
+  deleteMessage(where: MessageWhereUniqueInput!): Message
   deleteData(where: DataWhereUniqueInput!): Data
   upsertAuthEmail(where: AuthEmailWhereUniqueInput!, create: AuthEmailCreateInput!, update: AuthEmailUpdateInput!): AuthEmail!
   upsertAuthParticipant(where: AuthParticipantWhereUniqueInput!, create: AuthParticipantCreateInput!, update: AuthParticipantUpdateInput!): AuthParticipant!
@@ -4166,6 +4655,7 @@ type Mutation {
   upsertProfile(where: ProfileWhereUniqueInput!, create: ProfileCreateInput!, update: ProfileUpdateInput!): Profile!
   upsertTemplate(where: TemplateWhereUniqueInput!, create: TemplateCreateInput!, update: TemplateUpdateInput!): Template!
   upsertTask(where: TaskWhereUniqueInput!, create: TaskCreateInput!, update: TaskUpdateInput!): Task!
+  upsertMessage(where: MessageWhereUniqueInput!, create: MessageCreateInput!, update: MessageUpdateInput!): Message!
   upsertData(where: DataWhereUniqueInput!, create: DataCreateInput!, update: DataUpdateInput!): Data!
   updateManyAuthEmails(data: AuthEmailUpdateManyMutationInput!, where: AuthEmailWhereInput): BatchPayload!
   updateManyAuthParticipants(data: AuthParticipantUpdateManyMutationInput!, where: AuthParticipantWhereInput): BatchPayload!
@@ -4178,6 +4668,7 @@ type Mutation {
   updateManyProfiles(data: ProfileUpdateManyMutationInput!, where: ProfileWhereInput): BatchPayload!
   updateManyTemplates(data: TemplateUpdateManyMutationInput!, where: TemplateWhereInput): BatchPayload!
   updateManyTasks(data: TaskUpdateManyMutationInput!, where: TaskWhereInput): BatchPayload!
+  updateManyMessages(data: MessageUpdateManyMutationInput!, where: MessageWhereInput): BatchPayload!
   updateManyDatas(data: DataUpdateManyMutationInput!, where: DataWhereInput): BatchPayload!
   deleteManyAuthEmails(where: AuthEmailWhereInput): BatchPayload!
   deleteManyAuthParticipants(where: AuthParticipantWhereInput): BatchPayload!
@@ -4191,6 +4682,7 @@ type Mutation {
   deleteManyProfiles(where: ProfileWhereInput): BatchPayload!
   deleteManyTemplates(where: TemplateWhereInput): BatchPayload!
   deleteManyTasks(where: TaskWhereInput): BatchPayload!
+  deleteManyMessages(where: MessageWhereInput): BatchPayload!
   deleteManyDatas(where: DataWhereInput): BatchPayload!
 }
 
@@ -6008,6 +6500,7 @@ type Query {
   profiles(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile]!
   templates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Template]!
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task]!
+  messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message]!
   datas(where: DataWhereInput, orderBy: DataOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Data]!
   authEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
   authParticipant(where: AuthParticipantWhereUniqueInput!): AuthParticipant
@@ -6021,6 +6514,7 @@ type Query {
   profile(where: ProfileWhereUniqueInput!): Profile
   template(where: TemplateWhereUniqueInput!): Template
   task(where: TaskWhereUniqueInput!): Task
+  message(where: MessageWhereUniqueInput!): Message
   data(where: DataWhereUniqueInput!): Data
   authEmailsConnection(where: AuthEmailWhereInput, orderBy: AuthEmailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthEmailConnection!
   authParticipantsConnection(where: AuthParticipantWhereInput, orderBy: AuthParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthParticipantConnection!
@@ -6034,6 +6528,7 @@ type Query {
   profilesConnection(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProfileConnection!
   templatesConnection(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TemplateConnection!
   tasksConnection(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TaskConnection!
+  messagesConnection(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MessageConnection!
   datasConnection(where: DataWhereInput, orderBy: DataOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DataConnection!
 
   """Fetches an object given its ID"""
@@ -7147,6 +7642,7 @@ type Study implements Node {
   info: Json
   collaborators(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
   consent: Consent
+  messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message!]
 }
 
 """A connection to a list of items."""
@@ -7174,6 +7670,7 @@ input StudyCreateInput {
   participants: ProfileCreateManyWithoutParticipantInInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
   consent: ConsentCreateOneWithoutStudiesInput
+  messages: MessageCreateManyInput
 }
 
 input StudyCreateManyWithoutAuthorInput {
@@ -7215,6 +7712,7 @@ input StudyCreateWithoutAuthorInput {
   participants: ProfileCreateManyWithoutParticipantInInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
   consent: ConsentCreateOneWithoutStudiesInput
+  messages: MessageCreateManyInput
 }
 
 input StudyCreateWithoutCollaboratorsInput {
@@ -7231,6 +7729,7 @@ input StudyCreateWithoutCollaboratorsInput {
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
   consent: ConsentCreateOneWithoutStudiesInput
+  messages: MessageCreateManyInput
 }
 
 input StudyCreateWithoutConsentInput {
@@ -7247,6 +7746,7 @@ input StudyCreateWithoutConsentInput {
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
+  messages: MessageCreateManyInput
 }
 
 input StudyCreateWithoutParticipantsInput {
@@ -7263,6 +7763,7 @@ input StudyCreateWithoutParticipantsInput {
   tasks: TaskCreateManyInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
   consent: ConsentCreateOneWithoutStudiesInput
+  messages: MessageCreateManyInput
 }
 
 """An edge in a connection."""
@@ -7701,6 +8202,7 @@ input StudyUpdateDataInput {
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
   consent: ConsentUpdateOneWithoutStudiesInput
+  messages: MessageUpdateManyInput
 }
 
 input StudyUpdateInput {
@@ -7717,6 +8219,7 @@ input StudyUpdateInput {
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
   consent: ConsentUpdateOneWithoutStudiesInput
+  messages: MessageUpdateManyInput
 }
 
 input StudyUpdateManyDataInput {
@@ -7816,6 +8319,7 @@ input StudyUpdateWithoutAuthorDataInput {
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
   consent: ConsentUpdateOneWithoutStudiesInput
+  messages: MessageUpdateManyInput
 }
 
 input StudyUpdateWithoutCollaboratorsDataInput {
@@ -7831,6 +8335,7 @@ input StudyUpdateWithoutCollaboratorsDataInput {
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
   consent: ConsentUpdateOneWithoutStudiesInput
+  messages: MessageUpdateManyInput
 }
 
 input StudyUpdateWithoutConsentDataInput {
@@ -7846,6 +8351,7 @@ input StudyUpdateWithoutConsentDataInput {
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
+  messages: MessageUpdateManyInput
 }
 
 input StudyUpdateWithoutParticipantsDataInput {
@@ -7861,6 +8367,7 @@ input StudyUpdateWithoutParticipantsDataInput {
   tasks: TaskUpdateManyInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
   consent: ConsentUpdateOneWithoutStudiesInput
+  messages: MessageUpdateManyInput
 }
 
 input StudyUpdateWithWhereUniqueWithoutAuthorInput {
@@ -8256,6 +8763,9 @@ input StudyWhereInput {
   collaborators_some: ProfileWhereInput
   collaborators_none: ProfileWhereInput
   consent: ConsentWhereInput
+  messages_every: MessageWhereInput
+  messages_some: MessageWhereInput
+  messages_none: MessageWhereInput
 }
 
 input StudyWhereUniqueInput {
@@ -8276,6 +8786,7 @@ type Subscription {
   profile(where: ProfileSubscriptionWhereInput): ProfileSubscriptionPayload
   template(where: TemplateSubscriptionWhereInput): TemplateSubscriptionPayload
   task(where: TaskSubscriptionWhereInput): TaskSubscriptionPayload
+  message(where: MessageSubscriptionWhereInput): MessageSubscriptionPayload
   data(where: DataSubscriptionWhereInput): DataSubscriptionPayload
 }
 

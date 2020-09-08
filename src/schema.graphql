@@ -28,6 +28,7 @@ type Query {
   myTasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, first: Int): [Task]!
 
   consents: [Consent]!
+  messages: [Message]!
 }
 
 type Mutation {
@@ -86,6 +87,9 @@ type Mutation {
   createConsent(title: String!, description: String,  info: Json, settings: Json, link: String, collaborators: [String], studies: [String], tasks: [String]): Consent!
   updateConsent(id: ID!, title: String, description: String,  info: Json, settings: Json, link: String, collaborators: [String], studies: [String], tasks: [String]): Consent!
   deleteConsent(id: ID!): Consent
+
+  createMessage(content: String, info: Json, settings: Json, expireAt: DateTime): Message!
+  
 
 }
 

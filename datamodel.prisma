@@ -135,6 +135,7 @@ type Study {
   info: Json
   collaborators: [Profile]! @relation(name:"Studycollaborator")
   consent: Consent
+  messages: [Message]!
 }
 
 type Task {
@@ -183,6 +184,16 @@ type Consent {
   participants: [Profile]! @relation(name:"Consentparticipant")
   studies: [Study]!
   tasks: [Task]!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Message {
+  id: ID! @id
+  content: String!
+  info: Json
+  settings: Json
+  expireAt: DateTime
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
