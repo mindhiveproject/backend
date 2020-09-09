@@ -1,7 +1,7 @@
 const resultsMutations = {
   // submit a new result from open API
   async submitResultFromAPI(parent, args, ctx, info) {
-    // console.log('args', args);
+    console.log('args', args);
     const messageId = args.metadata && args.metadata.id;
     const payload = args.metadata && args.metadata.payload;
     const token = `${payload.slice(0, 4)}-${messageId}`;
