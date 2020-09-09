@@ -48,7 +48,6 @@ const resultsMutations = {
                 }
               : null,
             quantity: 1,
-            data: args.data,
             dataPolicy: args.dataPolicy,
             payload,
             token,
@@ -77,14 +76,13 @@ const resultsMutations = {
       // }
       return { message: 'Created' };
     }
-    const savedData = result.data;
-    const newData = [...savedData, ...args.data];
+    // const savedData = result.data;
+    // const newData = [...savedData, ...args.data];
 
     const updatedResult = await ctx.db.mutation.updateResult(
       {
         where: { token },
         data: {
-          data: newData,
           quantity: result.quantity + 1,
           incrementalData:
             payload === 'incremental'
