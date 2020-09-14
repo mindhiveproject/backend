@@ -191,6 +191,7 @@ type Consent {
 type Message {
   id: ID! @id
   content: String!
+  author: Profile!
   info: Json
   settings: Json
   expireAt: DateTime

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Tue Sep 08 2020 16:20:44 GMT+0200 (Central European Summer Time)
+# timestamp: Sat Sep 12 2020 16:58:11 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -4121,6 +4121,7 @@ scalar Long
 type Message implements Node {
   id: ID!
   content: String!
+  author: Profile!
   info: Json
   settings: Json
   expireAt: DateTime
@@ -4144,6 +4145,7 @@ input MessageCreateInput {
   info: Json
   settings: Json
   expireAt: DateTime
+  author: ProfileCreateOneInput!
 }
 
 input MessageCreateManyInput {
@@ -4388,6 +4390,7 @@ input MessageUpdateDataInput {
   info: Json
   settings: Json
   expireAt: DateTime
+  author: ProfileUpdateOneRequiredInput
 }
 
 input MessageUpdateInput {
@@ -4395,6 +4398,7 @@ input MessageUpdateInput {
   info: Json
   settings: Json
   expireAt: DateTime
+  author: ProfileUpdateOneRequiredInput
 }
 
 input MessageUpdateManyDataInput {
@@ -4594,6 +4598,7 @@ input MessageWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  author: ProfileWhereInput
 }
 
 input MessageWhereUniqueInput {
@@ -4610,9 +4615,9 @@ type Mutation {
   createResult(data: ResultCreateInput!): Result!
   createConsent(data: ConsentCreateInput!): Consent!
   createStudy(data: StudyCreateInput!): Study!
-  createProfile(data: ProfileCreateInput!): Profile!
   createTemplate(data: TemplateCreateInput!): Template!
   createTask(data: TaskCreateInput!): Task!
+  createProfile(data: ProfileCreateInput!): Profile!
   createMessage(data: MessageCreateInput!): Message!
   createData(data: DataCreateInput!): Data!
   updateAuthEmail(data: AuthEmailUpdateInput!, where: AuthEmailWhereUniqueInput!): AuthEmail
@@ -4624,9 +4629,9 @@ type Mutation {
   updateResult(data: ResultUpdateInput!, where: ResultWhereUniqueInput!): Result
   updateConsent(data: ConsentUpdateInput!, where: ConsentWhereUniqueInput!): Consent
   updateStudy(data: StudyUpdateInput!, where: StudyWhereUniqueInput!): Study
-  updateProfile(data: ProfileUpdateInput!, where: ProfileWhereUniqueInput!): Profile
   updateTemplate(data: TemplateUpdateInput!, where: TemplateWhereUniqueInput!): Template
   updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task
+  updateProfile(data: ProfileUpdateInput!, where: ProfileWhereUniqueInput!): Profile
   updateMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
   updateData(data: DataUpdateInput!, where: DataWhereUniqueInput!): Data
   deleteAuthEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
@@ -4638,9 +4643,9 @@ type Mutation {
   deleteResult(where: ResultWhereUniqueInput!): Result
   deleteConsent(where: ConsentWhereUniqueInput!): Consent
   deleteStudy(where: StudyWhereUniqueInput!): Study
-  deleteProfile(where: ProfileWhereUniqueInput!): Profile
   deleteTemplate(where: TemplateWhereUniqueInput!): Template
   deleteTask(where: TaskWhereUniqueInput!): Task
+  deleteProfile(where: ProfileWhereUniqueInput!): Profile
   deleteMessage(where: MessageWhereUniqueInput!): Message
   deleteData(where: DataWhereUniqueInput!): Data
   upsertAuthEmail(where: AuthEmailWhereUniqueInput!, create: AuthEmailCreateInput!, update: AuthEmailUpdateInput!): AuthEmail!
@@ -4652,9 +4657,9 @@ type Mutation {
   upsertResult(where: ResultWhereUniqueInput!, create: ResultCreateInput!, update: ResultUpdateInput!): Result!
   upsertConsent(where: ConsentWhereUniqueInput!, create: ConsentCreateInput!, update: ConsentUpdateInput!): Consent!
   upsertStudy(where: StudyWhereUniqueInput!, create: StudyCreateInput!, update: StudyUpdateInput!): Study!
-  upsertProfile(where: ProfileWhereUniqueInput!, create: ProfileCreateInput!, update: ProfileUpdateInput!): Profile!
   upsertTemplate(where: TemplateWhereUniqueInput!, create: TemplateCreateInput!, update: TemplateUpdateInput!): Template!
   upsertTask(where: TaskWhereUniqueInput!, create: TaskCreateInput!, update: TaskUpdateInput!): Task!
+  upsertProfile(where: ProfileWhereUniqueInput!, create: ProfileCreateInput!, update: ProfileUpdateInput!): Profile!
   upsertMessage(where: MessageWhereUniqueInput!, create: MessageCreateInput!, update: MessageUpdateInput!): Message!
   upsertData(where: DataWhereUniqueInput!, create: DataCreateInput!, update: DataUpdateInput!): Data!
   updateManyAuthEmails(data: AuthEmailUpdateManyMutationInput!, where: AuthEmailWhereInput): BatchPayload!
@@ -4665,9 +4670,9 @@ type Mutation {
   updateManyResults(data: ResultUpdateManyMutationInput!, where: ResultWhereInput): BatchPayload!
   updateManyConsents(data: ConsentUpdateManyMutationInput!, where: ConsentWhereInput): BatchPayload!
   updateManyStudies(data: StudyUpdateManyMutationInput!, where: StudyWhereInput): BatchPayload!
-  updateManyProfiles(data: ProfileUpdateManyMutationInput!, where: ProfileWhereInput): BatchPayload!
   updateManyTemplates(data: TemplateUpdateManyMutationInput!, where: TemplateWhereInput): BatchPayload!
   updateManyTasks(data: TaskUpdateManyMutationInput!, where: TaskWhereInput): BatchPayload!
+  updateManyProfiles(data: ProfileUpdateManyMutationInput!, where: ProfileWhereInput): BatchPayload!
   updateManyMessages(data: MessageUpdateManyMutationInput!, where: MessageWhereInput): BatchPayload!
   updateManyDatas(data: DataUpdateManyMutationInput!, where: DataWhereInput): BatchPayload!
   deleteManyAuthEmails(where: AuthEmailWhereInput): BatchPayload!
@@ -4679,9 +4684,9 @@ type Mutation {
   deleteManyResults(where: ResultWhereInput): BatchPayload!
   deleteManyConsents(where: ConsentWhereInput): BatchPayload!
   deleteManyStudies(where: StudyWhereInput): BatchPayload!
-  deleteManyProfiles(where: ProfileWhereInput): BatchPayload!
   deleteManyTemplates(where: TemplateWhereInput): BatchPayload!
   deleteManyTasks(where: TaskWhereInput): BatchPayload!
+  deleteManyProfiles(where: ProfileWhereInput): BatchPayload!
   deleteManyMessages(where: MessageWhereInput): BatchPayload!
   deleteManyDatas(where: DataWhereInput): BatchPayload!
 }
@@ -6497,9 +6502,9 @@ type Query {
   results(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Result]!
   consents(where: ConsentWhereInput, orderBy: ConsentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Consent]!
   studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study]!
-  profiles(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile]!
   templates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Template]!
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task]!
+  profiles(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile]!
   messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message]!
   datas(where: DataWhereInput, orderBy: DataOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Data]!
   authEmail(where: AuthEmailWhereUniqueInput!): AuthEmail
@@ -6511,9 +6516,9 @@ type Query {
   result(where: ResultWhereUniqueInput!): Result
   consent(where: ConsentWhereUniqueInput!): Consent
   study(where: StudyWhereUniqueInput!): Study
-  profile(where: ProfileWhereUniqueInput!): Profile
   template(where: TemplateWhereUniqueInput!): Template
   task(where: TaskWhereUniqueInput!): Task
+  profile(where: ProfileWhereUniqueInput!): Profile
   message(where: MessageWhereUniqueInput!): Message
   data(where: DataWhereUniqueInput!): Data
   authEmailsConnection(where: AuthEmailWhereInput, orderBy: AuthEmailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthEmailConnection!
@@ -6525,9 +6530,9 @@ type Query {
   resultsConnection(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ResultConnection!
   consentsConnection(where: ConsentWhereInput, orderBy: ConsentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ConsentConnection!
   studiesConnection(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StudyConnection!
-  profilesConnection(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProfileConnection!
   templatesConnection(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TemplateConnection!
   tasksConnection(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TaskConnection!
+  profilesConnection(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProfileConnection!
   messagesConnection(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MessageConnection!
   datasConnection(where: DataWhereInput, orderBy: DataOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DataConnection!
 
@@ -8783,9 +8788,9 @@ type Subscription {
   result(where: ResultSubscriptionWhereInput): ResultSubscriptionPayload
   consent(where: ConsentSubscriptionWhereInput): ConsentSubscriptionPayload
   study(where: StudySubscriptionWhereInput): StudySubscriptionPayload
-  profile(where: ProfileSubscriptionWhereInput): ProfileSubscriptionPayload
   template(where: TemplateSubscriptionWhereInput): TemplateSubscriptionPayload
   task(where: TaskSubscriptionWhereInput): TaskSubscriptionPayload
+  profile(where: ProfileSubscriptionWhereInput): ProfileSubscriptionPayload
   message(where: MessageSubscriptionWhereInput): MessageSubscriptionPayload
   data(where: DataSubscriptionWhereInput): DataSubscriptionPayload
 }

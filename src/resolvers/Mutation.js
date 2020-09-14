@@ -6,6 +6,7 @@ const templateMutations = require('./mutations/templateMutations');
 const taskMutations = require('./mutations/taskMutations');
 const studyMutations = require('./mutations/studyMutations');
 const consentMutations = require('./mutations/consentMutations');
+const messageMutations = require('./mutations/messageMutations');
 
 const Mutations = {
   ...authMutations,
@@ -16,6 +17,7 @@ const Mutations = {
   ...taskMutations,
   ...studyMutations,
   ...consentMutations,
+  ...messageMutations,
 
   async createSchool(parent, args, ctx, info) {
     // TODO: Check login

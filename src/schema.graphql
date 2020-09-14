@@ -89,7 +89,9 @@ type Mutation {
   deleteConsent(id: ID!): Consent
 
   createMessage(content: String, info: Json, settings: Json, expireAt: DateTime): Message!
-  
+  updateMessage(id: ID!, content: String, info: Json, settings: Json,  expireAt: DateTime): Message!
+  deleteMessage(id: ID!): Message
+
 
 }
 
