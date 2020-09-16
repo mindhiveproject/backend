@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Sat Sep 12 2020 16:58:11 GMT+0200 (Central European Summer Time)
+# timestamp: Tue Sep 15 2020 16:06:07 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -2931,6 +2931,7 @@ type Consent implements Node {
   title: String!
   slug: String!
   description: String
+  organization: String
   info: Json
   settings: Json
   author: Profile!
@@ -2957,6 +2958,7 @@ input ConsentCreateInput {
   title: String!
   slug: String!
   description: String
+  organization: String
   info: Json
   settings: Json
   author: ProfileCreateOneWithoutConsentCreatorInInput!
@@ -2996,6 +2998,7 @@ input ConsentCreateWithoutAuthorInput {
   title: String!
   slug: String!
   description: String
+  organization: String
   info: Json
   settings: Json
   collaborators: ProfileCreateManyWithoutCollaboratorInConsentInput
@@ -3009,6 +3012,7 @@ input ConsentCreateWithoutCollaboratorsInput {
   title: String!
   slug: String!
   description: String
+  organization: String
   info: Json
   settings: Json
   author: ProfileCreateOneWithoutConsentCreatorInInput!
@@ -3022,6 +3026,7 @@ input ConsentCreateWithoutParticipantsInput {
   title: String!
   slug: String!
   description: String
+  organization: String
   info: Json
   settings: Json
   author: ProfileCreateOneWithoutConsentCreatorInInput!
@@ -3035,6 +3040,7 @@ input ConsentCreateWithoutStudiesInput {
   title: String!
   slug: String!
   description: String
+  organization: String
   info: Json
   settings: Json
   author: ProfileCreateOneWithoutConsentCreatorInInput!
@@ -3048,6 +3054,7 @@ input ConsentCreateWithoutTasksInput {
   title: String!
   slug: String!
   description: String
+  organization: String
   info: Json
   settings: Json
   author: ProfileCreateOneWithoutConsentCreatorInInput!
@@ -3074,6 +3081,8 @@ enum ConsentOrderByInput {
   slug_DESC
   description_ASC
   description_DESC
+  organization_ASC
+  organization_DESC
   info_ASC
   info_DESC
   settings_ASC
@@ -3089,6 +3098,7 @@ type ConsentPreviousValues {
   title: String!
   slug: String!
   description: String
+  organization: String
   info: Json
   settings: Json
   createdAt: DateTime!
@@ -3264,6 +3274,46 @@ input ConsentScalarWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
+  organization: String
+
+  """All values that are not equal to given value."""
+  organization_not: String
+
+  """All values that are contained in given list."""
+  organization_in: [String!]
+
+  """All values that are not contained in given list."""
+  organization_not_in: [String!]
+
+  """All values less than the given value."""
+  organization_lt: String
+
+  """All values less than or equal the given value."""
+  organization_lte: String
+
+  """All values greater than the given value."""
+  organization_gt: String
+
+  """All values greater than or equal the given value."""
+  organization_gte: String
+
+  """All values containing the given string."""
+  organization_contains: String
+
+  """All values not containing the given string."""
+  organization_not_contains: String
+
+  """All values starting with the given string."""
+  organization_starts_with: String
+
+  """All values not starting with the given string."""
+  organization_not_starts_with: String
+
+  """All values ending with the given string."""
+  organization_ends_with: String
+
+  """All values not ending with the given string."""
+  organization_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -3353,6 +3403,7 @@ input ConsentUpdateInput {
   title: String
   slug: String
   description: String
+  organization: String
   info: Json
   settings: Json
   author: ProfileUpdateOneRequiredWithoutConsentCreatorInInput
@@ -3366,6 +3417,7 @@ input ConsentUpdateManyDataInput {
   title: String
   slug: String
   description: String
+  organization: String
   info: Json
   settings: Json
 }
@@ -3374,6 +3426,7 @@ input ConsentUpdateManyMutationInput {
   title: String
   slug: String
   description: String
+  organization: String
   info: Json
   settings: Json
 }
@@ -3441,6 +3494,7 @@ input ConsentUpdateWithoutAuthorDataInput {
   title: String
   slug: String
   description: String
+  organization: String
   info: Json
   settings: Json
   collaborators: ProfileUpdateManyWithoutCollaboratorInConsentInput
@@ -3453,6 +3507,7 @@ input ConsentUpdateWithoutCollaboratorsDataInput {
   title: String
   slug: String
   description: String
+  organization: String
   info: Json
   settings: Json
   author: ProfileUpdateOneRequiredWithoutConsentCreatorInInput
@@ -3465,6 +3520,7 @@ input ConsentUpdateWithoutParticipantsDataInput {
   title: String
   slug: String
   description: String
+  organization: String
   info: Json
   settings: Json
   author: ProfileUpdateOneRequiredWithoutConsentCreatorInInput
@@ -3477,6 +3533,7 @@ input ConsentUpdateWithoutStudiesDataInput {
   title: String
   slug: String
   description: String
+  organization: String
   info: Json
   settings: Json
   author: ProfileUpdateOneRequiredWithoutConsentCreatorInInput
@@ -3489,6 +3546,7 @@ input ConsentUpdateWithoutTasksDataInput {
   title: String
   slug: String
   description: String
+  organization: String
   info: Json
   settings: Json
   author: ProfileUpdateOneRequiredWithoutConsentCreatorInInput
@@ -3709,6 +3767,46 @@ input ConsentWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
+  organization: String
+
+  """All values that are not equal to given value."""
+  organization_not: String
+
+  """All values that are contained in given list."""
+  organization_in: [String!]
+
+  """All values that are not contained in given list."""
+  organization_not_in: [String!]
+
+  """All values less than the given value."""
+  organization_lt: String
+
+  """All values less than or equal the given value."""
+  organization_lte: String
+
+  """All values greater than the given value."""
+  organization_gt: String
+
+  """All values greater than or equal the given value."""
+  organization_gte: String
+
+  """All values containing the given string."""
+  organization_contains: String
+
+  """All values not containing the given string."""
+  organization_not_contains: String
+
+  """All values starting with the given string."""
+  organization_starts_with: String
+
+  """All values not starting with the given string."""
+  organization_not_starts_with: String
+
+  """All values ending with the given string."""
+  organization_ends_with: String
+
+  """All values not ending with the given string."""
+  organization_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""

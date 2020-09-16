@@ -43,6 +43,7 @@ const consentMutations = {
         data: {
           title: args.title,
           slug: args.slug,
+          organization: args.organization,
           description: args.description,
           info: args.info,
           settings: args.settings,
@@ -60,6 +61,7 @@ const consentMutations = {
 
   // update consent
   async updateConsent(parent, args, ctx, info) {
+    console.log('args', args);
     // verify that the user has the right to update the template
     const where = { id: args.id };
     const preConsent = await ctx.db.query.consent(
@@ -74,7 +76,7 @@ const consentMutations = {
     const isCollaborator = preConsent.collaborators
       .map(collaborator => collaborator.id)
       .includes(ctx.request.userId);
-    console.log('isCollaborator', isCollaborator);
+
     if (!ownsConsent && !hasPermissions && !isCollaborator) {
       throw new Error(`You don't have permission to do that!`);
     }
@@ -96,6 +98,8 @@ const consentMutations = {
       },
       `{ id collaborators { id } }`
     );
+
+    console.log('collaborators', collaborators);
 
     if (
       collaborators &&

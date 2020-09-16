@@ -2,7 +2,6 @@ const slugify = require('slugify');
 
 const studyMutations = {
   async createStudy(parent, args, ctx, info) {
-    console.log('5 args', args);
     // Check login
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');
@@ -27,32 +26,10 @@ const studyMutations = {
       );
     }
 
-    // create a new IRB consent
-    let consent;
-    if (args.settings.consentObtained) {
-      consent = await ctx.db.mutation.createConsent(
-        {
-          data: {
-            title: args.title,
-            slug: args.slug,
-            info: {
-              consentForm: args.info
-                .filter(i => i.name === 'consentForm')
-                .map(i => i.text)[0],
-              consentFormForParents: args.info
-                .filter(i => i.name === 'consentFormForParents')
-                .map(i => i.text)[0],
-            },
-            author: {
-              connect: {
-                id: ctx.request.userId,
-              },
-            },
-          },
-        },
-        `{ id }`
-      );
-    }
+    // take a copy of updates
+    const updates = { ...args };
+    // remove the consent from the updates
+    delete updates.consent;
 
     const study = await ctx.db.mutation.createStudy(
       {
@@ -63,14 +40,13 @@ const studyMutations = {
               id: ctx.request.userId,
             },
           },
-          consent: consent
-            ? {
-                connect: {
-                  id: consent.id,
-                },
-              }
-            : null,
-          ...args,
+          consent:
+            args.consent && args.consent !== 'no'
+              ? {
+                  connect: { id: args.consent },
+                }
+              : null,
+          ...updates,
         },
       },
       info
@@ -104,74 +80,6 @@ const studyMutations = {
       `{ id collaborators { id } consent { id } }`
     );
 
-    let consent;
-    if (args.settings.consentObtained) {
-      if (study.consent) {
-        // update consent
-        await ctx.db.mutation.updateConsent(
-          {
-            data: {
-              info: {
-                consentForm: args.info
-                  .filter(i => i.name === 'consentForm')
-                  .map(i => i.text)[0],
-                consentFormForParents: args.info
-                  .filter(i => i.name === 'consentFormForParents')
-                  .map(i => i.text)[0],
-              },
-            },
-            where: {
-              id: study.consent.id,
-            },
-          },
-          `{ id }`
-        );
-      } else {
-        // make new consent
-        consent = await ctx.db.mutation.createConsent(
-          {
-            data: {
-              title: args.title,
-              slug,
-              info: {
-                consentForm: args.info
-                  .filter(i => i.name === 'consentForm')
-                  .map(i => i.text)[0],
-                consentFormForParents: args.info
-                  .filter(i => i.name === 'consentFormForParents')
-                  .map(i => i.text)[0],
-              },
-              author: {
-                connect: {
-                  id: ctx.request.userId,
-                },
-              },
-            },
-          },
-          `{ id }`
-        );
-      }
-    } else if (study.consent) {
-      // disconnect and delete the consent
-      await ctx.db.mutation.updateStudy(
-        {
-          data: {
-            consent: {
-              disconnect: study.consent.id,
-            },
-          },
-          where: {
-            id: args.id,
-          },
-        },
-        `{ id }`
-      );
-      await ctx.db.mutation.deleteConsent(
-        { where: { id: study.consent.id } },
-        `{ id }`
-      );
-    }
-
     if (
       collaborators &&
       study.collaborators &&
@@ -204,12 +112,14 @@ const studyMutations = {
           collaborators: {
             connect: collaborators,
           },
-          consent: consent
-            ? {
-                connect: {
-                  id: consent.id,
-                },
-              }
+          consent: args.consent
+            ? args.consent === 'no'
+              ? {
+                  disconnect: { id: study.consent.id },
+                }
+              : {
+                  connect: { id: args.consent },
+                }
             : null,
         },
         where: {

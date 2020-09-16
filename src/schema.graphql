@@ -27,7 +27,9 @@ type Query {
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, first: Int): [Task]!
   myTasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, first: Int): [Task]!
 
+  consent(where: ConsentWhereUniqueInput): Consent
   consents: [Consent]!
+  myConsents(where: ConsentWhereInput, orderBy: ConsentOrderByInput, skip: Int, first: Int): [Consent]!
   messages: [Message]!
 }
 
@@ -74,8 +76,8 @@ type Mutation {
   createTask(title: String!, templateId: ID, description: String,  parameters: Json, settings: Json, link: String, collaborators: [String], consent: ID): Task!
   updateTask(id: ID!, title: String, description: String, parameters: Json, settings: Json, link: String, collaborators: [String], consent: ID): Task!
   deleteTask(id: ID!): Task
-  createStudy(title: String!, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json): Study!
-  updateStudy(id: ID!, title: String, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json, collaborators: [String]): Study!
+  createStudy(title: String!, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json, consent: ID): Study!
+  updateStudy(id: ID!, title: String, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json, collaborators: [String], consent: ID): Study!
   deleteStudy(id: ID!): Study
   buildStudy(id: ID!, tasks: [ID]!): Study!
   joinStudy(id: ID!, info: Json, user: Json, study: Json): SuccessMessage
@@ -84,8 +86,8 @@ type Mutation {
 
   emailMyStudyParticipants(where: StudyWhereUniqueInput, info: Json): SuccessMessage
 
-  createConsent(title: String!, description: String,  info: Json, settings: Json, link: String, collaborators: [String], studies: [String], tasks: [String]): Consent!
-  updateConsent(id: ID!, title: String, description: String,  info: Json, settings: Json, link: String, collaborators: [String], studies: [String], tasks: [String]): Consent!
+  createConsent(title: String!, organization: String!, description: String,  info: Json, settings: Json, link: String, collaborators: [String], studies: [String], tasks: [String]): Consent!
+  updateConsent(id: ID!, title: String, organization: String, description: String,  info: Json, settings: Json, link: String, collaborators: [String], studies: [String], tasks: [String]): Consent!
   deleteConsent(id: ID!): Consent
 
   createMessage(content: String, info: Json, settings: Json, expireAt: DateTime): Message!

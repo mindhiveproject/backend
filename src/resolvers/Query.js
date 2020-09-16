@@ -23,6 +23,7 @@ const Query = {
   study: forwardTo('db'),
   tasks: forwardTo('db'),
   task: forwardTo('db'),
+  consent: forwardTo('db'),
   consents: forwardTo('db'),
   messages: forwardTo('db'),
 
@@ -142,6 +143,26 @@ const Query = {
 
     // query parameters where author is the current user
     return ctx.db.query.studies(
+      {
+        where: {
+          author: {
+            id: ctx.request.userId,
+          },
+        },
+      },
+      info
+    );
+  },
+
+  // get only IRB protocols of the user
+  async myConsents(parent, args, ctx, info) {
+    // check if the user has permission to see all users
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in');
+    }
+
+    // query parameters where author is the current user
+    return ctx.db.query.consents(
       {
         where: {
           author: {

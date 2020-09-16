@@ -177,6 +177,7 @@ type Consent {
   title: String!
   slug: String! @unique
   description: String
+  organization: String
   info: Json
   settings: Json
   author: Profile! @relation(name:"Creatorofconsent")
