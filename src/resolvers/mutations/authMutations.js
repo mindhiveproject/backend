@@ -6,6 +6,7 @@ const postmark = require('postmark');
 
 const client = new postmark.Client(process.env.MAIL_POSTMARK_CLIENT);
 const { OAuth2Client } = require('google-auth-library');
+const uniqid = require('uniqid');
 const { transport, makeEmail } = require('../../mail');
 
 const authMutations = {
@@ -74,6 +75,9 @@ const authMutations = {
       args.email = null;
     }
 
+    // create a unique public Id
+    args.publicId = uniqid();
+
     // check whether the email is already in the system
     if (args.email) {
       const existingEmail = await ctx.db.query.authEmail(
@@ -100,6 +104,7 @@ const authMutations = {
       {
         data: {
           username: args.username,
+          publicId: args.publicId,
           permissions: { set: args.permissions },
           generalInfo,
         },
@@ -462,6 +467,9 @@ const authMutations = {
       args.email = null;
     }
 
+    // create a unique public Id
+    args.publicId = uniqid();
+
     // check whether the email is already in the system
     if (args.email) {
       const existingEmail = await ctx.db.query.authEmail(
@@ -488,6 +496,7 @@ const authMutations = {
       {
         data: {
           username: args.username,
+          publicId: args.publicId,
           permissions: { set: args.permissions },
           generalInfo,
         },

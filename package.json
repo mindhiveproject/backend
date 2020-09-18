@@ -29,7 +29,8 @@
     "prisma": "1.17.1",
     "prisma-binding": "2.1.6",
     "slugify": "^1.4.0",
-    "stripe": "^6.12.1"
+    "stripe": "^6.12.1",
+    "uniqid": "^5.2.0"
   },
   "license": "MIT",
   "repository": {},
