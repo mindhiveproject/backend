@@ -60,10 +60,12 @@ type Mutation {
   createSchool(title: String!, description: String, image: String, largeImage: String): School!
 
   createClass(title: String!, description: String, image: String, largeImage: String): Class!
-  updateClass(id: ID!, title: String, description: String, image: String, largeImage: String): Class!
+  updateClass(id: ID!, code: String, title: String, description: String, image: String, largeImage: String): Class!
   deleteClass(id: ID!): Class
   joinClass(id: ID!): SuccessMessage
   leaveClass(id: ID!): SuccessMessage
+  expelFromClass(classId: ID!, studentId: ID!): SuccessMessage
+  moveToClass(classId: ID!, studentId: ID!): SuccessMessage
 
   addResult(templateId: ID!, data: Json, dataPolicy: String): Result!
   deleteResult(id: ID!): Result

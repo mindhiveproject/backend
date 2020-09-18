@@ -8,7 +8,7 @@ const classMutations = {
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');
     }
-    args.code = slugify(args.title);
+    args.code = slugify(args.title).toLowerCase();
 
     const schoolclass = await ctx.db.mutation.createClass(
       {
@@ -134,6 +134,58 @@ const classMutations = {
 
     // delete it
     return ctx.db.mutation.deleteClass({ where }, info);
+  },
+
+  // expel a student from class (for teachers)
+  async expelFromClass(parent, args, ctx, info) {
+    // Check login
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    // disconnect user and the class
+    const updatedProfile = await ctx.db.mutation.updateProfile(
+      {
+        data: {
+          studentIn: {
+            disconnect: {
+              id: args.classId,
+            },
+          },
+        },
+        where: {
+          id: args.studentId,
+        },
+      },
+      `{ id username permissions }`
+    );
+
+    return { message: 'You expelled the student!' };
+  },
+
+  // move a student to a different class (for teachers)
+  async moveToClass(parent, args, ctx, info) {
+    // Check login
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    // disconnect user and the class
+    const updatedProfile = await ctx.db.mutation.updateProfile(
+      {
+        data: {
+          studentIn: {
+            connect: {
+              id: args.classId,
+            },
+          },
+        },
+        where: {
+          id: args.studentId,
+        },
+      },
+      `{ id username permissions }`
+    );
+
+    return { message: 'You assigned the student to a new class!' };
   },
 };
 
