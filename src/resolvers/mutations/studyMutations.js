@@ -56,6 +56,7 @@ const studyMutations = {
 
   // update the study
   async updateStudy(parent, args, ctx, info) {
+    console.log('args', args);
     const slug = slugify(args.title, {
       replacement: '-', // replace spaces with replacement character, defaults to `-`
       remove: /[^a-zA-Z\d\s:]/g, // remove characters that match regex, defaults to `undefined`
@@ -79,6 +80,7 @@ const studyMutations = {
       },
       `{ id collaborators { id } consent { id } }`
     );
+    console.log('study.consent.id', study.consent);
 
     if (
       collaborators &&
@@ -112,15 +114,16 @@ const studyMutations = {
           collaborators: {
             connect: collaborators,
           },
-          consent: args.consent
-            ? args.consent === 'no'
+          consent:
+            args.consent && args.consent !== 'no'
+              ? {
+                  connect: { id: args.consent },
+                }
+              : args.consent === 'no' && study.consent
               ? {
                   disconnect: { id: study.consent.id },
                 }
-              : {
-                  connect: { id: args.consent },
-                }
-            : null,
+              : null,
         },
         where: {
           id: args.id,
