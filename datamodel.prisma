@@ -137,6 +137,7 @@ type Study {
   collaborators: [Profile]! @relation(name:"Studycollaborator")
   consent: Consent
   messages: [Message]!
+  public: Boolean
 }
 
 type Task {

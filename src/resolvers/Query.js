@@ -19,13 +19,24 @@ const Query = {
   results: forwardTo('db'),
   templates: forwardTo('db'),
   template: forwardTo('db'),
-  studies: forwardTo('db'),
   study: forwardTo('db'),
   tasks: forwardTo('db'),
   task: forwardTo('db'),
   consent: forwardTo('db'),
   consents: forwardTo('db'),
   messages: forwardTo('db'),
+
+  // return only public studies by default
+  studies(parent, args, ctx, info) {
+    return ctx.db.query.studies(
+      {
+        where: {
+          public: true,
+        },
+      },
+      info
+    );
+  },
 
   me(parent, args, ctx, info) {
     // check if there is a current user id
@@ -145,9 +156,18 @@ const Query = {
     return ctx.db.query.studies(
       {
         where: {
-          author: {
-            id: ctx.request.userId,
-          },
+          OR: [
+            {
+              author: {
+                id: ctx.request.userId,
+              },
+            },
+            {
+              collaborators_some: {
+                id: ctx.request.userId,
+              },
+            },
+          ],
         },
       },
       info

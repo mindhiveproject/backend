@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Fri Sep 18 2020 12:33:23 GMT+0200 (Central European Summer Time)
+# timestamp: Mon Sep 21 2020 10:53:10 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -7866,6 +7866,7 @@ type Study implements Node {
   collaborators(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
   consent: Consent
   messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message!]
+  public: Boolean
 }
 
 """A connection to a list of items."""
@@ -7888,6 +7889,7 @@ input StudyCreateInput {
   image: String
   largeImage: String
   info: Json
+  public: Boolean
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -7931,6 +7933,7 @@ input StudyCreateWithoutAuthorInput {
   image: String
   largeImage: String
   info: Json
+  public: Boolean
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
@@ -7948,6 +7951,7 @@ input StudyCreateWithoutCollaboratorsInput {
   image: String
   largeImage: String
   info: Json
+  public: Boolean
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -7965,6 +7969,7 @@ input StudyCreateWithoutConsentInput {
   image: String
   largeImage: String
   info: Json
+  public: Boolean
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -7982,6 +7987,7 @@ input StudyCreateWithoutParticipantsInput {
   image: String
   largeImage: String
   info: Json
+  public: Boolean
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
@@ -8021,6 +8027,8 @@ enum StudyOrderByInput {
   largeImage_DESC
   info_ASC
   info_DESC
+  public_ASC
+  public_DESC
 }
 
 type StudyPreviousValues {
@@ -8035,6 +8043,7 @@ type StudyPreviousValues {
   image: String
   largeImage: String
   info: Json
+  public: Boolean
 }
 
 input StudyScalarWhereInput {
@@ -8370,6 +8379,10 @@ input StudyScalarWhereInput {
 
   """All values not ending with the given string."""
   largeImage_not_ends_with: String
+  public: Boolean
+
+  """All values that are not equal to given value."""
+  public_not: Boolean
 }
 
 type StudySubscriptionPayload {
@@ -8420,6 +8433,7 @@ input StudyUpdateDataInput {
   image: String
   largeImage: String
   info: Json
+  public: Boolean
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -8437,6 +8451,7 @@ input StudyUpdateInput {
   image: String
   largeImage: String
   info: Json
+  public: Boolean
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -8454,6 +8469,7 @@ input StudyUpdateManyDataInput {
   image: String
   largeImage: String
   info: Json
+  public: Boolean
 }
 
 input StudyUpdateManyMutationInput {
@@ -8465,6 +8481,7 @@ input StudyUpdateManyMutationInput {
   image: String
   largeImage: String
   info: Json
+  public: Boolean
 }
 
 input StudyUpdateManyWithoutAuthorInput {
@@ -8538,6 +8555,7 @@ input StudyUpdateWithoutAuthorDataInput {
   image: String
   largeImage: String
   info: Json
+  public: Boolean
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
@@ -8554,6 +8572,7 @@ input StudyUpdateWithoutCollaboratorsDataInput {
   image: String
   largeImage: String
   info: Json
+  public: Boolean
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -8570,6 +8589,7 @@ input StudyUpdateWithoutConsentDataInput {
   image: String
   largeImage: String
   info: Json
+  public: Boolean
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -8586,6 +8606,7 @@ input StudyUpdateWithoutParticipantsDataInput {
   image: String
   largeImage: String
   info: Json
+  public: Boolean
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
@@ -8975,6 +8996,10 @@ input StudyWhereInput {
 
   """All values not ending with the given string."""
   largeImage_not_ends_with: String
+  public: Boolean
+
+  """All values that are not equal to given value."""
+  public_not: Boolean
   author: ProfileWhereInput
   tasks_every: TaskWhereInput
   tasks_some: TaskWhereInput

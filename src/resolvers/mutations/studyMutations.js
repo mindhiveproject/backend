@@ -130,6 +130,30 @@ const studyMutations = {
     );
   },
 
+  async publishStudyToggle(parent, args, ctx, info) {
+    // check the status of the study
+    const study = await ctx.db.query.study(
+      {
+        where: { id: args.id },
+      },
+      `{ id public }`
+    );
+    if (!study) {
+      throw new Error(`No study found.`);
+    }
+
+    // update the study with the opposite to current value
+    return ctx.db.mutation.updateStudy(
+      {
+        data: {
+          public: !study.public,
+        },
+        where: { id: args.id },
+      },
+      info
+    );
+  },
+
   // delete study
   async deleteStudy(parent, args, ctx, info) {
     const where = { id: args.id };
