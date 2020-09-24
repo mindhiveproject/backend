@@ -78,10 +78,11 @@ type Mutation {
   createTask(title: String!, templateId: ID, description: String,  parameters: Json, settings: Json, link: String, collaborators: [String], consent: ID): Task!
   updateTask(id: ID!, title: String, description: String, parameters: Json, settings: Json, link: String, collaborators: [String], consent: ID): Task!
   deleteTask(id: ID!): Task
+  publishTaskToggle(id: ID!): Task
+
   createStudy(title: String!, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json, consent: ID): Study!
   updateStudy(id: ID!, title: String, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json, collaborators: [String], consent: ID, public: Boolean): Study!
   publishStudyToggle(id: ID!): Study
-
   deleteStudy(id: ID!): Study
   buildStudy(id: ID!, tasks: [ID]!): Study!
   joinStudy(id: ID!, info: Json, user: Json, study: Json): SuccessMessage

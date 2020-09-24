@@ -176,6 +176,30 @@ const taskMutations = {
     // delete it
     return ctx.db.mutation.deleteTask({ where }, info);
   },
+
+  async publishTaskToggle(parent, args, ctx, info) {
+    // check the status of the task
+    const task = await ctx.db.query.task(
+      {
+        where: { id: args.id },
+      },
+      `{ id public }`
+    );
+    if (!task) {
+      throw new Error(`No task found.`);
+    }
+
+    // update the task with the opposite to current value
+    return ctx.db.mutation.updateTask(
+      {
+        data: {
+          public: !task.public,
+        },
+        where: { id: args.id },
+      },
+      info
+    );
+  },
 };
 
 module.exports = taskMutations;

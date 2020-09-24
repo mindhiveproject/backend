@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Mon Sep 21 2020 10:53:10 GMT+0200 (Central European Summer Time)
+# timestamp: Thu Sep 24 2020 16:06:04 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -9052,6 +9052,7 @@ type Task implements Node {
   updatedAt: DateTime!
   collaborators(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
   consent: Consent
+  public: Boolean
 }
 
 """A connection to a list of items."""
@@ -9072,6 +9073,7 @@ input TaskCreateInput {
   parameters: Json
   settings: Json
   link: String
+  public: Boolean
   template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
@@ -9116,6 +9118,7 @@ input TaskCreateWithoutAuthorInput {
   parameters: Json
   settings: Json
   link: String
+  public: Boolean
   template: TemplateCreateOneWithoutTasksInput
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
   consent: ConsentCreateOneWithoutTasksInput
@@ -9129,6 +9132,7 @@ input TaskCreateWithoutCollaboratorsInput {
   parameters: Json
   settings: Json
   link: String
+  public: Boolean
   template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   consent: ConsentCreateOneWithoutTasksInput
@@ -9142,6 +9146,7 @@ input TaskCreateWithoutConsentInput {
   parameters: Json
   settings: Json
   link: String
+  public: Boolean
   template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
@@ -9155,6 +9160,7 @@ input TaskCreateWithoutTemplateInput {
   parameters: Json
   settings: Json
   link: String
+  public: Boolean
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
   consent: ConsentCreateOneWithoutTasksInput
@@ -9188,6 +9194,8 @@ enum TaskOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  public_ASC
+  public_DESC
 }
 
 type TaskPreviousValues {
@@ -9200,6 +9208,7 @@ type TaskPreviousValues {
   link: String
   createdAt: DateTime!
   updatedAt: DateTime!
+  public: Boolean
 }
 
 input TaskScalarWhereInput {
@@ -9455,6 +9464,10 @@ input TaskScalarWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  public: Boolean
+
+  """All values that are not equal to given value."""
+  public_not: Boolean
 }
 
 type TaskSubscriptionPayload {
@@ -9503,6 +9516,7 @@ input TaskUpdateDataInput {
   parameters: Json
   settings: Json
   link: String
+  public: Boolean
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
@@ -9516,6 +9530,7 @@ input TaskUpdateInput {
   parameters: Json
   settings: Json
   link: String
+  public: Boolean
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
@@ -9529,6 +9544,7 @@ input TaskUpdateManyDataInput {
   parameters: Json
   settings: Json
   link: String
+  public: Boolean
 }
 
 input TaskUpdateManyInput {
@@ -9550,6 +9566,7 @@ input TaskUpdateManyMutationInput {
   parameters: Json
   settings: Json
   link: String
+  public: Boolean
 }
 
 input TaskUpdateManyWithoutAuthorInput {
@@ -9619,6 +9636,7 @@ input TaskUpdateWithoutAuthorDataInput {
   parameters: Json
   settings: Json
   link: String
+  public: Boolean
   template: TemplateUpdateOneWithoutTasksInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
   consent: ConsentUpdateOneWithoutTasksInput
@@ -9631,6 +9649,7 @@ input TaskUpdateWithoutCollaboratorsDataInput {
   parameters: Json
   settings: Json
   link: String
+  public: Boolean
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   consent: ConsentUpdateOneWithoutTasksInput
@@ -9643,6 +9662,7 @@ input TaskUpdateWithoutConsentDataInput {
   parameters: Json
   settings: Json
   link: String
+  public: Boolean
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
@@ -9655,6 +9675,7 @@ input TaskUpdateWithoutTemplateDataInput {
   parameters: Json
   settings: Json
   link: String
+  public: Boolean
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
   consent: ConsentUpdateOneWithoutTasksInput
@@ -9973,6 +9994,10 @@ input TaskWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  public: Boolean
+
+  """All values that are not equal to given value."""
+  public_not: Boolean
   template: TemplateWhereInput
   author: ProfileWhereInput
   collaborators_every: ProfileWhereInput

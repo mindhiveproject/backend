@@ -154,6 +154,7 @@ type Task {
   updatedAt: DateTime! @updatedAt
   collaborators: [Profile]! @relation(name:"Taskcollaborator")
   consent: Consent
+  public: Boolean
 }
 
 type Template {

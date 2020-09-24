@@ -20,7 +20,6 @@ const Query = {
   templates: forwardTo('db'),
   template: forwardTo('db'),
   study: forwardTo('db'),
-  tasks: forwardTo('db'),
   task: forwardTo('db'),
   consent: forwardTo('db'),
   consents: forwardTo('db'),
@@ -29,6 +28,18 @@ const Query = {
   // return only public studies by default
   studies(parent, args, ctx, info) {
     return ctx.db.query.studies(
+      {
+        where: {
+          public: true,
+        },
+      },
+      info
+    );
+  },
+
+  // return only public studies by default
+  tasks(parent, args, ctx, info) {
+    return ctx.db.query.tasks(
       {
         where: {
           public: true,
@@ -136,9 +147,18 @@ const Query = {
     return ctx.db.query.tasks(
       {
         where: {
-          author: {
-            id: ctx.request.userId,
-          },
+          OR: [
+            {
+              author: {
+                id: ctx.request.userId,
+              },
+            },
+            {
+              collaborators_some: {
+                id: ctx.request.userId,
+              },
+            },
+          ],
         },
       },
       info
