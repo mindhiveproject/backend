@@ -227,7 +227,7 @@ const authMutations = {
 
     // send confirmation email
     // TODO remove false later!
-    if (false && privateAddress && args.email) {
+    if (true && privateAddress && args.email) {
       const randomBytesPromise = promisify(randomBytes);
       const confirmationToken = (await randomBytesPromise(25)).toString('hex');
       const confirmationTokenExpiry = Date.now() + 1000 * 60 * 60 * 24; // 24 hour
