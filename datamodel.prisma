@@ -8,6 +8,11 @@ enum Permission {
   PARTICIPANT
 }
 
+enum TaskType {
+  TASK
+  SURVEY
+}
+
 type Profile {
   id: ID! @id
   username: String! @unique
@@ -155,6 +160,7 @@ type Task {
   collaborators: [Profile]! @relation(name:"Taskcollaborator")
   consent: Consent
   public: Boolean
+  taskType: TaskType
 }
 
 type Template {

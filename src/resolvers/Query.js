@@ -39,10 +39,12 @@ const Query = {
 
   // return only public studies by default
   tasks(parent, args, ctx, info) {
+    console.log('args', args);
     return ctx.db.query.tasks(
       {
         where: {
           public: true,
+          ...args.where,
         },
       },
       info
