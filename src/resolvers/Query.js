@@ -39,7 +39,6 @@ const Query = {
 
   // return only public studies by default
   tasks(parent, args, ctx, info) {
-    console.log('args', args);
     return ctx.db.query.tasks(
       {
         where: {
@@ -210,6 +209,30 @@ const Query = {
           author: {
             id: ctx.request.userId,
           },
+        },
+      },
+      info
+    );
+  },
+
+  // get only studies where user is a participant
+  async myParticipatedStudies(parent, args, ctx, info) {
+    // check if the user has permission to see all users
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in');
+    }
+    const profile = await ctx.db.query.profile(
+      {
+        where: {
+          id: ctx.request.userId,
+        },
+      },
+      `{ id participantIn { id } }`
+    );
+    return ctx.db.query.studies(
+      {
+        where: {
+          id_in: profile.participantIn.map(study => study.id),
         },
       },
       info

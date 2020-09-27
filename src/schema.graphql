@@ -21,8 +21,9 @@ type Query {
   myTemplates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, first: Int): [Template]!
   study(where: StudyWhereUniqueInput): Study
   studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, first: Int): [Study]!
-
   myStudies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, first: Int): [Study]!
+  myParticipatedStudies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, first: Int): [Study]!
+
   task(where: TaskWhereUniqueInput): Task
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, first: Int): [Task]!
   myTasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, first: Int): [Task]!
