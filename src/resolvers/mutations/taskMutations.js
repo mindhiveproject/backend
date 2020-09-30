@@ -86,7 +86,7 @@ const taskMutations = {
     const isCollaborator = preTask.collaborators
       .map(collaborator => collaborator.id)
       .includes(ctx.request.userId);
-    console.log('isCollaborator', isCollaborator);
+    // console.log('isCollaborator', isCollaborator);
     if (!ownsTask && !hasPermissions && !isCollaborator) {
       throw new Error(`You don't have permission to do that!`);
     }

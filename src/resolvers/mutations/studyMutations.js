@@ -57,11 +57,11 @@ const studyMutations = {
   // update the study
   async updateStudy(parent, args, ctx, info) {
     console.log('args', args);
-    const slug = slugify(args.title, {
-      replacement: '-', // replace spaces with replacement character, defaults to `-`
-      remove: /[^a-zA-Z\d\s:]/g, // remove characters that match regex, defaults to `undefined`
-      lower: true, // convert to lower case, defaults to `false`
-    });
+    // const slug = slugify(args.title, {
+    //   replacement: '-', // replace spaces with replacement character, defaults to `-`
+    //   remove: /[^a-zA-Z\d\s:]/g, // remove characters that match regex, defaults to `undefined`
+    //   lower: true, // convert to lower case, defaults to `false`
+    // });
 
     let collaborators = [];
     if (args.collaborators && args.collaborators.length) {

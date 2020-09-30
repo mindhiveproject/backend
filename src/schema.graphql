@@ -77,12 +77,12 @@ type Mutation {
   updateTemplate(id: ID!, title: String, shortDescription: String, description: String, parameters: Json, script: String, style: String, settings: Json): Template!
   deleteTemplate(id: ID!): Template
   createTask(title: String!, templateId: ID, description: String,  parameters: Json, settings: Json, link: String, collaborators: [String], consent: ID): Task!
-  updateTask(id: ID!, title: String, description: String, parameters: Json, settings: Json, link: String, collaborators: [String], consent: ID): Task!
+  updateTask(id: ID!, slug: String, title: String, description: String, parameters: Json, settings: Json, link: String, collaborators: [String], consent: ID): Task!
   deleteTask(id: ID!): Task
   publishTaskToggle(id: ID!): Task
 
   createStudy(title: String!, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json, consent: ID): Study!
-  updateStudy(id: ID!, title: String, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json, collaborators: [String], consent: ID, public: Boolean): Study!
+  updateStudy(id: ID!, slug: String, title: String, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json, collaborators: [String], consent: ID, public: Boolean): Study!
   publishStudyToggle(id: ID!): Study
   deleteStudy(id: ID!): Study
   buildStudy(id: ID!, tasks: [ID]!): Study!
