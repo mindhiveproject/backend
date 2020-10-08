@@ -143,6 +143,8 @@ type Study {
   consent: Consent
   messages: [Message]!
   public: Boolean
+  submitForPublishing: Boolean
+  components: Json
 }
 
 type Task {
@@ -160,6 +162,7 @@ type Task {
   collaborators: [Profile]! @relation(name:"Taskcollaborator")
   consent: Consent
   public: Boolean
+  submitForPublishing: Boolean
   taskType: TaskType
 }
 

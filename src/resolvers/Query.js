@@ -160,6 +160,7 @@ const Query = {
               },
             },
           ],
+          ...args.where,
         },
       },
       info

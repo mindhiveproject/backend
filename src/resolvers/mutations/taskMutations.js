@@ -8,11 +8,13 @@ const taskMutations = {
       throw new Error(`You are not signed in`);
     }
 
-    args.slug = slugify(args.title, {
-      replacement: '-', // replace spaces with replacement character, defaults to `-`
-      remove: /[^a-zA-Z\d\s:]/g, // remove characters that match regex, defaults to `undefined`
-      lower: true, // convert to lower case, defaults to `false`
-    });
+    if (!args.slug) {
+      args.slug = slugify(args.title, {
+        replacement: '-', // replace spaces with replacement character, defaults to `-`
+        remove: /[^a-zA-Z\d\s:]/g, // remove characters that match regex, defaults to `undefined`
+        lower: true, // convert to lower case, defaults to `false`
+      });
+    }
 
     // check whether the slug is already in the system
     const existingTask = await ctx.db.query.task(
@@ -64,6 +66,7 @@ const taskMutations = {
                   connect: { id: args.consent },
                 }
               : null,
+          taskType: args.taskType,
         },
       },
       info

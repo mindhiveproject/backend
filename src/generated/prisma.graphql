@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Sat Sep 26 2020 11:43:54 GMT+0200 (Central European Summer Time)
+# timestamp: Tue Oct 06 2020 10:44:02 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -7867,6 +7867,8 @@ type Study implements Node {
   consent: Consent
   messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message!]
   public: Boolean
+  submitForPublishing: Boolean
+  components: Json
 }
 
 """A connection to a list of items."""
@@ -7890,6 +7892,8 @@ input StudyCreateInput {
   largeImage: String
   info: Json
   public: Boolean
+  submitForPublishing: Boolean
+  components: Json
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -7934,6 +7938,8 @@ input StudyCreateWithoutAuthorInput {
   largeImage: String
   info: Json
   public: Boolean
+  submitForPublishing: Boolean
+  components: Json
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
@@ -7952,6 +7958,8 @@ input StudyCreateWithoutCollaboratorsInput {
   largeImage: String
   info: Json
   public: Boolean
+  submitForPublishing: Boolean
+  components: Json
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -7970,6 +7978,8 @@ input StudyCreateWithoutConsentInput {
   largeImage: String
   info: Json
   public: Boolean
+  submitForPublishing: Boolean
+  components: Json
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -7988,6 +7998,8 @@ input StudyCreateWithoutParticipantsInput {
   largeImage: String
   info: Json
   public: Boolean
+  submitForPublishing: Boolean
+  components: Json
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
@@ -8029,6 +8041,10 @@ enum StudyOrderByInput {
   info_DESC
   public_ASC
   public_DESC
+  submitForPublishing_ASC
+  submitForPublishing_DESC
+  components_ASC
+  components_DESC
 }
 
 type StudyPreviousValues {
@@ -8044,6 +8060,8 @@ type StudyPreviousValues {
   largeImage: String
   info: Json
   public: Boolean
+  submitForPublishing: Boolean
+  components: Json
 }
 
 input StudyScalarWhereInput {
@@ -8383,6 +8401,10 @@ input StudyScalarWhereInput {
 
   """All values that are not equal to given value."""
   public_not: Boolean
+  submitForPublishing: Boolean
+
+  """All values that are not equal to given value."""
+  submitForPublishing_not: Boolean
 }
 
 type StudySubscriptionPayload {
@@ -8434,6 +8456,8 @@ input StudyUpdateDataInput {
   largeImage: String
   info: Json
   public: Boolean
+  submitForPublishing: Boolean
+  components: Json
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -8452,6 +8476,8 @@ input StudyUpdateInput {
   largeImage: String
   info: Json
   public: Boolean
+  submitForPublishing: Boolean
+  components: Json
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -8470,6 +8496,8 @@ input StudyUpdateManyDataInput {
   largeImage: String
   info: Json
   public: Boolean
+  submitForPublishing: Boolean
+  components: Json
 }
 
 input StudyUpdateManyMutationInput {
@@ -8482,6 +8510,8 @@ input StudyUpdateManyMutationInput {
   largeImage: String
   info: Json
   public: Boolean
+  submitForPublishing: Boolean
+  components: Json
 }
 
 input StudyUpdateManyWithoutAuthorInput {
@@ -8556,6 +8586,8 @@ input StudyUpdateWithoutAuthorDataInput {
   largeImage: String
   info: Json
   public: Boolean
+  submitForPublishing: Boolean
+  components: Json
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
@@ -8573,6 +8605,8 @@ input StudyUpdateWithoutCollaboratorsDataInput {
   largeImage: String
   info: Json
   public: Boolean
+  submitForPublishing: Boolean
+  components: Json
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -8590,6 +8624,8 @@ input StudyUpdateWithoutConsentDataInput {
   largeImage: String
   info: Json
   public: Boolean
+  submitForPublishing: Boolean
+  components: Json
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -8607,6 +8643,8 @@ input StudyUpdateWithoutParticipantsDataInput {
   largeImage: String
   info: Json
   public: Boolean
+  submitForPublishing: Boolean
+  components: Json
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
@@ -9000,6 +9038,10 @@ input StudyWhereInput {
 
   """All values that are not equal to given value."""
   public_not: Boolean
+  submitForPublishing: Boolean
+
+  """All values that are not equal to given value."""
+  submitForPublishing_not: Boolean
   author: ProfileWhereInput
   tasks_every: TaskWhereInput
   tasks_some: TaskWhereInput
@@ -9053,6 +9095,7 @@ type Task implements Node {
   collaborators(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
   consent: Consent
   public: Boolean
+  submitForPublishing: Boolean
   taskType: TaskType
 }
 
@@ -9075,6 +9118,7 @@ input TaskCreateInput {
   settings: Json
   link: String
   public: Boolean
+  submitForPublishing: Boolean
   taskType: TaskType
   template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneWithoutTaskCreatorInInput!
@@ -9121,6 +9165,7 @@ input TaskCreateWithoutAuthorInput {
   settings: Json
   link: String
   public: Boolean
+  submitForPublishing: Boolean
   taskType: TaskType
   template: TemplateCreateOneWithoutTasksInput
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
@@ -9136,6 +9181,7 @@ input TaskCreateWithoutCollaboratorsInput {
   settings: Json
   link: String
   public: Boolean
+  submitForPublishing: Boolean
   taskType: TaskType
   template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneWithoutTaskCreatorInInput!
@@ -9151,6 +9197,7 @@ input TaskCreateWithoutConsentInput {
   settings: Json
   link: String
   public: Boolean
+  submitForPublishing: Boolean
   taskType: TaskType
   template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneWithoutTaskCreatorInInput!
@@ -9166,6 +9213,7 @@ input TaskCreateWithoutTemplateInput {
   settings: Json
   link: String
   public: Boolean
+  submitForPublishing: Boolean
   taskType: TaskType
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
@@ -9202,6 +9250,8 @@ enum TaskOrderByInput {
   updatedAt_DESC
   public_ASC
   public_DESC
+  submitForPublishing_ASC
+  submitForPublishing_DESC
   taskType_ASC
   taskType_DESC
 }
@@ -9217,6 +9267,7 @@ type TaskPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   public: Boolean
+  submitForPublishing: Boolean
   taskType: TaskType
 }
 
@@ -9477,6 +9528,10 @@ input TaskScalarWhereInput {
 
   """All values that are not equal to given value."""
   public_not: Boolean
+  submitForPublishing: Boolean
+
+  """All values that are not equal to given value."""
+  submitForPublishing_not: Boolean
   taskType: TaskType
 
   """All values that are not equal to given value."""
@@ -9541,6 +9596,7 @@ input TaskUpdateDataInput {
   settings: Json
   link: String
   public: Boolean
+  submitForPublishing: Boolean
   taskType: TaskType
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
@@ -9556,6 +9612,7 @@ input TaskUpdateInput {
   settings: Json
   link: String
   public: Boolean
+  submitForPublishing: Boolean
   taskType: TaskType
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
@@ -9571,6 +9628,7 @@ input TaskUpdateManyDataInput {
   settings: Json
   link: String
   public: Boolean
+  submitForPublishing: Boolean
   taskType: TaskType
 }
 
@@ -9594,6 +9652,7 @@ input TaskUpdateManyMutationInput {
   settings: Json
   link: String
   public: Boolean
+  submitForPublishing: Boolean
   taskType: TaskType
 }
 
@@ -9665,6 +9724,7 @@ input TaskUpdateWithoutAuthorDataInput {
   settings: Json
   link: String
   public: Boolean
+  submitForPublishing: Boolean
   taskType: TaskType
   template: TemplateUpdateOneWithoutTasksInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
@@ -9679,6 +9739,7 @@ input TaskUpdateWithoutCollaboratorsDataInput {
   settings: Json
   link: String
   public: Boolean
+  submitForPublishing: Boolean
   taskType: TaskType
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
@@ -9693,6 +9754,7 @@ input TaskUpdateWithoutConsentDataInput {
   settings: Json
   link: String
   public: Boolean
+  submitForPublishing: Boolean
   taskType: TaskType
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
@@ -9707,6 +9769,7 @@ input TaskUpdateWithoutTemplateDataInput {
   settings: Json
   link: String
   public: Boolean
+  submitForPublishing: Boolean
   taskType: TaskType
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
@@ -10030,6 +10093,10 @@ input TaskWhereInput {
 
   """All values that are not equal to given value."""
   public_not: Boolean
+  submitForPublishing: Boolean
+
+  """All values that are not equal to given value."""
+  submitForPublishing_not: Boolean
   taskType: TaskType
 
   """All values that are not equal to given value."""

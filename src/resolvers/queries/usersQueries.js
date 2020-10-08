@@ -1,4 +1,11 @@
 const usersQueries = {
+  // get all usernames
+  async allUsernames(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    return ctx.db.query.profiles({}, info);
+  },
   // study participants
   async myStudyParticipants(parent, args, ctx, info) {
     // 1. check if the user has permission to see the study (Scientist of this study) or Admin
