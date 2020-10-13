@@ -67,6 +67,7 @@ const taskMutations = {
                 }
               : null,
           taskType: args.taskType,
+          submitForPublishing: args.submitForPublishing,
         },
       },
       info
