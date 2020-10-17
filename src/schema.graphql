@@ -131,4 +131,5 @@ type Profile {
   tasksInfo: Json
   studiesInfo: Json
   consentsInfo: Json
+  publicId: String
 }
