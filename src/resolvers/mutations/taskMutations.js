@@ -168,13 +168,19 @@ const taskMutations = {
   async deleteTask(parent, args, ctx, info) {
     const where = { id: args.id };
     // find experiment
-    const task = await ctx.db.query.task({ where }, `{ id title author {id} }`);
+    const task = await ctx.db.query.task(
+      { where },
+      `{ id title author {id} collaborators {id} }`
+    );
     // check whether user has permissions to delete the task
     const ownsTask = task.author.id === ctx.request.userId;
+    const isCollaborator = task.collaborators
+      .map(collaborator => collaborator.id)
+      .includes(ctx.request.userId);
     const hasPermissions = ctx.request.user.permissions.some(permission =>
       ['ADMIN'].includes(permission)
     );
-    if (!ownsTask && !hasPermissions) {
+    if (!ownsTask && !hasPermissions && !isCollaborator) {
       throw new Error(`You don't have permission to do that!`);
     }
     // delete it

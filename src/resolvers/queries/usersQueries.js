@@ -1,10 +1,17 @@
 const usersQueries = {
-  // get all usernames
+  // get all usernames (but not participants)
   async allUsernames(parent, args, ctx, info) {
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');
     }
-    return ctx.db.query.profiles({}, info);
+    const users = await ctx.db.query.profiles({}, info);
+    const notParticipants = users.filter(
+      user =>
+        user.permissions.includes('TEACHER') ||
+        user.permissions.includes('STUDENT') ||
+        user.permissions.includes('SCIENTIST')
+    );
+    return notParticipants;
   },
   // study participants
   async myStudyParticipants(parent, args, ctx, info) {

@@ -163,7 +163,7 @@ const studyMutations = {
     // find study
     const study = await ctx.db.query.study(
       { where },
-      `{ id title author {id} }`
+      `{ id title author {id} collaborators {id} }`
     );
     // check whether user has permissions to delete the item
     // TODO
@@ -171,7 +171,10 @@ const studyMutations = {
     const hasPermissions = ctx.request.user.permissions.some(permission =>
       ['ADMIN'].includes(permission)
     );
-    if (!ownsStudy && !hasPermissions) {
+    const isCollaborator = study.collaborators
+      .map(collaborator => collaborator.id)
+      .includes(ctx.request.userId);
+    if (!ownsStudy && !hasPermissions && !isCollaborator) {
       throw new Error(`You don't have permission to do that!`);
     }
 
