@@ -3,10 +3,12 @@ const { forwardTo } = require('prisma-binding');
 const { hasPermission } = require('../utils');
 const resultsQueries = require('./queries/resultsQueries');
 const usersQueries = require('./queries/usersQueries');
+const studiesQueries = require('./queries/studiesQueries');
 
 const Query = {
   ...resultsQueries,
   ...usersQueries,
+  ...studiesQueries,
   // async schools(parent, args, ctx, info){
   //   const schools = await ctx.db.query.schools();
   //   return schools;

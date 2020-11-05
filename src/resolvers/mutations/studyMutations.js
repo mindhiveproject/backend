@@ -22,7 +22,7 @@ const studyMutations = {
     );
     if (existingStudy) {
       throw new Error(
-        `The study name ${args.title} is already taken. Please try to come up with another name.`
+        `Oops! This study name ${args.title} has already been taken: please pick another.`
       );
     }
 

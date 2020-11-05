@@ -34,6 +34,8 @@ type Query {
   messages: [Message]!
 
   allUsernames: [Profile]!
+
+  classStudies(where: StudyWhereUniqueInput): [Study]!
 }
 
 type Mutation {
