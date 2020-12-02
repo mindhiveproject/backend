@@ -1,8 +1,6 @@
 const resultsQueries = {
   // get the results of the particular class (all students in this class)
   async myClassResults(parent, args, ctx, info) {
-    console.log('class Results Query', args.where.id);
-
     // 1. check if the user has permission to see the class (Teacher of this class) or Admin
     const { where } = args;
     const myclass = await ctx.db.query.class(
@@ -11,7 +9,7 @@ const resultsQueries = {
     );
     const ownsClass = myclass.creator.id === ctx.request.userId;
     const hasPermissions = ctx.request.user.permissions.some(permission =>
-      ['ADMIN'].includes(permission)
+      ['ADMIN', 'TEACHER'].includes(permission)
     );
     if (!ownsClass && !hasPermissions) {
       throw new Error(`You don't have permission to do that!`);
