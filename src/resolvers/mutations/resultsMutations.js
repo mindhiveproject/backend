@@ -101,14 +101,22 @@ const resultsMutations = {
   // delete result
   async deleteResult(parent, args, ctx, info) {
     const where = { id: args.id };
-    // find result
-    const result = await ctx.db.query.result({ where }, `{ id user {id} }`);
+    const result = await ctx.db.query.result(
+      { where },
+      `{ id user {id} study {id author {id} collaborators {id}} }`
+    );
     // check whether user has permissions to delete the item or it is the result of this user
     const ownsResult = result.user.id === ctx.request.userId;
-    const hasPermissions = ctx.request.user.permissions.some(permission =>
+    const hasAdminPermissions = ctx.request.user.permissions.some(permission =>
       ['ADMIN'].includes(permission)
     );
-    if (!ownsResult && !hasPermissions) {
+    // check whether the use is the author or a collaborator of the study
+    const isStudyAuthor = result.study.author.id === ctx.request.userId;
+    const isStudyCollaborator = result.study.collaborators
+      .map(collaborator => collaborator.id)
+      .includes(ctx.request.userId);
+    const hasStudyOwnerPermissions = isStudyAuthor || isStudyCollaborator;
+    if (!ownsResult && !hasAdminPermissions && !hasStudyOwnerPermissions) {
       throw new Error(`You don't have permission to do that!`);
     }
     // delete it
