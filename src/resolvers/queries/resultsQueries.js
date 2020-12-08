@@ -51,7 +51,7 @@ const resultsQueries = {
     );
     const ownsStudy = mystudy.author.id === ctx.request.userId;
     const hasPermissions = ctx.request.user.permissions.some(permission =>
-      ['ADMIN'].includes(permission)
+      ['ADMIN', 'TEACHER', 'SCIENTIST'].includes(permission)
     );
     let collaboratorInStudy;
     if (mystudy.collaborators) {
