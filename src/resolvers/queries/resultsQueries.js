@@ -1,4 +1,29 @@
 const resultsQueries = {
+  // open API study results
+  async studyResults(parent, args, ctx, info) {
+    // const { where } = args;
+    // console.log('args', args);
+
+    const study = await ctx.db.query.study(
+      { where: { slug: args.slug } },
+      `{ id }`
+    );
+    // console.log('study', study);
+
+    const results = await ctx.db.query.results(
+      {
+        where: {
+          study: {
+            id: study.id,
+          },
+        },
+      },
+      info
+    );
+    // console.log('results', results);
+    return results;
+  },
+
   // get the results of the particular class (all students in this class)
   async myClassResults(parent, args, ctx, info) {
     // 1. check if the user has permission to see the class (Teacher of this class) or Admin

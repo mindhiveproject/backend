@@ -13,6 +13,7 @@ type Query {
   myClassResults(where: ClassWhereUniqueInput): [Result]!
   myStudyResults(where: StudyWhereUniqueInput): [Result]!
   myTaskResults(where: TaskWhereUniqueInput): [Result]!
+  studyResults(slug: String!): [Result]!
 
   myStudyParticipants(where: StudyWhereUniqueInput): Study
 
