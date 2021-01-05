@@ -9,13 +9,7 @@ const Query = {
   ...resultsQueries,
   ...usersQueries,
   ...studiesQueries,
-  // async schools(parent, args, ctx, info){
-  //   const schools = await ctx.db.query.schools();
-  //   return schools;
-  // },
   schools: forwardTo('db'),
-  // experiments: forwardTo('db'),
-  // experiment: forwardTo('db'),
   class: forwardTo('db'),
   result: forwardTo('db'),
   results: forwardTo('db'),

@@ -12,6 +12,12 @@ const studiesQueries = {
     const uniqueStudies = [...new Set(studies.flat())];
     return uniqueStudies;
   },
+
+  // get all studies for admin
+  async allStudies(parent, args, ctx, info) {
+    const studies = await ctx.db.query.studies({}, info);
+    return studies;
+  },
 };
 
 module.exports = studiesQueries;

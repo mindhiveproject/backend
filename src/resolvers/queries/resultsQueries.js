@@ -3,6 +3,7 @@ const resultsQueries = {
   async studyResults(parent, args, ctx, info) {
     // const { where } = args;
     // console.log('args', args);
+    // console.log('ctx', ctx);
 
     const study = await ctx.db.query.study(
       { where: { slug: args.slug } },
