@@ -3,7 +3,6 @@ const slugify = require('slugify');
 const classMutations = {
   // create new class
   async createClass(parent, args, ctx, info) {
-    console.log('args', args);
     // TODO: Check login
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');
@@ -50,7 +49,6 @@ const classMutations = {
       },
       `{ id username permissions }`
     );
-    // console.log('updateProfile', updatedProfile);
 
     return { message: 'You joined the class!' };
   },
@@ -77,7 +75,6 @@ const classMutations = {
       },
       `{ id username permissions }`
     );
-    // console.log('updateProfile', updatedProfile);
 
     return { message: 'You left the class!' };
   },

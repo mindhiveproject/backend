@@ -9,10 +9,368 @@ const { OAuth2Client } = require('google-auth-library');
 const uniqid = require('uniqid');
 const { transport, makeEmail } = require('../../mail');
 
+// general function to join a study
+const joinTheStudy = async (profile, args, ctx, info) => {
+  const { study } = args;
+  // assign participants to one of the study blocks
+  const updatedInfo = { ...args.info };
+  if (study.components && study.components.blocks) {
+    const { blocks } = study.components;
+    // get a random block out of study between-subjects blocks
+    const block = blocks[Math.floor(Math.random() * blocks.length)];
+    updatedInfo.blockId = block.blockId;
+    updatedInfo.blockName = block.title;
+  }
+  const studyInformation = {
+    ...profile.studiesInfo,
+    [study.id]: updatedInfo,
+  };
+  const consentId =
+    (args.info.consent && study.consent && study.consent.id) || null;
+  let consentInformation;
+  // update consent information
+  if (consentId) {
+    consentInformation = {
+      ...profile.consentsInfo,
+      [consentId]: {
+        saveCoveredConsent: args.info.covered,
+      },
+    };
+  } else {
+    consentInformation = {
+      ...profile.consentsInfo,
+    };
+  }
+
+  const updatedProfile = await ctx.db.mutation.updateProfile(
+    {
+      data: {
+        participantIn: {
+          connect: {
+            id: study.id,
+          },
+        },
+        studiesInfo: studyInformation,
+        consentsInfo: consentInformation,
+        consentGivenFor: consentId
+          ? {
+              connect: { id: consentId },
+            }
+          : null,
+      },
+      where: {
+        id: profile.id,
+      },
+    },
+    info
+  );
+
+  return updatedProfile;
+};
+
 const authMutations = {
+  // general sign up flow
+  async signUp(parent, args, ctx, info) {
+    // whether the private email address is used
+    const privateAddress = !(args.info && args.info.useTeacherEmail);
+
+    args.username = args.username.toLowerCase().trim(); // lower case username
+    if (args.email && privateAddress) {
+      args.email = args.email.toLowerCase().trim(); // lower case email
+    } else {
+      args.email = null;
+    }
+
+    // create a unique public Id
+    args.publicId = uniqid();
+
+    // check whether the email is already in the system
+    if (args.email) {
+      const existingEmail = await ctx.db.query.authEmail(
+        {
+          where: { email: args.email },
+        },
+        `{ id }`
+      );
+      if (existingEmail) {
+        throw new Error(
+          `Email ${args.email} is taken. Already have an account? Login at https://mindhive.science/login.`
+        );
+      }
+    }
+
+    // hash the password
+    const password = await bcrypt.hash(args.password, 10);
+
+    // merge all the information about the user
+    const generalInfo = { ...args.info, ...args.user, data: 'science' };
+    delete generalInfo.id;
+    delete generalInfo.step;
+    delete generalInfo.mode;
+    delete generalInfo.consent;
+    delete generalInfo.covered;
+
+    // create a profile (which will have the participant auth identity)
+    // save general information about the person
+    const profile = await ctx.db.mutation.createProfile(
+      {
+        data: {
+          username: args.username,
+          publicId: args.publicId,
+          permissions: { set: args.permissions },
+          generalInfo,
+        },
+      },
+      info
+    );
+
+    // create an email authentication identity
+    const authEmail = await ctx.db.mutation.createAuthEmail(
+      {
+        data: {
+          email: args.email,
+          password,
+          profile: {
+            connect: {
+              id: profile.id,
+            },
+          },
+        },
+      },
+      `{ id }`
+    );
+
+    // connect the participant auth identity to profile
+    let updatedProfile = await ctx.db.mutation.updateProfile(
+      {
+        data: {
+          authEmail: {
+            connect: {
+              id: authEmail.id,
+            },
+          },
+        },
+        where: {
+          id: profile.id,
+        },
+      },
+      info
+    );
+
+    // join a study if there is a study
+    if (args.study) {
+      updatedProfile = await joinTheStudy(updatedProfile, args, ctx, info);
+    }
+
+    // join a class if there is a class in args.class
+    if (args.class && args.class.code) {
+      updatedProfile = await ctx.db.mutation.updateProfile(
+        {
+          data: {
+            studentIn: {
+              connect: {
+                code: args.class.code,
+              },
+            },
+          },
+          where: {
+            id: profile.id,
+          },
+        },
+        info
+      );
+    }
+
+    // create the JWT token for user
+    const token = jwt.sign(
+      { userId: updatedProfile.id },
+      process.env.APP_SECRET
+    );
+
+    // set the jwt as a cookie on response
+    ctx.response.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+      sameSite: 'Strict',
+      secure: process.env.NODE_ENV === 'production',
+    });
+
+    // send confirmation email
+    // TODO remove false later!
+    if (true && privateAddress && args.email) {
+      const randomBytesPromise = promisify(randomBytes);
+      const confirmationToken = (await randomBytesPromise(25)).toString('hex');
+      const confirmationTokenExpiry = Date.now() + 1000 * 60 * 60 * 24; // 24 hour
+
+      const res = await ctx.db.mutation.updateAuthEmail({
+        where: {
+          email: args.email,
+        },
+        data: {
+          settings: {
+            emailConfirmation: {
+              token: confirmationToken,
+              tokenExpiry: confirmationTokenExpiry,
+            },
+          },
+        },
+      });
+
+      const sentEmail = await client.sendEmailWithTemplate({
+        From: 'info@mindhive.science',
+        To: args.email,
+        TemplateAlias: 'welcome',
+        TemplateModel: {
+          username: args.username,
+          action_url: `${process.env.FRONTEND_URL}/confirm/email?e=${args.email}&t=${confirmationToken}`,
+          login_url: `${process.env.FRONTEND_URL}/login`,
+          support_url: `${process.env.FRONTEND_URL}/support`,
+          product_name: 'MindHive',
+          support_email: 'info@mindhive.science',
+          help_url: `${process.env.FRONTEND_URL}/help/participants`,
+        },
+      });
+    }
+
+    // return user
+    return updatedProfile;
+  },
+
+  // sign up with Google
+  async serviceSignUp(parent, args, ctx, info) {
+    const clientID = process.env.GOOGLE_CLIENT_ID;
+    const googleClient = new OAuth2Client(clientID);
+    const ticket = await googleClient.verifyIdToken({
+      idToken: args.token,
+      audience: clientID, // Specify the CLIENT_ID of the app that accesses the backend
+    });
+    const payload = await ticket.getPayload();
+
+    args.username = payload.name.toLowerCase().trim(); // lower case username
+    if (payload.email) {
+      args.email = payload.email.toLowerCase().trim(); // lower case username
+    } else {
+      args.email = null;
+    }
+
+    // create a unique public Id
+    args.publicId = uniqid();
+
+    // check whether the email is already in the system
+    if (args.email) {
+      const existingEmail = await ctx.db.query.authEmail(
+        {
+          where: { email: args.email },
+        },
+        `{ id }`
+      );
+      if (existingEmail) {
+        throw new Error(
+          `Email ${args.email} is already taken. If you have an account, please log in.`
+        );
+      }
+    }
+
+    // hash the password
+    const password = await bcrypt.hash(args.token, 10);
+
+    const generalInfo = { ...args.info, ...args.user, data: 'science' };
+    delete generalInfo.id;
+    delete generalInfo.step;
+    delete generalInfo.mode;
+    delete generalInfo.consent;
+    delete generalInfo.covered;
+
+    // create a profile (which will have the participant auth identity)
+    const profile = await ctx.db.mutation.createProfile(
+      {
+        data: {
+          username: args.username,
+          publicId: args.publicId,
+          permissions: { set: args.permissions },
+          generalInfo,
+        },
+      },
+      info
+    );
+
+    // TODO create a social account authentication identity
+    const authEmail = await ctx.db.mutation.createAuthEmail(
+      {
+        data: {
+          email: args.email,
+          password,
+          profile: {
+            connect: {
+              id: profile.id,
+            },
+          },
+          settings: {
+            googleAuth: payload,
+          },
+        },
+      },
+      `{ id }`
+    );
+    // connect the participant auth identity to profile
+    let updatedProfile = await ctx.db.mutation.updateProfile(
+      {
+        data: {
+          authEmail: {
+            connect: {
+              id: authEmail.id,
+            },
+          },
+        },
+        where: {
+          id: profile.id,
+        },
+      },
+      info
+    );
+
+    // join a study if there is a study
+    if (args.study) {
+      updatedProfile = await joinTheStudy(updatedProfile, args, ctx, info);
+    }
+
+    // join a class if there is a class in args.class
+    if (args.class && args.class.code) {
+      updatedProfile = await ctx.db.mutation.updateProfile(
+        {
+          data: {
+            studentIn: {
+              connect: {
+                code: args.class.code,
+              },
+            },
+          },
+          where: {
+            id: profile.id,
+          },
+        },
+        info
+      );
+    }
+
+    // create the JWT token for user
+    const token = jwt.sign(
+      { userId: updatedProfile.id },
+      process.env.APP_SECRET
+    );
+    // set the jwt as a cookie on response
+    ctx.response.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+      sameSite: 'Strict',
+      secure: process.env.NODE_ENV === 'production',
+    });
+    // return user
+    return updatedProfile;
+  },
+
   // general login for everyone with username or password
   async login(parent, args, ctx, info) {
-    console.log('args', args);
     if (args.usernameEmail) {
       args.usernameEmail = args.usernameEmail.toLowerCase().trim();
     } else {
@@ -62,218 +420,12 @@ const authMutations = {
     return profile;
   },
 
-  async signUp(parent, args, ctx, info) {
-    console.log('signUp args', args);
-
-    const privateAddress = !(args.info && args.info.useTeacherEmail);
-    console.log('privateAddress', privateAddress);
-
-    args.username = args.username.toLowerCase().trim(); // lower case username
-    if (args.email && privateAddress) {
-      args.email = args.email.toLowerCase().trim(); // lower case username
-    } else {
-      args.email = null;
-    }
-
-    // create a unique public Id
-    args.publicId = uniqid();
-
-    // check whether the email is already in the system
-    if (args.email) {
-      const existingEmail = await ctx.db.query.authEmail(
-        {
-          where: { email: args.email },
-        },
-        `{ id }`
-      );
-      if (existingEmail) {
-        throw new Error(
-          `Email ${args.email} is taken. Already have an account? Login here.`
-        );
-      }
-    }
-
-    // hash the password
-    const password = await bcrypt.hash(args.password, 10);
-
-    const generalInfo = { ...args.info, ...args.user, data: 'science' };
-
-    // create a profile (which will have the participant auth identity)
-    // save general information about the person
-    const profile = await ctx.db.mutation.createProfile(
-      {
-        data: {
-          username: args.username,
-          publicId: args.publicId,
-          permissions: { set: args.permissions },
-          generalInfo,
-        },
-      },
-      info
-    );
-
-    // create an email authentication identity
-    const authEmail = await ctx.db.mutation.createAuthEmail(
-      {
-        data: {
-          email: args.email,
-          password,
-          profile: {
-            connect: {
-              id: profile.id,
-            },
-          },
-        },
-      },
-      `{ id }`
-    );
-    // connect the participant auth identity to profile
-    let updatedProfile = await ctx.db.mutation.updateProfile(
-      {
-        data: {
-          authEmail: {
-            connect: {
-              id: authEmail.id,
-            },
-          },
-        },
-        where: {
-          id: profile.id,
-        },
-      },
-      info
-    );
-
-    // join a study if there is a study to join (user, study are present in the args)
-    if (args.study && args.user) {
-      const studyInformation = {
-        ...updatedProfile.studiesInfo,
-        [args.study.id]: args.user,
-      };
-      const consentId =
-        (args.user.consentGiven &&
-          args.study.consent &&
-          args.study.consent.id) ||
-        null;
-      let consentInformation;
-      if (consentId) {
-        consentInformation = {
-          ...updatedProfile.consentsInfo,
-          [consentId]: {
-            saveCoveredConsent: args.user.saveCoveredConsent,
-          },
-        };
-      } else {
-        consentInformation = {
-          ...updatedProfile.consentsInfo,
-        };
-      }
-
-      updatedProfile = await ctx.db.mutation.updateProfile(
-        {
-          data: {
-            participantIn: {
-              connect: {
-                id: args.study.id,
-              },
-            },
-            studiesInfo: studyInformation,
-            consentsInfo: consentInformation,
-            consentGivenFor: consentId
-              ? {
-                  connect: { id: consentId },
-                }
-              : null,
-          },
-          where: {
-            id: profile.id,
-          },
-        },
-        info
-      );
-    }
-
-    // join a class if there is a class in args.class
-    if (args.class && args.class.code) {
-      updatedProfile = await ctx.db.mutation.updateProfile(
-        {
-          data: {
-            studentIn: {
-              connect: {
-                code: args.class.code,
-              },
-            },
-          },
-          where: {
-            id: profile.id,
-          },
-        },
-        info
-      );
-    }
-
-    // create the JWT token for user
-    const token = jwt.sign(
-      { userId: updatedProfile.id },
-      process.env.APP_SECRET
-    );
-    // set the jwt as a cookie on response
-    ctx.response.cookie('token', token, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      sameSite: 'Strict',
-      secure: process.env.NODE_ENV === 'production',
-    });
-
-    // send confirmation email
-    // TODO remove false later!
-    if (true && privateAddress && args.email) {
-      const randomBytesPromise = promisify(randomBytes);
-      const confirmationToken = (await randomBytesPromise(25)).toString('hex');
-      const confirmationTokenExpiry = Date.now() + 1000 * 60 * 60 * 24; // 24 hour
-
-      const res = await ctx.db.mutation.updateAuthEmail({
-        where: {
-          email: args.email,
-        },
-        data: {
-          settings: {
-            emailConfirmation: {
-              token: confirmationToken,
-              tokenExpiry: confirmationTokenExpiry,
-            },
-          },
-        },
-      });
-
-      const sentEmail = await client.sendEmailWithTemplate({
-        From: 'info@mindhive.science',
-        To: args.email,
-        TemplateAlias: 'welcome',
-        TemplateModel: {
-          username: args.username,
-          action_url: `${process.env.FRONTEND_URL}/confirm/email?e=${args.email}&t=${confirmationToken}`,
-          login_url: `${process.env.FRONTEND_URL}/login`,
-          support_url: `${process.env.FRONTEND_URL}/support`,
-          product_name: 'MindHive',
-          support_email: 'info@mindhive.science',
-          help_url: `${process.env.FRONTEND_URL}/help/participants`,
-        },
-      });
-      console.log('sentEmail', sentEmail);
-    }
-
-    // return user
-    return updatedProfile;
-  },
-
   signout(parent, args, ctx, info) {
     ctx.response.clearCookie('token');
     return { message: 'You are signed out!' };
   },
 
   async requestReset(parent, args, ctx, info) {
-    console.log('args', args);
     // Find the profile either by using username or email
     // 1. Assume that usernameEmail is the username and search for the user
     let dedicatedEmail;
@@ -289,7 +441,6 @@ const authMutations = {
     );
 
     if (!profile) {
-      console.log('No profile found');
       const authEmail = await ctx.db.query.authEmail(
         {
           where: { email: args.usernameEmail },
@@ -315,9 +466,6 @@ const authMutations = {
         dedicatedEmail = profile.studentIn[0].creator.authEmail[0].email;
       }
     }
-
-    console.log('dedicatedEmail', dedicatedEmail);
-    console.log('authEmailId', authEmailId);
 
     // 1. Check if it is a real user
 
@@ -351,7 +499,6 @@ const authMutations = {
 
   async resetPassword(parent, args, ctx, info) {
     // 1. Check if the passwords match
-    console.log('args', args);
     if (args.password !== args.confirmPassword) {
       throw new Error('Your passwords do not match!');
     }
@@ -369,7 +516,6 @@ const authMutations = {
     if (!authEmail) {
       throw new Error('This token is either invalid or expired.');
     }
-    console.log('authEmail', authEmail);
     // 4. Hash new password
     const password = await bcrypt.hash(args.password, 10);
     // 5. Save new password, remove old reset token fields
@@ -450,180 +596,6 @@ const authMutations = {
     return { message: 'OK' };
   },
 
-  async serviceSignUp(parent, args, ctx, info) {
-    const clientID = process.env.GOOGLE_CLIENT_ID;
-    const googleClient = new OAuth2Client(clientID);
-    const ticket = await googleClient.verifyIdToken({
-      idToken: args.token,
-      audience: clientID, // Specify the CLIENT_ID of the app that accesses the backend
-    });
-    const payload = await ticket.getPayload();
-    // console.log('payload: ', payload);
-
-    args.username = payload.name.toLowerCase().trim(); // lower case username
-    if (payload.email) {
-      args.email = payload.email.toLowerCase().trim(); // lower case username
-    } else {
-      args.email = null;
-    }
-
-    // create a unique public Id
-    args.publicId = uniqid();
-
-    // check whether the email is already in the system
-    if (args.email) {
-      const existingEmail = await ctx.db.query.authEmail(
-        {
-          where: { email: args.email },
-        },
-        `{ id }`
-      );
-      if (existingEmail) {
-        throw new Error(
-          `Email ${args.email} is already taken. If you have an account, please log in.`
-        );
-      }
-    }
-
-    // hash the password
-    const password = await bcrypt.hash(args.token, 10);
-
-    const generalInfo = { ...args.info, ...args.user, data: 'science' };
-    console.log('generalInfo', generalInfo);
-
-    // create a profile (which will have the participant auth identity)
-    const profile = await ctx.db.mutation.createProfile(
-      {
-        data: {
-          username: args.username,
-          publicId: args.publicId,
-          permissions: { set: args.permissions },
-          generalInfo,
-        },
-      },
-      info
-    );
-
-    // TODO create a social account authentication identity
-    const authEmail = await ctx.db.mutation.createAuthEmail(
-      {
-        data: {
-          email: args.email,
-          password,
-          profile: {
-            connect: {
-              id: profile.id,
-            },
-          },
-          settings: {
-            googleAuth: payload,
-          },
-        },
-      },
-      `{ id }`
-    );
-    // connect the participant auth identity to profile
-    let updatedProfile = await ctx.db.mutation.updateProfile(
-      {
-        data: {
-          authEmail: {
-            connect: {
-              id: authEmail.id,
-            },
-          },
-        },
-        where: {
-          id: profile.id,
-        },
-      },
-      info
-    );
-
-    // join a study if there is a study to join (user, study are present in the args)
-    if (args.study && args.user) {
-      const studyInformation = {
-        ...updatedProfile.studiesInfo,
-        [args.study.id]: args.user,
-      };
-      const consentId =
-        (args.user.consentGiven &&
-          args.study.consent &&
-          args.study.consent.id) ||
-        null;
-      let consentInformation;
-      if (consentId) {
-        consentInformation = {
-          ...updatedProfile.consentsInfo,
-          [consentId]: {
-            saveCoveredConsent: args.user.saveCoveredConsent,
-          },
-        };
-      } else {
-        consentInformation = {
-          ...updatedProfile.consentsInfo,
-        };
-      }
-
-      updatedProfile = await ctx.db.mutation.updateProfile(
-        {
-          data: {
-            participantIn: {
-              connect: {
-                id: args.study.id,
-              },
-            },
-            studiesInfo: studyInformation,
-            consentsInfo: consentInformation,
-            consentGivenFor: consentId
-              ? {
-                  connect: { id: consentId },
-                }
-              : null,
-          },
-          where: {
-            id: profile.id,
-          },
-        },
-        info
-      );
-    }
-
-    // join a class if there is a class in args.class
-    if (args.class && args.class.code) {
-      updatedProfile = await ctx.db.mutation.updateProfile(
-        {
-          data: {
-            studentIn: {
-              connect: {
-                code: args.class.code,
-              },
-            },
-          },
-          where: {
-            id: profile.id,
-          },
-        },
-        info
-      );
-    }
-
-    // create the JWT token for user
-    const token = jwt.sign(
-      { userId: updatedProfile.id },
-      process.env.APP_SECRET
-    );
-    // set the jwt as a cookie on response
-    ctx.response.cookie('token', token, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
-      sameSite: 'Strict',
-      secure: process.env.NODE_ENV === 'production',
-    });
-    console.log('updatedProfile', updatedProfile);
-    // return user
-    return updatedProfile;
-  },
-
   async serviceLogin(parent, args, ctx, info) {
     const clientID = process.env.GOOGLE_CLIENT_ID;
     const googleClient = new OAuth2Client(clientID);
@@ -632,7 +604,6 @@ const authMutations = {
       audience: clientID, // Specify the CLIENT_ID of the app that accesses the backend
     });
     const payload = await ticket.getPayload();
-    // console.log('payload: ', payload);
 
     args.username = payload.name.toLowerCase().trim(); // lower case username
     if (payload.email) {
@@ -668,56 +639,9 @@ const authMutations = {
       throw new Error(`No user profile found! Please sign up first.`);
     }
 
-    // join a study if there is a study to join (user, study are present in the args)
-    if (args.study && args.user) {
-      const generalInfo = { ...args.info, ...args.user };
-      console.log('generalInfo', generalInfo);
-      const studyInformation = {
-        ...profile.studiesInfo,
-        [args.study.id]: args.user,
-      };
-      const consentId =
-        (args.user.consentGiven &&
-          args.study.consent &&
-          args.study.consent.id) ||
-        null;
-      let consentInformation;
-      if (consentId) {
-        consentInformation = {
-          ...profile.consentsInfo,
-          [consentId]: {
-            saveCoveredConsent: args.user.saveCoveredConsent,
-          },
-        };
-      } else {
-        consentInformation = {
-          ...profile.consentsInfo,
-        };
-      }
-
-      await ctx.db.mutation.updateProfile(
-        {
-          data: {
-            participantIn: {
-              connect: {
-                id: args.study.id,
-              },
-            },
-            generalInfo,
-            studiesInfo: studyInformation,
-            consentsInfo: consentInformation,
-            consentGivenFor: consentId
-              ? {
-                  connect: { id: consentId },
-                }
-              : null,
-          },
-          where: {
-            id: profile.id,
-          },
-        },
-        `{ id username permissions }`
-      );
+    // join a study if there is a study
+    if (args.study) {
+      profile = await joinTheStudy(profile, args, ctx, info);
     }
 
     const token = jwt.sign({ userId: profile.id }, process.env.APP_SECRET);
@@ -728,6 +652,80 @@ const authMutations = {
       secure: process.env.NODE_ENV === 'production',
     });
     // return the user
+    return profile;
+  },
+
+  // login for participants
+  async participantLogin(parent, args, ctx, info) {
+    if (args.usernameEmail) {
+      args.usernameEmail = args.usernameEmail.toLowerCase().trim();
+    } else {
+      throw new Error(`Invalid login details!`);
+    }
+    let profile;
+    let storedPassword;
+    profile = await ctx.db.query.profile(
+      {
+        where: {
+          username: args.usernameEmail,
+        },
+      },
+      `{ id username authEmail { id password } permissions studiesInfo consentsInfo }`
+    );
+    // if there is no profile found, try login as an email
+    if (!profile) {
+      const authEmail = await ctx.db.query.authEmail(
+        {
+          where: { email: args.usernameEmail },
+        },
+        `{ id password profile { id username permissions studiesInfo consentsInfo } }`
+      );
+      if (!authEmail) {
+        throw new Error(`No such user found for ${args.usernameEmail}`);
+      }
+      profile = authEmail.profile;
+      storedPassword = authEmail.password;
+    } else {
+      storedPassword = profile.authEmail[0].password;
+    }
+
+    // check password
+    const valid = await bcrypt.compare(args.password, storedPassword);
+    if (!valid) {
+      throw new Error(`Invalid password!`);
+    }
+
+    // join a study if there is a study
+    if (args.study) {
+      profile = await joinTheStudy(profile, args, ctx, info);
+    }
+
+    const token = jwt.sign({ userId: profile.id }, process.env.APP_SECRET);
+    ctx.response.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year
+      sameSite: 'Strict',
+      secure: process.env.NODE_ENV === 'production',
+    });
+    return profile;
+  },
+
+  // join the study (for participants)
+  async joinStudy(parent, args, ctx, info) {
+    // Check login
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    let profile = await ctx.db.query.profile(
+      {
+        where: { id: ctx.request.userId },
+      },
+      `{ id info studiesInfo consentsInfo }`
+    );
+    // join a study if there is a study
+    if (args.study) {
+      profile = await joinTheStudy(profile, args, ctx, info);
+    }
     return profile;
   },
 };

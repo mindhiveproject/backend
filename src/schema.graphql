@@ -52,10 +52,10 @@ type Mutation {
   signout: SuccessMessage
 
   serviceSignUp(token: String!, user: Json, study: Json, class: Json, info: Json, permissions: [Permission]): Profile!
-  serviceLogin(token: String!, user: Json, study: Json): Profile!
+  serviceLogin(token: String!, info: Json, study: Json): Profile!
 
   participantSignUp(username: String!, email: String, password: String!, user: Json, study: Json, info: Json): Profile!
-  participantLogin(usernameEmail: String!, password: String!, user: Json, study: Json): Profile!
+  participantLogin(usernameEmail: String!, password: String!, info: Json, study: Json): Profile!
 
   tokenSignUp(username: String!, token: String!, email: String): Profile!
   tokenLogin(username: String!): Profile!
@@ -93,7 +93,7 @@ type Mutation {
   publishStudyToggle(id: ID!): Study
   deleteStudy(id: ID!): Study
   buildStudy(id: ID!, tasks: [ID]!): Study!
-  joinStudy(id: ID!, info: Json, user: Json, study: Json): SuccessMessage
+  joinStudy(id: ID!, info: Json, study: Json): Profile!
   leaveStudy(id: ID!): SuccessMessage
   updateStudyConsent(id: ID!, info: Json): Study!
 
