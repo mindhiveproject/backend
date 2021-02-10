@@ -135,7 +135,10 @@ const resultsMutations = {
       `{ id authEmail { id } consentsInfo tasksInfo }`
     );
 
-    if (args.info && args.info.email) {
+    console.log('profile', profile);
+
+    // To do: create an empty email array for Google Sign-up
+    if (args.info && args.info.email && profile.authEmail.length) {
       const { email } = args.info;
       const updatedAuthEmail = await ctx.db.mutation.updateAuthEmail(
         {
@@ -154,6 +157,7 @@ const resultsMutations = {
     if (args.info && args.info.data && args.info.data === 'no') {
       // TODO delete the data from the database
     }
+    console.log('line 157');
 
     // update profile
     const taskInformation = {
@@ -176,6 +180,7 @@ const resultsMutations = {
         ...profile.consentsInfo,
       };
     }
+    console.log('line 180');
 
     // TODO connect the user to the consent
     const updatedProfile = await ctx.db.mutation.updateProfile(
