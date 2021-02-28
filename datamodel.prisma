@@ -40,6 +40,8 @@ type Profile {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String @unique
+  journals: [Journal]! @relation(name:"CreatorOfJournal")
+  posts: [Post]! @relation(name:"AuthorOfPost")
 }
 
 type AuthEmail {
@@ -208,6 +210,28 @@ type Message {
   info: Json
   settings: Json
   expireAt: DateTime
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Journal {
+  id: ID! @id
+  title: String
+  description: String
+  creator: Profile! @relation(name:"CreatorOfJournal")
+  posts: [Post]!
+  settings: Json
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Post {
+  id: ID! @id
+  author: Profile! @relation(name:"AuthorOfPost")
+  title: String
+  content: String
+  journal: Journal!
+  settings: Json
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

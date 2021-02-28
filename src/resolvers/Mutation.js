@@ -7,6 +7,8 @@ const taskMutations = require('./mutations/taskMutations');
 const studyMutations = require('./mutations/studyMutations');
 const consentMutations = require('./mutations/consentMutations');
 const messageMutations = require('./mutations/messageMutations');
+const journalMutations = require('./mutations/journalMutations');
+const postMutations = require('./mutations/postMutations');
 
 const Mutations = {
   ...authMutations,
@@ -18,6 +20,8 @@ const Mutations = {
   ...studyMutations,
   ...consentMutations,
   ...messageMutations,
+  ...journalMutations,
+  ...postMutations,
 
   async createSchool(parent, args, ctx, info) {
     // TODO: Check login

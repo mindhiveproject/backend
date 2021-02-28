@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Tue Oct 06 2020 10:44:02 GMT+0200 (Central European Summer Time)
+# timestamp: Sun Feb 28 2021 21:41:44 GMT+0100 (Central European Standard Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -29,7 +29,15 @@ type AggregateData {
   count: Int!
 }
 
+type AggregateJournal {
+  count: Int!
+}
+
 type AggregateMessage {
+  count: Int!
+}
+
+type AggregatePost {
   count: Int!
 }
 
@@ -4207,6 +4215,566 @@ input DataWhereUniqueInput {
 
 scalar DateTime
 
+type Journal implements Node {
+  id: ID!
+  title: String
+  description: String
+  creator: Profile!
+  posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
+  settings: Json
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type JournalConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [JournalEdge]!
+  aggregate: AggregateJournal!
+}
+
+input JournalCreateInput {
+  id: ID
+  title: String
+  description: String
+  settings: Json
+  creator: ProfileCreateOneWithoutJournalsInput!
+  posts: PostCreateManyWithoutJournalInput
+}
+
+input JournalCreateManyWithoutCreatorInput {
+  create: [JournalCreateWithoutCreatorInput!]
+  connect: [JournalWhereUniqueInput!]
+}
+
+input JournalCreateOneWithoutPostsInput {
+  create: JournalCreateWithoutPostsInput
+  connect: JournalWhereUniqueInput
+}
+
+input JournalCreateWithoutCreatorInput {
+  id: ID
+  title: String
+  description: String
+  settings: Json
+  posts: PostCreateManyWithoutJournalInput
+}
+
+input JournalCreateWithoutPostsInput {
+  id: ID
+  title: String
+  description: String
+  settings: Json
+  creator: ProfileCreateOneWithoutJournalsInput!
+}
+
+"""An edge in a connection."""
+type JournalEdge {
+  """The item at the end of the edge."""
+  node: Journal!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum JournalOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  description_ASC
+  description_DESC
+  settings_ASC
+  settings_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type JournalPreviousValues {
+  id: ID!
+  title: String
+  description: String
+  settings: Json
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input JournalScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [JournalScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [JournalScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [JournalScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+type JournalSubscriptionPayload {
+  mutation: MutationType!
+  node: Journal
+  updatedFields: [String!]
+  previousValues: JournalPreviousValues
+}
+
+input JournalSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [JournalSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [JournalSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [JournalSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: JournalWhereInput
+}
+
+input JournalUpdateInput {
+  title: String
+  description: String
+  settings: Json
+  creator: ProfileUpdateOneRequiredWithoutJournalsInput
+  posts: PostUpdateManyWithoutJournalInput
+}
+
+input JournalUpdateManyDataInput {
+  title: String
+  description: String
+  settings: Json
+}
+
+input JournalUpdateManyMutationInput {
+  title: String
+  description: String
+  settings: Json
+}
+
+input JournalUpdateManyWithoutCreatorInput {
+  create: [JournalCreateWithoutCreatorInput!]
+  connect: [JournalWhereUniqueInput!]
+  set: [JournalWhereUniqueInput!]
+  disconnect: [JournalWhereUniqueInput!]
+  delete: [JournalWhereUniqueInput!]
+  update: [JournalUpdateWithWhereUniqueWithoutCreatorInput!]
+  updateMany: [JournalUpdateManyWithWhereNestedInput!]
+  deleteMany: [JournalScalarWhereInput!]
+  upsert: [JournalUpsertWithWhereUniqueWithoutCreatorInput!]
+}
+
+input JournalUpdateManyWithWhereNestedInput {
+  where: JournalScalarWhereInput!
+  data: JournalUpdateManyDataInput!
+}
+
+input JournalUpdateOneRequiredWithoutPostsInput {
+  create: JournalCreateWithoutPostsInput
+  connect: JournalWhereUniqueInput
+  update: JournalUpdateWithoutPostsDataInput
+  upsert: JournalUpsertWithoutPostsInput
+}
+
+input JournalUpdateWithoutCreatorDataInput {
+  title: String
+  description: String
+  settings: Json
+  posts: PostUpdateManyWithoutJournalInput
+}
+
+input JournalUpdateWithoutPostsDataInput {
+  title: String
+  description: String
+  settings: Json
+  creator: ProfileUpdateOneRequiredWithoutJournalsInput
+}
+
+input JournalUpdateWithWhereUniqueWithoutCreatorInput {
+  where: JournalWhereUniqueInput!
+  data: JournalUpdateWithoutCreatorDataInput!
+}
+
+input JournalUpsertWithoutPostsInput {
+  update: JournalUpdateWithoutPostsDataInput!
+  create: JournalCreateWithoutPostsInput!
+}
+
+input JournalUpsertWithWhereUniqueWithoutCreatorInput {
+  where: JournalWhereUniqueInput!
+  update: JournalUpdateWithoutCreatorDataInput!
+  create: JournalCreateWithoutCreatorInput!
+}
+
+input JournalWhereInput {
+  """Logical AND on all given filters."""
+  AND: [JournalWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [JournalWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [JournalWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  creator: ProfileWhereInput
+  posts_every: PostWhereInput
+  posts_some: PostWhereInput
+  posts_none: PostWhereInput
+}
+
+input JournalWhereUniqueInput {
+  id: ID
+}
+
 """Raw JSON value"""
 scalar Json
 
@@ -4712,6 +5280,8 @@ type Mutation {
   createClass(data: ClassCreateInput!): Class!
   createResult(data: ResultCreateInput!): Result!
   createConsent(data: ConsentCreateInput!): Consent!
+  createJournal(data: JournalCreateInput!): Journal!
+  createPost(data: PostCreateInput!): Post!
   createStudy(data: StudyCreateInput!): Study!
   createTemplate(data: TemplateCreateInput!): Template!
   createTask(data: TaskCreateInput!): Task!
@@ -4726,6 +5296,8 @@ type Mutation {
   updateClass(data: ClassUpdateInput!, where: ClassWhereUniqueInput!): Class
   updateResult(data: ResultUpdateInput!, where: ResultWhereUniqueInput!): Result
   updateConsent(data: ConsentUpdateInput!, where: ConsentWhereUniqueInput!): Consent
+  updateJournal(data: JournalUpdateInput!, where: JournalWhereUniqueInput!): Journal
+  updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
   updateStudy(data: StudyUpdateInput!, where: StudyWhereUniqueInput!): Study
   updateTemplate(data: TemplateUpdateInput!, where: TemplateWhereUniqueInput!): Template
   updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task
@@ -4740,6 +5312,8 @@ type Mutation {
   deleteClass(where: ClassWhereUniqueInput!): Class
   deleteResult(where: ResultWhereUniqueInput!): Result
   deleteConsent(where: ConsentWhereUniqueInput!): Consent
+  deleteJournal(where: JournalWhereUniqueInput!): Journal
+  deletePost(where: PostWhereUniqueInput!): Post
   deleteStudy(where: StudyWhereUniqueInput!): Study
   deleteTemplate(where: TemplateWhereUniqueInput!): Template
   deleteTask(where: TaskWhereUniqueInput!): Task
@@ -4754,6 +5328,8 @@ type Mutation {
   upsertClass(where: ClassWhereUniqueInput!, create: ClassCreateInput!, update: ClassUpdateInput!): Class!
   upsertResult(where: ResultWhereUniqueInput!, create: ResultCreateInput!, update: ResultUpdateInput!): Result!
   upsertConsent(where: ConsentWhereUniqueInput!, create: ConsentCreateInput!, update: ConsentUpdateInput!): Consent!
+  upsertJournal(where: JournalWhereUniqueInput!, create: JournalCreateInput!, update: JournalUpdateInput!): Journal!
+  upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
   upsertStudy(where: StudyWhereUniqueInput!, create: StudyCreateInput!, update: StudyUpdateInput!): Study!
   upsertTemplate(where: TemplateWhereUniqueInput!, create: TemplateCreateInput!, update: TemplateUpdateInput!): Template!
   upsertTask(where: TaskWhereUniqueInput!, create: TaskCreateInput!, update: TaskUpdateInput!): Task!
@@ -4767,6 +5343,8 @@ type Mutation {
   updateManyClasses(data: ClassUpdateManyMutationInput!, where: ClassWhereInput): BatchPayload!
   updateManyResults(data: ResultUpdateManyMutationInput!, where: ResultWhereInput): BatchPayload!
   updateManyConsents(data: ConsentUpdateManyMutationInput!, where: ConsentWhereInput): BatchPayload!
+  updateManyJournals(data: JournalUpdateManyMutationInput!, where: JournalWhereInput): BatchPayload!
+  updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
   updateManyStudies(data: StudyUpdateManyMutationInput!, where: StudyWhereInput): BatchPayload!
   updateManyTemplates(data: TemplateUpdateManyMutationInput!, where: TemplateWhereInput): BatchPayload!
   updateManyTasks(data: TaskUpdateManyMutationInput!, where: TaskWhereInput): BatchPayload!
@@ -4781,6 +5359,8 @@ type Mutation {
   deleteManyClasses(where: ClassWhereInput): BatchPayload!
   deleteManyResults(where: ResultWhereInput): BatchPayload!
   deleteManyConsents(where: ConsentWhereInput): BatchPayload!
+  deleteManyJournals(where: JournalWhereInput): BatchPayload!
+  deleteManyPosts(where: PostWhereInput): BatchPayload!
   deleteManyStudies(where: StudyWhereInput): BatchPayload!
   deleteManyTemplates(where: TemplateWhereInput): BatchPayload!
   deleteManyTasks(where: TaskWhereInput): BatchPayload!
@@ -4826,6 +5406,575 @@ enum Permission {
   PARTICIPANT
 }
 
+type Post implements Node {
+  id: ID!
+  author: Profile!
+  title: String
+  content: String
+  journal: Journal!
+  settings: Json
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type PostConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PostEdge]!
+  aggregate: AggregatePost!
+}
+
+input PostCreateInput {
+  id: ID
+  title: String
+  content: String
+  settings: Json
+  author: ProfileCreateOneWithoutPostsInput!
+  journal: JournalCreateOneWithoutPostsInput!
+}
+
+input PostCreateManyWithoutAuthorInput {
+  create: [PostCreateWithoutAuthorInput!]
+  connect: [PostWhereUniqueInput!]
+}
+
+input PostCreateManyWithoutJournalInput {
+  create: [PostCreateWithoutJournalInput!]
+  connect: [PostWhereUniqueInput!]
+}
+
+input PostCreateWithoutAuthorInput {
+  id: ID
+  title: String
+  content: String
+  settings: Json
+  journal: JournalCreateOneWithoutPostsInput!
+}
+
+input PostCreateWithoutJournalInput {
+  id: ID
+  title: String
+  content: String
+  settings: Json
+  author: ProfileCreateOneWithoutPostsInput!
+}
+
+"""An edge in a connection."""
+type PostEdge {
+  """The item at the end of the edge."""
+  node: Post!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum PostOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  content_ASC
+  content_DESC
+  settings_ASC
+  settings_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type PostPreviousValues {
+  id: ID!
+  title: String
+  content: String
+  settings: Json
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input PostScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PostScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PostScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PostScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  content: String
+
+  """All values that are not equal to given value."""
+  content_not: String
+
+  """All values that are contained in given list."""
+  content_in: [String!]
+
+  """All values that are not contained in given list."""
+  content_not_in: [String!]
+
+  """All values less than the given value."""
+  content_lt: String
+
+  """All values less than or equal the given value."""
+  content_lte: String
+
+  """All values greater than the given value."""
+  content_gt: String
+
+  """All values greater than or equal the given value."""
+  content_gte: String
+
+  """All values containing the given string."""
+  content_contains: String
+
+  """All values not containing the given string."""
+  content_not_contains: String
+
+  """All values starting with the given string."""
+  content_starts_with: String
+
+  """All values not starting with the given string."""
+  content_not_starts_with: String
+
+  """All values ending with the given string."""
+  content_ends_with: String
+
+  """All values not ending with the given string."""
+  content_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+type PostSubscriptionPayload {
+  mutation: MutationType!
+  node: Post
+  updatedFields: [String!]
+  previousValues: PostPreviousValues
+}
+
+input PostSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PostSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PostSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PostSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: PostWhereInput
+}
+
+input PostUpdateInput {
+  title: String
+  content: String
+  settings: Json
+  author: ProfileUpdateOneRequiredWithoutPostsInput
+  journal: JournalUpdateOneRequiredWithoutPostsInput
+}
+
+input PostUpdateManyDataInput {
+  title: String
+  content: String
+  settings: Json
+}
+
+input PostUpdateManyMutationInput {
+  title: String
+  content: String
+  settings: Json
+}
+
+input PostUpdateManyWithoutAuthorInput {
+  create: [PostCreateWithoutAuthorInput!]
+  connect: [PostWhereUniqueInput!]
+  set: [PostWhereUniqueInput!]
+  disconnect: [PostWhereUniqueInput!]
+  delete: [PostWhereUniqueInput!]
+  update: [PostUpdateWithWhereUniqueWithoutAuthorInput!]
+  updateMany: [PostUpdateManyWithWhereNestedInput!]
+  deleteMany: [PostScalarWhereInput!]
+  upsert: [PostUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input PostUpdateManyWithoutJournalInput {
+  create: [PostCreateWithoutJournalInput!]
+  connect: [PostWhereUniqueInput!]
+  set: [PostWhereUniqueInput!]
+  disconnect: [PostWhereUniqueInput!]
+  delete: [PostWhereUniqueInput!]
+  update: [PostUpdateWithWhereUniqueWithoutJournalInput!]
+  updateMany: [PostUpdateManyWithWhereNestedInput!]
+  deleteMany: [PostScalarWhereInput!]
+  upsert: [PostUpsertWithWhereUniqueWithoutJournalInput!]
+}
+
+input PostUpdateManyWithWhereNestedInput {
+  where: PostScalarWhereInput!
+  data: PostUpdateManyDataInput!
+}
+
+input PostUpdateWithoutAuthorDataInput {
+  title: String
+  content: String
+  settings: Json
+  journal: JournalUpdateOneRequiredWithoutPostsInput
+}
+
+input PostUpdateWithoutJournalDataInput {
+  title: String
+  content: String
+  settings: Json
+  author: ProfileUpdateOneRequiredWithoutPostsInput
+}
+
+input PostUpdateWithWhereUniqueWithoutAuthorInput {
+  where: PostWhereUniqueInput!
+  data: PostUpdateWithoutAuthorDataInput!
+}
+
+input PostUpdateWithWhereUniqueWithoutJournalInput {
+  where: PostWhereUniqueInput!
+  data: PostUpdateWithoutJournalDataInput!
+}
+
+input PostUpsertWithWhereUniqueWithoutAuthorInput {
+  where: PostWhereUniqueInput!
+  update: PostUpdateWithoutAuthorDataInput!
+  create: PostCreateWithoutAuthorInput!
+}
+
+input PostUpsertWithWhereUniqueWithoutJournalInput {
+  where: PostWhereUniqueInput!
+  update: PostUpdateWithoutJournalDataInput!
+  create: PostCreateWithoutJournalInput!
+}
+
+input PostWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PostWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PostWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PostWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  content: String
+
+  """All values that are not equal to given value."""
+  content_not: String
+
+  """All values that are contained in given list."""
+  content_in: [String!]
+
+  """All values that are not contained in given list."""
+  content_not_in: [String!]
+
+  """All values less than the given value."""
+  content_lt: String
+
+  """All values less than or equal the given value."""
+  content_lte: String
+
+  """All values greater than the given value."""
+  content_gt: String
+
+  """All values greater than or equal the given value."""
+  content_gte: String
+
+  """All values containing the given string."""
+  content_contains: String
+
+  """All values not containing the given string."""
+  content_not_contains: String
+
+  """All values starting with the given string."""
+  content_starts_with: String
+
+  """All values not starting with the given string."""
+  content_not_starts_with: String
+
+  """All values ending with the given string."""
+  content_ends_with: String
+
+  """All values not ending with the given string."""
+  content_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  author: ProfileWhereInput
+  journal: JournalWhereInput
+}
+
+input PostWhereUniqueInput {
+  id: ID
+}
+
 type Profile implements Node {
   id: ID!
   username: String!
@@ -4853,6 +6002,8 @@ type Profile implements Node {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  journals(where: JournalWhereInput, orderBy: JournalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Journal!]
+  posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
 }
 
 """A connection to a list of items."""
@@ -4892,6 +6043,8 @@ input ProfileCreateInput {
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateManyWithoutCollaboratorInConsentInput {
@@ -4954,6 +6107,16 @@ input ProfileCreateOneWithoutConsentCreatorInInput {
   connect: ProfileWhereUniqueInput
 }
 
+input ProfileCreateOneWithoutJournalsInput {
+  create: ProfileCreateWithoutJournalsInput
+  connect: ProfileWhereUniqueInput
+}
+
+input ProfileCreateOneWithoutPostsInput {
+  create: ProfileCreateWithoutPostsInput
+  connect: ProfileWhereUniqueInput
+}
+
 input ProfileCreateOneWithoutResearcherInInput {
   create: ProfileCreateWithoutResearcherInInput
   connect: ProfileWhereUniqueInput
@@ -5004,6 +6167,8 @@ input ProfileCreateWithoutAuthEmailInput {
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthInviteInput {
@@ -5032,6 +6197,8 @@ input ProfileCreateWithoutAuthInviteInput {
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthParticipantInput {
@@ -5060,6 +6227,8 @@ input ProfileCreateWithoutAuthParticipantInput {
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthTokenInput {
@@ -5088,6 +6257,8 @@ input ProfileCreateWithoutAuthTokenInput {
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutCollaboratorInConsentInput {
@@ -5116,6 +6287,8 @@ input ProfileCreateWithoutCollaboratorInConsentInput {
   collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutCollaboratorInStudyInput {
@@ -5144,6 +6317,8 @@ input ProfileCreateWithoutCollaboratorInStudyInput {
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutCollaboratorInTaskInput {
@@ -5172,6 +6347,8 @@ input ProfileCreateWithoutCollaboratorInTaskInput {
   collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutConsentCreatorInInput {
@@ -5200,6 +6377,8 @@ input ProfileCreateWithoutConsentCreatorInInput {
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutConsentGivenForInput {
@@ -5228,6 +6407,38 @@ input ProfileCreateWithoutConsentGivenForInput {
   collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
+}
+
+input ProfileCreateWithoutJournalsInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutParticipantInInput {
@@ -5256,6 +6467,38 @@ input ProfileCreateWithoutParticipantInInput {
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
+}
+
+input ProfileCreateWithoutPostsInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
 }
 
 input ProfileCreateWithoutResearcherInInput {
@@ -5284,6 +6527,8 @@ input ProfileCreateWithoutResearcherInInput {
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutResultsInput {
@@ -5312,6 +6557,8 @@ input ProfileCreateWithoutResultsInput {
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutStudentInInput {
@@ -5340,6 +6587,8 @@ input ProfileCreateWithoutStudentInInput {
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutTaskCreatorInInput {
@@ -5368,6 +6617,8 @@ input ProfileCreateWithoutTaskCreatorInInput {
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutTeacherInInput {
@@ -5396,6 +6647,8 @@ input ProfileCreateWithoutTeacherInInput {
   collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 """An edge in a connection."""
@@ -5720,6 +6973,8 @@ input ProfileUpdateDataInput {
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateInput {
@@ -5748,6 +7003,8 @@ input ProfileUpdateInput {
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateManyDataInput {
@@ -5895,6 +7152,20 @@ input ProfileUpdateOneRequiredWithoutConsentCreatorInInput {
   upsert: ProfileUpsertWithoutConsentCreatorInInput
 }
 
+input ProfileUpdateOneRequiredWithoutJournalsInput {
+  create: ProfileCreateWithoutJournalsInput
+  connect: ProfileWhereUniqueInput
+  update: ProfileUpdateWithoutJournalsDataInput
+  upsert: ProfileUpsertWithoutJournalsInput
+}
+
+input ProfileUpdateOneRequiredWithoutPostsInput {
+  create: ProfileCreateWithoutPostsInput
+  connect: ProfileWhereUniqueInput
+  update: ProfileUpdateWithoutPostsDataInput
+  upsert: ProfileUpsertWithoutPostsInput
+}
+
 input ProfileUpdateOneRequiredWithoutResearcherInInput {
   create: ProfileCreateWithoutResearcherInInput
   connect: ProfileWhereUniqueInput
@@ -5952,6 +7223,8 @@ input ProfileUpdateWithoutAuthEmailDataInput {
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthInviteDataInput {
@@ -5979,6 +7252,8 @@ input ProfileUpdateWithoutAuthInviteDataInput {
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthParticipantDataInput {
@@ -6006,6 +7281,8 @@ input ProfileUpdateWithoutAuthParticipantDataInput {
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthTokenDataInput {
@@ -6033,6 +7310,8 @@ input ProfileUpdateWithoutAuthTokenDataInput {
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutCollaboratorInConsentDataInput {
@@ -6060,6 +7339,8 @@ input ProfileUpdateWithoutCollaboratorInConsentDataInput {
   collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutCollaboratorInStudyDataInput {
@@ -6087,6 +7368,8 @@ input ProfileUpdateWithoutCollaboratorInStudyDataInput {
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutCollaboratorInTaskDataInput {
@@ -6114,6 +7397,8 @@ input ProfileUpdateWithoutCollaboratorInTaskDataInput {
   collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutConsentCreatorInDataInput {
@@ -6141,6 +7426,8 @@ input ProfileUpdateWithoutConsentCreatorInDataInput {
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutConsentGivenForDataInput {
@@ -6168,6 +7455,37 @@ input ProfileUpdateWithoutConsentGivenForDataInput {
   collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
+}
+
+input ProfileUpdateWithoutJournalsDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  posts: PostUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutParticipantInDataInput {
@@ -6195,6 +7513,37 @@ input ProfileUpdateWithoutParticipantInDataInput {
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
+}
+
+input ProfileUpdateWithoutPostsDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
 }
 
 input ProfileUpdateWithoutResearcherInDataInput {
@@ -6222,6 +7571,8 @@ input ProfileUpdateWithoutResearcherInDataInput {
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutResultsDataInput {
@@ -6249,6 +7600,8 @@ input ProfileUpdateWithoutResultsDataInput {
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutStudentInDataInput {
@@ -6276,6 +7629,8 @@ input ProfileUpdateWithoutStudentInDataInput {
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutTaskCreatorInDataInput {
@@ -6303,6 +7658,8 @@ input ProfileUpdateWithoutTaskCreatorInDataInput {
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutTeacherInDataInput {
@@ -6330,6 +7687,8 @@ input ProfileUpdateWithoutTeacherInDataInput {
   collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithWhereUniqueWithoutCollaboratorInConsentInput {
@@ -6390,6 +7749,16 @@ input ProfileUpsertWithoutAuthTokenInput {
 input ProfileUpsertWithoutConsentCreatorInInput {
   update: ProfileUpdateWithoutConsentCreatorInDataInput!
   create: ProfileCreateWithoutConsentCreatorInInput!
+}
+
+input ProfileUpsertWithoutJournalsInput {
+  update: ProfileUpdateWithoutJournalsDataInput!
+  create: ProfileCreateWithoutJournalsInput!
+}
+
+input ProfileUpsertWithoutPostsInput {
+  update: ProfileUpdateWithoutPostsDataInput!
+  create: ProfileCreateWithoutPostsInput!
 }
 
 input ProfileUpsertWithoutResearcherInInput {
@@ -6702,6 +8071,12 @@ input ProfileWhereInput {
   consentGivenFor_every: ConsentWhereInput
   consentGivenFor_some: ConsentWhereInput
   consentGivenFor_none: ConsentWhereInput
+  journals_every: JournalWhereInput
+  journals_some: JournalWhereInput
+  journals_none: JournalWhereInput
+  posts_every: PostWhereInput
+  posts_some: PostWhereInput
+  posts_none: PostWhereInput
 }
 
 input ProfileWhereUniqueInput {
@@ -6719,6 +8094,8 @@ type Query {
   classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class]!
   results(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Result]!
   consents(where: ConsentWhereInput, orderBy: ConsentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Consent]!
+  journals(where: JournalWhereInput, orderBy: JournalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Journal]!
+  posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
   studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study]!
   templates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Template]!
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task]!
@@ -6733,6 +8110,8 @@ type Query {
   class(where: ClassWhereUniqueInput!): Class
   result(where: ResultWhereUniqueInput!): Result
   consent(where: ConsentWhereUniqueInput!): Consent
+  journal(where: JournalWhereUniqueInput!): Journal
+  post(where: PostWhereUniqueInput!): Post
   study(where: StudyWhereUniqueInput!): Study
   template(where: TemplateWhereUniqueInput!): Template
   task(where: TaskWhereUniqueInput!): Task
@@ -6747,6 +8126,8 @@ type Query {
   classesConnection(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClassConnection!
   resultsConnection(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ResultConnection!
   consentsConnection(where: ConsentWhereInput, orderBy: ConsentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ConsentConnection!
+  journalsConnection(where: JournalWhereInput, orderBy: JournalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): JournalConnection!
+  postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
   studiesConnection(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StudyConnection!
   templatesConnection(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TemplateConnection!
   tasksConnection(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TaskConnection!
@@ -9072,6 +10453,8 @@ type Subscription {
   class(where: ClassSubscriptionWhereInput): ClassSubscriptionPayload
   result(where: ResultSubscriptionWhereInput): ResultSubscriptionPayload
   consent(where: ConsentSubscriptionWhereInput): ConsentSubscriptionPayload
+  journal(where: JournalSubscriptionWhereInput): JournalSubscriptionPayload
+  post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
   study(where: StudySubscriptionWhereInput): StudySubscriptionPayload
   template(where: TemplateSubscriptionWhereInput): TemplateSubscriptionPayload
   task(where: TaskSubscriptionWhereInput): TaskSubscriptionPayload

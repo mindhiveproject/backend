@@ -20,6 +20,7 @@ const Query = {
   consent: forwardTo('db'),
   consents: forwardTo('db'),
   messages: forwardTo('db'),
+  post: forwardTo('db'),
 
   // return only public studies by default
   studies(parent, args, ctx, info) {
@@ -39,6 +40,19 @@ const Query = {
       {
         where: {
           public: true,
+          ...args.where,
+        },
+      },
+      info
+    );
+  },
+
+  // return posts
+  posts(parent, args, ctx, info) {
+    console.log('args', args);
+    return ctx.db.query.posts(
+      {
+        where: {
           ...args.where,
         },
       },
@@ -230,6 +244,42 @@ const Query = {
       {
         where: {
           id_in: profile.participantIn.map(study => study.id),
+        },
+      },
+      info
+    );
+  },
+
+  // get only journals of the user
+  async myJournals(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in');
+    }
+
+    return ctx.db.query.journals(
+      {
+        where: {
+          creator: {
+            id: ctx.request.userId,
+          },
+        },
+      },
+      info
+    );
+  },
+
+  // get only posts of the user
+  async myPosts(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in');
+    }
+
+    return ctx.db.query.posts(
+      {
+        where: {
+          author: {
+            id: ctx.request.userId,
+          },
         },
       },
       info

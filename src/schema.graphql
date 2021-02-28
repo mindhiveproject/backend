@@ -38,6 +38,11 @@ type Query {
   allUsernames: [Profile]!
 
   classStudies(where: StudyWhereUniqueInput): [Study]!
+
+  myJournals(where: JournalWhereInput, orderBy: JournalOrderByInput, skip: Int, first: Int): [Journal]!
+  myPosts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, first: Int): [Post]!
+  posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, first: Int): [Post]!
+  post(where: PostWhereUniqueInput): Post
 }
 
 type Mutation {
@@ -107,6 +112,13 @@ type Mutation {
   updateMessage(id: ID!, content: String, info: Json, settings: Json,  expireAt: DateTime): Message!
   deleteMessage(id: ID!): Message
 
+  createJournal(title: String, description: String, settings: Json): Journal!
+  updateJournal(id: ID!, title: String, description: String, settings: Json): Journal!
+  deleteJournal(id: ID!): Journal
+
+  createPost(title: String, content: String, settings: Json, journal: ID!): Post!
+  updatePost(id: ID!, title: String, content: String, settings: Json): Post!
+  deletePost(id: ID!): Post
 
 }
 
@@ -136,4 +148,6 @@ type Profile {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  journals: [Journal]!
+  posts: [Post]!
 }

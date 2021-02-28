@@ -70,6 +70,7 @@ typings/
 
 # dotenv environment variables file
 backend/variables.env
+variables.env
 .env
 .env.test
 
