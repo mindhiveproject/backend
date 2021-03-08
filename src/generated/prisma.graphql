@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Sun Feb 28 2021 21:41:44 GMT+0100 (Central European Standard Time)
+# timestamp: Sun Mar 07 2021 10:30:29 GMT+0100 (Central European Standard Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -10480,6 +10480,7 @@ type Task implements Node {
   public: Boolean
   submitForPublishing: Boolean
   taskType: TaskType
+  isOriginal: Boolean
 }
 
 """A connection to a list of items."""
@@ -10503,6 +10504,7 @@ input TaskCreateInput {
   public: Boolean
   submitForPublishing: Boolean
   taskType: TaskType
+  isOriginal: Boolean
   template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
@@ -10550,6 +10552,7 @@ input TaskCreateWithoutAuthorInput {
   public: Boolean
   submitForPublishing: Boolean
   taskType: TaskType
+  isOriginal: Boolean
   template: TemplateCreateOneWithoutTasksInput
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
   consent: ConsentCreateOneWithoutTasksInput
@@ -10566,6 +10569,7 @@ input TaskCreateWithoutCollaboratorsInput {
   public: Boolean
   submitForPublishing: Boolean
   taskType: TaskType
+  isOriginal: Boolean
   template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   consent: ConsentCreateOneWithoutTasksInput
@@ -10582,6 +10586,7 @@ input TaskCreateWithoutConsentInput {
   public: Boolean
   submitForPublishing: Boolean
   taskType: TaskType
+  isOriginal: Boolean
   template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
@@ -10598,6 +10603,7 @@ input TaskCreateWithoutTemplateInput {
   public: Boolean
   submitForPublishing: Boolean
   taskType: TaskType
+  isOriginal: Boolean
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
   consent: ConsentCreateOneWithoutTasksInput
@@ -10637,6 +10643,8 @@ enum TaskOrderByInput {
   submitForPublishing_DESC
   taskType_ASC
   taskType_DESC
+  isOriginal_ASC
+  isOriginal_DESC
 }
 
 type TaskPreviousValues {
@@ -10652,6 +10660,7 @@ type TaskPreviousValues {
   public: Boolean
   submitForPublishing: Boolean
   taskType: TaskType
+  isOriginal: Boolean
 }
 
 input TaskScalarWhereInput {
@@ -10925,6 +10934,10 @@ input TaskScalarWhereInput {
 
   """All values that are not contained in given list."""
   taskType_not_in: [TaskType!]
+  isOriginal: Boolean
+
+  """All values that are not equal to given value."""
+  isOriginal_not: Boolean
 }
 
 type TaskSubscriptionPayload {
@@ -10981,6 +10994,7 @@ input TaskUpdateDataInput {
   public: Boolean
   submitForPublishing: Boolean
   taskType: TaskType
+  isOriginal: Boolean
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
@@ -10997,6 +11011,7 @@ input TaskUpdateInput {
   public: Boolean
   submitForPublishing: Boolean
   taskType: TaskType
+  isOriginal: Boolean
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
@@ -11013,6 +11028,7 @@ input TaskUpdateManyDataInput {
   public: Boolean
   submitForPublishing: Boolean
   taskType: TaskType
+  isOriginal: Boolean
 }
 
 input TaskUpdateManyInput {
@@ -11037,6 +11053,7 @@ input TaskUpdateManyMutationInput {
   public: Boolean
   submitForPublishing: Boolean
   taskType: TaskType
+  isOriginal: Boolean
 }
 
 input TaskUpdateManyWithoutAuthorInput {
@@ -11109,6 +11126,7 @@ input TaskUpdateWithoutAuthorDataInput {
   public: Boolean
   submitForPublishing: Boolean
   taskType: TaskType
+  isOriginal: Boolean
   template: TemplateUpdateOneWithoutTasksInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
   consent: ConsentUpdateOneWithoutTasksInput
@@ -11124,6 +11142,7 @@ input TaskUpdateWithoutCollaboratorsDataInput {
   public: Boolean
   submitForPublishing: Boolean
   taskType: TaskType
+  isOriginal: Boolean
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   consent: ConsentUpdateOneWithoutTasksInput
@@ -11139,6 +11158,7 @@ input TaskUpdateWithoutConsentDataInput {
   public: Boolean
   submitForPublishing: Boolean
   taskType: TaskType
+  isOriginal: Boolean
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
@@ -11154,6 +11174,7 @@ input TaskUpdateWithoutTemplateDataInput {
   public: Boolean
   submitForPublishing: Boolean
   taskType: TaskType
+  isOriginal: Boolean
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
   consent: ConsentUpdateOneWithoutTasksInput
@@ -11490,6 +11511,10 @@ input TaskWhereInput {
 
   """All values that are not contained in given list."""
   taskType_not_in: [TaskType!]
+  isOriginal: Boolean
+
+  """All values that are not equal to given value."""
+  isOriginal_not: Boolean
   template: TemplateWhereInput
   author: ProfileWhereInput
   collaborators_every: ProfileWhereInput

@@ -166,6 +166,7 @@ type Task {
   public: Boolean
   submitForPublishing: Boolean
   taskType: TaskType
+  isOriginal: Boolean
 }
 
 type Template {

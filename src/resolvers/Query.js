@@ -177,6 +177,39 @@ const Query = {
     );
   },
 
+  // get only tasks of the user
+  async myAndAllTasks(parent, args, ctx, info) {
+    // check if the user has permission to see all users
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in');
+    }
+
+    // query parameters where author is the current user
+    return ctx.db.query.tasks(
+      {
+        where: {
+          OR: [
+            {
+              public: true,
+            },
+            {
+              author: {
+                id: ctx.request.userId,
+              },
+            },
+            {
+              collaborators_some: {
+                id: ctx.request.userId,
+              },
+            },
+          ],
+          ...args.where,
+        },
+      },
+      info
+    );
+  },
+
   // get only studies of the user
   async myStudies(parent, args, ctx, info) {
     // check if the user has permission to see all users
