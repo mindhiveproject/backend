@@ -1,8 +1,6 @@
 const journalMutations = {
   // create journal
   async createJournal(parent, args, ctx, info) {
-    console.log('args', args);
-
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');
     }

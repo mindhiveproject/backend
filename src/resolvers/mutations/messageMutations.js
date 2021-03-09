@@ -1,7 +1,5 @@
 const messageMutations = {
   async createMessage(parent, args, ctx, info) {
-    // console.log('args', args);
-
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');
     }
@@ -20,7 +18,6 @@ const messageMutations = {
       info
     );
 
-    // console.log('new message created', message);
     const { id } = args.settings.origin;
 
     // connect a study/task/class instance with the message

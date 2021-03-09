@@ -62,9 +62,6 @@ const participantsMutations = {
       },
     }));
 
-    console.log('emails', emails);
-    console.log('args.info', args.info);
-    // const sentEmail = await client.sendEmailBatchWithTemplates(messages);
     return { message: 'You emailed your participants!' };
   },
 

@@ -61,7 +61,6 @@ const consentMutations = {
 
   // update consent
   async updateConsent(parent, args, ctx, info) {
-    console.log('args', args);
     // verify that the user has the right to update the template
     const where = { id: args.id };
     const preConsent = await ctx.db.query.consent(
@@ -98,8 +97,6 @@ const consentMutations = {
       },
       `{ id collaborators { id } }`
     );
-
-    console.log('collaborators', collaborators);
 
     if (
       collaborators &&

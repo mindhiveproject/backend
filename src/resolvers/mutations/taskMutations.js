@@ -89,7 +89,6 @@ const taskMutations = {
     const isCollaborator = preTask.collaborators
       .map(collaborator => collaborator.id)
       .includes(ctx.request.userId);
-    // console.log('isCollaborator', isCollaborator);
     if (!ownsTask && !hasPermissions && !isCollaborator) {
       throw new Error(`You don't have permission to do that!`);
     }
@@ -213,7 +212,6 @@ const taskMutations = {
 
   // create task with template
   async createTaskWithTemplate(parent, args, ctx, info) {
-    // console.log('216 args', args);
     // 1. Make sure that user is signed in
     const { userId } = ctx.request;
     if (!userId) {
@@ -338,7 +336,6 @@ const taskMutations = {
     const isCollaborator = preTask.collaborators
       .map(collaborator => collaborator.id)
       .includes(ctx.request.userId);
-    // console.log('isCollaborator', isCollaborator);
     if (!ownsTask && !hasPermissions && !isCollaborator) {
       throw new Error(`You don't have permission to do that!`);
     }

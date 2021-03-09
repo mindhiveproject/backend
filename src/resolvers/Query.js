@@ -21,6 +21,7 @@ const Query = {
   consents: forwardTo('db'),
   messages: forwardTo('db'),
   post: forwardTo('db'),
+  journals: forwardTo('db'),
 
   // return only public studies by default
   studies(parent, args, ctx, info) {
@@ -49,7 +50,6 @@ const Query = {
 
   // return posts
   posts(parent, args, ctx, info) {
-    console.log('args', args);
     return ctx.db.query.posts(
       {
         where: {

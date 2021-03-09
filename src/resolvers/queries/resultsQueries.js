@@ -1,15 +1,10 @@
 const resultsQueries = {
   // open API study results
   async studyResults(parent, args, ctx, info) {
-    // const { where } = args;
-    // console.log('args', args);
-    // console.log('ctx', ctx);
-
     const study = await ctx.db.query.study(
       { where: { slug: args.slug } },
       `{ id }`
     );
-    // console.log('study', study);
 
     const results = await ctx.db.query.results(
       {
@@ -21,7 +16,6 @@ const resultsQueries = {
       },
       info
     );
-    // console.log('results', results);
     return results;
   },
 
@@ -52,7 +46,6 @@ const resultsQueries = {
       },
       `{ id }`
     );
-    console.log('myStudents', myStudents);
 
     // 3. query all results of these students
     return ctx.db.query.results(

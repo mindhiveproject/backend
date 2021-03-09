@@ -1,12 +1,10 @@
 const resultsMutations = {
   // submit a new result from open API
   async submitResultFromAPI(parent, args, ctx, info) {
-    // console.log('args', args);
     const messageId = args.metadata && args.metadata.id;
     const payload = args.metadata && args.metadata.payload;
     const token = `${payload.slice(0, 4)}-${messageId}`;
 
-    // console.log('args.studyId', args.studyId);
     const result = await ctx.db.query.result(
       {
         where: {
@@ -67,17 +65,9 @@ const resultsMutations = {
         },
         `{ id }`
       );
-      // delete incremental data if payload is full
-      // if (payload === 'full') {
-      //   const tokenToDelete = `incr-${messageId}`;
-      //   console.log('tokenToDelete', tokenToDelete);
-      //   const where = { token: tokenToDelete };
-      //   await ctx.db.mutation.deleteResult({ where }, info);
-      // }
+
       return { message: 'Created' };
     }
-    // const savedData = result.data;
-    // const newData = [...savedData, ...args.data];
 
     const updatedResult = await ctx.db.mutation.updateResult(
       {
@@ -125,8 +115,6 @@ const resultsMutations = {
 
   // update the information about results
   async updateResultsInfo(parent, args, ctx, info) {
-    console.log('args', args);
-
     // update the user email if there is an email
     const profile = await ctx.db.query.profile(
       {
@@ -134,8 +122,6 @@ const resultsMutations = {
       },
       `{ id authEmail { id } consentsInfo tasksInfo }`
     );
-
-    console.log('profile', profile);
 
     // To do: create an empty email array for Google Sign-up
     if (args.info && args.info.email && profile.authEmail.length) {
@@ -151,14 +137,11 @@ const resultsMutations = {
         },
         `{ id email }`
       );
-      console.log('updated email auth', updatedAuthEmail);
     }
 
     if (args.info && args.info.data && args.info.data === 'no') {
       // TODO delete the data from the database
     }
-    console.log('line 157');
-
     // update profile
     const taskInformation = {
       ...profile.tasksInfo,
@@ -180,7 +163,6 @@ const resultsMutations = {
         ...profile.consentsInfo,
       };
     }
-    console.log('line 180');
 
     // TODO connect the user to the consent
     const updatedProfile = await ctx.db.mutation.updateProfile(
@@ -200,9 +182,7 @@ const resultsMutations = {
       },
       `{ id consentGivenFor { id } }`
     );
-    console.log('updated profile', updatedProfile);
 
-    // console.log('args', args);
     const whereFull = { token: `full-${args.id}` };
     const whereIncr = { token: `incr-${args.id}` };
     const hasPermissions = ctx.request.user.permissions.some(permission =>

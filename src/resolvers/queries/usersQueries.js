@@ -38,18 +38,24 @@ const usersQueries = {
     }
 
     return ctx.db.query.study({ where }, info);
+  },
 
-    // 2. query all results of the study
-    // return ctx.db.query.results(
-    //   {
-    //     where: {
-    //       study: {
-    //         id: mystudy.id,
-    //       },
-    //     },
-    //   },
-    //   info
-    // );
+  async student(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    // TODO check authorization (being an admin or a teacher of the class)
+
+    const student = await ctx.db.query.profile(
+      {
+        where: {
+          id: args.id,
+        },
+      },
+      info
+    );
+
+    return student;
   },
 };
 

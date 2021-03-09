@@ -47,7 +47,6 @@ const templateMutations = {
   updateTemplate(parent, args, ctx, info) {
     // take a copy of updates
     const updates = { ...args };
-    console.log('updates', updates);
     // remove the ID from the updates
     delete updates.id;
     // run the update method

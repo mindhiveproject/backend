@@ -56,13 +56,6 @@ const studyMutations = {
 
   // update the study
   async updateStudy(parent, args, ctx, info) {
-    console.log('args', args);
-    // const slug = slugify(args.title, {
-    //   replacement: '-', // replace spaces with replacement character, defaults to `-`
-    //   remove: /[^a-zA-Z\d\s:]/g, // remove characters that match regex, defaults to `undefined`
-    //   lower: true, // convert to lower case, defaults to `false`
-    // });
-
     let collaborators = [];
     if (args.collaborators && args.collaborators.length) {
       collaborators = await Promise.all(
@@ -80,7 +73,6 @@ const studyMutations = {
       },
       `{ id collaborators { id } consent { id } }`
     );
-    console.log('study.consent.id', study.consent);
 
     if (
       collaborators &&
@@ -184,8 +176,6 @@ const studyMutations = {
 
   // update the study
   async buildStudy(parent, args, ctx, info) {
-    // const { tasks } = args;
-    // console.log('tasks', tasks);
     const tasks = args.tasks.map(task => ({ id: task }));
 
     const study = await ctx.db.query.study(

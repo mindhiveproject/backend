@@ -44,6 +44,9 @@ type Query {
   myPosts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, first: Int): [Post]!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, first: Int): [Post]!
   post(where: PostWhereUniqueInput): Post
+
+  student(id: ID!): Profile
+  journals(where: JournalWhereInput, orderBy: JournalOrderByInput, skip: Int, first: Int): [Journal]!
 }
 
 type Mutation {
