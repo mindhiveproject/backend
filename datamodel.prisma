@@ -167,6 +167,7 @@ type Task {
   submitForPublishing: Boolean
   taskType: TaskType
   isOriginal: Boolean
+  isExternal: Boolean
 }
 
 type Template {
