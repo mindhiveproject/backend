@@ -79,6 +79,8 @@ type Mutation {
   updateClass(id: ID!, code: String, title: String, description: String, image: String, largeImage: String): Class!
   deleteClass(id: ID!): Class
   joinClass(id: ID!): SuccessMessage
+  joinClassWithProfile(id: ID!, email: String): SuccessMessage
+
   leaveClass(id: ID!): SuccessMessage
   expelFromClass(classId: ID!, studentId: ID!): SuccessMessage
   moveToClass(classId: ID!, studentId: ID!): SuccessMessage
@@ -120,7 +122,7 @@ type Mutation {
     submitForPublishing: Boolean,
     link: String):
     Task!
-    
+
   deleteTask(id: ID!): Task
   publishTaskToggle(id: ID!): Task
 

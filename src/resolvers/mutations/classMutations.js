@@ -184,6 +184,65 @@ const classMutations = {
 
     return { message: 'You assigned the student to a new class!' };
   },
+
+  // join class for users with logged in profile
+  async joinClassWithProfile(parent, args, ctx, info) {
+    // Check login
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+
+    // get current permissions and email id
+    const profile = await ctx.db.query.profile(
+      {
+        where: {
+          id: ctx.request.userId,
+        },
+      },
+      `{ id permissions authEmail { id } }`
+    );
+
+    const [authEmail] = profile.authEmail;
+
+    // update email if there is any
+    if (args.email && authEmail && authEmail.id) {
+      await ctx.db.mutation.updateAuthEmail(
+        {
+          where: {
+            id: authEmail.id,
+          },
+          data: {
+            email: args.email,
+          },
+        },
+        `{ id }`
+      );
+    }
+
+    const existingNonStudentPermissions = profile.permissions.filter(
+      p => p !== 'STUDENT'
+    );
+
+    // connect user and the class and update permissions
+    const updatedProfile = await ctx.db.mutation.updateProfile(
+      {
+        data: {
+          studentIn: {
+            connect: {
+              id: args.id,
+            },
+          },
+          permissions: { set: [...existingNonStudentPermissions, 'STUDENT'] },
+        },
+        where: {
+          id: ctx.request.userId,
+        },
+      },
+      `{ id username permissions }`
+    );
+
+    return { message: 'You joined the class!' };
+  },
 };
 
 module.exports = classMutations;
