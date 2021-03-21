@@ -23,6 +23,13 @@ const Query = {
   post: forwardTo('db'),
   journals: forwardTo('db'),
 
+  proposalBoard: forwardTo('db'),
+  proposalBoards: forwardTo('db'),
+  proposalSection: forwardTo('db'),
+  proposalSections: forwardTo('db'),
+  proposalCard: forwardTo('db'),
+  proposalCards: forwardTo('db'),
+
   // return only public studies by default
   studies(parent, args, ctx, info) {
     return ctx.db.query.studies(

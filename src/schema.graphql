@@ -14,9 +14,7 @@ type Query {
   myStudyResults(where: StudyWhereUniqueInput): [Result]!
   myTaskResults(where: TaskWhereUniqueInput): [Result]!
   studyResults(slug: String!): [Result]!
-
   myStudyParticipants(where: StudyWhereUniqueInput): Study
-
   template(where: TemplateWhereUniqueInput): Template
   templates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, first: Int): [Template]!
   myTemplates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, first: Int): [Template]!
@@ -25,28 +23,30 @@ type Query {
   myStudies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, first: Int): [Study]!
   myParticipatedStudies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, first: Int): [Study]!
   allStudies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, first: Int): [Study]!
-
   task(where: TaskWhereUniqueInput): Task
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, first: Int): [Task]!
   myTasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, first: Int): [Task]!
   myAndAllTasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, first: Int): [Task]!
-
   consent(where: ConsentWhereUniqueInput): Consent
   consents: [Consent]!
   myConsents(where: ConsentWhereInput, orderBy: ConsentOrderByInput, skip: Int, first: Int): [Consent]!
   messages: [Message]!
-
   allUsernames: [Profile]!
-
   classStudies(where: StudyWhereUniqueInput): [Study]!
-
   myJournals(where: JournalWhereInput, orderBy: JournalOrderByInput, skip: Int, first: Int): [Journal]!
   myPosts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, first: Int): [Post]!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, first: Int): [Post]!
   post(where: PostWhereUniqueInput): Post
-
   student(id: ID!): Profile
   journals(where: JournalWhereInput, orderBy: JournalOrderByInput, skip: Int, first: Int): [Journal]!
+
+  proposalBoard(where: ProposalBoardWhereUniqueInput!): ProposalBoard
+  proposalBoards(where: ProposalBoardWhereInput): [ProposalBoard]!
+  proposalSection(where: ProposalSectionWhereUniqueInput!): ProposalSection
+  proposalSections(where: ProposalSectionWhereInput): [ProposalSection]!
+  proposalCard(where: ProposalCardWhereUniqueInput!): ProposalCard
+  proposalCards(where: ProposalCardWhereInput): [ProposalCard]!
+
 }
 
 type Mutation {
@@ -55,45 +55,34 @@ type Mutation {
   requestReset(usernameEmail: String!): SuccessMessage
   resetPassword(resetToken: String!, password: String!, confirmPassword: String!): Profile!
   confirmEmail(email: String!, confirmationToken: String!): SuccessMessage
-
   emailSignUp(email: String!, password: String!, username: String!, permissions: [Permission]): Profile!
   emailLogin(email: String!, password: String!): Profile!
   signout: SuccessMessage
-
   serviceSignUp(token: String!, user: Json, study: Json, class: Json, info: Json, permissions: [Permission]): Profile!
   serviceLogin(token: String!, info: Json, study: Json): Profile!
-
   participantSignUp(username: String!, email: String, password: String!, user: Json, study: Json, info: Json): Profile!
   participantLogin(usernameEmail: String!, password: String!, info: Json, study: Json): Profile!
-
   tokenSignUp(username: String!, token: String!, email: String): Profile!
   tokenLogin(username: String!): Profile!
   sendParticipantUsername(email: String!): SuccessMessage
-
   inviteSignUp(username: String!, invitedIn: ID!, image: String, largeImage: String, info: Json): Profile!
   inviteLogin(username: String!, invitedIn: ID!): Profile!
-
   createSchool(title: String!, description: String, image: String, largeImage: String): School!
-
   createClass(title: String!, description: String, image: String, largeImage: String): Class!
   updateClass(id: ID!, code: String, title: String, description: String, image: String, largeImage: String): Class!
   deleteClass(id: ID!): Class
   joinClass(id: ID!): SuccessMessage
   joinClassWithProfile(id: ID!, email: String): SuccessMessage
-
   leaveClass(id: ID!): SuccessMessage
   expelFromClass(classId: ID!, studentId: ID!): SuccessMessage
   moveToClass(classId: ID!, studentId: ID!): SuccessMessage
-
   addResult(templateId: ID!, data: Json, dataPolicy: String): Result!
   deleteResult(id: ID!): Result
   submitResultFromAPI(userId: ID!, templateId: ID, taskId: ID, studyId: ID, data: Json, dataString: String, metadata: Json, dataPolicy: String): SuccessMessage
   updateResultsInfo(id: ID!, info: Json): SuccessMessage
-
   createTemplate(title: String!, shortDescription: String, description: String, image: String, largeImage: String, parameters: Json, script: String, style: String, settings: Json): Template!
   updateTemplate(id: ID!, title: String, shortDescription: String, description: String, parameters: Json, script: String, style: String, settings: Json): Template!
   deleteTemplate(id: ID!): Template
-
   createTask(
     title: String!,
     slug: String,
@@ -109,7 +98,6 @@ type Mutation {
     isExternal: Boolean,
     link: String):
     Task!
-
   updateTask(id: ID!,
     slug: String,
     title: String,
@@ -122,10 +110,8 @@ type Mutation {
     submitForPublishing: Boolean,
     link: String):
     Task!
-
   deleteTask(id: ID!): Task
   publishTaskToggle(id: ID!): Task
-
   createTaskWithTemplate(
     title: String!,
     slug: String,
@@ -139,7 +125,6 @@ type Mutation {
     template: Json
     isOriginal: Boolean
     ): Task!
-
   updateTaskWithTemplate(
     id: ID!,
     slug: String,
@@ -153,7 +138,6 @@ type Mutation {
     submitForPublishing: Boolean,
     template: Json
     ): Task!
-
   createStudy(title: String!, description: String, shortDescription: String, settings: Json, image: String, largeImage: String, info: Json, consent: ID, components: Json, submitForPublishing: Boolean): Study!
   updateStudy(id: ID!, slug: String, title: String, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json, collaborators: [String], consent: ID, public: Boolean, components: Json, submitForPublishing: Boolean): Study!
   publishStudyToggle(id: ID!): Study
@@ -162,25 +146,31 @@ type Mutation {
   joinStudy(id: ID!, info: Json, study: Json): Profile!
   leaveStudy(id: ID!): SuccessMessage
   updateStudyConsent(id: ID!, info: Json): Study!
-
   emailMyStudyParticipants(where: StudyWhereUniqueInput, info: Json): SuccessMessage
-
   createConsent(title: String!, organization: String!, description: String,  info: Json, settings: Json, link: String, collaborators: [String], studies: [String], tasks: [String]): Consent!
   updateConsent(id: ID!, title: String, organization: String, description: String,  info: Json, settings: Json, link: String, collaborators: [String], studies: [String], tasks: [String]): Consent!
   deleteConsent(id: ID!): Consent
-
   createMessage(content: String, info: Json, settings: Json, expireAt: DateTime): Message!
   updateMessage(id: ID!, content: String, info: Json, settings: Json,  expireAt: DateTime): Message!
   deleteMessage(id: ID!): Message
-
   createJournal(title: String, description: String, settings: Json): Journal!
   updateJournal(id: ID!, title: String, description: String, settings: Json): Journal!
   deleteJournal(id: ID!): Journal
-
   createPost(title: String, content: String, settings: Json, journal: ID!): Post!
   updatePost(id: ID!, title: String, content: String, settings: Json): Post!
   deletePost(id: ID!): Post
 
+  createProposalBoard(title: String!, description: String, collaborators: [String], study: ID, isTemplate: Boolean, sections: [ID]): ProposalBoard!
+  updateProposalBoard(id: ID!, title: String, description: String, collaborators: [String], sections: [ID]): ProposalBoard!
+  deleteProposalBoard(id: ID!): SuccessMessage
+
+  createProposalSection(boardId: ID!, title: String!, description: String, position: Float!, assignedTo: [String], cards: [ID]): ProposalSection!
+  updateProposalSection(id: ID!, boardId: ID!, title: String, description: String, position: Float, assignedTo: [String], cards: [ID]): ProposalSection!
+  deleteProposalSection(id: ID!, boardId: ID!): ProposalSection!
+
+  createProposalCard(boardId: ID!, title: String!, content: String, sectionId: ID!, position: Float!, assignedTo: [String]): ProposalCard!
+  updateProposalCard(id: ID!, boardId: ID!, title: String, content: String, sectionId: ID, position: Float, assignedTo: [String]): ProposalCard!
+  deleteProposalCard(id: ID!, boardId: ID!): ProposalCard!
 }
 
 type SuccessMessage {

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Mon Mar 15 2021 21:34:00 GMT+0900 (Korean Standard Time)
+# timestamp: Sat Mar 20 2021 17:33:43 GMT+0900 (Korean Standard Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -42,6 +42,18 @@ type AggregatePost {
 }
 
 type AggregateProfile {
+  count: Int!
+}
+
+type AggregateProposalBoard {
+  count: Int!
+}
+
+type AggregateProposalCard {
+  count: Int!
+}
+
+type AggregateProposalSection {
   count: Int!
 }
 
@@ -5282,6 +5294,9 @@ type Mutation {
   createConsent(data: ConsentCreateInput!): Consent!
   createJournal(data: JournalCreateInput!): Journal!
   createPost(data: PostCreateInput!): Post!
+  createProposalBoard(data: ProposalBoardCreateInput!): ProposalBoard!
+  createProposalSection(data: ProposalSectionCreateInput!): ProposalSection!
+  createProposalCard(data: ProposalCardCreateInput!): ProposalCard!
   createStudy(data: StudyCreateInput!): Study!
   createTemplate(data: TemplateCreateInput!): Template!
   createTask(data: TaskCreateInput!): Task!
@@ -5298,6 +5313,9 @@ type Mutation {
   updateConsent(data: ConsentUpdateInput!, where: ConsentWhereUniqueInput!): Consent
   updateJournal(data: JournalUpdateInput!, where: JournalWhereUniqueInput!): Journal
   updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
+  updateProposalBoard(data: ProposalBoardUpdateInput!, where: ProposalBoardWhereUniqueInput!): ProposalBoard
+  updateProposalSection(data: ProposalSectionUpdateInput!, where: ProposalSectionWhereUniqueInput!): ProposalSection
+  updateProposalCard(data: ProposalCardUpdateInput!, where: ProposalCardWhereUniqueInput!): ProposalCard
   updateStudy(data: StudyUpdateInput!, where: StudyWhereUniqueInput!): Study
   updateTemplate(data: TemplateUpdateInput!, where: TemplateWhereUniqueInput!): Template
   updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task
@@ -5314,6 +5332,9 @@ type Mutation {
   deleteConsent(where: ConsentWhereUniqueInput!): Consent
   deleteJournal(where: JournalWhereUniqueInput!): Journal
   deletePost(where: PostWhereUniqueInput!): Post
+  deleteProposalBoard(where: ProposalBoardWhereUniqueInput!): ProposalBoard
+  deleteProposalSection(where: ProposalSectionWhereUniqueInput!): ProposalSection
+  deleteProposalCard(where: ProposalCardWhereUniqueInput!): ProposalCard
   deleteStudy(where: StudyWhereUniqueInput!): Study
   deleteTemplate(where: TemplateWhereUniqueInput!): Template
   deleteTask(where: TaskWhereUniqueInput!): Task
@@ -5330,6 +5351,9 @@ type Mutation {
   upsertConsent(where: ConsentWhereUniqueInput!, create: ConsentCreateInput!, update: ConsentUpdateInput!): Consent!
   upsertJournal(where: JournalWhereUniqueInput!, create: JournalCreateInput!, update: JournalUpdateInput!): Journal!
   upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
+  upsertProposalBoard(where: ProposalBoardWhereUniqueInput!, create: ProposalBoardCreateInput!, update: ProposalBoardUpdateInput!): ProposalBoard!
+  upsertProposalSection(where: ProposalSectionWhereUniqueInput!, create: ProposalSectionCreateInput!, update: ProposalSectionUpdateInput!): ProposalSection!
+  upsertProposalCard(where: ProposalCardWhereUniqueInput!, create: ProposalCardCreateInput!, update: ProposalCardUpdateInput!): ProposalCard!
   upsertStudy(where: StudyWhereUniqueInput!, create: StudyCreateInput!, update: StudyUpdateInput!): Study!
   upsertTemplate(where: TemplateWhereUniqueInput!, create: TemplateCreateInput!, update: TemplateUpdateInput!): Template!
   upsertTask(where: TaskWhereUniqueInput!, create: TaskCreateInput!, update: TaskUpdateInput!): Task!
@@ -5345,6 +5369,9 @@ type Mutation {
   updateManyConsents(data: ConsentUpdateManyMutationInput!, where: ConsentWhereInput): BatchPayload!
   updateManyJournals(data: JournalUpdateManyMutationInput!, where: JournalWhereInput): BatchPayload!
   updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
+  updateManyProposalBoards(data: ProposalBoardUpdateManyMutationInput!, where: ProposalBoardWhereInput): BatchPayload!
+  updateManyProposalSections(data: ProposalSectionUpdateManyMutationInput!, where: ProposalSectionWhereInput): BatchPayload!
+  updateManyProposalCards(data: ProposalCardUpdateManyMutationInput!, where: ProposalCardWhereInput): BatchPayload!
   updateManyStudies(data: StudyUpdateManyMutationInput!, where: StudyWhereInput): BatchPayload!
   updateManyTemplates(data: TemplateUpdateManyMutationInput!, where: TemplateWhereInput): BatchPayload!
   updateManyTasks(data: TaskUpdateManyMutationInput!, where: TaskWhereInput): BatchPayload!
@@ -5361,6 +5388,9 @@ type Mutation {
   deleteManyConsents(where: ConsentWhereInput): BatchPayload!
   deleteManyJournals(where: JournalWhereInput): BatchPayload!
   deleteManyPosts(where: PostWhereInput): BatchPayload!
+  deleteManyProposalBoards(where: ProposalBoardWhereInput): BatchPayload!
+  deleteManyProposalSections(where: ProposalSectionWhereInput): BatchPayload!
+  deleteManyProposalCards(where: ProposalCardWhereInput): BatchPayload!
   deleteManyStudies(where: StudyWhereInput): BatchPayload!
   deleteManyTemplates(where: TemplateWhereInput): BatchPayload!
   deleteManyTasks(where: TaskWhereInput): BatchPayload!
@@ -6004,6 +6034,11 @@ type Profile implements Node {
   publicId: String
   journals(where: JournalWhereInput, orderBy: JournalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Journal!]
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
+  creatorOfProposal(where: ProposalBoardWhereInput, orderBy: ProposalBoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalBoard!]
+  authorOfProposal(where: ProposalBoardWhereInput, orderBy: ProposalBoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalBoard!]
+  collaboratorOnProposal(where: ProposalBoardWhereInput, orderBy: ProposalBoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalBoard!]
+  assignedToProposalSection(where: ProposalSectionWhereInput, orderBy: ProposalSectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalSection!]
+  assignedToProposalCard(where: ProposalCardWhereInput, orderBy: ProposalCardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalCard!]
 }
 
 """A connection to a list of items."""
@@ -6045,6 +6080,21 @@ input ProfileCreateInput {
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
   journals: JournalCreateManyWithoutCreatorInput
   posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
+}
+
+input ProfileCreateManyWithoutAssignedToProposalCardInput {
+  create: [ProfileCreateWithoutAssignedToProposalCardInput!]
+  connect: [ProfileWhereUniqueInput!]
+}
+
+input ProfileCreateManyWithoutAssignedToProposalSectionInput {
+  create: [ProfileCreateWithoutAssignedToProposalSectionInput!]
+  connect: [ProfileWhereUniqueInput!]
 }
 
 input ProfileCreateManyWithoutCollaboratorInConsentInput {
@@ -6059,6 +6109,11 @@ input ProfileCreateManyWithoutCollaboratorInStudyInput {
 
 input ProfileCreateManyWithoutCollaboratorInTaskInput {
   create: [ProfileCreateWithoutCollaboratorInTaskInput!]
+  connect: [ProfileWhereUniqueInput!]
+}
+
+input ProfileCreateManyWithoutCollaboratorOnProposalInput {
+  create: [ProfileCreateWithoutCollaboratorOnProposalInput!]
   connect: [ProfileWhereUniqueInput!]
 }
 
@@ -6092,6 +6147,11 @@ input ProfileCreateOneWithoutAuthInviteInput {
   connect: ProfileWhereUniqueInput
 }
 
+input ProfileCreateOneWithoutAuthorOfProposalInput {
+  create: ProfileCreateWithoutAuthorOfProposalInput
+  connect: ProfileWhereUniqueInput
+}
+
 input ProfileCreateOneWithoutAuthParticipantInput {
   create: ProfileCreateWithoutAuthParticipantInput
   connect: ProfileWhereUniqueInput
@@ -6104,6 +6164,11 @@ input ProfileCreateOneWithoutAuthTokenInput {
 
 input ProfileCreateOneWithoutConsentCreatorInInput {
   create: ProfileCreateWithoutConsentCreatorInInput
+  connect: ProfileWhereUniqueInput
+}
+
+input ProfileCreateOneWithoutCreatorOfProposalInput {
+  create: ProfileCreateWithoutCreatorOfProposalInput
   connect: ProfileWhereUniqueInput
 }
 
@@ -6141,6 +6206,76 @@ input ProfileCreatepermissionsInput {
   set: [Permission!]
 }
 
+input ProfileCreateWithoutAssignedToProposalCardInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+}
+
+input ProfileCreateWithoutAssignedToProposalSectionInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
+}
+
 input ProfileCreateWithoutAuthEmailInput {
   id: ID
   username: String!
@@ -6169,6 +6304,11 @@ input ProfileCreateWithoutAuthEmailInput {
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
   journals: JournalCreateManyWithoutCreatorInput
   posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
 }
 
 input ProfileCreateWithoutAuthInviteInput {
@@ -6199,6 +6339,46 @@ input ProfileCreateWithoutAuthInviteInput {
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
   journals: JournalCreateManyWithoutCreatorInput
   posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
+}
+
+input ProfileCreateWithoutAuthorOfProposalInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
 }
 
 input ProfileCreateWithoutAuthParticipantInput {
@@ -6229,6 +6409,11 @@ input ProfileCreateWithoutAuthParticipantInput {
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
   journals: JournalCreateManyWithoutCreatorInput
   posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
 }
 
 input ProfileCreateWithoutAuthTokenInput {
@@ -6259,6 +6444,11 @@ input ProfileCreateWithoutAuthTokenInput {
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
   journals: JournalCreateManyWithoutCreatorInput
   posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
 }
 
 input ProfileCreateWithoutCollaboratorInConsentInput {
@@ -6289,6 +6479,11 @@ input ProfileCreateWithoutCollaboratorInConsentInput {
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
   journals: JournalCreateManyWithoutCreatorInput
   posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
 }
 
 input ProfileCreateWithoutCollaboratorInStudyInput {
@@ -6319,6 +6514,11 @@ input ProfileCreateWithoutCollaboratorInStudyInput {
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
   journals: JournalCreateManyWithoutCreatorInput
   posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
 }
 
 input ProfileCreateWithoutCollaboratorInTaskInput {
@@ -6349,6 +6549,46 @@ input ProfileCreateWithoutCollaboratorInTaskInput {
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
   journals: JournalCreateManyWithoutCreatorInput
   posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
+}
+
+input ProfileCreateWithoutCollaboratorOnProposalInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
 }
 
 input ProfileCreateWithoutConsentCreatorInInput {
@@ -6379,6 +6619,11 @@ input ProfileCreateWithoutConsentCreatorInInput {
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
   journals: JournalCreateManyWithoutCreatorInput
   posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
 }
 
 input ProfileCreateWithoutConsentGivenForInput {
@@ -6409,6 +6654,46 @@ input ProfileCreateWithoutConsentGivenForInput {
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
   journals: JournalCreateManyWithoutCreatorInput
   posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
+}
+
+input ProfileCreateWithoutCreatorOfProposalInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
 }
 
 input ProfileCreateWithoutJournalsInput {
@@ -6439,6 +6724,11 @@ input ProfileCreateWithoutJournalsInput {
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
   posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
 }
 
 input ProfileCreateWithoutParticipantInInput {
@@ -6469,6 +6759,11 @@ input ProfileCreateWithoutParticipantInInput {
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
   journals: JournalCreateManyWithoutCreatorInput
   posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
 }
 
 input ProfileCreateWithoutPostsInput {
@@ -6499,6 +6794,11 @@ input ProfileCreateWithoutPostsInput {
   collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
   journals: JournalCreateManyWithoutCreatorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
 }
 
 input ProfileCreateWithoutResearcherInInput {
@@ -6529,6 +6829,11 @@ input ProfileCreateWithoutResearcherInInput {
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
   journals: JournalCreateManyWithoutCreatorInput
   posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
 }
 
 input ProfileCreateWithoutResultsInput {
@@ -6559,6 +6864,11 @@ input ProfileCreateWithoutResultsInput {
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
   journals: JournalCreateManyWithoutCreatorInput
   posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
 }
 
 input ProfileCreateWithoutStudentInInput {
@@ -6589,6 +6899,11 @@ input ProfileCreateWithoutStudentInInput {
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
   journals: JournalCreateManyWithoutCreatorInput
   posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
 }
 
 input ProfileCreateWithoutTaskCreatorInInput {
@@ -6619,6 +6934,11 @@ input ProfileCreateWithoutTaskCreatorInInput {
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
   journals: JournalCreateManyWithoutCreatorInput
   posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
 }
 
 input ProfileCreateWithoutTeacherInInput {
@@ -6649,6 +6969,11 @@ input ProfileCreateWithoutTeacherInInput {
   consentGivenFor: ConsentCreateManyWithoutParticipantsInput
   journals: JournalCreateManyWithoutCreatorInput
   posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
 }
 
 """An edge in a connection."""
@@ -6975,6 +7300,11 @@ input ProfileUpdateDataInput {
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   journals: JournalUpdateManyWithoutCreatorInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateInput {
@@ -7005,6 +7335,11 @@ input ProfileUpdateInput {
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   journals: JournalUpdateManyWithoutCreatorInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateManyDataInput {
@@ -7031,6 +7366,30 @@ input ProfileUpdateManyMutationInput {
   consentsInfo: Json
   publicId: String
   permissions: ProfileUpdatepermissionsInput
+}
+
+input ProfileUpdateManyWithoutAssignedToProposalCardInput {
+  create: [ProfileCreateWithoutAssignedToProposalCardInput!]
+  connect: [ProfileWhereUniqueInput!]
+  set: [ProfileWhereUniqueInput!]
+  disconnect: [ProfileWhereUniqueInput!]
+  delete: [ProfileWhereUniqueInput!]
+  update: [ProfileUpdateWithWhereUniqueWithoutAssignedToProposalCardInput!]
+  updateMany: [ProfileUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProfileScalarWhereInput!]
+  upsert: [ProfileUpsertWithWhereUniqueWithoutAssignedToProposalCardInput!]
+}
+
+input ProfileUpdateManyWithoutAssignedToProposalSectionInput {
+  create: [ProfileCreateWithoutAssignedToProposalSectionInput!]
+  connect: [ProfileWhereUniqueInput!]
+  set: [ProfileWhereUniqueInput!]
+  disconnect: [ProfileWhereUniqueInput!]
+  delete: [ProfileWhereUniqueInput!]
+  update: [ProfileUpdateWithWhereUniqueWithoutAssignedToProposalSectionInput!]
+  updateMany: [ProfileUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProfileScalarWhereInput!]
+  upsert: [ProfileUpsertWithWhereUniqueWithoutAssignedToProposalSectionInput!]
 }
 
 input ProfileUpdateManyWithoutCollaboratorInConsentInput {
@@ -7067,6 +7426,18 @@ input ProfileUpdateManyWithoutCollaboratorInTaskInput {
   updateMany: [ProfileUpdateManyWithWhereNestedInput!]
   deleteMany: [ProfileScalarWhereInput!]
   upsert: [ProfileUpsertWithWhereUniqueWithoutCollaboratorInTaskInput!]
+}
+
+input ProfileUpdateManyWithoutCollaboratorOnProposalInput {
+  create: [ProfileCreateWithoutCollaboratorOnProposalInput!]
+  connect: [ProfileWhereUniqueInput!]
+  set: [ProfileWhereUniqueInput!]
+  disconnect: [ProfileWhereUniqueInput!]
+  delete: [ProfileWhereUniqueInput!]
+  update: [ProfileUpdateWithWhereUniqueWithoutCollaboratorOnProposalInput!]
+  updateMany: [ProfileUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProfileScalarWhereInput!]
+  upsert: [ProfileUpsertWithWhereUniqueWithoutCollaboratorOnProposalInput!]
 }
 
 input ProfileUpdateManyWithoutConsentGivenForInput {
@@ -7194,8 +7565,94 @@ input ProfileUpdateOneRequiredWithoutTeacherInInput {
   upsert: ProfileUpsertWithoutTeacherInInput
 }
 
+input ProfileUpdateOneWithoutAuthorOfProposalInput {
+  create: ProfileCreateWithoutAuthorOfProposalInput
+  connect: ProfileWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ProfileUpdateWithoutAuthorOfProposalDataInput
+  upsert: ProfileUpsertWithoutAuthorOfProposalInput
+}
+
+input ProfileUpdateOneWithoutCreatorOfProposalInput {
+  create: ProfileCreateWithoutCreatorOfProposalInput
+  connect: ProfileWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ProfileUpdateWithoutCreatorOfProposalDataInput
+  upsert: ProfileUpsertWithoutCreatorOfProposalInput
+}
+
 input ProfileUpdatepermissionsInput {
   set: [Permission!]
+}
+
+input ProfileUpdateWithoutAssignedToProposalCardDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+}
+
+input ProfileUpdateWithoutAssignedToProposalSectionDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateWithoutAuthEmailDataInput {
@@ -7225,6 +7682,11 @@ input ProfileUpdateWithoutAuthEmailDataInput {
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   journals: JournalUpdateManyWithoutCreatorInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateWithoutAuthInviteDataInput {
@@ -7254,6 +7716,45 @@ input ProfileUpdateWithoutAuthInviteDataInput {
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   journals: JournalUpdateManyWithoutCreatorInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
+}
+
+input ProfileUpdateWithoutAuthorOfProposalDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateWithoutAuthParticipantDataInput {
@@ -7283,6 +7784,11 @@ input ProfileUpdateWithoutAuthParticipantDataInput {
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   journals: JournalUpdateManyWithoutCreatorInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateWithoutAuthTokenDataInput {
@@ -7312,6 +7818,11 @@ input ProfileUpdateWithoutAuthTokenDataInput {
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   journals: JournalUpdateManyWithoutCreatorInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateWithoutCollaboratorInConsentDataInput {
@@ -7341,6 +7852,11 @@ input ProfileUpdateWithoutCollaboratorInConsentDataInput {
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   journals: JournalUpdateManyWithoutCreatorInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateWithoutCollaboratorInStudyDataInput {
@@ -7370,6 +7886,11 @@ input ProfileUpdateWithoutCollaboratorInStudyDataInput {
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   journals: JournalUpdateManyWithoutCreatorInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateWithoutCollaboratorInTaskDataInput {
@@ -7399,6 +7920,45 @@ input ProfileUpdateWithoutCollaboratorInTaskDataInput {
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   journals: JournalUpdateManyWithoutCreatorInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
+}
+
+input ProfileUpdateWithoutCollaboratorOnProposalDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateWithoutConsentCreatorInDataInput {
@@ -7428,6 +7988,11 @@ input ProfileUpdateWithoutConsentCreatorInDataInput {
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   journals: JournalUpdateManyWithoutCreatorInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateWithoutConsentGivenForDataInput {
@@ -7457,6 +8022,45 @@ input ProfileUpdateWithoutConsentGivenForDataInput {
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   journals: JournalUpdateManyWithoutCreatorInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
+}
+
+input ProfileUpdateWithoutCreatorOfProposalDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateWithoutJournalsDataInput {
@@ -7486,6 +8090,11 @@ input ProfileUpdateWithoutJournalsDataInput {
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateWithoutParticipantInDataInput {
@@ -7515,6 +8124,11 @@ input ProfileUpdateWithoutParticipantInDataInput {
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   journals: JournalUpdateManyWithoutCreatorInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateWithoutPostsDataInput {
@@ -7544,6 +8158,11 @@ input ProfileUpdateWithoutPostsDataInput {
   collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   journals: JournalUpdateManyWithoutCreatorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateWithoutResearcherInDataInput {
@@ -7573,6 +8192,11 @@ input ProfileUpdateWithoutResearcherInDataInput {
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   journals: JournalUpdateManyWithoutCreatorInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateWithoutResultsDataInput {
@@ -7602,6 +8226,11 @@ input ProfileUpdateWithoutResultsDataInput {
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   journals: JournalUpdateManyWithoutCreatorInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateWithoutStudentInDataInput {
@@ -7631,6 +8260,11 @@ input ProfileUpdateWithoutStudentInDataInput {
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   journals: JournalUpdateManyWithoutCreatorInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateWithoutTaskCreatorInDataInput {
@@ -7660,6 +8294,11 @@ input ProfileUpdateWithoutTaskCreatorInDataInput {
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   journals: JournalUpdateManyWithoutCreatorInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
 }
 
 input ProfileUpdateWithoutTeacherInDataInput {
@@ -7689,6 +8328,21 @@ input ProfileUpdateWithoutTeacherInDataInput {
   consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
   journals: JournalUpdateManyWithoutCreatorInput
   posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
+}
+
+input ProfileUpdateWithWhereUniqueWithoutAssignedToProposalCardInput {
+  where: ProfileWhereUniqueInput!
+  data: ProfileUpdateWithoutAssignedToProposalCardDataInput!
+}
+
+input ProfileUpdateWithWhereUniqueWithoutAssignedToProposalSectionInput {
+  where: ProfileWhereUniqueInput!
+  data: ProfileUpdateWithoutAssignedToProposalSectionDataInput!
 }
 
 input ProfileUpdateWithWhereUniqueWithoutCollaboratorInConsentInput {
@@ -7704,6 +8358,11 @@ input ProfileUpdateWithWhereUniqueWithoutCollaboratorInStudyInput {
 input ProfileUpdateWithWhereUniqueWithoutCollaboratorInTaskInput {
   where: ProfileWhereUniqueInput!
   data: ProfileUpdateWithoutCollaboratorInTaskDataInput!
+}
+
+input ProfileUpdateWithWhereUniqueWithoutCollaboratorOnProposalInput {
+  where: ProfileWhereUniqueInput!
+  data: ProfileUpdateWithoutCollaboratorOnProposalDataInput!
 }
 
 input ProfileUpdateWithWhereUniqueWithoutConsentGivenForInput {
@@ -7736,6 +8395,11 @@ input ProfileUpsertWithoutAuthInviteInput {
   create: ProfileCreateWithoutAuthInviteInput!
 }
 
+input ProfileUpsertWithoutAuthorOfProposalInput {
+  update: ProfileUpdateWithoutAuthorOfProposalDataInput!
+  create: ProfileCreateWithoutAuthorOfProposalInput!
+}
+
 input ProfileUpsertWithoutAuthParticipantInput {
   update: ProfileUpdateWithoutAuthParticipantDataInput!
   create: ProfileCreateWithoutAuthParticipantInput!
@@ -7749,6 +8413,11 @@ input ProfileUpsertWithoutAuthTokenInput {
 input ProfileUpsertWithoutConsentCreatorInInput {
   update: ProfileUpdateWithoutConsentCreatorInDataInput!
   create: ProfileCreateWithoutConsentCreatorInInput!
+}
+
+input ProfileUpsertWithoutCreatorOfProposalInput {
+  update: ProfileUpdateWithoutCreatorOfProposalDataInput!
+  create: ProfileCreateWithoutCreatorOfProposalInput!
 }
 
 input ProfileUpsertWithoutJournalsInput {
@@ -7781,6 +8450,18 @@ input ProfileUpsertWithoutTeacherInInput {
   create: ProfileCreateWithoutTeacherInInput!
 }
 
+input ProfileUpsertWithWhereUniqueWithoutAssignedToProposalCardInput {
+  where: ProfileWhereUniqueInput!
+  update: ProfileUpdateWithoutAssignedToProposalCardDataInput!
+  create: ProfileCreateWithoutAssignedToProposalCardInput!
+}
+
+input ProfileUpsertWithWhereUniqueWithoutAssignedToProposalSectionInput {
+  where: ProfileWhereUniqueInput!
+  update: ProfileUpdateWithoutAssignedToProposalSectionDataInput!
+  create: ProfileCreateWithoutAssignedToProposalSectionInput!
+}
+
 input ProfileUpsertWithWhereUniqueWithoutCollaboratorInConsentInput {
   where: ProfileWhereUniqueInput!
   update: ProfileUpdateWithoutCollaboratorInConsentDataInput!
@@ -7797,6 +8478,12 @@ input ProfileUpsertWithWhereUniqueWithoutCollaboratorInTaskInput {
   where: ProfileWhereUniqueInput!
   update: ProfileUpdateWithoutCollaboratorInTaskDataInput!
   create: ProfileCreateWithoutCollaboratorInTaskInput!
+}
+
+input ProfileUpsertWithWhereUniqueWithoutCollaboratorOnProposalInput {
+  where: ProfileWhereUniqueInput!
+  update: ProfileUpdateWithoutCollaboratorOnProposalDataInput!
+  create: ProfileCreateWithoutCollaboratorOnProposalInput!
 }
 
 input ProfileUpsertWithWhereUniqueWithoutConsentGivenForInput {
@@ -8077,12 +8764,2141 @@ input ProfileWhereInput {
   posts_every: PostWhereInput
   posts_some: PostWhereInput
   posts_none: PostWhereInput
+  creatorOfProposal_every: ProposalBoardWhereInput
+  creatorOfProposal_some: ProposalBoardWhereInput
+  creatorOfProposal_none: ProposalBoardWhereInput
+  authorOfProposal_every: ProposalBoardWhereInput
+  authorOfProposal_some: ProposalBoardWhereInput
+  authorOfProposal_none: ProposalBoardWhereInput
+  collaboratorOnProposal_every: ProposalBoardWhereInput
+  collaboratorOnProposal_some: ProposalBoardWhereInput
+  collaboratorOnProposal_none: ProposalBoardWhereInput
+  assignedToProposalSection_every: ProposalSectionWhereInput
+  assignedToProposalSection_some: ProposalSectionWhereInput
+  assignedToProposalSection_none: ProposalSectionWhereInput
+  assignedToProposalCard_every: ProposalCardWhereInput
+  assignedToProposalCard_some: ProposalCardWhereInput
+  assignedToProposalCard_none: ProposalCardWhereInput
 }
 
 input ProfileWhereUniqueInput {
   id: ID
   username: String
   publicId: String
+}
+
+type ProposalBoard implements Node {
+  id: ID!
+  title: String!
+  slug: String!
+  description: String
+  creator: Profile
+  author: Profile
+  collaborators(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
+  study: Study
+  isTemplate: Boolean
+  sections(where: ProposalSectionWhereInput, orderBy: ProposalSectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalSection!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type ProposalBoardConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ProposalBoardEdge]!
+  aggregate: AggregateProposalBoard!
+}
+
+input ProposalBoardCreateInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  isTemplate: Boolean
+  creator: ProfileCreateOneWithoutCreatorOfProposalInput
+  author: ProfileCreateOneWithoutAuthorOfProposalInput
+  collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
+  study: StudyCreateOneWithoutProposalInput
+  sections: ProposalSectionCreateManyWithoutBoardInput
+}
+
+input ProposalBoardCreateManyWithoutAuthorInput {
+  create: [ProposalBoardCreateWithoutAuthorInput!]
+  connect: [ProposalBoardWhereUniqueInput!]
+}
+
+input ProposalBoardCreateManyWithoutCollaboratorsInput {
+  create: [ProposalBoardCreateWithoutCollaboratorsInput!]
+  connect: [ProposalBoardWhereUniqueInput!]
+}
+
+input ProposalBoardCreateManyWithoutCreatorInput {
+  create: [ProposalBoardCreateWithoutCreatorInput!]
+  connect: [ProposalBoardWhereUniqueInput!]
+}
+
+input ProposalBoardCreateManyWithoutStudyInput {
+  create: [ProposalBoardCreateWithoutStudyInput!]
+  connect: [ProposalBoardWhereUniqueInput!]
+}
+
+input ProposalBoardCreateOneWithoutSectionsInput {
+  create: ProposalBoardCreateWithoutSectionsInput
+  connect: ProposalBoardWhereUniqueInput
+}
+
+input ProposalBoardCreateWithoutAuthorInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  isTemplate: Boolean
+  creator: ProfileCreateOneWithoutCreatorOfProposalInput
+  collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
+  study: StudyCreateOneWithoutProposalInput
+  sections: ProposalSectionCreateManyWithoutBoardInput
+}
+
+input ProposalBoardCreateWithoutCollaboratorsInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  isTemplate: Boolean
+  creator: ProfileCreateOneWithoutCreatorOfProposalInput
+  author: ProfileCreateOneWithoutAuthorOfProposalInput
+  study: StudyCreateOneWithoutProposalInput
+  sections: ProposalSectionCreateManyWithoutBoardInput
+}
+
+input ProposalBoardCreateWithoutCreatorInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  isTemplate: Boolean
+  author: ProfileCreateOneWithoutAuthorOfProposalInput
+  collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
+  study: StudyCreateOneWithoutProposalInput
+  sections: ProposalSectionCreateManyWithoutBoardInput
+}
+
+input ProposalBoardCreateWithoutSectionsInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  isTemplate: Boolean
+  creator: ProfileCreateOneWithoutCreatorOfProposalInput
+  author: ProfileCreateOneWithoutAuthorOfProposalInput
+  collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
+  study: StudyCreateOneWithoutProposalInput
+}
+
+input ProposalBoardCreateWithoutStudyInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  isTemplate: Boolean
+  creator: ProfileCreateOneWithoutCreatorOfProposalInput
+  author: ProfileCreateOneWithoutAuthorOfProposalInput
+  collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
+  sections: ProposalSectionCreateManyWithoutBoardInput
+}
+
+"""An edge in a connection."""
+type ProposalBoardEdge {
+  """The item at the end of the edge."""
+  node: ProposalBoard!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ProposalBoardOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  slug_ASC
+  slug_DESC
+  description_ASC
+  description_DESC
+  isTemplate_ASC
+  isTemplate_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type ProposalBoardPreviousValues {
+  id: ID!
+  title: String!
+  slug: String!
+  description: String
+  isTemplate: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input ProposalBoardScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ProposalBoardScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ProposalBoardScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ProposalBoardScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  slug: String
+
+  """All values that are not equal to given value."""
+  slug_not: String
+
+  """All values that are contained in given list."""
+  slug_in: [String!]
+
+  """All values that are not contained in given list."""
+  slug_not_in: [String!]
+
+  """All values less than the given value."""
+  slug_lt: String
+
+  """All values less than or equal the given value."""
+  slug_lte: String
+
+  """All values greater than the given value."""
+  slug_gt: String
+
+  """All values greater than or equal the given value."""
+  slug_gte: String
+
+  """All values containing the given string."""
+  slug_contains: String
+
+  """All values not containing the given string."""
+  slug_not_contains: String
+
+  """All values starting with the given string."""
+  slug_starts_with: String
+
+  """All values not starting with the given string."""
+  slug_not_starts_with: String
+
+  """All values ending with the given string."""
+  slug_ends_with: String
+
+  """All values not ending with the given string."""
+  slug_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  isTemplate: Boolean
+
+  """All values that are not equal to given value."""
+  isTemplate_not: Boolean
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+type ProposalBoardSubscriptionPayload {
+  mutation: MutationType!
+  node: ProposalBoard
+  updatedFields: [String!]
+  previousValues: ProposalBoardPreviousValues
+}
+
+input ProposalBoardSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ProposalBoardSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ProposalBoardSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ProposalBoardSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ProposalBoardWhereInput
+}
+
+input ProposalBoardUpdateInput {
+  title: String
+  slug: String
+  description: String
+  isTemplate: Boolean
+  creator: ProfileUpdateOneWithoutCreatorOfProposalInput
+  author: ProfileUpdateOneWithoutAuthorOfProposalInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
+  study: StudyUpdateOneWithoutProposalInput
+  sections: ProposalSectionUpdateManyWithoutBoardInput
+}
+
+input ProposalBoardUpdateManyDataInput {
+  title: String
+  slug: String
+  description: String
+  isTemplate: Boolean
+}
+
+input ProposalBoardUpdateManyMutationInput {
+  title: String
+  slug: String
+  description: String
+  isTemplate: Boolean
+}
+
+input ProposalBoardUpdateManyWithoutAuthorInput {
+  create: [ProposalBoardCreateWithoutAuthorInput!]
+  connect: [ProposalBoardWhereUniqueInput!]
+  set: [ProposalBoardWhereUniqueInput!]
+  disconnect: [ProposalBoardWhereUniqueInput!]
+  delete: [ProposalBoardWhereUniqueInput!]
+  update: [ProposalBoardUpdateWithWhereUniqueWithoutAuthorInput!]
+  updateMany: [ProposalBoardUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProposalBoardScalarWhereInput!]
+  upsert: [ProposalBoardUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input ProposalBoardUpdateManyWithoutCollaboratorsInput {
+  create: [ProposalBoardCreateWithoutCollaboratorsInput!]
+  connect: [ProposalBoardWhereUniqueInput!]
+  set: [ProposalBoardWhereUniqueInput!]
+  disconnect: [ProposalBoardWhereUniqueInput!]
+  delete: [ProposalBoardWhereUniqueInput!]
+  update: [ProposalBoardUpdateWithWhereUniqueWithoutCollaboratorsInput!]
+  updateMany: [ProposalBoardUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProposalBoardScalarWhereInput!]
+  upsert: [ProposalBoardUpsertWithWhereUniqueWithoutCollaboratorsInput!]
+}
+
+input ProposalBoardUpdateManyWithoutCreatorInput {
+  create: [ProposalBoardCreateWithoutCreatorInput!]
+  connect: [ProposalBoardWhereUniqueInput!]
+  set: [ProposalBoardWhereUniqueInput!]
+  disconnect: [ProposalBoardWhereUniqueInput!]
+  delete: [ProposalBoardWhereUniqueInput!]
+  update: [ProposalBoardUpdateWithWhereUniqueWithoutCreatorInput!]
+  updateMany: [ProposalBoardUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProposalBoardScalarWhereInput!]
+  upsert: [ProposalBoardUpsertWithWhereUniqueWithoutCreatorInput!]
+}
+
+input ProposalBoardUpdateManyWithoutStudyInput {
+  create: [ProposalBoardCreateWithoutStudyInput!]
+  connect: [ProposalBoardWhereUniqueInput!]
+  set: [ProposalBoardWhereUniqueInput!]
+  disconnect: [ProposalBoardWhereUniqueInput!]
+  delete: [ProposalBoardWhereUniqueInput!]
+  update: [ProposalBoardUpdateWithWhereUniqueWithoutStudyInput!]
+  updateMany: [ProposalBoardUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProposalBoardScalarWhereInput!]
+  upsert: [ProposalBoardUpsertWithWhereUniqueWithoutStudyInput!]
+}
+
+input ProposalBoardUpdateManyWithWhereNestedInput {
+  where: ProposalBoardScalarWhereInput!
+  data: ProposalBoardUpdateManyDataInput!
+}
+
+input ProposalBoardUpdateOneRequiredWithoutSectionsInput {
+  create: ProposalBoardCreateWithoutSectionsInput
+  connect: ProposalBoardWhereUniqueInput
+  update: ProposalBoardUpdateWithoutSectionsDataInput
+  upsert: ProposalBoardUpsertWithoutSectionsInput
+}
+
+input ProposalBoardUpdateWithoutAuthorDataInput {
+  title: String
+  slug: String
+  description: String
+  isTemplate: Boolean
+  creator: ProfileUpdateOneWithoutCreatorOfProposalInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
+  study: StudyUpdateOneWithoutProposalInput
+  sections: ProposalSectionUpdateManyWithoutBoardInput
+}
+
+input ProposalBoardUpdateWithoutCollaboratorsDataInput {
+  title: String
+  slug: String
+  description: String
+  isTemplate: Boolean
+  creator: ProfileUpdateOneWithoutCreatorOfProposalInput
+  author: ProfileUpdateOneWithoutAuthorOfProposalInput
+  study: StudyUpdateOneWithoutProposalInput
+  sections: ProposalSectionUpdateManyWithoutBoardInput
+}
+
+input ProposalBoardUpdateWithoutCreatorDataInput {
+  title: String
+  slug: String
+  description: String
+  isTemplate: Boolean
+  author: ProfileUpdateOneWithoutAuthorOfProposalInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
+  study: StudyUpdateOneWithoutProposalInput
+  sections: ProposalSectionUpdateManyWithoutBoardInput
+}
+
+input ProposalBoardUpdateWithoutSectionsDataInput {
+  title: String
+  slug: String
+  description: String
+  isTemplate: Boolean
+  creator: ProfileUpdateOneWithoutCreatorOfProposalInput
+  author: ProfileUpdateOneWithoutAuthorOfProposalInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
+  study: StudyUpdateOneWithoutProposalInput
+}
+
+input ProposalBoardUpdateWithoutStudyDataInput {
+  title: String
+  slug: String
+  description: String
+  isTemplate: Boolean
+  creator: ProfileUpdateOneWithoutCreatorOfProposalInput
+  author: ProfileUpdateOneWithoutAuthorOfProposalInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
+  sections: ProposalSectionUpdateManyWithoutBoardInput
+}
+
+input ProposalBoardUpdateWithWhereUniqueWithoutAuthorInput {
+  where: ProposalBoardWhereUniqueInput!
+  data: ProposalBoardUpdateWithoutAuthorDataInput!
+}
+
+input ProposalBoardUpdateWithWhereUniqueWithoutCollaboratorsInput {
+  where: ProposalBoardWhereUniqueInput!
+  data: ProposalBoardUpdateWithoutCollaboratorsDataInput!
+}
+
+input ProposalBoardUpdateWithWhereUniqueWithoutCreatorInput {
+  where: ProposalBoardWhereUniqueInput!
+  data: ProposalBoardUpdateWithoutCreatorDataInput!
+}
+
+input ProposalBoardUpdateWithWhereUniqueWithoutStudyInput {
+  where: ProposalBoardWhereUniqueInput!
+  data: ProposalBoardUpdateWithoutStudyDataInput!
+}
+
+input ProposalBoardUpsertWithoutSectionsInput {
+  update: ProposalBoardUpdateWithoutSectionsDataInput!
+  create: ProposalBoardCreateWithoutSectionsInput!
+}
+
+input ProposalBoardUpsertWithWhereUniqueWithoutAuthorInput {
+  where: ProposalBoardWhereUniqueInput!
+  update: ProposalBoardUpdateWithoutAuthorDataInput!
+  create: ProposalBoardCreateWithoutAuthorInput!
+}
+
+input ProposalBoardUpsertWithWhereUniqueWithoutCollaboratorsInput {
+  where: ProposalBoardWhereUniqueInput!
+  update: ProposalBoardUpdateWithoutCollaboratorsDataInput!
+  create: ProposalBoardCreateWithoutCollaboratorsInput!
+}
+
+input ProposalBoardUpsertWithWhereUniqueWithoutCreatorInput {
+  where: ProposalBoardWhereUniqueInput!
+  update: ProposalBoardUpdateWithoutCreatorDataInput!
+  create: ProposalBoardCreateWithoutCreatorInput!
+}
+
+input ProposalBoardUpsertWithWhereUniqueWithoutStudyInput {
+  where: ProposalBoardWhereUniqueInput!
+  update: ProposalBoardUpdateWithoutStudyDataInput!
+  create: ProposalBoardCreateWithoutStudyInput!
+}
+
+input ProposalBoardWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ProposalBoardWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ProposalBoardWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ProposalBoardWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  slug: String
+
+  """All values that are not equal to given value."""
+  slug_not: String
+
+  """All values that are contained in given list."""
+  slug_in: [String!]
+
+  """All values that are not contained in given list."""
+  slug_not_in: [String!]
+
+  """All values less than the given value."""
+  slug_lt: String
+
+  """All values less than or equal the given value."""
+  slug_lte: String
+
+  """All values greater than the given value."""
+  slug_gt: String
+
+  """All values greater than or equal the given value."""
+  slug_gte: String
+
+  """All values containing the given string."""
+  slug_contains: String
+
+  """All values not containing the given string."""
+  slug_not_contains: String
+
+  """All values starting with the given string."""
+  slug_starts_with: String
+
+  """All values not starting with the given string."""
+  slug_not_starts_with: String
+
+  """All values ending with the given string."""
+  slug_ends_with: String
+
+  """All values not ending with the given string."""
+  slug_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  isTemplate: Boolean
+
+  """All values that are not equal to given value."""
+  isTemplate_not: Boolean
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  creator: ProfileWhereInput
+  author: ProfileWhereInput
+  collaborators_every: ProfileWhereInput
+  collaborators_some: ProfileWhereInput
+  collaborators_none: ProfileWhereInput
+  study: StudyWhereInput
+  sections_every: ProposalSectionWhereInput
+  sections_some: ProposalSectionWhereInput
+  sections_none: ProposalSectionWhereInput
+}
+
+input ProposalBoardWhereUniqueInput {
+  id: ID
+  slug: String
+}
+
+type ProposalCard implements Node {
+  id: ID!
+  title: String!
+  position: Float!
+  content: String
+  section: ProposalSection!
+  assignedTo(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type ProposalCardConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ProposalCardEdge]!
+  aggregate: AggregateProposalCard!
+}
+
+input ProposalCardCreateInput {
+  id: ID
+  title: String!
+  position: Float!
+  content: String
+  section: ProposalSectionCreateOneWithoutCardsInput!
+  assignedTo: ProfileCreateManyWithoutAssignedToProposalCardInput
+}
+
+input ProposalCardCreateManyWithoutAssignedToInput {
+  create: [ProposalCardCreateWithoutAssignedToInput!]
+  connect: [ProposalCardWhereUniqueInput!]
+}
+
+input ProposalCardCreateManyWithoutSectionInput {
+  create: [ProposalCardCreateWithoutSectionInput!]
+  connect: [ProposalCardWhereUniqueInput!]
+}
+
+input ProposalCardCreateWithoutAssignedToInput {
+  id: ID
+  title: String!
+  position: Float!
+  content: String
+  section: ProposalSectionCreateOneWithoutCardsInput!
+}
+
+input ProposalCardCreateWithoutSectionInput {
+  id: ID
+  title: String!
+  position: Float!
+  content: String
+  assignedTo: ProfileCreateManyWithoutAssignedToProposalCardInput
+}
+
+"""An edge in a connection."""
+type ProposalCardEdge {
+  """The item at the end of the edge."""
+  node: ProposalCard!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ProposalCardOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  position_ASC
+  position_DESC
+  content_ASC
+  content_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type ProposalCardPreviousValues {
+  id: ID!
+  title: String!
+  position: Float!
+  content: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input ProposalCardScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ProposalCardScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ProposalCardScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ProposalCardScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  position: Float
+
+  """All values that are not equal to given value."""
+  position_not: Float
+
+  """All values that are contained in given list."""
+  position_in: [Float!]
+
+  """All values that are not contained in given list."""
+  position_not_in: [Float!]
+
+  """All values less than the given value."""
+  position_lt: Float
+
+  """All values less than or equal the given value."""
+  position_lte: Float
+
+  """All values greater than the given value."""
+  position_gt: Float
+
+  """All values greater than or equal the given value."""
+  position_gte: Float
+  content: String
+
+  """All values that are not equal to given value."""
+  content_not: String
+
+  """All values that are contained in given list."""
+  content_in: [String!]
+
+  """All values that are not contained in given list."""
+  content_not_in: [String!]
+
+  """All values less than the given value."""
+  content_lt: String
+
+  """All values less than or equal the given value."""
+  content_lte: String
+
+  """All values greater than the given value."""
+  content_gt: String
+
+  """All values greater than or equal the given value."""
+  content_gte: String
+
+  """All values containing the given string."""
+  content_contains: String
+
+  """All values not containing the given string."""
+  content_not_contains: String
+
+  """All values starting with the given string."""
+  content_starts_with: String
+
+  """All values not starting with the given string."""
+  content_not_starts_with: String
+
+  """All values ending with the given string."""
+  content_ends_with: String
+
+  """All values not ending with the given string."""
+  content_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+type ProposalCardSubscriptionPayload {
+  mutation: MutationType!
+  node: ProposalCard
+  updatedFields: [String!]
+  previousValues: ProposalCardPreviousValues
+}
+
+input ProposalCardSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ProposalCardSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ProposalCardSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ProposalCardSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ProposalCardWhereInput
+}
+
+input ProposalCardUpdateInput {
+  title: String
+  position: Float
+  content: String
+  section: ProposalSectionUpdateOneRequiredWithoutCardsInput
+  assignedTo: ProfileUpdateManyWithoutAssignedToProposalCardInput
+}
+
+input ProposalCardUpdateManyDataInput {
+  title: String
+  position: Float
+  content: String
+}
+
+input ProposalCardUpdateManyMutationInput {
+  title: String
+  position: Float
+  content: String
+}
+
+input ProposalCardUpdateManyWithoutAssignedToInput {
+  create: [ProposalCardCreateWithoutAssignedToInput!]
+  connect: [ProposalCardWhereUniqueInput!]
+  set: [ProposalCardWhereUniqueInput!]
+  disconnect: [ProposalCardWhereUniqueInput!]
+  delete: [ProposalCardWhereUniqueInput!]
+  update: [ProposalCardUpdateWithWhereUniqueWithoutAssignedToInput!]
+  updateMany: [ProposalCardUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProposalCardScalarWhereInput!]
+  upsert: [ProposalCardUpsertWithWhereUniqueWithoutAssignedToInput!]
+}
+
+input ProposalCardUpdateManyWithoutSectionInput {
+  create: [ProposalCardCreateWithoutSectionInput!]
+  connect: [ProposalCardWhereUniqueInput!]
+  set: [ProposalCardWhereUniqueInput!]
+  disconnect: [ProposalCardWhereUniqueInput!]
+  delete: [ProposalCardWhereUniqueInput!]
+  update: [ProposalCardUpdateWithWhereUniqueWithoutSectionInput!]
+  updateMany: [ProposalCardUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProposalCardScalarWhereInput!]
+  upsert: [ProposalCardUpsertWithWhereUniqueWithoutSectionInput!]
+}
+
+input ProposalCardUpdateManyWithWhereNestedInput {
+  where: ProposalCardScalarWhereInput!
+  data: ProposalCardUpdateManyDataInput!
+}
+
+input ProposalCardUpdateWithoutAssignedToDataInput {
+  title: String
+  position: Float
+  content: String
+  section: ProposalSectionUpdateOneRequiredWithoutCardsInput
+}
+
+input ProposalCardUpdateWithoutSectionDataInput {
+  title: String
+  position: Float
+  content: String
+  assignedTo: ProfileUpdateManyWithoutAssignedToProposalCardInput
+}
+
+input ProposalCardUpdateWithWhereUniqueWithoutAssignedToInput {
+  where: ProposalCardWhereUniqueInput!
+  data: ProposalCardUpdateWithoutAssignedToDataInput!
+}
+
+input ProposalCardUpdateWithWhereUniqueWithoutSectionInput {
+  where: ProposalCardWhereUniqueInput!
+  data: ProposalCardUpdateWithoutSectionDataInput!
+}
+
+input ProposalCardUpsertWithWhereUniqueWithoutAssignedToInput {
+  where: ProposalCardWhereUniqueInput!
+  update: ProposalCardUpdateWithoutAssignedToDataInput!
+  create: ProposalCardCreateWithoutAssignedToInput!
+}
+
+input ProposalCardUpsertWithWhereUniqueWithoutSectionInput {
+  where: ProposalCardWhereUniqueInput!
+  update: ProposalCardUpdateWithoutSectionDataInput!
+  create: ProposalCardCreateWithoutSectionInput!
+}
+
+input ProposalCardWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ProposalCardWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ProposalCardWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ProposalCardWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  position: Float
+
+  """All values that are not equal to given value."""
+  position_not: Float
+
+  """All values that are contained in given list."""
+  position_in: [Float!]
+
+  """All values that are not contained in given list."""
+  position_not_in: [Float!]
+
+  """All values less than the given value."""
+  position_lt: Float
+
+  """All values less than or equal the given value."""
+  position_lte: Float
+
+  """All values greater than the given value."""
+  position_gt: Float
+
+  """All values greater than or equal the given value."""
+  position_gte: Float
+  content: String
+
+  """All values that are not equal to given value."""
+  content_not: String
+
+  """All values that are contained in given list."""
+  content_in: [String!]
+
+  """All values that are not contained in given list."""
+  content_not_in: [String!]
+
+  """All values less than the given value."""
+  content_lt: String
+
+  """All values less than or equal the given value."""
+  content_lte: String
+
+  """All values greater than the given value."""
+  content_gt: String
+
+  """All values greater than or equal the given value."""
+  content_gte: String
+
+  """All values containing the given string."""
+  content_contains: String
+
+  """All values not containing the given string."""
+  content_not_contains: String
+
+  """All values starting with the given string."""
+  content_starts_with: String
+
+  """All values not starting with the given string."""
+  content_not_starts_with: String
+
+  """All values ending with the given string."""
+  content_ends_with: String
+
+  """All values not ending with the given string."""
+  content_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  section: ProposalSectionWhereInput
+  assignedTo_every: ProfileWhereInput
+  assignedTo_some: ProfileWhereInput
+  assignedTo_none: ProfileWhereInput
+}
+
+input ProposalCardWhereUniqueInput {
+  id: ID
+}
+
+type ProposalSection implements Node {
+  id: ID!
+  title: String!
+  description: String
+  position: Float!
+  board: ProposalBoard!
+  assignedTo(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
+  cards(where: ProposalCardWhereInput, orderBy: ProposalCardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalCard!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type ProposalSectionConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ProposalSectionEdge]!
+  aggregate: AggregateProposalSection!
+}
+
+input ProposalSectionCreateInput {
+  id: ID
+  title: String!
+  description: String
+  position: Float!
+  board: ProposalBoardCreateOneWithoutSectionsInput!
+  assignedTo: ProfileCreateManyWithoutAssignedToProposalSectionInput
+  cards: ProposalCardCreateManyWithoutSectionInput
+}
+
+input ProposalSectionCreateManyWithoutAssignedToInput {
+  create: [ProposalSectionCreateWithoutAssignedToInput!]
+  connect: [ProposalSectionWhereUniqueInput!]
+}
+
+input ProposalSectionCreateManyWithoutBoardInput {
+  create: [ProposalSectionCreateWithoutBoardInput!]
+  connect: [ProposalSectionWhereUniqueInput!]
+}
+
+input ProposalSectionCreateOneWithoutCardsInput {
+  create: ProposalSectionCreateWithoutCardsInput
+  connect: ProposalSectionWhereUniqueInput
+}
+
+input ProposalSectionCreateWithoutAssignedToInput {
+  id: ID
+  title: String!
+  description: String
+  position: Float!
+  board: ProposalBoardCreateOneWithoutSectionsInput!
+  cards: ProposalCardCreateManyWithoutSectionInput
+}
+
+input ProposalSectionCreateWithoutBoardInput {
+  id: ID
+  title: String!
+  description: String
+  position: Float!
+  assignedTo: ProfileCreateManyWithoutAssignedToProposalSectionInput
+  cards: ProposalCardCreateManyWithoutSectionInput
+}
+
+input ProposalSectionCreateWithoutCardsInput {
+  id: ID
+  title: String!
+  description: String
+  position: Float!
+  board: ProposalBoardCreateOneWithoutSectionsInput!
+  assignedTo: ProfileCreateManyWithoutAssignedToProposalSectionInput
+}
+
+"""An edge in a connection."""
+type ProposalSectionEdge {
+  """The item at the end of the edge."""
+  node: ProposalSection!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ProposalSectionOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  description_ASC
+  description_DESC
+  position_ASC
+  position_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type ProposalSectionPreviousValues {
+  id: ID!
+  title: String!
+  description: String
+  position: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input ProposalSectionScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ProposalSectionScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ProposalSectionScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ProposalSectionScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  position: Float
+
+  """All values that are not equal to given value."""
+  position_not: Float
+
+  """All values that are contained in given list."""
+  position_in: [Float!]
+
+  """All values that are not contained in given list."""
+  position_not_in: [Float!]
+
+  """All values less than the given value."""
+  position_lt: Float
+
+  """All values less than or equal the given value."""
+  position_lte: Float
+
+  """All values greater than the given value."""
+  position_gt: Float
+
+  """All values greater than or equal the given value."""
+  position_gte: Float
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+type ProposalSectionSubscriptionPayload {
+  mutation: MutationType!
+  node: ProposalSection
+  updatedFields: [String!]
+  previousValues: ProposalSectionPreviousValues
+}
+
+input ProposalSectionSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ProposalSectionSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ProposalSectionSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ProposalSectionSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ProposalSectionWhereInput
+}
+
+input ProposalSectionUpdateInput {
+  title: String
+  description: String
+  position: Float
+  board: ProposalBoardUpdateOneRequiredWithoutSectionsInput
+  assignedTo: ProfileUpdateManyWithoutAssignedToProposalSectionInput
+  cards: ProposalCardUpdateManyWithoutSectionInput
+}
+
+input ProposalSectionUpdateManyDataInput {
+  title: String
+  description: String
+  position: Float
+}
+
+input ProposalSectionUpdateManyMutationInput {
+  title: String
+  description: String
+  position: Float
+}
+
+input ProposalSectionUpdateManyWithoutAssignedToInput {
+  create: [ProposalSectionCreateWithoutAssignedToInput!]
+  connect: [ProposalSectionWhereUniqueInput!]
+  set: [ProposalSectionWhereUniqueInput!]
+  disconnect: [ProposalSectionWhereUniqueInput!]
+  delete: [ProposalSectionWhereUniqueInput!]
+  update: [ProposalSectionUpdateWithWhereUniqueWithoutAssignedToInput!]
+  updateMany: [ProposalSectionUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProposalSectionScalarWhereInput!]
+  upsert: [ProposalSectionUpsertWithWhereUniqueWithoutAssignedToInput!]
+}
+
+input ProposalSectionUpdateManyWithoutBoardInput {
+  create: [ProposalSectionCreateWithoutBoardInput!]
+  connect: [ProposalSectionWhereUniqueInput!]
+  set: [ProposalSectionWhereUniqueInput!]
+  disconnect: [ProposalSectionWhereUniqueInput!]
+  delete: [ProposalSectionWhereUniqueInput!]
+  update: [ProposalSectionUpdateWithWhereUniqueWithoutBoardInput!]
+  updateMany: [ProposalSectionUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProposalSectionScalarWhereInput!]
+  upsert: [ProposalSectionUpsertWithWhereUniqueWithoutBoardInput!]
+}
+
+input ProposalSectionUpdateManyWithWhereNestedInput {
+  where: ProposalSectionScalarWhereInput!
+  data: ProposalSectionUpdateManyDataInput!
+}
+
+input ProposalSectionUpdateOneRequiredWithoutCardsInput {
+  create: ProposalSectionCreateWithoutCardsInput
+  connect: ProposalSectionWhereUniqueInput
+  update: ProposalSectionUpdateWithoutCardsDataInput
+  upsert: ProposalSectionUpsertWithoutCardsInput
+}
+
+input ProposalSectionUpdateWithoutAssignedToDataInput {
+  title: String
+  description: String
+  position: Float
+  board: ProposalBoardUpdateOneRequiredWithoutSectionsInput
+  cards: ProposalCardUpdateManyWithoutSectionInput
+}
+
+input ProposalSectionUpdateWithoutBoardDataInput {
+  title: String
+  description: String
+  position: Float
+  assignedTo: ProfileUpdateManyWithoutAssignedToProposalSectionInput
+  cards: ProposalCardUpdateManyWithoutSectionInput
+}
+
+input ProposalSectionUpdateWithoutCardsDataInput {
+  title: String
+  description: String
+  position: Float
+  board: ProposalBoardUpdateOneRequiredWithoutSectionsInput
+  assignedTo: ProfileUpdateManyWithoutAssignedToProposalSectionInput
+}
+
+input ProposalSectionUpdateWithWhereUniqueWithoutAssignedToInput {
+  where: ProposalSectionWhereUniqueInput!
+  data: ProposalSectionUpdateWithoutAssignedToDataInput!
+}
+
+input ProposalSectionUpdateWithWhereUniqueWithoutBoardInput {
+  where: ProposalSectionWhereUniqueInput!
+  data: ProposalSectionUpdateWithoutBoardDataInput!
+}
+
+input ProposalSectionUpsertWithoutCardsInput {
+  update: ProposalSectionUpdateWithoutCardsDataInput!
+  create: ProposalSectionCreateWithoutCardsInput!
+}
+
+input ProposalSectionUpsertWithWhereUniqueWithoutAssignedToInput {
+  where: ProposalSectionWhereUniqueInput!
+  update: ProposalSectionUpdateWithoutAssignedToDataInput!
+  create: ProposalSectionCreateWithoutAssignedToInput!
+}
+
+input ProposalSectionUpsertWithWhereUniqueWithoutBoardInput {
+  where: ProposalSectionWhereUniqueInput!
+  update: ProposalSectionUpdateWithoutBoardDataInput!
+  create: ProposalSectionCreateWithoutBoardInput!
+}
+
+input ProposalSectionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ProposalSectionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ProposalSectionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ProposalSectionWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  position: Float
+
+  """All values that are not equal to given value."""
+  position_not: Float
+
+  """All values that are contained in given list."""
+  position_in: [Float!]
+
+  """All values that are not contained in given list."""
+  position_not_in: [Float!]
+
+  """All values less than the given value."""
+  position_lt: Float
+
+  """All values less than or equal the given value."""
+  position_lte: Float
+
+  """All values greater than the given value."""
+  position_gt: Float
+
+  """All values greater than or equal the given value."""
+  position_gte: Float
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  board: ProposalBoardWhereInput
+  assignedTo_every: ProfileWhereInput
+  assignedTo_some: ProfileWhereInput
+  assignedTo_none: ProfileWhereInput
+  cards_every: ProposalCardWhereInput
+  cards_some: ProposalCardWhereInput
+  cards_none: ProposalCardWhereInput
+}
+
+input ProposalSectionWhereUniqueInput {
+  id: ID
 }
 
 type Query {
@@ -8096,6 +10912,9 @@ type Query {
   consents(where: ConsentWhereInput, orderBy: ConsentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Consent]!
   journals(where: JournalWhereInput, orderBy: JournalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Journal]!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
+  proposalBoards(where: ProposalBoardWhereInput, orderBy: ProposalBoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalBoard]!
+  proposalSections(where: ProposalSectionWhereInput, orderBy: ProposalSectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalSection]!
+  proposalCards(where: ProposalCardWhereInput, orderBy: ProposalCardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalCard]!
   studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study]!
   templates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Template]!
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task]!
@@ -8112,6 +10931,9 @@ type Query {
   consent(where: ConsentWhereUniqueInput!): Consent
   journal(where: JournalWhereUniqueInput!): Journal
   post(where: PostWhereUniqueInput!): Post
+  proposalBoard(where: ProposalBoardWhereUniqueInput!): ProposalBoard
+  proposalSection(where: ProposalSectionWhereUniqueInput!): ProposalSection
+  proposalCard(where: ProposalCardWhereUniqueInput!): ProposalCard
   study(where: StudyWhereUniqueInput!): Study
   template(where: TemplateWhereUniqueInput!): Template
   task(where: TaskWhereUniqueInput!): Task
@@ -8128,6 +10950,9 @@ type Query {
   consentsConnection(where: ConsentWhereInput, orderBy: ConsentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ConsentConnection!
   journalsConnection(where: JournalWhereInput, orderBy: JournalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): JournalConnection!
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
+  proposalBoardsConnection(where: ProposalBoardWhereInput, orderBy: ProposalBoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProposalBoardConnection!
+  proposalSectionsConnection(where: ProposalSectionWhereInput, orderBy: ProposalSectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProposalSectionConnection!
+  proposalCardsConnection(where: ProposalCardWhereInput, orderBy: ProposalCardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProposalCardConnection!
   studiesConnection(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StudyConnection!
   templatesConnection(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TemplateConnection!
   tasksConnection(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TaskConnection!
@@ -9250,6 +12075,7 @@ type Study implements Node {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  proposal(where: ProposalBoardWhereInput, orderBy: ProposalBoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalBoard!]
 }
 
 """A connection to a list of items."""
@@ -9281,6 +12107,7 @@ input StudyCreateInput {
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
   consent: ConsentCreateOneWithoutStudiesInput
   messages: MessageCreateManyInput
+  proposal: ProposalBoardCreateManyWithoutStudyInput
 }
 
 input StudyCreateManyWithoutAuthorInput {
@@ -9308,6 +12135,11 @@ input StudyCreateOneInput {
   connect: StudyWhereUniqueInput
 }
 
+input StudyCreateOneWithoutProposalInput {
+  create: StudyCreateWithoutProposalInput
+  connect: StudyWhereUniqueInput
+}
+
 input StudyCreateWithoutAuthorInput {
   id: ID
   title: String!
@@ -9326,6 +12158,7 @@ input StudyCreateWithoutAuthorInput {
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
   consent: ConsentCreateOneWithoutStudiesInput
   messages: MessageCreateManyInput
+  proposal: ProposalBoardCreateManyWithoutStudyInput
 }
 
 input StudyCreateWithoutCollaboratorsInput {
@@ -9346,6 +12179,7 @@ input StudyCreateWithoutCollaboratorsInput {
   participants: ProfileCreateManyWithoutParticipantInInput
   consent: ConsentCreateOneWithoutStudiesInput
   messages: MessageCreateManyInput
+  proposal: ProposalBoardCreateManyWithoutStudyInput
 }
 
 input StudyCreateWithoutConsentInput {
@@ -9366,6 +12200,7 @@ input StudyCreateWithoutConsentInput {
   participants: ProfileCreateManyWithoutParticipantInInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
   messages: MessageCreateManyInput
+  proposal: ProposalBoardCreateManyWithoutStudyInput
 }
 
 input StudyCreateWithoutParticipantsInput {
@@ -9383,6 +12218,28 @@ input StudyCreateWithoutParticipantsInput {
   components: Json
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
+  collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
+  consent: ConsentCreateOneWithoutStudiesInput
+  messages: MessageCreateManyInput
+  proposal: ProposalBoardCreateManyWithoutStudyInput
+}
+
+input StudyCreateWithoutProposalInput {
+  id: ID
+  title: String!
+  slug: String!
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  public: Boolean
+  submitForPublishing: Boolean
+  components: Json
+  author: ProfileCreateOneWithoutResearcherInInput!
+  tasks: TaskCreateManyInput
+  participants: ProfileCreateManyWithoutParticipantInInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
   consent: ConsentCreateOneWithoutStudiesInput
   messages: MessageCreateManyInput
@@ -9845,6 +12702,7 @@ input StudyUpdateDataInput {
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
   consent: ConsentUpdateOneWithoutStudiesInput
   messages: MessageUpdateManyInput
+  proposal: ProposalBoardUpdateManyWithoutStudyInput
 }
 
 input StudyUpdateInput {
@@ -9865,6 +12723,7 @@ input StudyUpdateInput {
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
   consent: ConsentUpdateOneWithoutStudiesInput
   messages: MessageUpdateManyInput
+  proposal: ProposalBoardUpdateManyWithoutStudyInput
 }
 
 input StudyUpdateManyDataInput {
@@ -9957,6 +12816,15 @@ input StudyUpdateOneInput {
   upsert: StudyUpsertNestedInput
 }
 
+input StudyUpdateOneWithoutProposalInput {
+  create: StudyCreateWithoutProposalInput
+  connect: StudyWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: StudyUpdateWithoutProposalDataInput
+  upsert: StudyUpsertWithoutProposalInput
+}
+
 input StudyUpdateWithoutAuthorDataInput {
   title: String
   slug: String
@@ -9974,6 +12842,7 @@ input StudyUpdateWithoutAuthorDataInput {
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
   consent: ConsentUpdateOneWithoutStudiesInput
   messages: MessageUpdateManyInput
+  proposal: ProposalBoardUpdateManyWithoutStudyInput
 }
 
 input StudyUpdateWithoutCollaboratorsDataInput {
@@ -9993,6 +12862,7 @@ input StudyUpdateWithoutCollaboratorsDataInput {
   participants: ProfileUpdateManyWithoutParticipantInInput
   consent: ConsentUpdateOneWithoutStudiesInput
   messages: MessageUpdateManyInput
+  proposal: ProposalBoardUpdateManyWithoutStudyInput
 }
 
 input StudyUpdateWithoutConsentDataInput {
@@ -10012,6 +12882,7 @@ input StudyUpdateWithoutConsentDataInput {
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
   messages: MessageUpdateManyInput
+  proposal: ProposalBoardUpdateManyWithoutStudyInput
 }
 
 input StudyUpdateWithoutParticipantsDataInput {
@@ -10028,6 +12899,27 @@ input StudyUpdateWithoutParticipantsDataInput {
   components: Json
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
+  consent: ConsentUpdateOneWithoutStudiesInput
+  messages: MessageUpdateManyInput
+  proposal: ProposalBoardUpdateManyWithoutStudyInput
+}
+
+input StudyUpdateWithoutProposalDataInput {
+  title: String
+  slug: String
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  public: Boolean
+  submitForPublishing: Boolean
+  components: Json
+  author: ProfileUpdateOneRequiredWithoutResearcherInInput
+  tasks: TaskUpdateManyInput
+  participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
   consent: ConsentUpdateOneWithoutStudiesInput
   messages: MessageUpdateManyInput
@@ -10056,6 +12948,11 @@ input StudyUpdateWithWhereUniqueWithoutParticipantsInput {
 input StudyUpsertNestedInput {
   update: StudyUpdateDataInput!
   create: StudyCreateInput!
+}
+
+input StudyUpsertWithoutProposalInput {
+  update: StudyUpdateWithoutProposalDataInput!
+  create: StudyCreateWithoutProposalInput!
 }
 
 input StudyUpsertWithWhereUniqueWithoutAuthorInput {
@@ -10437,6 +13334,9 @@ input StudyWhereInput {
   messages_every: MessageWhereInput
   messages_some: MessageWhereInput
   messages_none: MessageWhereInput
+  proposal_every: ProposalBoardWhereInput
+  proposal_some: ProposalBoardWhereInput
+  proposal_none: ProposalBoardWhereInput
 }
 
 input StudyWhereUniqueInput {
@@ -10455,6 +13355,9 @@ type Subscription {
   consent(where: ConsentSubscriptionWhereInput): ConsentSubscriptionPayload
   journal(where: JournalSubscriptionWhereInput): JournalSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
+  proposalBoard(where: ProposalBoardSubscriptionWhereInput): ProposalBoardSubscriptionPayload
+  proposalSection(where: ProposalSectionSubscriptionWhereInput): ProposalSectionSubscriptionPayload
+  proposalCard(where: ProposalCardSubscriptionWhereInput): ProposalCardSubscriptionPayload
   study(where: StudySubscriptionWhereInput): StudySubscriptionPayload
   template(where: TemplateSubscriptionWhereInput): TemplateSubscriptionPayload
   task(where: TaskSubscriptionWhereInput): TaskSubscriptionPayload

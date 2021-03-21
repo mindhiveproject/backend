@@ -42,6 +42,11 @@ type Profile {
   publicId: String @unique
   journals: [Journal]! @relation(name:"CreatorOfJournal")
   posts: [Post]! @relation(name:"AuthorOfPost")
+  creatorOfProposal: [ProposalBoard]! @relation(name:"CreatorOfProposalTemplate")
+  authorOfProposal: [ProposalBoard]! @relation(name:"AuthorOfProposal")
+  collaboratorOnProposal: [ProposalBoard]! @relation(name:"CollaboratorOnProposal")
+  assignedToProposalSection: [ProposalSection]! @relation(name:"AssignedToProposalSection")
+  assignedToProposalCard: [ProposalCard]! @relation(name:"AssignedToProposalCard")
 }
 
 type AuthEmail {
@@ -147,6 +152,7 @@ type Study {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  proposal: [ProposalBoard]! @relation(name:"StudyProposal")
 }
 
 type Task {
@@ -234,6 +240,44 @@ type Post {
   content: String
   journal: Journal!
   settings: Json
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type ProposalBoard {
+  id: ID! @id
+  title: String!
+  slug: String! @unique
+  description: String
+  creator: Profile @relation(name:"CreatorOfProposalTemplate")
+  author: Profile @relation(name:"AuthorOfProposal")
+  collaborators: [Profile]! @relation(name:"CollaboratorOnProposal")
+  study: Study @relation(name:"StudyProposal")
+  isTemplate: Boolean
+  sections: [ProposalSection]!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type ProposalSection {
+  id: ID! @id
+  title: String!
+  description: String
+  position: Float!
+  board: ProposalBoard!
+  assignedTo: [Profile]! @relation(name:"AssignedToProposalSection")
+  cards: [ProposalCard]
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type ProposalCard {
+  id: ID! @id
+  title: String!
+  position: Float!
+  content: String
+  section: ProposalSection!
+  assignedTo: [Profile]! @relation(name:"AssignedToProposalCard")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
