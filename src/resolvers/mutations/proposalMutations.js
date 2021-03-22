@@ -201,7 +201,7 @@ const proposalMutations = {
 
   // update card
   async updateProposalCard(parent, args, ctx, info) {
-    console.log('37   args', args);
+    // console.log('37   args', args);
 
     // update new card
     const card = await ctx.db.mutation.updateProposalCard(
@@ -210,11 +210,13 @@ const proposalMutations = {
           position: args.position,
           title: args.title,
           content: args.content,
-          section: {
-            connect: {
-              id: args.sectionId,
-            },
-          },
+          section: args.sectionId
+            ? {
+                connect: {
+                  id: args.sectionId,
+                },
+              }
+            : null,
         },
         where: {
           id: args.id,
@@ -222,7 +224,6 @@ const proposalMutations = {
       },
       info
     );
-    console.log('card', card);
     // fire an event for subscription
     // const p = await ctx.pubSub.publish('cardUpdated', {
     //   cardUpdated: card,
