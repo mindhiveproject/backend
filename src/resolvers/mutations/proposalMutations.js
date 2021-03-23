@@ -49,10 +49,29 @@ const proposalMutations = {
 
   // delete board
   async deleteProposalBoard(parent, args, ctx, info) {
-    console.log('args for delete', args);
+    // console.log('args for delete', args);
     const where = { id: args.id };
-    // TODO delete all cards and sections
-
+    // find the board information
+    const board = await ctx.db.query.proposalBoard(
+      { where },
+      `{ id sections { id cards { id } } }`
+    );
+    if (board.sections.length) {
+      // delete all cards
+      const cardIds = board.sections
+        .map(section => section.cards.map(card => card.id))
+        .flat();
+      if (cardIds.length) {
+        await ctx.db.mutation.deleteManyProposalCards({
+          where: { id_in: cardIds },
+        });
+      }
+      // delete all sections
+      const sectionIds = board.sections.map(section => section.id);
+      await ctx.db.mutation.deleteManyProposalSections({
+        where: { id_in: sectionIds },
+      });
+    }
     // delete it
     return ctx.db.mutation.deleteProposalBoard({ where }, info);
   },
@@ -118,8 +137,19 @@ const proposalMutations = {
 
   // delete section
   async deleteProposalSection(parent, args, ctx, info) {
-    console.log('args', args);
     const where = { id: args.id };
+
+    // delete all cards of this section
+    // find cards of this section
+    const consent = await ctx.db.query.proposalSection(
+      { where },
+      `{ id cards {id} }`
+    );
+    if (consent.cards.length) {
+      await ctx.db.mutation.deleteManyProposalCards({
+        where: { id_in: consent.cards.map(card => card.id) },
+      });
+    }
 
     // delete section from board
     // await ctx.db.mutation.updateSection(
