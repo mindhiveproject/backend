@@ -164,6 +164,8 @@ type Mutation {
   updateProposalBoard(id: ID!, title: String, description: String, collaborators: [String], sections: [ID]): ProposalBoard!
   deleteProposalBoard(id: ID!): SuccessMessage
 
+  copyProposalBoard(id: ID!, study: ID): ProposalBoard!
+
   createProposalSection(boardId: ID!, title: String!, description: String, position: Float!, assignedTo: [String], cards: [ID]): ProposalSection!
   updateProposalSection(id: ID!, boardId: ID!, title: String, description: String, position: Float, assignedTo: [String], cards: [ID]): ProposalSection!
   deleteProposalSection(id: ID!, boardId: ID!): ProposalSection!

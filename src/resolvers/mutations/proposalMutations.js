@@ -1,9 +1,88 @@
 const slugify = require('slugify');
 
 const proposalMutations = {
+  // copy proposal board
+  async copyProposalBoard(parent, args, ctx, info) {
+    console.log('args', args);
+
+    // find a proposal board with this id
+    const where = { id: args.id };
+    const template = await ctx.db.query.proposalBoard(
+      { where },
+      `{ id slug title description sections { id title position cards { id title position content } } }`
+    );
+    console.log('template', template);
+
+    // make a full copy
+    const arguments = {
+      title: template.description,
+      description: template.description,
+      slug: `${template.slug}-${Date.now()}-${Math.round(Math.random() * 100000)}`, // to do where the slug should be taken from?
+    }
+    // create a new board
+    const board = await ctx.db.mutation.createProposalBoard(
+      {
+        data: {
+          author: {
+            connect: {
+              id: ctx.request.userId,
+            },
+          },
+          study: {
+            connect: {
+              id: args.study
+            }
+          },
+          ...arguments
+        },
+      },
+      info
+    );
+    // create new sections
+    await Promise.all(template.sections.map(async (section, i) => {
+      const templateSection = template.sections[i];
+      // console.log('templateSection', templateSection);
+      const newSection = await ctx.db.mutation.createProposalSection(
+        {
+          data: {
+            title: templateSection.title,
+            position: templateSection.position,
+            board: {
+              connect: { id: board.id },
+            },
+          },
+        },
+        `{ id }`
+      );
+      // console.log('newSection', i, newSection);
+      // console.log('templateSection.cards', templateSection.cards);
+      // create cards of this section
+      await Promise.all(templateSection.cards.map( async (card, i) => {
+        // console.log('card', i, card);
+        const templateCard = section.cards[i];
+        const newCard = await ctx.db.mutation.createProposalCard(
+          {
+            data: {
+              section: {
+                connect: {
+                  id: newSection.id,
+                },
+              },
+              title: templateCard.title,
+              content: templateCard.content,
+              position: templateCard.position,
+            },
+          },
+          `{ id }`
+        );
+      }))
+    }))
+    return board;
+  },
+
   // create new proposal board template
   async createProposalBoard(parent, args, ctx, info) {
-    console.log('args', args);
+    // console.log('args', args);
     // create slug
     args.slug = slugify(args.title, {
       replacement: '-', // replace spaces with replacement character, defaults to `-`
