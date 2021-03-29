@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Sat Mar 20 2021 17:33:43 GMT+0900 (Korean Standard Time)
+# timestamp: Fri Mar 26 2021 11:50:09 GMT+0900 (Korean Standard Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -8800,6 +8800,8 @@ type ProposalBoard implements Node {
   sections(where: ProposalSectionWhereInput, orderBy: ProposalSectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalSection!]
   createdAt: DateTime!
   updatedAt: DateTime!
+  isSubmitted: Boolean
+  checklist: Json
 }
 
 """A connection to a list of items."""
@@ -8818,6 +8820,8 @@ input ProposalBoardCreateInput {
   slug: String!
   description: String
   isTemplate: Boolean
+  isSubmitted: Boolean
+  checklist: Json
   creator: ProfileCreateOneWithoutCreatorOfProposalInput
   author: ProfileCreateOneWithoutAuthorOfProposalInput
   collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
@@ -8856,6 +8860,8 @@ input ProposalBoardCreateWithoutAuthorInput {
   slug: String!
   description: String
   isTemplate: Boolean
+  isSubmitted: Boolean
+  checklist: Json
   creator: ProfileCreateOneWithoutCreatorOfProposalInput
   collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
   study: StudyCreateOneWithoutProposalInput
@@ -8868,6 +8874,8 @@ input ProposalBoardCreateWithoutCollaboratorsInput {
   slug: String!
   description: String
   isTemplate: Boolean
+  isSubmitted: Boolean
+  checklist: Json
   creator: ProfileCreateOneWithoutCreatorOfProposalInput
   author: ProfileCreateOneWithoutAuthorOfProposalInput
   study: StudyCreateOneWithoutProposalInput
@@ -8880,6 +8888,8 @@ input ProposalBoardCreateWithoutCreatorInput {
   slug: String!
   description: String
   isTemplate: Boolean
+  isSubmitted: Boolean
+  checklist: Json
   author: ProfileCreateOneWithoutAuthorOfProposalInput
   collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
   study: StudyCreateOneWithoutProposalInput
@@ -8892,6 +8902,8 @@ input ProposalBoardCreateWithoutSectionsInput {
   slug: String!
   description: String
   isTemplate: Boolean
+  isSubmitted: Boolean
+  checklist: Json
   creator: ProfileCreateOneWithoutCreatorOfProposalInput
   author: ProfileCreateOneWithoutAuthorOfProposalInput
   collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
@@ -8904,6 +8916,8 @@ input ProposalBoardCreateWithoutStudyInput {
   slug: String!
   description: String
   isTemplate: Boolean
+  isSubmitted: Boolean
+  checklist: Json
   creator: ProfileCreateOneWithoutCreatorOfProposalInput
   author: ProfileCreateOneWithoutAuthorOfProposalInput
   collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
@@ -8934,6 +8948,10 @@ enum ProposalBoardOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  isSubmitted_ASC
+  isSubmitted_DESC
+  checklist_ASC
+  checklist_DESC
 }
 
 type ProposalBoardPreviousValues {
@@ -8944,6 +8962,8 @@ type ProposalBoardPreviousValues {
   isTemplate: Boolean
   createdAt: DateTime!
   updatedAt: DateTime!
+  isSubmitted: Boolean
+  checklist: Json
 }
 
 input ProposalBoardScalarWhereInput {
@@ -9163,6 +9183,10 @@ input ProposalBoardScalarWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  isSubmitted: Boolean
+
+  """All values that are not equal to given value."""
+  isSubmitted_not: Boolean
 }
 
 type ProposalBoardSubscriptionPayload {
@@ -9209,6 +9233,8 @@ input ProposalBoardUpdateInput {
   slug: String
   description: String
   isTemplate: Boolean
+  isSubmitted: Boolean
+  checklist: Json
   creator: ProfileUpdateOneWithoutCreatorOfProposalInput
   author: ProfileUpdateOneWithoutAuthorOfProposalInput
   collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
@@ -9221,6 +9247,8 @@ input ProposalBoardUpdateManyDataInput {
   slug: String
   description: String
   isTemplate: Boolean
+  isSubmitted: Boolean
+  checklist: Json
 }
 
 input ProposalBoardUpdateManyMutationInput {
@@ -9228,6 +9256,8 @@ input ProposalBoardUpdateManyMutationInput {
   slug: String
   description: String
   isTemplate: Boolean
+  isSubmitted: Boolean
+  checklist: Json
 }
 
 input ProposalBoardUpdateManyWithoutAuthorInput {
@@ -9295,6 +9325,8 @@ input ProposalBoardUpdateWithoutAuthorDataInput {
   slug: String
   description: String
   isTemplate: Boolean
+  isSubmitted: Boolean
+  checklist: Json
   creator: ProfileUpdateOneWithoutCreatorOfProposalInput
   collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
   study: StudyUpdateOneWithoutProposalInput
@@ -9306,6 +9338,8 @@ input ProposalBoardUpdateWithoutCollaboratorsDataInput {
   slug: String
   description: String
   isTemplate: Boolean
+  isSubmitted: Boolean
+  checklist: Json
   creator: ProfileUpdateOneWithoutCreatorOfProposalInput
   author: ProfileUpdateOneWithoutAuthorOfProposalInput
   study: StudyUpdateOneWithoutProposalInput
@@ -9317,6 +9351,8 @@ input ProposalBoardUpdateWithoutCreatorDataInput {
   slug: String
   description: String
   isTemplate: Boolean
+  isSubmitted: Boolean
+  checklist: Json
   author: ProfileUpdateOneWithoutAuthorOfProposalInput
   collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
   study: StudyUpdateOneWithoutProposalInput
@@ -9328,6 +9364,8 @@ input ProposalBoardUpdateWithoutSectionsDataInput {
   slug: String
   description: String
   isTemplate: Boolean
+  isSubmitted: Boolean
+  checklist: Json
   creator: ProfileUpdateOneWithoutCreatorOfProposalInput
   author: ProfileUpdateOneWithoutAuthorOfProposalInput
   collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
@@ -9339,6 +9377,8 @@ input ProposalBoardUpdateWithoutStudyDataInput {
   slug: String
   description: String
   isTemplate: Boolean
+  isSubmitted: Boolean
+  checklist: Json
   creator: ProfileUpdateOneWithoutCreatorOfProposalInput
   author: ProfileUpdateOneWithoutAuthorOfProposalInput
   collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
@@ -9611,6 +9651,10 @@ input ProposalBoardWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  isSubmitted: Boolean
+
+  """All values that are not equal to given value."""
+  isSubmitted_not: Boolean
   creator: ProfileWhereInput
   author: ProfileWhereInput
   collaborators_every: ProfileWhereInput

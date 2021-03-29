@@ -257,6 +257,8 @@ type ProposalBoard {
   sections: [ProposalSection]!
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  isSubmitted: Boolean
+  checklist: Json
 }
 
 type ProposalSection {

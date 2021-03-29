@@ -161,7 +161,16 @@ type Mutation {
   deletePost(id: ID!): Post
 
   createProposalBoard(title: String!, description: String, collaborators: [String], study: ID, isTemplate: Boolean, sections: [ID]): ProposalBoard!
-  updateProposalBoard(id: ID!, title: String, description: String, collaborators: [String], sections: [ID]): ProposalBoard!
+  updateProposalBoard(
+    id: ID!,
+    title: String,
+    description: String,
+    collaborators: [String],
+    sections: [ID]
+    isSubmitted: Boolean
+    checklist: Json
+    ): ProposalBoard!
+
   deleteProposalBoard(id: ID!): SuccessMessage
 
   copyProposalBoard(id: ID!, study: ID): ProposalBoard!

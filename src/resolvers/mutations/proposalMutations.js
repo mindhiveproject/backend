@@ -310,8 +310,6 @@ const proposalMutations = {
 
   // update card
   async updateProposalCard(parent, args, ctx, info) {
-    // console.log('37   args', args);
-
     // update new card
     const card = await ctx.db.mutation.updateProposalCard(
       {
