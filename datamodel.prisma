@@ -276,10 +276,12 @@ type ProposalSection {
 type ProposalCard {
   id: ID! @id
   title: String!
+  description: String
   position: Float!
   content: String
   section: ProposalSection!
   assignedTo: [Profile]! @relation(name:"AssignedToProposalCard")
+  settings: Json
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

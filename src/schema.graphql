@@ -180,7 +180,19 @@ type Mutation {
   deleteProposalSection(id: ID!, boardId: ID!): ProposalSection!
 
   createProposalCard(boardId: ID!, title: String!, content: String, sectionId: ID!, position: Float!, assignedTo: [String]): ProposalCard!
-  updateProposalCard(id: ID!, boardId: ID!, title: String, content: String, sectionId: ID, position: Float, assignedTo: [String]): ProposalCard!
+
+  updateProposalCard(
+    id: ID!,
+    boardId: ID!,
+    title: String,
+    description: String,
+    content: String,
+    sectionId: ID,
+    position: Float,
+    assignedTo: [String],
+    settings: Json
+  ): ProposalCard!
+
   deleteProposalCard(id: ID!, boardId: ID!): ProposalCard!
 }
 

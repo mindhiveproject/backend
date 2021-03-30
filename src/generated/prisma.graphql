@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Fri Mar 26 2021 11:50:09 GMT+0900 (Korean Standard Time)
+# timestamp: Tue Mar 30 2021 13:28:18 GMT+0900 (Korean Standard Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -9674,10 +9674,12 @@ input ProposalBoardWhereUniqueInput {
 type ProposalCard implements Node {
   id: ID!
   title: String!
+  description: String
   position: Float!
   content: String
   section: ProposalSection!
   assignedTo(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
+  settings: Json
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -9695,8 +9697,10 @@ type ProposalCardConnection {
 input ProposalCardCreateInput {
   id: ID
   title: String!
+  description: String
   position: Float!
   content: String
+  settings: Json
   section: ProposalSectionCreateOneWithoutCardsInput!
   assignedTo: ProfileCreateManyWithoutAssignedToProposalCardInput
 }
@@ -9714,16 +9718,20 @@ input ProposalCardCreateManyWithoutSectionInput {
 input ProposalCardCreateWithoutAssignedToInput {
   id: ID
   title: String!
+  description: String
   position: Float!
   content: String
+  settings: Json
   section: ProposalSectionCreateOneWithoutCardsInput!
 }
 
 input ProposalCardCreateWithoutSectionInput {
   id: ID
   title: String!
+  description: String
   position: Float!
   content: String
+  settings: Json
   assignedTo: ProfileCreateManyWithoutAssignedToProposalCardInput
 }
 
@@ -9741,10 +9749,14 @@ enum ProposalCardOrderByInput {
   id_DESC
   title_ASC
   title_DESC
+  description_ASC
+  description_DESC
   position_ASC
   position_DESC
   content_ASC
   content_DESC
+  settings_ASC
+  settings_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -9754,8 +9766,10 @@ enum ProposalCardOrderByInput {
 type ProposalCardPreviousValues {
   id: ID!
   title: String!
+  description: String
   position: Float!
   content: String
+  settings: Json
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -9849,6 +9863,46 @@ input ProposalCardScalarWhereInput {
 
   """All values not ending with the given string."""
   title_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
   position: Float
 
   """All values that are not equal to given value."""
@@ -9998,22 +10052,28 @@ input ProposalCardSubscriptionWhereInput {
 
 input ProposalCardUpdateInput {
   title: String
+  description: String
   position: Float
   content: String
+  settings: Json
   section: ProposalSectionUpdateOneRequiredWithoutCardsInput
   assignedTo: ProfileUpdateManyWithoutAssignedToProposalCardInput
 }
 
 input ProposalCardUpdateManyDataInput {
   title: String
+  description: String
   position: Float
   content: String
+  settings: Json
 }
 
 input ProposalCardUpdateManyMutationInput {
   title: String
+  description: String
   position: Float
   content: String
+  settings: Json
 }
 
 input ProposalCardUpdateManyWithoutAssignedToInput {
@@ -10047,15 +10107,19 @@ input ProposalCardUpdateManyWithWhereNestedInput {
 
 input ProposalCardUpdateWithoutAssignedToDataInput {
   title: String
+  description: String
   position: Float
   content: String
+  settings: Json
   section: ProposalSectionUpdateOneRequiredWithoutCardsInput
 }
 
 input ProposalCardUpdateWithoutSectionDataInput {
   title: String
+  description: String
   position: Float
   content: String
+  settings: Json
   assignedTo: ProfileUpdateManyWithoutAssignedToProposalCardInput
 }
 
@@ -10170,6 +10234,46 @@ input ProposalCardWhereInput {
 
   """All values not ending with the given string."""
   title_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
   position: Float
 
   """All values that are not equal to given value."""

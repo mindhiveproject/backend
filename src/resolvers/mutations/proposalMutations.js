@@ -3,15 +3,15 @@ const slugify = require('slugify');
 const proposalMutations = {
   // copy proposal board
   async copyProposalBoard(parent, args, ctx, info) {
-    console.log('args', args);
+    // console.log('args', args);
 
     // find a proposal board with this id
     const where = { id: args.id };
     const template = await ctx.db.query.proposalBoard(
       { where },
-      `{ id slug title description sections { id title position cards { id title position content } } }`
+      `{ id slug title description sections { id title position cards { id title description position content } } }`
     );
-    console.log('template', template);
+    // console.log('template', template);
 
     // make a full copy
     const arguments = {
@@ -69,6 +69,7 @@ const proposalMutations = {
                 },
               },
               title: templateCard.title,
+              description: templateCard.description,
               content: templateCard.content,
               position: templateCard.position,
             },
@@ -157,7 +158,7 @@ const proposalMutations = {
 
   // / create new section
   async createProposalSection(parent, args, ctx, info) {
-    console.log('args', args);
+    // console.log('args', args);
     // args.slug = slugify(args.title, {
     //   replacement: '-', // replace spaces with replacement character, defaults to `-`
     //   remove: /[^a-zA-Z\d\s:]/g, // remove characters that match regex, defaults to `undefined`
@@ -188,7 +189,7 @@ const proposalMutations = {
 
   // update section
   async updateProposalSection(parent, args, ctx, info) {
-    console.log('line 52 args', args);
+    // console.log('line 52 args', args);
 
     // update new section
     const section = await ctx.db.mutation.updateProposalSection(
@@ -205,7 +206,7 @@ const proposalMutations = {
       },
       info
     );
-    console.log('section', section);
+    // console.log('section', section);
     // fire an event for subscription
     // const p = await ctx.pubSub.publish('sectionUpdated', {
     //   sectionUpdated: section,
@@ -279,7 +280,7 @@ const proposalMutations = {
 
   // / create new card
   async createProposalCard(parent, args, ctx, info) {
-    console.log('args', args);
+    // console.log('args', args);
 
     const card = await ctx.db.mutation.createProposalCard(
       {
@@ -297,7 +298,7 @@ const proposalMutations = {
       info
     );
 
-    console.log('card', card);
+    // console.log('card', card);
 
     // fire subscription
     // const p = await ctx.pubSub.publish('cardAdded', {
@@ -310,6 +311,44 @@ const proposalMutations = {
 
   // update card
   async updateProposalCard(parent, args, ctx, info) {
+    // console.log('args', args);
+
+    // add collaborators
+    let assignedTo = [];
+    if(args.assignedTo){
+      // get the card
+      const card = await ctx.db.query.proposalCard(
+        {
+          where: { id: args.id },
+        },
+        `{ id assignedTo { id } }`
+      );
+      // disconnect previous collaborators
+      await ctx.db.mutation.updateProposalCard(
+        {
+          data: {
+            assignedTo: {
+              disconnect: card.assignedTo,
+            },
+          },
+          where: {
+            id: args.id,
+          },
+        },
+        `{ id }`
+      );
+
+      if (args.assignedTo.length) {
+        assignedTo = await Promise.all(
+          args.assignedTo.map(username =>
+            ctx.db.query.profile({ where: { username } }, `{ id }`)
+          )
+        );
+        assignedTo = assignedTo.filter(c => c);
+      }
+
+    }
+
     // update new card
     const card = await ctx.db.mutation.updateProposalCard(
       {
@@ -317,6 +356,7 @@ const proposalMutations = {
           position: args.position,
           title: args.title,
           content: args.content,
+          description: args.description,
           section: args.sectionId
             ? {
                 connect: {
@@ -324,6 +364,10 @@ const proposalMutations = {
                 },
               }
             : null,
+          assignedTo: {
+            connect: assignedTo,
+          },
+          settings: args.settings,
         },
         where: {
           id: args.id,
@@ -341,14 +385,14 @@ const proposalMutations = {
 
   // delete card
   async deleteProposalCard(parent, args, ctx, info) {
-    console.log('args', args);
+    // console.log('args', args);
     const where = { id: args.id };
     // delete it
     const deletedCard = await ctx.db.mutation.deleteProposalCard(
       { where },
       info
     );
-    console.log('deletedCard', deletedCard);
+    // console.log('deletedCard', deletedCard);
     // fire subscription
     // const p = await ctx.pubSub.publish('cardDeleted', {
     //   cardDeleted: deletedCard,
