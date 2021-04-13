@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Tue Mar 30 2021 13:28:18 GMT+0900 (Korean Standard Time)
+# timestamp: Tue Apr 13 2021 21:08:49 GMT+0900 (Korean Standard Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -6039,6 +6039,7 @@ type Profile implements Node {
   collaboratorOnProposal(where: ProposalBoardWhereInput, orderBy: ProposalBoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalBoard!]
   assignedToProposalSection(where: ProposalSectionWhereInput, orderBy: ProposalSectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalSection!]
   assignedToProposalCard(where: ProposalCardWhereInput, orderBy: ProposalCardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalCard!]
+  publicReadableId: String
 }
 
 """A connection to a list of items."""
@@ -6062,6 +6063,7 @@ input ProfileCreateInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6217,6 +6219,7 @@ input ProfileCreateWithoutAssignedToProposalCardInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6252,6 +6255,7 @@ input ProfileCreateWithoutAssignedToProposalSectionInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6287,6 +6291,7 @@ input ProfileCreateWithoutAuthEmailInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authToken: AuthTokenCreateManyWithoutProfileInput
   authInvite: AuthInviteCreateManyWithoutProfileInput
@@ -6322,6 +6327,7 @@ input ProfileCreateWithoutAuthInviteInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6357,6 +6363,7 @@ input ProfileCreateWithoutAuthorOfProposalInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6392,6 +6399,7 @@ input ProfileCreateWithoutAuthParticipantInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6427,6 +6435,7 @@ input ProfileCreateWithoutAuthTokenInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authInvite: AuthInviteCreateManyWithoutProfileInput
@@ -6462,6 +6471,7 @@ input ProfileCreateWithoutCollaboratorInConsentInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6497,6 +6507,7 @@ input ProfileCreateWithoutCollaboratorInStudyInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6532,6 +6543,7 @@ input ProfileCreateWithoutCollaboratorInTaskInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6567,6 +6579,7 @@ input ProfileCreateWithoutCollaboratorOnProposalInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6602,6 +6615,7 @@ input ProfileCreateWithoutConsentCreatorInInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6637,6 +6651,7 @@ input ProfileCreateWithoutConsentGivenForInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6672,6 +6687,7 @@ input ProfileCreateWithoutCreatorOfProposalInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6707,6 +6723,7 @@ input ProfileCreateWithoutJournalsInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6742,6 +6759,7 @@ input ProfileCreateWithoutParticipantInInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6777,6 +6795,7 @@ input ProfileCreateWithoutPostsInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6812,6 +6831,7 @@ input ProfileCreateWithoutResearcherInInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6847,6 +6867,7 @@ input ProfileCreateWithoutResultsInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6882,6 +6903,7 @@ input ProfileCreateWithoutStudentInInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6917,6 +6939,7 @@ input ProfileCreateWithoutTaskCreatorInInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -6952,6 +6975,7 @@ input ProfileCreateWithoutTeacherInInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -7006,6 +7030,8 @@ enum ProfileOrderByInput {
   consentsInfo_DESC
   publicId_ASC
   publicId_DESC
+  publicReadableId_ASC
+  publicReadableId_DESC
 }
 
 type ProfilePreviousValues {
@@ -7020,6 +7046,7 @@ type ProfilePreviousValues {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
 }
 
 input ProfileScalarWhereInput {
@@ -7231,6 +7258,46 @@ input ProfileScalarWhereInput {
 
   """All values not ending with the given string."""
   publicId_not_ends_with: String
+  publicReadableId: String
+
+  """All values that are not equal to given value."""
+  publicReadableId_not: String
+
+  """All values that are contained in given list."""
+  publicReadableId_in: [String!]
+
+  """All values that are not contained in given list."""
+  publicReadableId_not_in: [String!]
+
+  """All values less than the given value."""
+  publicReadableId_lt: String
+
+  """All values less than or equal the given value."""
+  publicReadableId_lte: String
+
+  """All values greater than the given value."""
+  publicReadableId_gt: String
+
+  """All values greater than or equal the given value."""
+  publicReadableId_gte: String
+
+  """All values containing the given string."""
+  publicReadableId_contains: String
+
+  """All values not containing the given string."""
+  publicReadableId_not_contains: String
+
+  """All values starting with the given string."""
+  publicReadableId_starts_with: String
+
+  """All values not starting with the given string."""
+  publicReadableId_not_starts_with: String
+
+  """All values ending with the given string."""
+  publicReadableId_ends_with: String
+
+  """All values not ending with the given string."""
+  publicReadableId_not_ends_with: String
 }
 
 type ProfileSubscriptionPayload {
@@ -7282,6 +7349,7 @@ input ProfileUpdateDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -7317,6 +7385,7 @@ input ProfileUpdateInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -7352,6 +7421,7 @@ input ProfileUpdateManyDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
 }
 
@@ -7365,6 +7435,7 @@ input ProfileUpdateManyMutationInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
 }
 
@@ -7597,6 +7668,7 @@ input ProfileUpdateWithoutAssignedToProposalCardDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -7631,6 +7703,7 @@ input ProfileUpdateWithoutAssignedToProposalSectionDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -7665,6 +7738,7 @@ input ProfileUpdateWithoutAuthEmailDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
   authInvite: AuthInviteUpdateManyWithoutProfileInput
@@ -7699,6 +7773,7 @@ input ProfileUpdateWithoutAuthInviteDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -7733,6 +7808,7 @@ input ProfileUpdateWithoutAuthorOfProposalDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -7767,6 +7843,7 @@ input ProfileUpdateWithoutAuthParticipantDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -7801,6 +7878,7 @@ input ProfileUpdateWithoutAuthTokenDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authInvite: AuthInviteUpdateManyWithoutProfileInput
@@ -7835,6 +7913,7 @@ input ProfileUpdateWithoutCollaboratorInConsentDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -7869,6 +7948,7 @@ input ProfileUpdateWithoutCollaboratorInStudyDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -7903,6 +7983,7 @@ input ProfileUpdateWithoutCollaboratorInTaskDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -7937,6 +8018,7 @@ input ProfileUpdateWithoutCollaboratorOnProposalDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -7971,6 +8053,7 @@ input ProfileUpdateWithoutConsentCreatorInDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -8005,6 +8088,7 @@ input ProfileUpdateWithoutConsentGivenForDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -8039,6 +8123,7 @@ input ProfileUpdateWithoutCreatorOfProposalDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -8073,6 +8158,7 @@ input ProfileUpdateWithoutJournalsDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -8107,6 +8193,7 @@ input ProfileUpdateWithoutParticipantInDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -8141,6 +8228,7 @@ input ProfileUpdateWithoutPostsDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -8175,6 +8263,7 @@ input ProfileUpdateWithoutResearcherInDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -8209,6 +8298,7 @@ input ProfileUpdateWithoutResultsDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -8243,6 +8333,7 @@ input ProfileUpdateWithoutStudentInDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -8277,6 +8368,7 @@ input ProfileUpdateWithoutTaskCreatorInDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -8311,6 +8403,7 @@ input ProfileUpdateWithoutTeacherInDataInput {
   studiesInfo: Json
   consentsInfo: Json
   publicId: String
+  publicReadableId: String
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -8713,6 +8806,46 @@ input ProfileWhereInput {
 
   """All values not ending with the given string."""
   publicId_not_ends_with: String
+  publicReadableId: String
+
+  """All values that are not equal to given value."""
+  publicReadableId_not: String
+
+  """All values that are contained in given list."""
+  publicReadableId_in: [String!]
+
+  """All values that are not contained in given list."""
+  publicReadableId_not_in: [String!]
+
+  """All values less than the given value."""
+  publicReadableId_lt: String
+
+  """All values less than or equal the given value."""
+  publicReadableId_lte: String
+
+  """All values greater than the given value."""
+  publicReadableId_gt: String
+
+  """All values greater than or equal the given value."""
+  publicReadableId_gte: String
+
+  """All values containing the given string."""
+  publicReadableId_contains: String
+
+  """All values not containing the given string."""
+  publicReadableId_not_contains: String
+
+  """All values starting with the given string."""
+  publicReadableId_starts_with: String
+
+  """All values not starting with the given string."""
+  publicReadableId_not_starts_with: String
+
+  """All values ending with the given string."""
+  publicReadableId_ends_with: String
+
+  """All values not ending with the given string."""
+  publicReadableId_not_ends_with: String
   authEmail_every: AuthEmailWhereInput
   authEmail_some: AuthEmailWhereInput
   authEmail_none: AuthEmailWhereInput

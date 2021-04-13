@@ -7,6 +7,7 @@ const postmark = require('postmark');
 const client = new postmark.Client(process.env.MAIL_POSTMARK_CLIENT);
 const { OAuth2Client } = require('google-auth-library');
 const uniqid = require('uniqid');
+const generate = require('project-name-generator');
 const { transport, makeEmail } = require('../../mail');
 
 // general function to join a study
@@ -119,6 +120,7 @@ const authMutations = {
           publicId: args.publicId,
           permissions: { set: args.permissions },
           generalInfo,
+          publicReadableId: generate({ words: 3, number: false }).dashed,
         },
       },
       info
@@ -289,6 +291,7 @@ const authMutations = {
           publicId: args.publicId,
           permissions: { set: args.permissions },
           generalInfo,
+          publicReadableId: generate({ words: 3, number: false }).dashed,
         },
       },
       info

@@ -47,6 +47,7 @@ type Profile {
   collaboratorOnProposal: [ProposalBoard]! @relation(name:"CollaboratorOnProposal")
   assignedToProposalSection: [ProposalSection]! @relation(name:"AssignedToProposalSection")
   assignedToProposalCard: [ProposalCard]! @relation(name:"AssignedToProposalCard")
+  publicReadableId: String 
 }
 
 type AuthEmail {
