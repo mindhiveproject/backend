@@ -12,7 +12,6 @@ const Query = {
   schools: forwardTo('db'),
   class: forwardTo('db'),
   result: forwardTo('db'),
-  results: forwardTo('db'),
   templates: forwardTo('db'),
   template: forwardTo('db'),
   study: forwardTo('db'),
@@ -30,12 +29,30 @@ const Query = {
   proposalCard: forwardTo('db'),
   proposalCards: forwardTo('db'),
 
+  review: forwardTo('db'),
+  reviews: forwardTo('db'),
+
+  classNetwork: forwardTo('db'),
+  classNetworks: forwardTo('db'),
+
   // return only public studies by default
   studies(parent, args, ctx, info) {
     return ctx.db.query.studies(
       {
         where: {
           public: true,
+        },
+      },
+      info
+    );
+  },
+
+  // return results
+  results(parent, args, ctx, info) {
+    return ctx.db.query.results(
+      {
+        where: {
+          ...args.where,
         },
       },
       info

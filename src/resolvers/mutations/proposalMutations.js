@@ -11,7 +11,6 @@ const proposalMutations = {
       { where },
       `{ id slug title description sections { id title position cards { id title description position content } } }`
     );
-    // console.log('template', template);
 
     // make a full copy
     const arguments = {
@@ -54,8 +53,6 @@ const proposalMutations = {
         },
         `{ id }`
       );
-      // console.log('newSection', i, newSection);
-      // console.log('templateSection.cards', templateSection.cards);
       // create cards of this section
       await Promise.all(templateSection.cards.map( async (card, i) => {
         // console.log('card', i, card);
@@ -83,7 +80,6 @@ const proposalMutations = {
 
   // create new proposal board template
   async createProposalBoard(parent, args, ctx, info) {
-    // console.log('args', args);
     // create slug
     args.slug = slugify(args.title, {
       replacement: '-', // replace spaces with replacement character, defaults to `-`
@@ -156,14 +152,9 @@ const proposalMutations = {
     return ctx.db.mutation.deleteProposalBoard({ where }, info);
   },
 
-  // / create new section
+  // create new section
   async createProposalSection(parent, args, ctx, info) {
-    // console.log('args', args);
-    // args.slug = slugify(args.title, {
-    //   replacement: '-', // replace spaces with replacement character, defaults to `-`
-    //   remove: /[^a-zA-Z\d\s:]/g, // remove characters that match regex, defaults to `undefined`
-    //   lower: true, // convert to lower case, defaults to `false`
-    // });
+
     // create new section
     const section = await ctx.db.mutation.createProposalSection(
       {
@@ -179,11 +170,6 @@ const proposalMutations = {
       },
       info
     );
-    // // fire an event for subscription
-    // const p = await ctx.pubSub.publish('sectionAdded', {
-    //   sectionAdded: section,
-    //   boardId: args.boardId,
-    // });
     return section;
   },
 
@@ -206,12 +192,6 @@ const proposalMutations = {
       },
       info
     );
-    // console.log('section', section);
-    // fire an event for subscription
-    // const p = await ctx.pubSub.publish('sectionUpdated', {
-    //   sectionUpdated: section,
-    //   boardId: args.boardId,
-    // });
     return section;
   },
 
@@ -231,50 +211,11 @@ const proposalMutations = {
       });
     }
 
-    // delete section from board
-    // await ctx.db.mutation.updateSection(
-    //   {
-    //     data: {
-    //       board: {
-    //         disconnect: {
-    //           id: args.boardId
-    //         }
-    //       }
-    //     },
-    //     where: {
-    //       id: args.id,
-    //     }
-    //   },
-    //   `{ id }`
-    // )
-
-    //
     const deletedSection = await ctx.db.mutation.deleteProposalSection(
       { where },
       info
     );
 
-    // const board = await ctx.db.mutation.updateBoard(
-    //   {
-    //     data: {
-    //       sections: {
-    //         disconnect: {
-    //           id: args.id
-    //         }
-    //       }
-    //     },
-    //     where: {
-    //       id: args.boardId,
-    //     }
-    //   },
-    //   `{ id }`
-    // )
-    // fire an event for subscription
-    // const p = await ctx.pubSub.publish('sectionDeleted', {
-    //   sectionDeleted: deletedSection,
-    //   boardId: args.boardId,
-    // });
-    // delete it
     return deletedSection;
   },
 
@@ -297,14 +238,6 @@ const proposalMutations = {
       },
       info
     );
-
-    // console.log('card', card);
-
-    // fire subscription
-    // const p = await ctx.pubSub.publish('cardAdded', {
-    //   cardAdded: card,
-    //   boardId: args.boardId,
-    // });
 
     return card;
   },
@@ -375,11 +308,6 @@ const proposalMutations = {
       },
       info
     );
-    // fire an event for subscription
-    // const p = await ctx.pubSub.publish('cardUpdated', {
-    //   cardUpdated: card,
-    //   boardId: args.boardId,
-    // });
     return card;
   },
 
@@ -392,12 +320,6 @@ const proposalMutations = {
       { where },
       info
     );
-    // console.log('deletedCard', deletedCard);
-    // fire subscription
-    // const p = await ctx.pubSub.publish('cardDeleted', {
-    //   cardDeleted: deletedCard,
-    //   boardId: args.boardId,
-    // });
     return deletedCard;
   },
 };

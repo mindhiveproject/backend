@@ -13,6 +13,12 @@ enum TaskType {
   SURVEY
 }
 
+enum ResultType {
+  REVIEW
+  TEST
+  MAIN
+}
+
 type Profile {
   id: ID! @id
   username: String! @unique
@@ -47,7 +53,9 @@ type Profile {
   collaboratorOnProposal: [ProposalBoard]! @relation(name:"CollaboratorOnProposal")
   assignedToProposalSection: [ProposalSection]! @relation(name:"AssignedToProposalSection")
   assignedToProposalCard: [ProposalCard]! @relation(name:"AssignedToProposalCard")
-  publicReadableId: String 
+  publicReadableId: String
+  reviews: [Review]! @relation(name:"AuthorOfReview")
+  classNetworksCreated: [ClassNetwork]! @relation(name:"Classnetworkcreator")
 }
 
 type AuthEmail {
@@ -107,6 +115,18 @@ type Class {
   creator: Profile! @relation(name:"Classcreator")
   students: [Profile]! @relation(name:"Studentofclass")
   invites: [AuthInvite]! @relation(name:"Invite")
+  network: ClassNetwork @relation(name:"Classnetwork")
+}
+
+type ClassNetwork {
+  id: ID! @id
+  title: String
+  description: String
+  settings: Json
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  creator: Profile! @relation(name:"Classnetworkcreator")
+  classes: [Class]! @relation(name:"Classnetwork")
 }
 
 type Result {
@@ -125,6 +145,7 @@ type Result {
   info: Json
   incrementalData: [Data] @relation(name:"Incrementaldata")
   fullData: Data  @relation(name:"Fulldata")
+  type: ResultType
 }
 
 type Data {
@@ -154,6 +175,7 @@ type Study {
   submitForPublishing: Boolean
   components: Json
   proposal: [ProposalBoard]! @relation(name:"StudyProposal")
+  reviews: [Review]! @relation(name:"StudyReview")
 }
 
 type Task {
@@ -260,6 +282,7 @@ type ProposalBoard {
   updatedAt: DateTime! @updatedAt
   isSubmitted: Boolean
   checklist: Json
+  reviews: [Review]! @relation(name:"ProposalReview")
 }
 
 type ProposalSection {
@@ -285,4 +308,14 @@ type ProposalCard {
   settings: Json
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+}
+
+type Review {
+  id: ID! @id
+  study: Study @relation(name:"StudyReview")
+  proposal: ProposalBoard @relation(name:"ProposalReview")
+  author: Profile @relation(name:"AuthorOfReview")
+  type: String
+  settings: Json
+  content: Json
 }

@@ -9,7 +9,7 @@ type Query {
   myClasses: [Class]!
   myResults: [Result]!
   result(where: ResultWhereUniqueInput): Result
-  results: [Result]!
+  results(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, first: Int): [Result]!
   myClassResults(where: ClassWhereUniqueInput): [Result]!
   myStudyResults(where: StudyWhereUniqueInput): [Result]!
   myTaskResults(where: TaskWhereUniqueInput): [Result]!
@@ -47,6 +47,14 @@ type Query {
   proposalCard(where: ProposalCardWhereUniqueInput!): ProposalCard
   proposalCards(where: ProposalCardWhereInput): [ProposalCard]!
 
+  review(where: ReviewWhereUniqueInput): Review
+  reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, first: Int): [Review]!
+
+  proposalsForReview(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, first: Int): [ProposalBoard]!
+
+  classNetwork(where: ClassNetworkWhereUniqueInput): ClassNetwork
+  classNetworks(where: ClassNetworkWhereInput, orderBy: ClassNetworkOrderByInput, skip: Int, first: Int): [ClassNetwork]!
+
 }
 
 type Mutation {
@@ -78,7 +86,7 @@ type Mutation {
   moveToClass(classId: ID!, studentId: ID!): SuccessMessage
   addResult(templateId: ID!, data: Json, dataPolicy: String): Result!
   deleteResult(id: ID!): Result
-  submitResultFromAPI(userId: ID!, templateId: ID, taskId: ID, studyId: ID, data: Json, dataString: String, metadata: Json, dataPolicy: String): SuccessMessage
+  submitResultFromAPI(userId: ID!, templateId: ID, taskId: ID, studyId: ID, data: Json, dataString: String, metadata: Json, dataPolicy: String, type: ResultType): SuccessMessage
   updateResultsInfo(id: ID!, info: Json): SuccessMessage
   createTemplate(title: String!, shortDescription: String, description: String, image: String, largeImage: String, parameters: Json, script: String, style: String, settings: Json): Template!
   updateTemplate(id: ID!, title: String, shortDescription: String, description: String, parameters: Json, script: String, style: String, settings: Json): Template!
@@ -194,6 +202,15 @@ type Mutation {
   ): ProposalCard!
 
   deleteProposalCard(id: ID!, boardId: ID!): ProposalCard!
+
+  createReview(studyId: ID!, proposalId: ID!, type: String, settings: Json, content: Json): Review!
+  updateReview(id: ID!, type: String, settings: Json, content: Json): Review!
+  deleteReview(id: ID!): Review!
+
+  createClassNetwork(title: String, description: String, settings: Json, classes: [ID]): ClassNetwork!
+  updateClassNetwork(id: ID!, title: String, description: String, settings: Json, classes: [ID]): ClassNetwork!
+  deleteClassNetwork(id: ID!): ClassNetwork!
+
 }
 
 type SuccessMessage {
@@ -225,4 +242,6 @@ type Profile {
   journals: [Journal]!
   posts: [Post]!
   publicReadableId: String
+  reviews: [Review]!
+  classNetworksCreated: [ClassNetwork]!
 }
