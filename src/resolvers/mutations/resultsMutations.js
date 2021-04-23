@@ -1,8 +1,6 @@
 const resultsMutations = {
   // submit a new result from open API
   async submitResultFromAPI(parent, args, ctx, info) {
-    console.log('args', args);
-
     const messageId = args.metadata && args.metadata.id;
     const payload = args.metadata && args.metadata.payload;
     const token = `${payload.slice(0, 4)}-${messageId}`;
@@ -24,8 +22,6 @@ const resultsMutations = {
       },
       `{ id }`
     );
-
-    console.log('args.type', args.type);
 
     if (!result) {
       const createdResult = await ctx.db.mutation.createResult(
@@ -70,8 +66,6 @@ const resultsMutations = {
         },
         `{ id type }`
       );
-
-      console.log('createdResult', createdResult);
 
       return { message: 'Created' };
     }
@@ -122,7 +116,6 @@ const resultsMutations = {
 
   // update the information about results
   async updateResultsInfo(parent, args, ctx, info) {
-    console.log('args', args);
     // update the user email if there is an email
     const profile = await ctx.db.query.profile(
       {

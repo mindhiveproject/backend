@@ -3,8 +3,6 @@ const slugify = require('slugify');
 const proposalMutations = {
   // copy proposal board
   async copyProposalBoard(parent, args, ctx, info) {
-    // console.log('args', args);
-
     // find a proposal board with this id
     const where = { id: args.id };
     const template = await ctx.db.query.proposalBoard(
@@ -40,7 +38,6 @@ const proposalMutations = {
     // create new sections
     await Promise.all(template.sections.map(async (section, i) => {
       const templateSection = template.sections[i];
-      // console.log('templateSection', templateSection);
       const newSection = await ctx.db.mutation.createProposalSection(
         {
           data: {
@@ -55,7 +52,6 @@ const proposalMutations = {
       );
       // create cards of this section
       await Promise.all(templateSection.cards.map( async (card, i) => {
-        // console.log('card', i, card);
         const templateCard = section.cards[i];
         const newCard = await ctx.db.mutation.createProposalCard(
           {
@@ -125,7 +121,6 @@ const proposalMutations = {
 
   // delete board
   async deleteProposalBoard(parent, args, ctx, info) {
-    // console.log('args for delete', args);
     const where = { id: args.id };
     // find the board information
     const board = await ctx.db.query.proposalBoard(
@@ -175,8 +170,6 @@ const proposalMutations = {
 
   // update section
   async updateProposalSection(parent, args, ctx, info) {
-    // console.log('line 52 args', args);
-
     // update new section
     const section = await ctx.db.mutation.updateProposalSection(
       {
@@ -221,8 +214,6 @@ const proposalMutations = {
 
   // / create new card
   async createProposalCard(parent, args, ctx, info) {
-    // console.log('args', args);
-
     const card = await ctx.db.mutation.createProposalCard(
       {
         data: {
@@ -244,8 +235,6 @@ const proposalMutations = {
 
   // update card
   async updateProposalCard(parent, args, ctx, info) {
-    // console.log('args', args);
-
     // add collaborators
     let assignedTo = [];
     if(args.assignedTo){
@@ -313,7 +302,6 @@ const proposalMutations = {
 
   // delete card
   async deleteProposalCard(parent, args, ctx, info) {
-    // console.log('args', args);
     const where = { id: args.id };
     // delete it
     const deletedCard = await ctx.db.mutation.deleteProposalCard(
