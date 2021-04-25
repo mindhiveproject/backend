@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Sat Apr 24 2021 01:44:58 GMT+0900 (Korean Standard Time)
+# timestamp: Sun Apr 25 2021 22:08:06 GMT+0900 (Korean Standard Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -12265,7 +12265,7 @@ type Result implements Node {
   info: Json
   incrementalData(where: DataWhereInput, orderBy: DataOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Data!]
   fullData: Data
-  type: ResultType
+  resultType: ResultType
 }
 
 """A connection to a list of items."""
@@ -12286,7 +12286,7 @@ input ResultCreateInput {
   token: String
   payload: String
   info: Json
-  type: ResultType
+  resultType: ResultType
   template: TemplateCreateOneInput
   task: TaskCreateOneInput!
   user: ProfileCreateOneWithoutResultsInput!
@@ -12308,7 +12308,7 @@ input ResultCreateWithoutUserInput {
   token: String
   payload: String
   info: Json
-  type: ResultType
+  resultType: ResultType
   template: TemplateCreateOneInput
   task: TaskCreateOneInput!
   study: StudyCreateOneInput
@@ -12344,8 +12344,8 @@ enum ResultOrderByInput {
   payload_DESC
   info_ASC
   info_DESC
-  type_ASC
-  type_DESC
+  resultType_ASC
+  resultType_DESC
 }
 
 type ResultPreviousValues {
@@ -12358,7 +12358,7 @@ type ResultPreviousValues {
   updatedAt: DateTime!
   payload: String
   info: Json
-  type: ResultType
+  resultType: ResultType
 }
 
 input ResultScalarWhereInput {
@@ -12596,16 +12596,16 @@ input ResultScalarWhereInput {
 
   """All values not ending with the given string."""
   payload_not_ends_with: String
-  type: ResultType
+  resultType: ResultType
 
   """All values that are not equal to given value."""
-  type_not: ResultType
+  resultType_not: ResultType
 
   """All values that are contained in given list."""
-  type_in: [ResultType!]
+  resultType_in: [ResultType!]
 
   """All values that are not contained in given list."""
-  type_not_in: [ResultType!]
+  resultType_not_in: [ResultType!]
 }
 
 type ResultSubscriptionPayload {
@@ -12660,7 +12660,7 @@ input ResultUpdateInput {
   token: String
   payload: String
   info: Json
-  type: ResultType
+  resultType: ResultType
   template: TemplateUpdateOneInput
   task: TaskUpdateOneRequiredInput
   user: ProfileUpdateOneRequiredWithoutResultsInput
@@ -12676,7 +12676,7 @@ input ResultUpdateManyDataInput {
   token: String
   payload: String
   info: Json
-  type: ResultType
+  resultType: ResultType
 }
 
 input ResultUpdateManyMutationInput {
@@ -12686,7 +12686,7 @@ input ResultUpdateManyMutationInput {
   token: String
   payload: String
   info: Json
-  type: ResultType
+  resultType: ResultType
 }
 
 input ResultUpdateManyWithoutUserInput {
@@ -12713,7 +12713,7 @@ input ResultUpdateWithoutUserDataInput {
   token: String
   payload: String
   info: Json
-  type: ResultType
+  resultType: ResultType
   template: TemplateUpdateOneInput
   task: TaskUpdateOneRequiredInput
   study: StudyUpdateOneInput
@@ -12967,16 +12967,16 @@ input ResultWhereInput {
 
   """All values not ending with the given string."""
   payload_not_ends_with: String
-  type: ResultType
+  resultType: ResultType
 
   """All values that are not equal to given value."""
-  type_not: ResultType
+  resultType_not: ResultType
 
   """All values that are contained in given list."""
-  type_in: [ResultType!]
+  resultType_in: [ResultType!]
 
   """All values that are not contained in given list."""
-  type_not_in: [ResultType!]
+  resultType_not_in: [ResultType!]
   template: TemplateWhereInput
   task: TaskWhereInput
   user: ProfileWhereInput
@@ -12997,9 +12997,9 @@ type Review implements Node {
   study: Study
   proposal: ProposalBoard
   author: Profile
-  type: String
   settings: Json
   content: Json
+  stage: ReviewStage
 }
 
 """A connection to a list of items."""
@@ -13014,9 +13014,9 @@ type ReviewConnection {
 
 input ReviewCreateInput {
   id: ID
-  type: String
   settings: Json
   content: Json
+  stage: ReviewStage
   study: StudyCreateOneWithoutReviewsInput
   proposal: ProposalBoardCreateOneWithoutReviewsInput
   author: ProfileCreateOneWithoutReviewsInput
@@ -13039,27 +13039,27 @@ input ReviewCreateManyWithoutStudyInput {
 
 input ReviewCreateWithoutAuthorInput {
   id: ID
-  type: String
   settings: Json
   content: Json
+  stage: ReviewStage
   study: StudyCreateOneWithoutReviewsInput
   proposal: ProposalBoardCreateOneWithoutReviewsInput
 }
 
 input ReviewCreateWithoutProposalInput {
   id: ID
-  type: String
   settings: Json
   content: Json
+  stage: ReviewStage
   study: StudyCreateOneWithoutReviewsInput
   author: ProfileCreateOneWithoutReviewsInput
 }
 
 input ReviewCreateWithoutStudyInput {
   id: ID
-  type: String
   settings: Json
   content: Json
+  stage: ReviewStage
   proposal: ProposalBoardCreateOneWithoutReviewsInput
   author: ProfileCreateOneWithoutReviewsInput
 }
@@ -13076,19 +13076,19 @@ type ReviewEdge {
 enum ReviewOrderByInput {
   id_ASC
   id_DESC
-  type_ASC
-  type_DESC
   settings_ASC
   settings_DESC
   content_ASC
   content_DESC
+  stage_ASC
+  stage_DESC
 }
 
 type ReviewPreviousValues {
   id: ID!
-  type: String
   settings: Json
   content: Json
+  stage: ReviewStage
 }
 
 input ReviewScalarWhereInput {
@@ -13140,46 +13140,21 @@ input ReviewScalarWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  type: String
+  stage: ReviewStage
 
   """All values that are not equal to given value."""
-  type_not: String
+  stage_not: ReviewStage
 
   """All values that are contained in given list."""
-  type_in: [String!]
+  stage_in: [ReviewStage!]
 
   """All values that are not contained in given list."""
-  type_not_in: [String!]
+  stage_not_in: [ReviewStage!]
+}
 
-  """All values less than the given value."""
-  type_lt: String
-
-  """All values less than or equal the given value."""
-  type_lte: String
-
-  """All values greater than the given value."""
-  type_gt: String
-
-  """All values greater than or equal the given value."""
-  type_gte: String
-
-  """All values containing the given string."""
-  type_contains: String
-
-  """All values not containing the given string."""
-  type_not_contains: String
-
-  """All values starting with the given string."""
-  type_starts_with: String
-
-  """All values not starting with the given string."""
-  type_not_starts_with: String
-
-  """All values ending with the given string."""
-  type_ends_with: String
-
-  """All values not ending with the given string."""
-  type_not_ends_with: String
+enum ReviewStage {
+  INDIVIDUAL
+  SYNTHESIS
 }
 
 type ReviewSubscriptionPayload {
@@ -13222,24 +13197,24 @@ input ReviewSubscriptionWhereInput {
 }
 
 input ReviewUpdateInput {
-  type: String
   settings: Json
   content: Json
+  stage: ReviewStage
   study: StudyUpdateOneWithoutReviewsInput
   proposal: ProposalBoardUpdateOneWithoutReviewsInput
   author: ProfileUpdateOneWithoutReviewsInput
 }
 
 input ReviewUpdateManyDataInput {
-  type: String
   settings: Json
   content: Json
+  stage: ReviewStage
 }
 
 input ReviewUpdateManyMutationInput {
-  type: String
   settings: Json
   content: Json
+  stage: ReviewStage
 }
 
 input ReviewUpdateManyWithoutAuthorInput {
@@ -13284,25 +13259,25 @@ input ReviewUpdateManyWithWhereNestedInput {
 }
 
 input ReviewUpdateWithoutAuthorDataInput {
-  type: String
   settings: Json
   content: Json
+  stage: ReviewStage
   study: StudyUpdateOneWithoutReviewsInput
   proposal: ProposalBoardUpdateOneWithoutReviewsInput
 }
 
 input ReviewUpdateWithoutProposalDataInput {
-  type: String
   settings: Json
   content: Json
+  stage: ReviewStage
   study: StudyUpdateOneWithoutReviewsInput
   author: ProfileUpdateOneWithoutReviewsInput
 }
 
 input ReviewUpdateWithoutStudyDataInput {
-  type: String
   settings: Json
   content: Json
+  stage: ReviewStage
   proposal: ProposalBoardUpdateOneWithoutReviewsInput
   author: ProfileUpdateOneWithoutReviewsInput
 }
@@ -13389,46 +13364,16 @@ input ReviewWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  type: String
+  stage: ReviewStage
 
   """All values that are not equal to given value."""
-  type_not: String
+  stage_not: ReviewStage
 
   """All values that are contained in given list."""
-  type_in: [String!]
+  stage_in: [ReviewStage!]
 
   """All values that are not contained in given list."""
-  type_not_in: [String!]
-
-  """All values less than the given value."""
-  type_lt: String
-
-  """All values less than or equal the given value."""
-  type_lte: String
-
-  """All values greater than the given value."""
-  type_gt: String
-
-  """All values greater than or equal the given value."""
-  type_gte: String
-
-  """All values containing the given string."""
-  type_contains: String
-
-  """All values not containing the given string."""
-  type_not_contains: String
-
-  """All values starting with the given string."""
-  type_starts_with: String
-
-  """All values not starting with the given string."""
-  type_not_starts_with: String
-
-  """All values ending with the given string."""
-  type_ends_with: String
-
-  """All values not ending with the given string."""
-  type_not_ends_with: String
+  stage_not_in: [ReviewStage!]
   study: StudyWhereInput
   proposal: ProposalBoardWhereInput
   author: ProfileWhereInput

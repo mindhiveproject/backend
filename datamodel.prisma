@@ -13,12 +13,6 @@ enum TaskType {
   SURVEY
 }
 
-enum ResultType {
-  REVIEW
-  TEST
-  MAIN
-}
-
 type Profile {
   id: ID! @id
   username: String! @unique
@@ -129,6 +123,12 @@ type ClassNetwork {
   classes: [Class]! @relation(name:"Classnetwork")
 }
 
+enum ResultType {
+  REVIEW
+  TEST
+  MAIN
+}
+
 type Result {
   id: ID! @id
   template: Template #relationship to Template
@@ -145,7 +145,7 @@ type Result {
   info: Json
   incrementalData: [Data] @relation(name:"Incrementaldata")
   fullData: Data  @relation(name:"Fulldata")
-  type: ResultType
+  resultType: ResultType
 }
 
 type Data {
@@ -310,12 +310,17 @@ type ProposalCard {
   updatedAt: DateTime! @updatedAt
 }
 
+enum ReviewStage {
+  INDIVIDUAL
+  SYNTHESIS
+}
+
 type Review {
   id: ID! @id
   study: Study @relation(name:"StudyReview")
   proposal: ProposalBoard @relation(name:"ProposalReview")
   author: Profile @relation(name:"AuthorOfReview")
-  type: String
   settings: Json
   content: Json
+  stage: ReviewStage
 }

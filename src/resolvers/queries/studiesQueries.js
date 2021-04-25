@@ -25,7 +25,7 @@ const studiesQueries = {
     const { where } = args;
     const theClasses = await ctx.db.query.classes(
       { where },
-      `{ id title students { id authorOfProposal { id slug title createdAt isSubmitted study { title } reviews { id } } } }`
+      `{ id title students { id authorOfProposal { id slug title createdAt isSubmitted study { title } reviews { id } author { id studentIn { id title }} } } }`
     );
     // 2. prepare the object to return
     const allProposals = theClasses.map(theClass =>
