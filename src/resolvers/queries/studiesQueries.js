@@ -25,16 +25,70 @@ const studiesQueries = {
     const { where } = args;
     const theClasses = await ctx.db.query.classes(
       { where },
-      `{ id title students { id authorOfProposal { id slug title createdAt isSubmitted study { title } reviews { id stage } author { id studentIn { id title }} } } }`
+      `{ id
+         title
+         creator {
+           id
+           authorOfProposal {
+             id
+            }
+         }
+         students {
+           id
+          authorOfProposal {
+            id
+           }
+          }
+         }`
     );
+
     // 2. prepare the object to return
-    const allProposals = theClasses.map(theClass =>
-      theClass.students.map(student => student.authorOfProposal)
+    const allStudentProposals = theClasses
+      .map(theClass =>
+        theClass.students.map(student =>
+          student.authorOfProposal.map(proposal => proposal.id)
+        )
+      )
+      .flat(3);
+
+    const allTeacherProposals = theClasses
+      .map(theClass =>
+        theClass.creator.authorOfProposal.map(proposal => proposal.id)
+      )
+      .flat(2);
+
+    const proposalIDs = [
+      ...new Set([...allStudentProposals, ...allTeacherProposals]),
+    ];
+
+    const submittedProposals = await ctx.db.query.proposalBoards(
+      { where: { id_in: proposalIDs, isSubmitted: true } },
+      `{ id
+          slug
+          title
+          createdAt
+          isSubmitted
+          study {
+            title
+          }
+          reviews {
+            id
+            stage
+          }
+          author {
+            id
+            studentIn {
+              id
+              title
+            }
+            teacherIn {
+              id
+              title
+            }
+          }
+        }`
     );
-    const proposals = [...new Set(allProposals.flat(2))];
-    const submittedProposals = proposals.filter(
-      proposal => proposal.isSubmitted
-    );
+
     return submittedProposals;
   },
 };
