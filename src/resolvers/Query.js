@@ -102,7 +102,7 @@ const Query = {
     if (!ctx.request.userId) {
       throw new Error('You must be logged in');
     }
-    hasPermission(ctx.request.user, ['IT']);
+    hasPermission(ctx.request.user, ['IT', 'ADMIN']);
     // query all users
     return ctx.db.query.profiles({}, info);
   },
