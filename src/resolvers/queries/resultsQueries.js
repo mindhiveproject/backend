@@ -135,6 +135,25 @@ const resultsQueries = {
       info
     );
   },
+
+  // query all participant results
+  async participantResults(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+
+    const results = await ctx.db.query.results(
+      {
+        where: {
+          user: {
+            id: args.participantId,
+          },
+        },
+      },
+      info
+    );
+    return results;
+  },
 };
 
 module.exports = resultsQueries;

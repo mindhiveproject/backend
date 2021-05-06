@@ -57,6 +57,25 @@ const usersQueries = {
 
     return student;
   },
+
+  // query a participant of a study
+  async participant(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    // TODO check authorization (being an admin or a researcher of the study)
+
+    const participant = await ctx.db.query.profile(
+      {
+        where: {
+          id: args.participantId,
+        },
+      },
+      info
+    );
+
+    return participant;
+  },
 };
 
 module.exports = usersQueries;

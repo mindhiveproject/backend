@@ -55,6 +55,8 @@ type Query {
   classNetwork(where: ClassNetworkWhereUniqueInput): ClassNetwork
   classNetworks(where: ClassNetworkWhereInput, orderBy: ClassNetworkOrderByInput, skip: Int, first: Int): [ClassNetwork]!
 
+  participant(participantId: ID!, studyId: ID!): Profile
+  participantResults(participantId: ID!): [Result]!
 }
 
 type Mutation {
