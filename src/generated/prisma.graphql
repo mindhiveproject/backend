@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Sun Apr 25 2021 22:08:06 GMT+0900 (Korean Standard Time)
+# timestamp: Tue May 11 2021 15:04:48 GMT+0900 (Korean Standard Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -12266,6 +12266,7 @@ type Result implements Node {
   incrementalData(where: DataWhereInput, orderBy: DataOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Data!]
   fullData: Data
   resultType: ResultType
+  testVersion: String
 }
 
 """A connection to a list of items."""
@@ -12287,6 +12288,7 @@ input ResultCreateInput {
   payload: String
   info: Json
   resultType: ResultType
+  testVersion: String
   template: TemplateCreateOneInput
   task: TaskCreateOneInput!
   user: ProfileCreateOneWithoutResultsInput!
@@ -12309,6 +12311,7 @@ input ResultCreateWithoutUserInput {
   payload: String
   info: Json
   resultType: ResultType
+  testVersion: String
   template: TemplateCreateOneInput
   task: TaskCreateOneInput!
   study: StudyCreateOneInput
@@ -12346,6 +12349,8 @@ enum ResultOrderByInput {
   info_DESC
   resultType_ASC
   resultType_DESC
+  testVersion_ASC
+  testVersion_DESC
 }
 
 type ResultPreviousValues {
@@ -12359,6 +12364,7 @@ type ResultPreviousValues {
   payload: String
   info: Json
   resultType: ResultType
+  testVersion: String
 }
 
 input ResultScalarWhereInput {
@@ -12606,6 +12612,46 @@ input ResultScalarWhereInput {
 
   """All values that are not contained in given list."""
   resultType_not_in: [ResultType!]
+  testVersion: String
+
+  """All values that are not equal to given value."""
+  testVersion_not: String
+
+  """All values that are contained in given list."""
+  testVersion_in: [String!]
+
+  """All values that are not contained in given list."""
+  testVersion_not_in: [String!]
+
+  """All values less than the given value."""
+  testVersion_lt: String
+
+  """All values less than or equal the given value."""
+  testVersion_lte: String
+
+  """All values greater than the given value."""
+  testVersion_gt: String
+
+  """All values greater than or equal the given value."""
+  testVersion_gte: String
+
+  """All values containing the given string."""
+  testVersion_contains: String
+
+  """All values not containing the given string."""
+  testVersion_not_contains: String
+
+  """All values starting with the given string."""
+  testVersion_starts_with: String
+
+  """All values not starting with the given string."""
+  testVersion_not_starts_with: String
+
+  """All values ending with the given string."""
+  testVersion_ends_with: String
+
+  """All values not ending with the given string."""
+  testVersion_not_ends_with: String
 }
 
 type ResultSubscriptionPayload {
@@ -12661,6 +12707,7 @@ input ResultUpdateInput {
   payload: String
   info: Json
   resultType: ResultType
+  testVersion: String
   template: TemplateUpdateOneInput
   task: TaskUpdateOneRequiredInput
   user: ProfileUpdateOneRequiredWithoutResultsInput
@@ -12677,6 +12724,7 @@ input ResultUpdateManyDataInput {
   payload: String
   info: Json
   resultType: ResultType
+  testVersion: String
 }
 
 input ResultUpdateManyMutationInput {
@@ -12687,6 +12735,7 @@ input ResultUpdateManyMutationInput {
   payload: String
   info: Json
   resultType: ResultType
+  testVersion: String
 }
 
 input ResultUpdateManyWithoutUserInput {
@@ -12714,6 +12763,7 @@ input ResultUpdateWithoutUserDataInput {
   payload: String
   info: Json
   resultType: ResultType
+  testVersion: String
   template: TemplateUpdateOneInput
   task: TaskUpdateOneRequiredInput
   study: StudyUpdateOneInput
@@ -12977,6 +13027,46 @@ input ResultWhereInput {
 
   """All values that are not contained in given list."""
   resultType_not_in: [ResultType!]
+  testVersion: String
+
+  """All values that are not equal to given value."""
+  testVersion_not: String
+
+  """All values that are contained in given list."""
+  testVersion_in: [String!]
+
+  """All values that are not contained in given list."""
+  testVersion_not_in: [String!]
+
+  """All values less than the given value."""
+  testVersion_lt: String
+
+  """All values less than or equal the given value."""
+  testVersion_lte: String
+
+  """All values greater than the given value."""
+  testVersion_gt: String
+
+  """All values greater than or equal the given value."""
+  testVersion_gte: String
+
+  """All values containing the given string."""
+  testVersion_contains: String
+
+  """All values not containing the given string."""
+  testVersion_not_contains: String
+
+  """All values starting with the given string."""
+  testVersion_starts_with: String
+
+  """All values not starting with the given string."""
+  testVersion_not_starts_with: String
+
+  """All values ending with the given string."""
+  testVersion_ends_with: String
+
+  """All values not ending with the given string."""
+  testVersion_not_ends_with: String
   template: TemplateWhereInput
   task: TaskWhereInput
   user: ProfileWhereInput

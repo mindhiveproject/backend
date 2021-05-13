@@ -146,6 +146,7 @@ type Result {
   incrementalData: [Data] @relation(name:"Incrementaldata")
   fullData: Data  @relation(name:"Fulldata")
   resultType: ResultType
+  testVersion: String
 }
 
 type Data {

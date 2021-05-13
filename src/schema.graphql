@@ -88,7 +88,7 @@ type Mutation {
   moveToClass(classId: ID!, studentId: ID!): SuccessMessage
   addResult(templateId: ID!, data: Json, dataPolicy: String): Result!
   deleteResult(id: ID!): Result
-  submitResultFromAPI(userId: ID!, templateId: ID, taskId: ID, studyId: ID, data: Json, dataString: String, metadata: Json, dataPolicy: String, resultType: ResultType): SuccessMessage
+  submitResultFromAPI(userId: ID!, templateId: ID, taskId: ID, studyId: ID, data: Json, dataString: String, metadata: Json, dataPolicy: String, resultType: ResultType, version: String): SuccessMessage
   updateResultsInfo(id: ID!, info: Json): SuccessMessage
   createTemplate(title: String!, shortDescription: String, description: String, image: String, largeImage: String, parameters: Json, script: String, style: String, settings: Json): Template!
   updateTemplate(id: ID!, title: String, shortDescription: String, description: String, parameters: Json, script: String, style: String, settings: Json): Template!
