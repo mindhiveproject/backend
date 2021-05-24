@@ -154,6 +154,28 @@ const resultsQueries = {
     );
     return results;
   },
+
+  // query all participant results in a specific study
+  async participantStudyResults(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+
+    const results = await ctx.db.query.results(
+      {
+        where: {
+          user: {
+            id: args.participantId,
+          },
+          study: {
+            id: args.studyId,
+          },
+        },
+      },
+      info
+    );
+    return results;
+  },
 };
 
 module.exports = resultsQueries;

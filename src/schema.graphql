@@ -57,6 +57,7 @@ type Query {
 
   participant(participantId: ID!, studyId: ID!): Profile
   participantResults(participantId: ID!): [Result]!
+  participantStudyResults(participantId: ID!, studyId: ID!): [Result]!
 }
 
 type Mutation {
@@ -212,6 +213,8 @@ type Mutation {
   createClassNetwork(title: String, description: String, settings: Json, classes: [ID]): ClassNetwork!
   updateClassNetwork(id: ID!, title: String, description: String, settings: Json, classes: [ID]): ClassNetwork!
   deleteClassNetwork(id: ID!): ClassNetwork!
+
+  changeStatusParticipantStudyResults(participantId: ID!, studyId: ID!, status: ResultType!): SuccessMessage
 
 }
 
