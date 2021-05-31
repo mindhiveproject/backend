@@ -27,6 +27,7 @@ type Query {
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, first: Int): [Task]!
   myTasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, first: Int): [Task]!
   myAndAllTasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, first: Int): [Task]!
+  allTasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, first: Int): [Task]!
   consent(where: ConsentWhereUniqueInput): Consent
   consents: [Consent]!
   myConsents(where: ConsentWhereInput, orderBy: ConsentOrderByInput, skip: Int, first: Int): [Consent]!
