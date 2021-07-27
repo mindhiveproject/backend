@@ -91,6 +91,7 @@ const resultsQueries = {
           study: {
             id: mystudy.id,
           },
+          resultType_not: 'TEST',
         },
       },
       info
