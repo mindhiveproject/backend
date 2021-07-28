@@ -199,6 +199,7 @@ type Mutation {
     title: String,
     description: String,
     content: String,
+    comment: String,
     sectionId: ID,
     position: Float,
     assignedTo: [String],

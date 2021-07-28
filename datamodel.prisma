@@ -309,6 +309,7 @@ type ProposalCard {
   settings: Json
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  comment: String
 }
 
 enum ReviewStage {

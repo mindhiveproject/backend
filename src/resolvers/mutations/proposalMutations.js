@@ -235,6 +235,7 @@ const proposalMutations = {
 
   // update card
   async updateProposalCard(parent, args, ctx, info) {
+
     // add collaborators
     let assignedTo = [];
     if(args.assignedTo){
@@ -278,6 +279,7 @@ const proposalMutations = {
           position: args.position,
           title: args.title,
           content: args.content,
+          comment: args.comment,
           description: args.description,
           section: args.sectionId
             ? {

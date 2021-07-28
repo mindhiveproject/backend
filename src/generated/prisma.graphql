@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Tue May 11 2021 15:04:48 GMT+0900 (Korean Standard Time)
+# timestamp: Wed Jul 28 2021 14:46:49 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -10810,6 +10810,7 @@ type ProposalCard implements Node {
   settings: Json
   createdAt: DateTime!
   updatedAt: DateTime!
+  comment: String
 }
 
 """A connection to a list of items."""
@@ -10829,6 +10830,7 @@ input ProposalCardCreateInput {
   position: Float!
   content: String
   settings: Json
+  comment: String
   section: ProposalSectionCreateOneWithoutCardsInput!
   assignedTo: ProfileCreateManyWithoutAssignedToProposalCardInput
 }
@@ -10850,6 +10852,7 @@ input ProposalCardCreateWithoutAssignedToInput {
   position: Float!
   content: String
   settings: Json
+  comment: String
   section: ProposalSectionCreateOneWithoutCardsInput!
 }
 
@@ -10860,6 +10863,7 @@ input ProposalCardCreateWithoutSectionInput {
   position: Float!
   content: String
   settings: Json
+  comment: String
   assignedTo: ProfileCreateManyWithoutAssignedToProposalCardInput
 }
 
@@ -10889,6 +10893,8 @@ enum ProposalCardOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  comment_ASC
+  comment_DESC
 }
 
 type ProposalCardPreviousValues {
@@ -10900,6 +10906,7 @@ type ProposalCardPreviousValues {
   settings: Json
   createdAt: DateTime!
   updatedAt: DateTime!
+  comment: String
 }
 
 input ProposalCardScalarWhereInput {
@@ -11137,6 +11144,46 @@ input ProposalCardScalarWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  comment: String
+
+  """All values that are not equal to given value."""
+  comment_not: String
+
+  """All values that are contained in given list."""
+  comment_in: [String!]
+
+  """All values that are not contained in given list."""
+  comment_not_in: [String!]
+
+  """All values less than the given value."""
+  comment_lt: String
+
+  """All values less than or equal the given value."""
+  comment_lte: String
+
+  """All values greater than the given value."""
+  comment_gt: String
+
+  """All values greater than or equal the given value."""
+  comment_gte: String
+
+  """All values containing the given string."""
+  comment_contains: String
+
+  """All values not containing the given string."""
+  comment_not_contains: String
+
+  """All values starting with the given string."""
+  comment_starts_with: String
+
+  """All values not starting with the given string."""
+  comment_not_starts_with: String
+
+  """All values ending with the given string."""
+  comment_ends_with: String
+
+  """All values not ending with the given string."""
+  comment_not_ends_with: String
 }
 
 type ProposalCardSubscriptionPayload {
@@ -11184,6 +11231,7 @@ input ProposalCardUpdateInput {
   position: Float
   content: String
   settings: Json
+  comment: String
   section: ProposalSectionUpdateOneRequiredWithoutCardsInput
   assignedTo: ProfileUpdateManyWithoutAssignedToProposalCardInput
 }
@@ -11194,6 +11242,7 @@ input ProposalCardUpdateManyDataInput {
   position: Float
   content: String
   settings: Json
+  comment: String
 }
 
 input ProposalCardUpdateManyMutationInput {
@@ -11202,6 +11251,7 @@ input ProposalCardUpdateManyMutationInput {
   position: Float
   content: String
   settings: Json
+  comment: String
 }
 
 input ProposalCardUpdateManyWithoutAssignedToInput {
@@ -11239,6 +11289,7 @@ input ProposalCardUpdateWithoutAssignedToDataInput {
   position: Float
   content: String
   settings: Json
+  comment: String
   section: ProposalSectionUpdateOneRequiredWithoutCardsInput
 }
 
@@ -11248,6 +11299,7 @@ input ProposalCardUpdateWithoutSectionDataInput {
   position: Float
   content: String
   settings: Json
+  comment: String
   assignedTo: ProfileUpdateManyWithoutAssignedToProposalCardInput
 }
 
@@ -11508,6 +11560,46 @@ input ProposalCardWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  comment: String
+
+  """All values that are not equal to given value."""
+  comment_not: String
+
+  """All values that are contained in given list."""
+  comment_in: [String!]
+
+  """All values that are not contained in given list."""
+  comment_not_in: [String!]
+
+  """All values less than the given value."""
+  comment_lt: String
+
+  """All values less than or equal the given value."""
+  comment_lte: String
+
+  """All values greater than the given value."""
+  comment_gt: String
+
+  """All values greater than or equal the given value."""
+  comment_gte: String
+
+  """All values containing the given string."""
+  comment_contains: String
+
+  """All values not containing the given string."""
+  comment_not_contains: String
+
+  """All values starting with the given string."""
+  comment_starts_with: String
+
+  """All values not starting with the given string."""
+  comment_not_starts_with: String
+
+  """All values ending with the given string."""
+  comment_ends_with: String
+
+  """All values not ending with the given string."""
+  comment_not_ends_with: String
   section: ProposalSectionWhereInput
   assignedTo_every: ProfileWhereInput
   assignedTo_some: ProfileWhereInput
