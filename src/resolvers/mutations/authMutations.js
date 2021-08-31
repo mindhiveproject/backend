@@ -731,6 +731,59 @@ const authMutations = {
     }
     return profile;
   },
+
+  // edit account information
+  async editAccount(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+
+    // update profile
+    const updatedProfile = await ctx.db.mutation.updateProfile(
+      {
+        data: {
+          username: args.username,
+          generalInfo: { ...args.info },
+        },
+        where: {
+          id: ctx.request.userId,
+        },
+      },
+      `{ id authEmail{ id } }`
+    );
+
+    // if there is an email or password
+    if (args.email || args.password) {
+      // find the authEmail id
+      const authEmailId =
+        updatedProfile.authEmail.length && updatedProfile.authEmail[0].id;
+      if (authEmailId) {
+        const updatedData = {};
+
+        if (args.email) {
+          updatedData.email = args.email;
+        }
+        if (args.password) {
+          updatedData.password = await bcrypt.hash(args.password, 10);
+        }
+
+        // update email
+        await ctx.db.mutation.updateAuthEmail(
+          {
+            data: {
+              ...updatedData,
+            },
+            where: {
+              id: authEmailId,
+            },
+          },
+          `{ id email }`
+        );
+      }
+    }
+
+    return updatedProfile;
+  },
 };
 
 module.exports = authMutations;

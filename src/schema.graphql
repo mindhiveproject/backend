@@ -218,6 +218,8 @@ type Mutation {
 
   changeStatusParticipantStudyResults(participantId: ID!, studyId: ID!, status: ResultType!): SuccessMessage
 
+  editAccount(username: String, email: String, password: String, info: Json): Profile
+
 }
 
 type SuccessMessage {
