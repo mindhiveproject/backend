@@ -27,7 +27,7 @@ const joinTheStudy = async (profile, args, ctx, info) => {
     [study.id]: updatedInfo,
   };
   const consentId =
-    (args.info.consent && study.consent && study.consent.id) || null;
+    (args.info.consent === 'true' && study.consent && study.consent.id) || null;
   let consentInformation;
   // update consent information
   if (consentId) {
