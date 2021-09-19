@@ -50,6 +50,9 @@ type Profile {
   publicReadableId: String
   reviews: [Review]! @relation(name:"AuthorOfReview")
   classNetworksCreated: [ClassNetwork]! @relation(name:"Classnetworkcreator")
+  authorOfWord: [Word]! @relation(name:"WordAuthor")
+  memberOfTalk: [Talk]! @relation(name:"TalkMember")
+  authorOfTalk: [Talk]! @relation(name:"TalkAuthor")
 }
 
 type AuthEmail {
@@ -170,7 +173,7 @@ type Study {
   largeImage: String
   info: Json
   collaborators: [Profile]! @relation(name:"Studycollaborator")
-  consent: Consent
+  consent: [Consent]!
   messages: [Message]!
   public: Boolean
   submitForPublishing: Boolean
@@ -325,4 +328,26 @@ type Review {
   settings: Json
   content: Json
   stage: ReviewStage
+  createdAt: DateTime! @createdAt
+}
+
+type Word {
+  id: ID! @id
+  author: Profile @relation(name:"WordAuthor")
+  talk: Talk! @relation(name:"TalkWords")
+  message: String!
+  new: Boolean
+  settings: Json
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Talk {
+  id: ID! @id
+  author: Profile @relation(name:"TalkAuthor")
+  members: [Profile]! @relation(name:"TalkMember")
+  words: [Word]! @relation(name:"TalkWords")
+  settings: Json
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }

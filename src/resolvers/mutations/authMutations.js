@@ -13,8 +13,10 @@ const { transport, makeEmail } = require('../../mail');
 // general function to join a study
 const joinTheStudy = async (profile, args, ctx, info) => {
   const { study } = args;
+
   // assign participants to one of the study blocks
   const updatedInfo = { ...args.info };
+
   if (study.components && study.components.blocks) {
     const { blocks } = study.components;
     // get a random block out of study between-subjects blocks
@@ -26,16 +28,33 @@ const joinTheStudy = async (profile, args, ctx, info) => {
     ...profile.studiesInfo,
     [study.id]: updatedInfo,
   };
-  const consentId =
-    (args.info.consent === 'true' && study.consent && study.consent.id) || null;
-  let consentInformation;
+
   // update consent information
-  if (consentId) {
+  const consentIds = Object.keys(updatedInfo)
+    .filter(key => key.startsWith('consent-'))
+    .map(key => key.split('-')[1])
+    .map(id => ({ id }));
+
+  // filter the consents where the participant has agreed
+  const consentIdsAgree = consentIds.filter(
+    consent => updatedInfo[`consent-${consent.id}`] === 'agree'
+  );
+
+  let consentInformation;
+  if (consentIds && consentIds.length) {
     consentInformation = {
       ...profile.consentsInfo,
-      [consentId]: {
-        saveCoveredConsent: args.info.covered,
-      },
+      ...Object.fromEntries(
+        consentIds.map(consent => [
+          consent.id,
+          {
+            saveCoveredConsent: 'true',
+            decision: updatedInfo[`consent-${consent.id}`],
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+          },
+        ])
+      ),
     };
   } else {
     consentInformation = {
@@ -53,11 +72,12 @@ const joinTheStudy = async (profile, args, ctx, info) => {
         },
         studiesInfo: studyInformation,
         consentsInfo: consentInformation,
-        consentGivenFor: consentId
-          ? {
-              connect: { id: consentId },
-            }
-          : null,
+        consentGivenFor:
+          consentIdsAgree && consentIdsAgree.length
+            ? {
+                connect: consentIdsAgree,
+              }
+            : null,
       },
       where: {
         id: profile.id,
@@ -108,7 +128,7 @@ const authMutations = {
     delete generalInfo.id;
     delete generalInfo.step;
     delete generalInfo.mode;
-    delete generalInfo.consent;
+    // delete generalInfo.consent;
     delete generalInfo.covered;
 
     // create a profile (which will have the participant auth identity)

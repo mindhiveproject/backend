@@ -23,6 +23,7 @@ const Query = {
   messages: forwardTo('db'),
   post: forwardTo('db'),
   journals: forwardTo('db'),
+  talk: forwardTo('db'),
 
   proposalBoard: forwardTo('db'),
   proposalBoards: forwardTo('db'),
@@ -263,6 +264,34 @@ const Query = {
           author: {
             id: ctx.request.userId,
           },
+        },
+      },
+      info
+    );
+  },
+
+  // get talks of the user
+  async myTalks(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in');
+    }
+
+    // query parameters where author is the current user
+    return ctx.db.query.talks(
+      {
+        where: {
+          OR: [
+            {
+              author: {
+                id: ctx.request.userId,
+              },
+            },
+            {
+              members_some: {
+                id: ctx.request.userId,
+              },
+            },
+          ],
         },
       },
       info

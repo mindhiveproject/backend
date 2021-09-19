@@ -41,9 +41,9 @@ const studyMutations = {
             },
           },
           consent:
-            args.consent && args.consent !== 'no'
+            args.consent && args.consent.length
               ? {
-                  connect: { id: args.consent },
+                  connect: args.consent.map(consent => ({ id: consent })),
                 }
               : null,
           ...updates,
@@ -74,6 +74,7 @@ const studyMutations = {
       `{ id collaborators { id } consent { id } }`
     );
 
+    // disconnect the current collaborators if needed
     if (
       collaborators &&
       study.collaborators &&
@@ -94,6 +95,29 @@ const studyMutations = {
         `{ id }`
       );
     }
+
+    // disconnect the current consents if needed
+    if (
+      args.consent &&
+      study.consent &&
+      args.consent.length !== study.consent.length
+    ) {
+      // remove previous connections
+      await ctx.db.mutation.updateStudy(
+        {
+          data: {
+            consent: {
+              disconnect: study.consent,
+            },
+          },
+          where: {
+            id: args.id,
+          },
+        },
+        `{ id }`
+      );
+    }
+
     // take a copy of updates
     const updates = { ...args };
     // remove the ID from the updates
@@ -107,13 +131,9 @@ const studyMutations = {
             connect: collaborators,
           },
           consent:
-            args.consent && args.consent !== 'no'
+            args.consent && args.consent.length
               ? {
-                  connect: { id: args.consent },
-                }
-              : args.consent === 'no' && study.consent
-              ? {
-                  disconnect: { id: study.consent.id },
+                  connect: args.consent.map(consent => ({ id: consent })),
                 }
               : null,
         },

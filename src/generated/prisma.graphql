@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Wed Jul 28 2021 14:46:49 GMT+0200 (Central European Summer Time)
+# timestamp: Sat Sep 18 2021 14:59:30 GMT+0200 (Central European Summer Time)
 
 type AggregateAuthEmail {
   count: Int!
@@ -77,11 +77,19 @@ type AggregateStudy {
   count: Int!
 }
 
+type AggregateTalk {
+  count: Int!
+}
+
 type AggregateTask {
   count: Int!
 }
 
 type AggregateTemplate {
+  count: Int!
+}
+
+type AggregateWord {
   count: Int!
 }
 
@@ -3634,9 +3642,9 @@ input ConsentCreateManyWithoutParticipantsInput {
   connect: [ConsentWhereUniqueInput!]
 }
 
-input ConsentCreateOneWithoutStudiesInput {
-  create: ConsentCreateWithoutStudiesInput
-  connect: ConsentWhereUniqueInput
+input ConsentCreateManyWithoutStudiesInput {
+  create: [ConsentCreateWithoutStudiesInput!]
+  connect: [ConsentWhereUniqueInput!]
 }
 
 input ConsentCreateOneWithoutTasksInput {
@@ -4118,18 +4126,21 @@ input ConsentUpdateManyWithoutParticipantsInput {
   upsert: [ConsentUpsertWithWhereUniqueWithoutParticipantsInput!]
 }
 
+input ConsentUpdateManyWithoutStudiesInput {
+  create: [ConsentCreateWithoutStudiesInput!]
+  connect: [ConsentWhereUniqueInput!]
+  set: [ConsentWhereUniqueInput!]
+  disconnect: [ConsentWhereUniqueInput!]
+  delete: [ConsentWhereUniqueInput!]
+  update: [ConsentUpdateWithWhereUniqueWithoutStudiesInput!]
+  updateMany: [ConsentUpdateManyWithWhereNestedInput!]
+  deleteMany: [ConsentScalarWhereInput!]
+  upsert: [ConsentUpsertWithWhereUniqueWithoutStudiesInput!]
+}
+
 input ConsentUpdateManyWithWhereNestedInput {
   where: ConsentScalarWhereInput!
   data: ConsentUpdateManyDataInput!
-}
-
-input ConsentUpdateOneWithoutStudiesInput {
-  create: ConsentCreateWithoutStudiesInput
-  connect: ConsentWhereUniqueInput
-  disconnect: Boolean
-  delete: Boolean
-  update: ConsentUpdateWithoutStudiesDataInput
-  upsert: ConsentUpsertWithoutStudiesInput
 }
 
 input ConsentUpdateOneWithoutTasksInput {
@@ -4221,9 +4232,9 @@ input ConsentUpdateWithWhereUniqueWithoutParticipantsInput {
   data: ConsentUpdateWithoutParticipantsDataInput!
 }
 
-input ConsentUpsertWithoutStudiesInput {
-  update: ConsentUpdateWithoutStudiesDataInput!
-  create: ConsentCreateWithoutStudiesInput!
+input ConsentUpdateWithWhereUniqueWithoutStudiesInput {
+  where: ConsentWhereUniqueInput!
+  data: ConsentUpdateWithoutStudiesDataInput!
 }
 
 input ConsentUpsertWithoutTasksInput {
@@ -4247,6 +4258,12 @@ input ConsentUpsertWithWhereUniqueWithoutParticipantsInput {
   where: ConsentWhereUniqueInput!
   update: ConsentUpdateWithoutParticipantsDataInput!
   create: ConsentCreateWithoutParticipantsInput!
+}
+
+input ConsentUpsertWithWhereUniqueWithoutStudiesInput {
+  where: ConsentWhereUniqueInput!
+  update: ConsentUpdateWithoutStudiesDataInput!
+  create: ConsentCreateWithoutStudiesInput!
 }
 
 input ConsentWhereInput {
@@ -5930,6 +5947,8 @@ type Mutation {
   createProposalSection(data: ProposalSectionCreateInput!): ProposalSection!
   createProposalCard(data: ProposalCardCreateInput!): ProposalCard!
   createReview(data: ReviewCreateInput!): Review!
+  createWord(data: WordCreateInput!): Word!
+  createTalk(data: TalkCreateInput!): Talk!
   createStudy(data: StudyCreateInput!): Study!
   createTemplate(data: TemplateCreateInput!): Template!
   createTask(data: TaskCreateInput!): Task!
@@ -5951,6 +5970,8 @@ type Mutation {
   updateProposalSection(data: ProposalSectionUpdateInput!, where: ProposalSectionWhereUniqueInput!): ProposalSection
   updateProposalCard(data: ProposalCardUpdateInput!, where: ProposalCardWhereUniqueInput!): ProposalCard
   updateReview(data: ReviewUpdateInput!, where: ReviewWhereUniqueInput!): Review
+  updateWord(data: WordUpdateInput!, where: WordWhereUniqueInput!): Word
+  updateTalk(data: TalkUpdateInput!, where: TalkWhereUniqueInput!): Talk
   updateStudy(data: StudyUpdateInput!, where: StudyWhereUniqueInput!): Study
   updateTemplate(data: TemplateUpdateInput!, where: TemplateWhereUniqueInput!): Template
   updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task
@@ -5972,6 +5993,8 @@ type Mutation {
   deleteProposalSection(where: ProposalSectionWhereUniqueInput!): ProposalSection
   deleteProposalCard(where: ProposalCardWhereUniqueInput!): ProposalCard
   deleteReview(where: ReviewWhereUniqueInput!): Review
+  deleteWord(where: WordWhereUniqueInput!): Word
+  deleteTalk(where: TalkWhereUniqueInput!): Talk
   deleteStudy(where: StudyWhereUniqueInput!): Study
   deleteTemplate(where: TemplateWhereUniqueInput!): Template
   deleteTask(where: TaskWhereUniqueInput!): Task
@@ -5993,6 +6016,8 @@ type Mutation {
   upsertProposalSection(where: ProposalSectionWhereUniqueInput!, create: ProposalSectionCreateInput!, update: ProposalSectionUpdateInput!): ProposalSection!
   upsertProposalCard(where: ProposalCardWhereUniqueInput!, create: ProposalCardCreateInput!, update: ProposalCardUpdateInput!): ProposalCard!
   upsertReview(where: ReviewWhereUniqueInput!, create: ReviewCreateInput!, update: ReviewUpdateInput!): Review!
+  upsertWord(where: WordWhereUniqueInput!, create: WordCreateInput!, update: WordUpdateInput!): Word!
+  upsertTalk(where: TalkWhereUniqueInput!, create: TalkCreateInput!, update: TalkUpdateInput!): Talk!
   upsertStudy(where: StudyWhereUniqueInput!, create: StudyCreateInput!, update: StudyUpdateInput!): Study!
   upsertTemplate(where: TemplateWhereUniqueInput!, create: TemplateCreateInput!, update: TemplateUpdateInput!): Template!
   upsertTask(where: TaskWhereUniqueInput!, create: TaskCreateInput!, update: TaskUpdateInput!): Task!
@@ -6013,6 +6038,8 @@ type Mutation {
   updateManyProposalSections(data: ProposalSectionUpdateManyMutationInput!, where: ProposalSectionWhereInput): BatchPayload!
   updateManyProposalCards(data: ProposalCardUpdateManyMutationInput!, where: ProposalCardWhereInput): BatchPayload!
   updateManyReviews(data: ReviewUpdateManyMutationInput!, where: ReviewWhereInput): BatchPayload!
+  updateManyWords(data: WordUpdateManyMutationInput!, where: WordWhereInput): BatchPayload!
+  updateManyTalks(data: TalkUpdateManyMutationInput!, where: TalkWhereInput): BatchPayload!
   updateManyStudies(data: StudyUpdateManyMutationInput!, where: StudyWhereInput): BatchPayload!
   updateManyTemplates(data: TemplateUpdateManyMutationInput!, where: TemplateWhereInput): BatchPayload!
   updateManyTasks(data: TaskUpdateManyMutationInput!, where: TaskWhereInput): BatchPayload!
@@ -6034,6 +6061,8 @@ type Mutation {
   deleteManyProposalSections(where: ProposalSectionWhereInput): BatchPayload!
   deleteManyProposalCards(where: ProposalCardWhereInput): BatchPayload!
   deleteManyReviews(where: ReviewWhereInput): BatchPayload!
+  deleteManyWords(where: WordWhereInput): BatchPayload!
+  deleteManyTalks(where: TalkWhereInput): BatchPayload!
   deleteManyStudies(where: StudyWhereInput): BatchPayload!
   deleteManyTemplates(where: TemplateWhereInput): BatchPayload!
   deleteManyTasks(where: TaskWhereInput): BatchPayload!
@@ -6685,6 +6714,9 @@ type Profile implements Node {
   publicReadableId: String
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
   classNetworksCreated(where: ClassNetworkWhereInput, orderBy: ClassNetworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ClassNetwork!]
+  authorOfWord(where: WordWhereInput, orderBy: WordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Word!]
+  memberOfTalk(where: TalkWhereInput, orderBy: TalkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Talk!]
+  authorOfTalk(where: TalkWhereInput, orderBy: TalkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Talk!]
 }
 
 """A connection to a list of items."""
@@ -6734,6 +6766,9 @@ input ProfileCreateInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateManyWithoutAssignedToProposalCardInput {
@@ -6771,6 +6806,11 @@ input ProfileCreateManyWithoutConsentGivenForInput {
   connect: [ProfileWhereUniqueInput!]
 }
 
+input ProfileCreateManyWithoutMemberOfTalkInput {
+  create: [ProfileCreateWithoutMemberOfTalkInput!]
+  connect: [ProfileWhereUniqueInput!]
+}
+
 input ProfileCreateManyWithoutParticipantInInput {
   create: [ProfileCreateWithoutParticipantInInput!]
   connect: [ProfileWhereUniqueInput!]
@@ -6798,6 +6838,16 @@ input ProfileCreateOneWithoutAuthInviteInput {
 
 input ProfileCreateOneWithoutAuthorOfProposalInput {
   create: ProfileCreateWithoutAuthorOfProposalInput
+  connect: ProfileWhereUniqueInput
+}
+
+input ProfileCreateOneWithoutAuthorOfTalkInput {
+  create: ProfileCreateWithoutAuthorOfTalkInput
+  connect: ProfileWhereUniqueInput
+}
+
+input ProfileCreateOneWithoutAuthorOfWordInput {
+  create: ProfileCreateWithoutAuthorOfWordInput
   connect: ProfileWhereUniqueInput
 }
 
@@ -6901,6 +6951,9 @@ input ProfileCreateWithoutAssignedToProposalCardInput {
   assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAssignedToProposalSectionInput {
@@ -6939,6 +6992,9 @@ input ProfileCreateWithoutAssignedToProposalSectionInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthEmailInput {
@@ -6977,6 +7033,9 @@ input ProfileCreateWithoutAuthEmailInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthInviteInput {
@@ -7015,6 +7074,9 @@ input ProfileCreateWithoutAuthInviteInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthorOfProposalInput {
@@ -7053,6 +7115,91 @@ input ProfileCreateWithoutAuthorOfProposalInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
+}
+
+input ProfileCreateWithoutAuthorOfTalkInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  publicReadableId: String
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
+  reviews: ReviewCreateManyWithoutAuthorInput
+  classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+}
+
+input ProfileCreateWithoutAuthorOfWordInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  publicReadableId: String
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
+  reviews: ReviewCreateManyWithoutAuthorInput
+  classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthParticipantInput {
@@ -7091,6 +7238,9 @@ input ProfileCreateWithoutAuthParticipantInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthTokenInput {
@@ -7129,6 +7279,9 @@ input ProfileCreateWithoutAuthTokenInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutClassNetworksCreatedInput {
@@ -7167,6 +7320,9 @@ input ProfileCreateWithoutClassNetworksCreatedInput {
   assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutCollaboratorInConsentInput {
@@ -7205,6 +7361,9 @@ input ProfileCreateWithoutCollaboratorInConsentInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutCollaboratorInStudyInput {
@@ -7243,6 +7402,9 @@ input ProfileCreateWithoutCollaboratorInStudyInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutCollaboratorInTaskInput {
@@ -7281,6 +7443,9 @@ input ProfileCreateWithoutCollaboratorInTaskInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutCollaboratorOnProposalInput {
@@ -7319,6 +7484,9 @@ input ProfileCreateWithoutCollaboratorOnProposalInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutConsentCreatorInInput {
@@ -7357,6 +7525,9 @@ input ProfileCreateWithoutConsentCreatorInInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutConsentGivenForInput {
@@ -7395,6 +7566,9 @@ input ProfileCreateWithoutConsentGivenForInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutCreatorOfProposalInput {
@@ -7433,6 +7607,9 @@ input ProfileCreateWithoutCreatorOfProposalInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutJournalsInput {
@@ -7471,6 +7648,50 @@ input ProfileCreateWithoutJournalsInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
+}
+
+input ProfileCreateWithoutMemberOfTalkInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  publicReadableId: String
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
+  reviews: ReviewCreateManyWithoutAuthorInput
+  classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutParticipantInInput {
@@ -7509,6 +7730,9 @@ input ProfileCreateWithoutParticipantInInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutPostsInput {
@@ -7547,6 +7771,9 @@ input ProfileCreateWithoutPostsInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutResearcherInInput {
@@ -7585,6 +7812,9 @@ input ProfileCreateWithoutResearcherInInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutResultsInput {
@@ -7623,6 +7853,9 @@ input ProfileCreateWithoutResultsInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutReviewsInput {
@@ -7661,6 +7894,9 @@ input ProfileCreateWithoutReviewsInput {
   assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutStudentInInput {
@@ -7699,6 +7935,9 @@ input ProfileCreateWithoutStudentInInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutTaskCreatorInInput {
@@ -7737,6 +7976,9 @@ input ProfileCreateWithoutTaskCreatorInInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutTeacherInInput {
@@ -7775,6 +8017,9 @@ input ProfileCreateWithoutTeacherInInput {
   assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
   reviews: ReviewCreateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
 }
 
 """An edge in a connection."""
@@ -8152,6 +8397,9 @@ input ProfileUpdateDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateInput {
@@ -8190,6 +8438,9 @@ input ProfileUpdateInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateManyDataInput {
@@ -8302,6 +8553,18 @@ input ProfileUpdateManyWithoutConsentGivenForInput {
   updateMany: [ProfileUpdateManyWithWhereNestedInput!]
   deleteMany: [ProfileScalarWhereInput!]
   upsert: [ProfileUpsertWithWhereUniqueWithoutConsentGivenForInput!]
+}
+
+input ProfileUpdateManyWithoutMemberOfTalkInput {
+  create: [ProfileCreateWithoutMemberOfTalkInput!]
+  connect: [ProfileWhereUniqueInput!]
+  set: [ProfileWhereUniqueInput!]
+  disconnect: [ProfileWhereUniqueInput!]
+  delete: [ProfileWhereUniqueInput!]
+  update: [ProfileUpdateWithWhereUniqueWithoutMemberOfTalkInput!]
+  updateMany: [ProfileUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProfileScalarWhereInput!]
+  upsert: [ProfileUpsertWithWhereUniqueWithoutMemberOfTalkInput!]
 }
 
 input ProfileUpdateManyWithoutParticipantInInput {
@@ -8433,6 +8696,24 @@ input ProfileUpdateOneWithoutAuthorOfProposalInput {
   upsert: ProfileUpsertWithoutAuthorOfProposalInput
 }
 
+input ProfileUpdateOneWithoutAuthorOfTalkInput {
+  create: ProfileCreateWithoutAuthorOfTalkInput
+  connect: ProfileWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ProfileUpdateWithoutAuthorOfTalkDataInput
+  upsert: ProfileUpsertWithoutAuthorOfTalkInput
+}
+
+input ProfileUpdateOneWithoutAuthorOfWordInput {
+  create: ProfileCreateWithoutAuthorOfWordInput
+  connect: ProfileWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ProfileUpdateWithoutAuthorOfWordDataInput
+  upsert: ProfileUpsertWithoutAuthorOfWordInput
+}
+
 input ProfileUpdateOneWithoutCreatorOfProposalInput {
   create: ProfileCreateWithoutCreatorOfProposalInput
   connect: ProfileWhereUniqueInput
@@ -8490,6 +8771,9 @@ input ProfileUpdateWithoutAssignedToProposalCardDataInput {
   assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAssignedToProposalSectionDataInput {
@@ -8527,6 +8811,9 @@ input ProfileUpdateWithoutAssignedToProposalSectionDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthEmailDataInput {
@@ -8564,6 +8851,9 @@ input ProfileUpdateWithoutAuthEmailDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthInviteDataInput {
@@ -8601,6 +8891,9 @@ input ProfileUpdateWithoutAuthInviteDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthorOfProposalDataInput {
@@ -8638,6 +8931,89 @@ input ProfileUpdateWithoutAuthorOfProposalDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
+}
+
+input ProfileUpdateWithoutAuthorOfTalkDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  publicReadableId: String
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
+  reviews: ReviewUpdateManyWithoutAuthorInput
+  classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+}
+
+input ProfileUpdateWithoutAuthorOfWordDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  publicReadableId: String
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
+  reviews: ReviewUpdateManyWithoutAuthorInput
+  classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthParticipantDataInput {
@@ -8675,6 +9051,9 @@ input ProfileUpdateWithoutAuthParticipantDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthTokenDataInput {
@@ -8712,6 +9091,9 @@ input ProfileUpdateWithoutAuthTokenDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutClassNetworksCreatedDataInput {
@@ -8749,6 +9131,9 @@ input ProfileUpdateWithoutClassNetworksCreatedDataInput {
   assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutCollaboratorInConsentDataInput {
@@ -8786,6 +9171,9 @@ input ProfileUpdateWithoutCollaboratorInConsentDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutCollaboratorInStudyDataInput {
@@ -8823,6 +9211,9 @@ input ProfileUpdateWithoutCollaboratorInStudyDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutCollaboratorInTaskDataInput {
@@ -8860,6 +9251,9 @@ input ProfileUpdateWithoutCollaboratorInTaskDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutCollaboratorOnProposalDataInput {
@@ -8897,6 +9291,9 @@ input ProfileUpdateWithoutCollaboratorOnProposalDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutConsentCreatorInDataInput {
@@ -8934,6 +9331,9 @@ input ProfileUpdateWithoutConsentCreatorInDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutConsentGivenForDataInput {
@@ -8971,6 +9371,9 @@ input ProfileUpdateWithoutConsentGivenForDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutCreatorOfProposalDataInput {
@@ -9008,6 +9411,9 @@ input ProfileUpdateWithoutCreatorOfProposalDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutJournalsDataInput {
@@ -9045,6 +9451,49 @@ input ProfileUpdateWithoutJournalsDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
+}
+
+input ProfileUpdateWithoutMemberOfTalkDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  publicReadableId: String
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
+  reviews: ReviewUpdateManyWithoutAuthorInput
+  classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutParticipantInDataInput {
@@ -9082,6 +9531,9 @@ input ProfileUpdateWithoutParticipantInDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutPostsDataInput {
@@ -9119,6 +9571,9 @@ input ProfileUpdateWithoutPostsDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutResearcherInDataInput {
@@ -9156,6 +9611,9 @@ input ProfileUpdateWithoutResearcherInDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutResultsDataInput {
@@ -9193,6 +9651,9 @@ input ProfileUpdateWithoutResultsDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutReviewsDataInput {
@@ -9230,6 +9691,9 @@ input ProfileUpdateWithoutReviewsDataInput {
   assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutStudentInDataInput {
@@ -9267,6 +9731,9 @@ input ProfileUpdateWithoutStudentInDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutTaskCreatorInDataInput {
@@ -9304,6 +9771,9 @@ input ProfileUpdateWithoutTaskCreatorInDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutTeacherInDataInput {
@@ -9341,6 +9811,9 @@ input ProfileUpdateWithoutTeacherInDataInput {
   assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
   reviews: ReviewUpdateManyWithoutAuthorInput
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithWhereUniqueWithoutAssignedToProposalCardInput {
@@ -9378,6 +9851,11 @@ input ProfileUpdateWithWhereUniqueWithoutConsentGivenForInput {
   data: ProfileUpdateWithoutConsentGivenForDataInput!
 }
 
+input ProfileUpdateWithWhereUniqueWithoutMemberOfTalkInput {
+  where: ProfileWhereUniqueInput!
+  data: ProfileUpdateWithoutMemberOfTalkDataInput!
+}
+
 input ProfileUpdateWithWhereUniqueWithoutParticipantInInput {
   where: ProfileWhereUniqueInput!
   data: ProfileUpdateWithoutParticipantInDataInput!
@@ -9406,6 +9884,16 @@ input ProfileUpsertWithoutAuthInviteInput {
 input ProfileUpsertWithoutAuthorOfProposalInput {
   update: ProfileUpdateWithoutAuthorOfProposalDataInput!
   create: ProfileCreateWithoutAuthorOfProposalInput!
+}
+
+input ProfileUpsertWithoutAuthorOfTalkInput {
+  update: ProfileUpdateWithoutAuthorOfTalkDataInput!
+  create: ProfileCreateWithoutAuthorOfTalkInput!
+}
+
+input ProfileUpsertWithoutAuthorOfWordInput {
+  update: ProfileUpdateWithoutAuthorOfWordDataInput!
+  create: ProfileCreateWithoutAuthorOfWordInput!
 }
 
 input ProfileUpsertWithoutAuthParticipantInput {
@@ -9508,6 +9996,12 @@ input ProfileUpsertWithWhereUniqueWithoutConsentGivenForInput {
   where: ProfileWhereUniqueInput!
   update: ProfileUpdateWithoutConsentGivenForDataInput!
   create: ProfileCreateWithoutConsentGivenForInput!
+}
+
+input ProfileUpsertWithWhereUniqueWithoutMemberOfTalkInput {
+  where: ProfileWhereUniqueInput!
+  update: ProfileUpdateWithoutMemberOfTalkDataInput!
+  create: ProfileCreateWithoutMemberOfTalkInput!
 }
 
 input ProfileUpsertWithWhereUniqueWithoutParticipantInInput {
@@ -9843,6 +10337,15 @@ input ProfileWhereInput {
   classNetworksCreated_every: ClassNetworkWhereInput
   classNetworksCreated_some: ClassNetworkWhereInput
   classNetworksCreated_none: ClassNetworkWhereInput
+  authorOfWord_every: WordWhereInput
+  authorOfWord_some: WordWhereInput
+  authorOfWord_none: WordWhereInput
+  memberOfTalk_every: TalkWhereInput
+  memberOfTalk_some: TalkWhereInput
+  memberOfTalk_none: TalkWhereInput
+  authorOfTalk_every: TalkWhereInput
+  authorOfTalk_some: TalkWhereInput
+  authorOfTalk_none: TalkWhereInput
 }
 
 input ProfileWhereUniqueInput {
@@ -12285,6 +12788,8 @@ type Query {
   proposalSections(where: ProposalSectionWhereInput, orderBy: ProposalSectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalSection]!
   proposalCards(where: ProposalCardWhereInput, orderBy: ProposalCardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalCard]!
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review]!
+  words(where: WordWhereInput, orderBy: WordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Word]!
+  talks(where: TalkWhereInput, orderBy: TalkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Talk]!
   studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study]!
   templates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Template]!
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task]!
@@ -12306,6 +12811,8 @@ type Query {
   proposalSection(where: ProposalSectionWhereUniqueInput!): ProposalSection
   proposalCard(where: ProposalCardWhereUniqueInput!): ProposalCard
   review(where: ReviewWhereUniqueInput!): Review
+  word(where: WordWhereUniqueInput!): Word
+  talk(where: TalkWhereUniqueInput!): Talk
   study(where: StudyWhereUniqueInput!): Study
   template(where: TemplateWhereUniqueInput!): Template
   task(where: TaskWhereUniqueInput!): Task
@@ -12327,6 +12834,8 @@ type Query {
   proposalSectionsConnection(where: ProposalSectionWhereInput, orderBy: ProposalSectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProposalSectionConnection!
   proposalCardsConnection(where: ProposalCardWhereInput, orderBy: ProposalCardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProposalCardConnection!
   reviewsConnection(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReviewConnection!
+  wordsConnection(where: WordWhereInput, orderBy: WordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): WordConnection!
+  talksConnection(where: TalkWhereInput, orderBy: TalkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TalkConnection!
   studiesConnection(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StudyConnection!
   templatesConnection(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TemplateConnection!
   tasksConnection(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TaskConnection!
@@ -13182,6 +13691,7 @@ type Review implements Node {
   settings: Json
   content: Json
   stage: ReviewStage
+  createdAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -13264,6 +13774,8 @@ enum ReviewOrderByInput {
   content_DESC
   stage_ASC
   stage_DESC
+  createdAt_ASC
+  createdAt_DESC
 }
 
 type ReviewPreviousValues {
@@ -13271,6 +13783,7 @@ type ReviewPreviousValues {
   settings: Json
   content: Json
   stage: ReviewStage
+  createdAt: DateTime!
 }
 
 input ReviewScalarWhereInput {
@@ -13332,6 +13845,28 @@ input ReviewScalarWhereInput {
 
   """All values that are not contained in given list."""
   stage_not_in: [ReviewStage!]
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
 }
 
 enum ReviewStage {
@@ -13556,6 +14091,28 @@ input ReviewWhereInput {
 
   """All values that are not contained in given list."""
   stage_not_in: [ReviewStage!]
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
   study: StudyWhereInput
   proposal: ProposalBoardWhereInput
   author: ProfileWhereInput
@@ -13961,7 +14518,7 @@ type Study implements Node {
   largeImage: String
   info: Json
   collaborators(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
-  consent: Consent
+  consent(where: ConsentWhereInput, orderBy: ConsentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Consent!]
   messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message!]
   public: Boolean
   submitForPublishing: Boolean
@@ -13997,7 +14554,7 @@ input StudyCreateInput {
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
-  consent: ConsentCreateOneWithoutStudiesInput
+  consent: ConsentCreateManyWithoutStudiesInput
   messages: MessageCreateManyInput
   proposal: ProposalBoardCreateManyWithoutStudyInput
   reviews: ReviewCreateManyWithoutStudyInput
@@ -14054,7 +14611,7 @@ input StudyCreateWithoutAuthorInput {
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
-  consent: ConsentCreateOneWithoutStudiesInput
+  consent: ConsentCreateManyWithoutStudiesInput
   messages: MessageCreateManyInput
   proposal: ProposalBoardCreateManyWithoutStudyInput
   reviews: ReviewCreateManyWithoutStudyInput
@@ -14076,7 +14633,7 @@ input StudyCreateWithoutCollaboratorsInput {
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
-  consent: ConsentCreateOneWithoutStudiesInput
+  consent: ConsentCreateManyWithoutStudiesInput
   messages: MessageCreateManyInput
   proposal: ProposalBoardCreateManyWithoutStudyInput
   reviews: ReviewCreateManyWithoutStudyInput
@@ -14120,7 +14677,7 @@ input StudyCreateWithoutParticipantsInput {
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
-  consent: ConsentCreateOneWithoutStudiesInput
+  consent: ConsentCreateManyWithoutStudiesInput
   messages: MessageCreateManyInput
   proposal: ProposalBoardCreateManyWithoutStudyInput
   reviews: ReviewCreateManyWithoutStudyInput
@@ -14143,7 +14700,7 @@ input StudyCreateWithoutProposalInput {
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
-  consent: ConsentCreateOneWithoutStudiesInput
+  consent: ConsentCreateManyWithoutStudiesInput
   messages: MessageCreateManyInput
   reviews: ReviewCreateManyWithoutStudyInput
 }
@@ -14165,7 +14722,7 @@ input StudyCreateWithoutReviewsInput {
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
-  consent: ConsentCreateOneWithoutStudiesInput
+  consent: ConsentCreateManyWithoutStudiesInput
   messages: MessageCreateManyInput
   proposal: ProposalBoardCreateManyWithoutStudyInput
 }
@@ -14625,7 +15182,7 @@ input StudyUpdateDataInput {
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
-  consent: ConsentUpdateOneWithoutStudiesInput
+  consent: ConsentUpdateManyWithoutStudiesInput
   messages: MessageUpdateManyInput
   proposal: ProposalBoardUpdateManyWithoutStudyInput
   reviews: ReviewUpdateManyWithoutStudyInput
@@ -14647,7 +15204,7 @@ input StudyUpdateInput {
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
-  consent: ConsentUpdateOneWithoutStudiesInput
+  consent: ConsentUpdateManyWithoutStudiesInput
   messages: MessageUpdateManyInput
   proposal: ProposalBoardUpdateManyWithoutStudyInput
   reviews: ReviewUpdateManyWithoutStudyInput
@@ -14776,7 +15333,7 @@ input StudyUpdateWithoutAuthorDataInput {
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
-  consent: ConsentUpdateOneWithoutStudiesInput
+  consent: ConsentUpdateManyWithoutStudiesInput
   messages: MessageUpdateManyInput
   proposal: ProposalBoardUpdateManyWithoutStudyInput
   reviews: ReviewUpdateManyWithoutStudyInput
@@ -14797,7 +15354,7 @@ input StudyUpdateWithoutCollaboratorsDataInput {
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
-  consent: ConsentUpdateOneWithoutStudiesInput
+  consent: ConsentUpdateManyWithoutStudiesInput
   messages: MessageUpdateManyInput
   proposal: ProposalBoardUpdateManyWithoutStudyInput
   reviews: ReviewUpdateManyWithoutStudyInput
@@ -14839,7 +15396,7 @@ input StudyUpdateWithoutParticipantsDataInput {
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
-  consent: ConsentUpdateOneWithoutStudiesInput
+  consent: ConsentUpdateManyWithoutStudiesInput
   messages: MessageUpdateManyInput
   proposal: ProposalBoardUpdateManyWithoutStudyInput
   reviews: ReviewUpdateManyWithoutStudyInput
@@ -14861,7 +15418,7 @@ input StudyUpdateWithoutProposalDataInput {
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
-  consent: ConsentUpdateOneWithoutStudiesInput
+  consent: ConsentUpdateManyWithoutStudiesInput
   messages: MessageUpdateManyInput
   reviews: ReviewUpdateManyWithoutStudyInput
 }
@@ -14882,7 +15439,7 @@ input StudyUpdateWithoutReviewsDataInput {
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
-  consent: ConsentUpdateOneWithoutStudiesInput
+  consent: ConsentUpdateManyWithoutStudiesInput
   messages: MessageUpdateManyInput
   proposal: ProposalBoardUpdateManyWithoutStudyInput
 }
@@ -15297,7 +15854,9 @@ input StudyWhereInput {
   collaborators_every: ProfileWhereInput
   collaborators_some: ProfileWhereInput
   collaborators_none: ProfileWhereInput
-  consent: ConsentWhereInput
+  consent_every: ConsentWhereInput
+  consent_some: ConsentWhereInput
+  consent_none: ConsentWhereInput
   messages_every: MessageWhereInput
   messages_some: MessageWhereInput
   messages_none: MessageWhereInput
@@ -15330,12 +15889,441 @@ type Subscription {
   proposalSection(where: ProposalSectionSubscriptionWhereInput): ProposalSectionSubscriptionPayload
   proposalCard(where: ProposalCardSubscriptionWhereInput): ProposalCardSubscriptionPayload
   review(where: ReviewSubscriptionWhereInput): ReviewSubscriptionPayload
+  word(where: WordSubscriptionWhereInput): WordSubscriptionPayload
+  talk(where: TalkSubscriptionWhereInput): TalkSubscriptionPayload
   study(where: StudySubscriptionWhereInput): StudySubscriptionPayload
   template(where: TemplateSubscriptionWhereInput): TemplateSubscriptionPayload
   task(where: TaskSubscriptionWhereInput): TaskSubscriptionPayload
   profile(where: ProfileSubscriptionWhereInput): ProfileSubscriptionPayload
   message(where: MessageSubscriptionWhereInput): MessageSubscriptionPayload
   data(where: DataSubscriptionWhereInput): DataSubscriptionPayload
+}
+
+type Talk implements Node {
+  id: ID!
+  author: Profile
+  members(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
+  words(where: WordWhereInput, orderBy: WordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Word!]
+  settings: Json
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type TalkConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TalkEdge]!
+  aggregate: AggregateTalk!
+}
+
+input TalkCreateInput {
+  id: ID
+  settings: Json
+  author: ProfileCreateOneWithoutAuthorOfTalkInput
+  members: ProfileCreateManyWithoutMemberOfTalkInput
+  words: WordCreateManyWithoutTalkInput
+}
+
+input TalkCreateManyWithoutAuthorInput {
+  create: [TalkCreateWithoutAuthorInput!]
+  connect: [TalkWhereUniqueInput!]
+}
+
+input TalkCreateManyWithoutMembersInput {
+  create: [TalkCreateWithoutMembersInput!]
+  connect: [TalkWhereUniqueInput!]
+}
+
+input TalkCreateOneWithoutWordsInput {
+  create: TalkCreateWithoutWordsInput
+  connect: TalkWhereUniqueInput
+}
+
+input TalkCreateWithoutAuthorInput {
+  id: ID
+  settings: Json
+  members: ProfileCreateManyWithoutMemberOfTalkInput
+  words: WordCreateManyWithoutTalkInput
+}
+
+input TalkCreateWithoutMembersInput {
+  id: ID
+  settings: Json
+  author: ProfileCreateOneWithoutAuthorOfTalkInput
+  words: WordCreateManyWithoutTalkInput
+}
+
+input TalkCreateWithoutWordsInput {
+  id: ID
+  settings: Json
+  author: ProfileCreateOneWithoutAuthorOfTalkInput
+  members: ProfileCreateManyWithoutMemberOfTalkInput
+}
+
+"""An edge in a connection."""
+type TalkEdge {
+  """The item at the end of the edge."""
+  node: Talk!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum TalkOrderByInput {
+  id_ASC
+  id_DESC
+  settings_ASC
+  settings_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type TalkPreviousValues {
+  id: ID!
+  settings: Json
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input TalkScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TalkScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TalkScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TalkScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+type TalkSubscriptionPayload {
+  mutation: MutationType!
+  node: Talk
+  updatedFields: [String!]
+  previousValues: TalkPreviousValues
+}
+
+input TalkSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TalkSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TalkSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TalkSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: TalkWhereInput
+}
+
+input TalkUpdateInput {
+  settings: Json
+  author: ProfileUpdateOneWithoutAuthorOfTalkInput
+  members: ProfileUpdateManyWithoutMemberOfTalkInput
+  words: WordUpdateManyWithoutTalkInput
+}
+
+input TalkUpdateManyDataInput {
+  settings: Json
+}
+
+input TalkUpdateManyMutationInput {
+  settings: Json
+}
+
+input TalkUpdateManyWithoutAuthorInput {
+  create: [TalkCreateWithoutAuthorInput!]
+  connect: [TalkWhereUniqueInput!]
+  set: [TalkWhereUniqueInput!]
+  disconnect: [TalkWhereUniqueInput!]
+  delete: [TalkWhereUniqueInput!]
+  update: [TalkUpdateWithWhereUniqueWithoutAuthorInput!]
+  updateMany: [TalkUpdateManyWithWhereNestedInput!]
+  deleteMany: [TalkScalarWhereInput!]
+  upsert: [TalkUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input TalkUpdateManyWithoutMembersInput {
+  create: [TalkCreateWithoutMembersInput!]
+  connect: [TalkWhereUniqueInput!]
+  set: [TalkWhereUniqueInput!]
+  disconnect: [TalkWhereUniqueInput!]
+  delete: [TalkWhereUniqueInput!]
+  update: [TalkUpdateWithWhereUniqueWithoutMembersInput!]
+  updateMany: [TalkUpdateManyWithWhereNestedInput!]
+  deleteMany: [TalkScalarWhereInput!]
+  upsert: [TalkUpsertWithWhereUniqueWithoutMembersInput!]
+}
+
+input TalkUpdateManyWithWhereNestedInput {
+  where: TalkScalarWhereInput!
+  data: TalkUpdateManyDataInput!
+}
+
+input TalkUpdateOneRequiredWithoutWordsInput {
+  create: TalkCreateWithoutWordsInput
+  connect: TalkWhereUniqueInput
+  update: TalkUpdateWithoutWordsDataInput
+  upsert: TalkUpsertWithoutWordsInput
+}
+
+input TalkUpdateWithoutAuthorDataInput {
+  settings: Json
+  members: ProfileUpdateManyWithoutMemberOfTalkInput
+  words: WordUpdateManyWithoutTalkInput
+}
+
+input TalkUpdateWithoutMembersDataInput {
+  settings: Json
+  author: ProfileUpdateOneWithoutAuthorOfTalkInput
+  words: WordUpdateManyWithoutTalkInput
+}
+
+input TalkUpdateWithoutWordsDataInput {
+  settings: Json
+  author: ProfileUpdateOneWithoutAuthorOfTalkInput
+  members: ProfileUpdateManyWithoutMemberOfTalkInput
+}
+
+input TalkUpdateWithWhereUniqueWithoutAuthorInput {
+  where: TalkWhereUniqueInput!
+  data: TalkUpdateWithoutAuthorDataInput!
+}
+
+input TalkUpdateWithWhereUniqueWithoutMembersInput {
+  where: TalkWhereUniqueInput!
+  data: TalkUpdateWithoutMembersDataInput!
+}
+
+input TalkUpsertWithoutWordsInput {
+  update: TalkUpdateWithoutWordsDataInput!
+  create: TalkCreateWithoutWordsInput!
+}
+
+input TalkUpsertWithWhereUniqueWithoutAuthorInput {
+  where: TalkWhereUniqueInput!
+  update: TalkUpdateWithoutAuthorDataInput!
+  create: TalkCreateWithoutAuthorInput!
+}
+
+input TalkUpsertWithWhereUniqueWithoutMembersInput {
+  where: TalkWhereUniqueInput!
+  update: TalkUpdateWithoutMembersDataInput!
+  create: TalkCreateWithoutMembersInput!
+}
+
+input TalkWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TalkWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TalkWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TalkWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  author: ProfileWhereInput
+  members_every: ProfileWhereInput
+  members_some: ProfileWhereInput
+  members_none: ProfileWhereInput
+  words_every: WordWhereInput
+  words_some: WordWhereInput
+  words_none: WordWhereInput
+}
+
+input TalkWhereUniqueInput {
+  id: ID
 }
 
 type Task implements Node {
@@ -17097,4 +18085,501 @@ input TemplateWhereInput {
 input TemplateWhereUniqueInput {
   id: ID
   slug: String
+}
+
+type Word implements Node {
+  id: ID!
+  author: Profile
+  talk: Talk!
+  message: String!
+  new: Boolean
+  settings: Json
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type WordConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [WordEdge]!
+  aggregate: AggregateWord!
+}
+
+input WordCreateInput {
+  id: ID
+  message: String!
+  new: Boolean
+  settings: Json
+  author: ProfileCreateOneWithoutAuthorOfWordInput
+  talk: TalkCreateOneWithoutWordsInput!
+}
+
+input WordCreateManyWithoutAuthorInput {
+  create: [WordCreateWithoutAuthorInput!]
+  connect: [WordWhereUniqueInput!]
+}
+
+input WordCreateManyWithoutTalkInput {
+  create: [WordCreateWithoutTalkInput!]
+  connect: [WordWhereUniqueInput!]
+}
+
+input WordCreateWithoutAuthorInput {
+  id: ID
+  message: String!
+  new: Boolean
+  settings: Json
+  talk: TalkCreateOneWithoutWordsInput!
+}
+
+input WordCreateWithoutTalkInput {
+  id: ID
+  message: String!
+  new: Boolean
+  settings: Json
+  author: ProfileCreateOneWithoutAuthorOfWordInput
+}
+
+"""An edge in a connection."""
+type WordEdge {
+  """The item at the end of the edge."""
+  node: Word!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum WordOrderByInput {
+  id_ASC
+  id_DESC
+  message_ASC
+  message_DESC
+  new_ASC
+  new_DESC
+  settings_ASC
+  settings_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type WordPreviousValues {
+  id: ID!
+  message: String!
+  new: Boolean
+  settings: Json
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input WordScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [WordScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [WordScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [WordScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  message: String
+
+  """All values that are not equal to given value."""
+  message_not: String
+
+  """All values that are contained in given list."""
+  message_in: [String!]
+
+  """All values that are not contained in given list."""
+  message_not_in: [String!]
+
+  """All values less than the given value."""
+  message_lt: String
+
+  """All values less than or equal the given value."""
+  message_lte: String
+
+  """All values greater than the given value."""
+  message_gt: String
+
+  """All values greater than or equal the given value."""
+  message_gte: String
+
+  """All values containing the given string."""
+  message_contains: String
+
+  """All values not containing the given string."""
+  message_not_contains: String
+
+  """All values starting with the given string."""
+  message_starts_with: String
+
+  """All values not starting with the given string."""
+  message_not_starts_with: String
+
+  """All values ending with the given string."""
+  message_ends_with: String
+
+  """All values not ending with the given string."""
+  message_not_ends_with: String
+  new: Boolean
+
+  """All values that are not equal to given value."""
+  new_not: Boolean
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+type WordSubscriptionPayload {
+  mutation: MutationType!
+  node: Word
+  updatedFields: [String!]
+  previousValues: WordPreviousValues
+}
+
+input WordSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [WordSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [WordSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [WordSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: WordWhereInput
+}
+
+input WordUpdateInput {
+  message: String
+  new: Boolean
+  settings: Json
+  author: ProfileUpdateOneWithoutAuthorOfWordInput
+  talk: TalkUpdateOneRequiredWithoutWordsInput
+}
+
+input WordUpdateManyDataInput {
+  message: String
+  new: Boolean
+  settings: Json
+}
+
+input WordUpdateManyMutationInput {
+  message: String
+  new: Boolean
+  settings: Json
+}
+
+input WordUpdateManyWithoutAuthorInput {
+  create: [WordCreateWithoutAuthorInput!]
+  connect: [WordWhereUniqueInput!]
+  set: [WordWhereUniqueInput!]
+  disconnect: [WordWhereUniqueInput!]
+  delete: [WordWhereUniqueInput!]
+  update: [WordUpdateWithWhereUniqueWithoutAuthorInput!]
+  updateMany: [WordUpdateManyWithWhereNestedInput!]
+  deleteMany: [WordScalarWhereInput!]
+  upsert: [WordUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input WordUpdateManyWithoutTalkInput {
+  create: [WordCreateWithoutTalkInput!]
+  connect: [WordWhereUniqueInput!]
+  set: [WordWhereUniqueInput!]
+  disconnect: [WordWhereUniqueInput!]
+  delete: [WordWhereUniqueInput!]
+  update: [WordUpdateWithWhereUniqueWithoutTalkInput!]
+  updateMany: [WordUpdateManyWithWhereNestedInput!]
+  deleteMany: [WordScalarWhereInput!]
+  upsert: [WordUpsertWithWhereUniqueWithoutTalkInput!]
+}
+
+input WordUpdateManyWithWhereNestedInput {
+  where: WordScalarWhereInput!
+  data: WordUpdateManyDataInput!
+}
+
+input WordUpdateWithoutAuthorDataInput {
+  message: String
+  new: Boolean
+  settings: Json
+  talk: TalkUpdateOneRequiredWithoutWordsInput
+}
+
+input WordUpdateWithoutTalkDataInput {
+  message: String
+  new: Boolean
+  settings: Json
+  author: ProfileUpdateOneWithoutAuthorOfWordInput
+}
+
+input WordUpdateWithWhereUniqueWithoutAuthorInput {
+  where: WordWhereUniqueInput!
+  data: WordUpdateWithoutAuthorDataInput!
+}
+
+input WordUpdateWithWhereUniqueWithoutTalkInput {
+  where: WordWhereUniqueInput!
+  data: WordUpdateWithoutTalkDataInput!
+}
+
+input WordUpsertWithWhereUniqueWithoutAuthorInput {
+  where: WordWhereUniqueInput!
+  update: WordUpdateWithoutAuthorDataInput!
+  create: WordCreateWithoutAuthorInput!
+}
+
+input WordUpsertWithWhereUniqueWithoutTalkInput {
+  where: WordWhereUniqueInput!
+  update: WordUpdateWithoutTalkDataInput!
+  create: WordCreateWithoutTalkInput!
+}
+
+input WordWhereInput {
+  """Logical AND on all given filters."""
+  AND: [WordWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [WordWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [WordWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  message: String
+
+  """All values that are not equal to given value."""
+  message_not: String
+
+  """All values that are contained in given list."""
+  message_in: [String!]
+
+  """All values that are not contained in given list."""
+  message_not_in: [String!]
+
+  """All values less than the given value."""
+  message_lt: String
+
+  """All values less than or equal the given value."""
+  message_lte: String
+
+  """All values greater than the given value."""
+  message_gt: String
+
+  """All values greater than or equal the given value."""
+  message_gte: String
+
+  """All values containing the given string."""
+  message_contains: String
+
+  """All values not containing the given string."""
+  message_not_contains: String
+
+  """All values starting with the given string."""
+  message_starts_with: String
+
+  """All values not starting with the given string."""
+  message_not_starts_with: String
+
+  """All values ending with the given string."""
+  message_ends_with: String
+
+  """All values not ending with the given string."""
+  message_not_ends_with: String
+  new: Boolean
+
+  """All values that are not equal to given value."""
+  new_not: Boolean
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  author: ProfileWhereInput
+  talk: TalkWhereInput
+}
+
+input WordWhereUniqueInput {
+  id: ID
 }

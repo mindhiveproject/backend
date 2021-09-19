@@ -59,6 +59,9 @@ type Query {
   participant(participantId: ID!, studyId: ID!): Profile
   participantResults(participantId: ID!): [Result]!
   participantStudyResults(participantId: ID!, studyId: ID!): [Result]!
+
+  myTalks: [Talk]!
+  talk(where: TalkWhereUniqueInput): Talk
 }
 
 type Mutation {
@@ -150,8 +153,8 @@ type Mutation {
     submitForPublishing: Boolean,
     template: Json
     ): Task!
-  createStudy(title: String!, description: String, shortDescription: String, settings: Json, image: String, largeImage: String, info: Json, consent: ID, components: Json, submitForPublishing: Boolean): Study!
-  updateStudy(id: ID!, slug: String, title: String, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json, collaborators: [String], consent: ID, public: Boolean, components: Json, submitForPublishing: Boolean): Study!
+  createStudy(title: String!, description: String, shortDescription: String, settings: Json, image: String, largeImage: String, info: Json, consent: [ID], components: Json, submitForPublishing: Boolean): Study!
+  updateStudy(id: ID!, slug: String, title: String, shortDescription: String, description: String, settings: Json, image: String, largeImage: String, info: Json, collaborators: [String], consent: [ID], public: Boolean, components: Json, submitForPublishing: Boolean): Study!
   publishStudyToggle(id: ID!): Study
   deleteStudy(id: ID!): Study
   buildStudy(id: ID!, tasks: [ID]!): Study!
@@ -220,6 +223,10 @@ type Mutation {
 
   editAccount(username: String, email: String, password: String, info: Json): Profile
 
+  createWord(talk: ID!, message: String!, settings: Json): Word
+
+  createTalk(members: [ID]!, settings: Json): Talk
+  updateTalk(id: ID!, members: [ID]!, settings: Json): Talk
 }
 
 type SuccessMessage {
