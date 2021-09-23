@@ -53,6 +53,8 @@ type Profile {
   authorOfWord: [Word]! @relation(name:"WordAuthor")
   memberOfTalk: [Talk]! @relation(name:"TalkMember")
   authorOfTalk: [Talk]! @relation(name:"TalkAuthor")
+  authorOfAssignment: [Assignment]! @relation(name:"AssignmentAuthor")
+  authorOfHomework: [Homework]! @relation(name:"HomeworkAuthor")
 }
 
 type AuthEmail {
@@ -113,6 +115,7 @@ type Class {
   students: [Profile]! @relation(name:"Studentofclass")
   invites: [AuthInvite]! @relation(name:"Invite")
   network: ClassNetwork @relation(name:"Classnetwork")
+  assignments: [Assignment]! @relation(name:"ClassAssignment")
 }
 
 type ClassNetwork {
@@ -348,6 +351,31 @@ type Talk {
   members: [Profile]! @relation(name:"TalkMember")
   words: [Word]! @relation(name:"TalkWords")
   settings: Json
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Assignment {
+  id: ID! @id
+  author: Profile @relation(name:"AssignmentAuthor")
+  classes: [Class]! @relation(name:"ClassAssignment")
+  homework: [Homework]! @relation(name:"ClassHomework")
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Homework {
+  id: ID! @id
+  author: Profile @relation(name:"HomeworkAuthor")
+  assignment: Assignment @relation(name:"ClassHomework")
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

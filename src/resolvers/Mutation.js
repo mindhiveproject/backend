@@ -14,6 +14,8 @@ const reviewMutations = require('./mutations/reviewMutations');
 const classNetworkMutations = require('./mutations/classNetworkMutations');
 const wordMutations = require('./mutations/wordMutations');
 const talkMutations = require('./mutations/talkMutations');
+const assignmentMutations = require('./mutations/assignmentMutations');
+const homeworkMutations = require('./mutations/homeworkMutations');
 
 const Mutations = {
   ...authMutations,
@@ -32,6 +34,8 @@ const Mutations = {
   ...classNetworkMutations,
   ...wordMutations,
   ...talkMutations,
+  ...assignmentMutations,
+  ...homeworkMutations,
 
   async createSchool(parent, args, ctx, info) {
     // TODO: Check login

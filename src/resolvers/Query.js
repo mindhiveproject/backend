@@ -38,6 +38,11 @@ const Query = {
   classNetwork: forwardTo('db'),
   classNetworks: forwardTo('db'),
 
+  assignments: forwardTo('db'),
+  assignment: forwardTo('db'),
+  homeworks: forwardTo('db'),
+  homework: forwardTo('db'),
+
   // return only public studies by default
   studies(parent, args, ctx, info) {
     return ctx.db.query.studies(
@@ -133,6 +138,24 @@ const Query = {
       {
         where: {
           creator: {
+            id: ctx.request.userId,
+          },
+        },
+      },
+      info
+    );
+  },
+
+  async myStudentClasses(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in');
+    }
+
+    // query parameters where author is the current user
+    return ctx.db.query.classes(
+      {
+        where: {
+          students_some: {
             id: ctx.request.userId,
           },
         },

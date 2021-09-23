@@ -1,5 +1,9 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Sat Sep 18 2021 14:59:30 GMT+0200 (Central European Summer Time)
+# timestamp: Thu Sep 23 2021 21:40:33 GMT+0200 (Central European Summer Time)
+
+type AggregateAssignment {
+  count: Int!
+}
 
 type AggregateAuthEmail {
   count: Int!
@@ -30,6 +34,10 @@ type AggregateConsent {
 }
 
 type AggregateData {
+  count: Int!
+}
+
+type AggregateHomework {
   count: Int!
 }
 
@@ -91,6 +99,645 @@ type AggregateTemplate {
 
 type AggregateWord {
   count: Int!
+}
+
+type Assignment implements Node {
+  id: ID!
+  author: Profile
+  classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class!]
+  homework(where: HomeworkWhereInput, orderBy: HomeworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Homework!]
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type AssignmentConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [AssignmentEdge]!
+  aggregate: AggregateAssignment!
+}
+
+input AssignmentCreateInput {
+  id: ID
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  author: ProfileCreateOneWithoutAuthorOfAssignmentInput
+  classes: ClassCreateManyWithoutAssignmentsInput
+  homework: HomeworkCreateManyWithoutAssignmentInput
+}
+
+input AssignmentCreateManyWithoutAuthorInput {
+  create: [AssignmentCreateWithoutAuthorInput!]
+  connect: [AssignmentWhereUniqueInput!]
+}
+
+input AssignmentCreateManyWithoutClassesInput {
+  create: [AssignmentCreateWithoutClassesInput!]
+  connect: [AssignmentWhereUniqueInput!]
+}
+
+input AssignmentCreateOneWithoutHomeworkInput {
+  create: AssignmentCreateWithoutHomeworkInput
+  connect: AssignmentWhereUniqueInput
+}
+
+input AssignmentCreateWithoutAuthorInput {
+  id: ID
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  classes: ClassCreateManyWithoutAssignmentsInput
+  homework: HomeworkCreateManyWithoutAssignmentInput
+}
+
+input AssignmentCreateWithoutClassesInput {
+  id: ID
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  author: ProfileCreateOneWithoutAuthorOfAssignmentInput
+  homework: HomeworkCreateManyWithoutAssignmentInput
+}
+
+input AssignmentCreateWithoutHomeworkInput {
+  id: ID
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  author: ProfileCreateOneWithoutAuthorOfAssignmentInput
+  classes: ClassCreateManyWithoutAssignmentsInput
+}
+
+"""An edge in a connection."""
+type AssignmentEdge {
+  """The item at the end of the edge."""
+  node: Assignment!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum AssignmentOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  content_ASC
+  content_DESC
+  settings_ASC
+  settings_DESC
+  public_ASC
+  public_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type AssignmentPreviousValues {
+  id: ID!
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input AssignmentScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AssignmentScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AssignmentScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AssignmentScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  content: String
+
+  """All values that are not equal to given value."""
+  content_not: String
+
+  """All values that are contained in given list."""
+  content_in: [String!]
+
+  """All values that are not contained in given list."""
+  content_not_in: [String!]
+
+  """All values less than the given value."""
+  content_lt: String
+
+  """All values less than or equal the given value."""
+  content_lte: String
+
+  """All values greater than the given value."""
+  content_gt: String
+
+  """All values greater than or equal the given value."""
+  content_gte: String
+
+  """All values containing the given string."""
+  content_contains: String
+
+  """All values not containing the given string."""
+  content_not_contains: String
+
+  """All values starting with the given string."""
+  content_starts_with: String
+
+  """All values not starting with the given string."""
+  content_not_starts_with: String
+
+  """All values ending with the given string."""
+  content_ends_with: String
+
+  """All values not ending with the given string."""
+  content_not_ends_with: String
+  public: Boolean
+
+  """All values that are not equal to given value."""
+  public_not: Boolean
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+type AssignmentSubscriptionPayload {
+  mutation: MutationType!
+  node: Assignment
+  updatedFields: [String!]
+  previousValues: AssignmentPreviousValues
+}
+
+input AssignmentSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AssignmentSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AssignmentSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AssignmentSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: AssignmentWhereInput
+}
+
+input AssignmentUpdateInput {
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  author: ProfileUpdateOneWithoutAuthorOfAssignmentInput
+  classes: ClassUpdateManyWithoutAssignmentsInput
+  homework: HomeworkUpdateManyWithoutAssignmentInput
+}
+
+input AssignmentUpdateManyDataInput {
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+}
+
+input AssignmentUpdateManyMutationInput {
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+}
+
+input AssignmentUpdateManyWithoutAuthorInput {
+  create: [AssignmentCreateWithoutAuthorInput!]
+  connect: [AssignmentWhereUniqueInput!]
+  set: [AssignmentWhereUniqueInput!]
+  disconnect: [AssignmentWhereUniqueInput!]
+  delete: [AssignmentWhereUniqueInput!]
+  update: [AssignmentUpdateWithWhereUniqueWithoutAuthorInput!]
+  updateMany: [AssignmentUpdateManyWithWhereNestedInput!]
+  deleteMany: [AssignmentScalarWhereInput!]
+  upsert: [AssignmentUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input AssignmentUpdateManyWithoutClassesInput {
+  create: [AssignmentCreateWithoutClassesInput!]
+  connect: [AssignmentWhereUniqueInput!]
+  set: [AssignmentWhereUniqueInput!]
+  disconnect: [AssignmentWhereUniqueInput!]
+  delete: [AssignmentWhereUniqueInput!]
+  update: [AssignmentUpdateWithWhereUniqueWithoutClassesInput!]
+  updateMany: [AssignmentUpdateManyWithWhereNestedInput!]
+  deleteMany: [AssignmentScalarWhereInput!]
+  upsert: [AssignmentUpsertWithWhereUniqueWithoutClassesInput!]
+}
+
+input AssignmentUpdateManyWithWhereNestedInput {
+  where: AssignmentScalarWhereInput!
+  data: AssignmentUpdateManyDataInput!
+}
+
+input AssignmentUpdateOneWithoutHomeworkInput {
+  create: AssignmentCreateWithoutHomeworkInput
+  connect: AssignmentWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: AssignmentUpdateWithoutHomeworkDataInput
+  upsert: AssignmentUpsertWithoutHomeworkInput
+}
+
+input AssignmentUpdateWithoutAuthorDataInput {
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  classes: ClassUpdateManyWithoutAssignmentsInput
+  homework: HomeworkUpdateManyWithoutAssignmentInput
+}
+
+input AssignmentUpdateWithoutClassesDataInput {
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  author: ProfileUpdateOneWithoutAuthorOfAssignmentInput
+  homework: HomeworkUpdateManyWithoutAssignmentInput
+}
+
+input AssignmentUpdateWithoutHomeworkDataInput {
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  author: ProfileUpdateOneWithoutAuthorOfAssignmentInput
+  classes: ClassUpdateManyWithoutAssignmentsInput
+}
+
+input AssignmentUpdateWithWhereUniqueWithoutAuthorInput {
+  where: AssignmentWhereUniqueInput!
+  data: AssignmentUpdateWithoutAuthorDataInput!
+}
+
+input AssignmentUpdateWithWhereUniqueWithoutClassesInput {
+  where: AssignmentWhereUniqueInput!
+  data: AssignmentUpdateWithoutClassesDataInput!
+}
+
+input AssignmentUpsertWithoutHomeworkInput {
+  update: AssignmentUpdateWithoutHomeworkDataInput!
+  create: AssignmentCreateWithoutHomeworkInput!
+}
+
+input AssignmentUpsertWithWhereUniqueWithoutAuthorInput {
+  where: AssignmentWhereUniqueInput!
+  update: AssignmentUpdateWithoutAuthorDataInput!
+  create: AssignmentCreateWithoutAuthorInput!
+}
+
+input AssignmentUpsertWithWhereUniqueWithoutClassesInput {
+  where: AssignmentWhereUniqueInput!
+  update: AssignmentUpdateWithoutClassesDataInput!
+  create: AssignmentCreateWithoutClassesInput!
+}
+
+input AssignmentWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AssignmentWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AssignmentWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AssignmentWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  content: String
+
+  """All values that are not equal to given value."""
+  content_not: String
+
+  """All values that are contained in given list."""
+  content_in: [String!]
+
+  """All values that are not contained in given list."""
+  content_not_in: [String!]
+
+  """All values less than the given value."""
+  content_lt: String
+
+  """All values less than or equal the given value."""
+  content_lte: String
+
+  """All values greater than the given value."""
+  content_gt: String
+
+  """All values greater than or equal the given value."""
+  content_gte: String
+
+  """All values containing the given string."""
+  content_contains: String
+
+  """All values not containing the given string."""
+  content_not_contains: String
+
+  """All values starting with the given string."""
+  content_starts_with: String
+
+  """All values not starting with the given string."""
+  content_not_starts_with: String
+
+  """All values ending with the given string."""
+  content_ends_with: String
+
+  """All values not ending with the given string."""
+  content_not_ends_with: String
+  public: Boolean
+
+  """All values that are not equal to given value."""
+  public_not: Boolean
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  author: ProfileWhereInput
+  classes_every: ClassWhereInput
+  classes_some: ClassWhereInput
+  classes_none: ClassWhereInput
+  homework_every: HomeworkWhereInput
+  homework_some: HomeworkWhereInput
+  homework_none: HomeworkWhereInput
+}
+
+input AssignmentWhereUniqueInput {
+  id: ID
 }
 
 type AuthEmail implements Node {
@@ -2091,6 +2738,7 @@ type Class implements Node {
   students(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
   invites(where: AuthInviteWhereInput, orderBy: AuthInviteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthInvite!]
   network: ClassNetwork
+  assignments(where: AssignmentWhereInput, orderBy: AssignmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Assignment!]
 }
 
 """A connection to a list of items."""
@@ -2114,6 +2762,12 @@ input ClassCreateInput {
   students: ProfileCreateManyWithoutStudentInInput
   invites: AuthInviteCreateManyWithoutInvitedInInput
   network: ClassNetworkCreateOneWithoutClassesInput
+  assignments: AssignmentCreateManyWithoutClassesInput
+}
+
+input ClassCreateManyWithoutAssignmentsInput {
+  create: [ClassCreateWithoutAssignmentsInput!]
+  connect: [ClassWhereUniqueInput!]
 }
 
 input ClassCreateManyWithoutCreatorInput {
@@ -2136,6 +2790,19 @@ input ClassCreateOneWithoutInvitesInput {
   connect: ClassWhereUniqueInput
 }
 
+input ClassCreateWithoutAssignmentsInput {
+  id: ID
+  code: String!
+  title: String!
+  description: String
+  image: String
+  largeImage: String
+  creator: ProfileCreateOneWithoutTeacherInInput!
+  students: ProfileCreateManyWithoutStudentInInput
+  invites: AuthInviteCreateManyWithoutInvitedInInput
+  network: ClassNetworkCreateOneWithoutClassesInput
+}
+
 input ClassCreateWithoutCreatorInput {
   id: ID
   code: String!
@@ -2146,6 +2813,7 @@ input ClassCreateWithoutCreatorInput {
   students: ProfileCreateManyWithoutStudentInInput
   invites: AuthInviteCreateManyWithoutInvitedInInput
   network: ClassNetworkCreateOneWithoutClassesInput
+  assignments: AssignmentCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutInvitesInput {
@@ -2158,6 +2826,7 @@ input ClassCreateWithoutInvitesInput {
   creator: ProfileCreateOneWithoutTeacherInInput!
   students: ProfileCreateManyWithoutStudentInInput
   network: ClassNetworkCreateOneWithoutClassesInput
+  assignments: AssignmentCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutNetworkInput {
@@ -2170,6 +2839,7 @@ input ClassCreateWithoutNetworkInput {
   creator: ProfileCreateOneWithoutTeacherInInput!
   students: ProfileCreateManyWithoutStudentInInput
   invites: AuthInviteCreateManyWithoutInvitedInInput
+  assignments: AssignmentCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutStudentsInput {
@@ -2182,6 +2852,7 @@ input ClassCreateWithoutStudentsInput {
   creator: ProfileCreateOneWithoutTeacherInInput!
   invites: AuthInviteCreateManyWithoutInvitedInInput
   network: ClassNetworkCreateOneWithoutClassesInput
+  assignments: AssignmentCreateManyWithoutClassesInput
 }
 
 """An edge in a connection."""
@@ -3129,6 +3800,7 @@ input ClassUpdateInput {
   students: ProfileUpdateManyWithoutStudentInInput
   invites: AuthInviteUpdateManyWithoutInvitedInInput
   network: ClassNetworkUpdateOneWithoutClassesInput
+  assignments: AssignmentUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateManyDataInput {
@@ -3145,6 +3817,18 @@ input ClassUpdateManyMutationInput {
   description: String
   image: String
   largeImage: String
+}
+
+input ClassUpdateManyWithoutAssignmentsInput {
+  create: [ClassCreateWithoutAssignmentsInput!]
+  connect: [ClassWhereUniqueInput!]
+  set: [ClassWhereUniqueInput!]
+  disconnect: [ClassWhereUniqueInput!]
+  delete: [ClassWhereUniqueInput!]
+  update: [ClassUpdateWithWhereUniqueWithoutAssignmentsInput!]
+  updateMany: [ClassUpdateManyWithWhereNestedInput!]
+  deleteMany: [ClassScalarWhereInput!]
+  upsert: [ClassUpsertWithWhereUniqueWithoutAssignmentsInput!]
 }
 
 input ClassUpdateManyWithoutCreatorInput {
@@ -3195,6 +3879,18 @@ input ClassUpdateOneRequiredWithoutInvitesInput {
   upsert: ClassUpsertWithoutInvitesInput
 }
 
+input ClassUpdateWithoutAssignmentsDataInput {
+  code: String
+  title: String
+  description: String
+  image: String
+  largeImage: String
+  creator: ProfileUpdateOneRequiredWithoutTeacherInInput
+  students: ProfileUpdateManyWithoutStudentInInput
+  invites: AuthInviteUpdateManyWithoutInvitedInInput
+  network: ClassNetworkUpdateOneWithoutClassesInput
+}
+
 input ClassUpdateWithoutCreatorDataInput {
   code: String
   title: String
@@ -3204,6 +3900,7 @@ input ClassUpdateWithoutCreatorDataInput {
   students: ProfileUpdateManyWithoutStudentInInput
   invites: AuthInviteUpdateManyWithoutInvitedInInput
   network: ClassNetworkUpdateOneWithoutClassesInput
+  assignments: AssignmentUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutInvitesDataInput {
@@ -3215,6 +3912,7 @@ input ClassUpdateWithoutInvitesDataInput {
   creator: ProfileUpdateOneRequiredWithoutTeacherInInput
   students: ProfileUpdateManyWithoutStudentInInput
   network: ClassNetworkUpdateOneWithoutClassesInput
+  assignments: AssignmentUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutNetworkDataInput {
@@ -3226,6 +3924,7 @@ input ClassUpdateWithoutNetworkDataInput {
   creator: ProfileUpdateOneRequiredWithoutTeacherInInput
   students: ProfileUpdateManyWithoutStudentInInput
   invites: AuthInviteUpdateManyWithoutInvitedInInput
+  assignments: AssignmentUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutStudentsDataInput {
@@ -3237,6 +3936,12 @@ input ClassUpdateWithoutStudentsDataInput {
   creator: ProfileUpdateOneRequiredWithoutTeacherInInput
   invites: AuthInviteUpdateManyWithoutInvitedInInput
   network: ClassNetworkUpdateOneWithoutClassesInput
+  assignments: AssignmentUpdateManyWithoutClassesInput
+}
+
+input ClassUpdateWithWhereUniqueWithoutAssignmentsInput {
+  where: ClassWhereUniqueInput!
+  data: ClassUpdateWithoutAssignmentsDataInput!
 }
 
 input ClassUpdateWithWhereUniqueWithoutCreatorInput {
@@ -3257,6 +3962,12 @@ input ClassUpdateWithWhereUniqueWithoutStudentsInput {
 input ClassUpsertWithoutInvitesInput {
   update: ClassUpdateWithoutInvitesDataInput!
   create: ClassCreateWithoutInvitesInput!
+}
+
+input ClassUpsertWithWhereUniqueWithoutAssignmentsInput {
+  where: ClassWhereUniqueInput!
+  update: ClassUpdateWithoutAssignmentsDataInput!
+  create: ClassCreateWithoutAssignmentsInput!
 }
 
 input ClassUpsertWithWhereUniqueWithoutCreatorInput {
@@ -3578,6 +4289,9 @@ input ClassWhereInput {
   invites_some: AuthInviteWhereInput
   invites_none: AuthInviteWhereInput
   network: ClassNetworkWhereInput
+  assignments_every: AssignmentWhereInput
+  assignments_some: AssignmentWhereInput
+  assignments_none: AssignmentWhereInput
 }
 
 input ClassWhereUniqueInput {
@@ -4875,6 +5589,595 @@ input DataWhereUniqueInput {
 
 scalar DateTime
 
+type Homework implements Node {
+  id: ID!
+  author: Profile
+  assignment: Assignment
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type HomeworkConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [HomeworkEdge]!
+  aggregate: AggregateHomework!
+}
+
+input HomeworkCreateInput {
+  id: ID
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  author: ProfileCreateOneWithoutAuthorOfHomeworkInput
+  assignment: AssignmentCreateOneWithoutHomeworkInput
+}
+
+input HomeworkCreateManyWithoutAssignmentInput {
+  create: [HomeworkCreateWithoutAssignmentInput!]
+  connect: [HomeworkWhereUniqueInput!]
+}
+
+input HomeworkCreateManyWithoutAuthorInput {
+  create: [HomeworkCreateWithoutAuthorInput!]
+  connect: [HomeworkWhereUniqueInput!]
+}
+
+input HomeworkCreateWithoutAssignmentInput {
+  id: ID
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  author: ProfileCreateOneWithoutAuthorOfHomeworkInput
+}
+
+input HomeworkCreateWithoutAuthorInput {
+  id: ID
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  assignment: AssignmentCreateOneWithoutHomeworkInput
+}
+
+"""An edge in a connection."""
+type HomeworkEdge {
+  """The item at the end of the edge."""
+  node: Homework!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum HomeworkOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  content_ASC
+  content_DESC
+  settings_ASC
+  settings_DESC
+  public_ASC
+  public_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type HomeworkPreviousValues {
+  id: ID!
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input HomeworkScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [HomeworkScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [HomeworkScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [HomeworkScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  content: String
+
+  """All values that are not equal to given value."""
+  content_not: String
+
+  """All values that are contained in given list."""
+  content_in: [String!]
+
+  """All values that are not contained in given list."""
+  content_not_in: [String!]
+
+  """All values less than the given value."""
+  content_lt: String
+
+  """All values less than or equal the given value."""
+  content_lte: String
+
+  """All values greater than the given value."""
+  content_gt: String
+
+  """All values greater than or equal the given value."""
+  content_gte: String
+
+  """All values containing the given string."""
+  content_contains: String
+
+  """All values not containing the given string."""
+  content_not_contains: String
+
+  """All values starting with the given string."""
+  content_starts_with: String
+
+  """All values not starting with the given string."""
+  content_not_starts_with: String
+
+  """All values ending with the given string."""
+  content_ends_with: String
+
+  """All values not ending with the given string."""
+  content_not_ends_with: String
+  public: Boolean
+
+  """All values that are not equal to given value."""
+  public_not: Boolean
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+type HomeworkSubscriptionPayload {
+  mutation: MutationType!
+  node: Homework
+  updatedFields: [String!]
+  previousValues: HomeworkPreviousValues
+}
+
+input HomeworkSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [HomeworkSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [HomeworkSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [HomeworkSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: HomeworkWhereInput
+}
+
+input HomeworkUpdateInput {
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  author: ProfileUpdateOneWithoutAuthorOfHomeworkInput
+  assignment: AssignmentUpdateOneWithoutHomeworkInput
+}
+
+input HomeworkUpdateManyDataInput {
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+}
+
+input HomeworkUpdateManyMutationInput {
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+}
+
+input HomeworkUpdateManyWithoutAssignmentInput {
+  create: [HomeworkCreateWithoutAssignmentInput!]
+  connect: [HomeworkWhereUniqueInput!]
+  set: [HomeworkWhereUniqueInput!]
+  disconnect: [HomeworkWhereUniqueInput!]
+  delete: [HomeworkWhereUniqueInput!]
+  update: [HomeworkUpdateWithWhereUniqueWithoutAssignmentInput!]
+  updateMany: [HomeworkUpdateManyWithWhereNestedInput!]
+  deleteMany: [HomeworkScalarWhereInput!]
+  upsert: [HomeworkUpsertWithWhereUniqueWithoutAssignmentInput!]
+}
+
+input HomeworkUpdateManyWithoutAuthorInput {
+  create: [HomeworkCreateWithoutAuthorInput!]
+  connect: [HomeworkWhereUniqueInput!]
+  set: [HomeworkWhereUniqueInput!]
+  disconnect: [HomeworkWhereUniqueInput!]
+  delete: [HomeworkWhereUniqueInput!]
+  update: [HomeworkUpdateWithWhereUniqueWithoutAuthorInput!]
+  updateMany: [HomeworkUpdateManyWithWhereNestedInput!]
+  deleteMany: [HomeworkScalarWhereInput!]
+  upsert: [HomeworkUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input HomeworkUpdateManyWithWhereNestedInput {
+  where: HomeworkScalarWhereInput!
+  data: HomeworkUpdateManyDataInput!
+}
+
+input HomeworkUpdateWithoutAssignmentDataInput {
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  author: ProfileUpdateOneWithoutAuthorOfHomeworkInput
+}
+
+input HomeworkUpdateWithoutAuthorDataInput {
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  assignment: AssignmentUpdateOneWithoutHomeworkInput
+}
+
+input HomeworkUpdateWithWhereUniqueWithoutAssignmentInput {
+  where: HomeworkWhereUniqueInput!
+  data: HomeworkUpdateWithoutAssignmentDataInput!
+}
+
+input HomeworkUpdateWithWhereUniqueWithoutAuthorInput {
+  where: HomeworkWhereUniqueInput!
+  data: HomeworkUpdateWithoutAuthorDataInput!
+}
+
+input HomeworkUpsertWithWhereUniqueWithoutAssignmentInput {
+  where: HomeworkWhereUniqueInput!
+  update: HomeworkUpdateWithoutAssignmentDataInput!
+  create: HomeworkCreateWithoutAssignmentInput!
+}
+
+input HomeworkUpsertWithWhereUniqueWithoutAuthorInput {
+  where: HomeworkWhereUniqueInput!
+  update: HomeworkUpdateWithoutAuthorDataInput!
+  create: HomeworkCreateWithoutAuthorInput!
+}
+
+input HomeworkWhereInput {
+  """Logical AND on all given filters."""
+  AND: [HomeworkWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [HomeworkWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [HomeworkWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  content: String
+
+  """All values that are not equal to given value."""
+  content_not: String
+
+  """All values that are contained in given list."""
+  content_in: [String!]
+
+  """All values that are not contained in given list."""
+  content_not_in: [String!]
+
+  """All values less than the given value."""
+  content_lt: String
+
+  """All values less than or equal the given value."""
+  content_lte: String
+
+  """All values greater than the given value."""
+  content_gt: String
+
+  """All values greater than or equal the given value."""
+  content_gte: String
+
+  """All values containing the given string."""
+  content_contains: String
+
+  """All values not containing the given string."""
+  content_not_contains: String
+
+  """All values starting with the given string."""
+  content_starts_with: String
+
+  """All values not starting with the given string."""
+  content_not_starts_with: String
+
+  """All values ending with the given string."""
+  content_ends_with: String
+
+  """All values not ending with the given string."""
+  content_not_ends_with: String
+  public: Boolean
+
+  """All values that are not equal to given value."""
+  public_not: Boolean
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  author: ProfileWhereInput
+  assignment: AssignmentWhereInput
+}
+
+input HomeworkWhereUniqueInput {
+  id: ID
+}
+
 type Journal implements Node {
   id: ID!
   title: String
@@ -5949,6 +7252,8 @@ type Mutation {
   createReview(data: ReviewCreateInput!): Review!
   createWord(data: WordCreateInput!): Word!
   createTalk(data: TalkCreateInput!): Talk!
+  createAssignment(data: AssignmentCreateInput!): Assignment!
+  createHomework(data: HomeworkCreateInput!): Homework!
   createStudy(data: StudyCreateInput!): Study!
   createTemplate(data: TemplateCreateInput!): Template!
   createTask(data: TaskCreateInput!): Task!
@@ -5972,6 +7277,8 @@ type Mutation {
   updateReview(data: ReviewUpdateInput!, where: ReviewWhereUniqueInput!): Review
   updateWord(data: WordUpdateInput!, where: WordWhereUniqueInput!): Word
   updateTalk(data: TalkUpdateInput!, where: TalkWhereUniqueInput!): Talk
+  updateAssignment(data: AssignmentUpdateInput!, where: AssignmentWhereUniqueInput!): Assignment
+  updateHomework(data: HomeworkUpdateInput!, where: HomeworkWhereUniqueInput!): Homework
   updateStudy(data: StudyUpdateInput!, where: StudyWhereUniqueInput!): Study
   updateTemplate(data: TemplateUpdateInput!, where: TemplateWhereUniqueInput!): Template
   updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task
@@ -5995,6 +7302,8 @@ type Mutation {
   deleteReview(where: ReviewWhereUniqueInput!): Review
   deleteWord(where: WordWhereUniqueInput!): Word
   deleteTalk(where: TalkWhereUniqueInput!): Talk
+  deleteAssignment(where: AssignmentWhereUniqueInput!): Assignment
+  deleteHomework(where: HomeworkWhereUniqueInput!): Homework
   deleteStudy(where: StudyWhereUniqueInput!): Study
   deleteTemplate(where: TemplateWhereUniqueInput!): Template
   deleteTask(where: TaskWhereUniqueInput!): Task
@@ -6018,6 +7327,8 @@ type Mutation {
   upsertReview(where: ReviewWhereUniqueInput!, create: ReviewCreateInput!, update: ReviewUpdateInput!): Review!
   upsertWord(where: WordWhereUniqueInput!, create: WordCreateInput!, update: WordUpdateInput!): Word!
   upsertTalk(where: TalkWhereUniqueInput!, create: TalkCreateInput!, update: TalkUpdateInput!): Talk!
+  upsertAssignment(where: AssignmentWhereUniqueInput!, create: AssignmentCreateInput!, update: AssignmentUpdateInput!): Assignment!
+  upsertHomework(where: HomeworkWhereUniqueInput!, create: HomeworkCreateInput!, update: HomeworkUpdateInput!): Homework!
   upsertStudy(where: StudyWhereUniqueInput!, create: StudyCreateInput!, update: StudyUpdateInput!): Study!
   upsertTemplate(where: TemplateWhereUniqueInput!, create: TemplateCreateInput!, update: TemplateUpdateInput!): Template!
   upsertTask(where: TaskWhereUniqueInput!, create: TaskCreateInput!, update: TaskUpdateInput!): Task!
@@ -6040,6 +7351,8 @@ type Mutation {
   updateManyReviews(data: ReviewUpdateManyMutationInput!, where: ReviewWhereInput): BatchPayload!
   updateManyWords(data: WordUpdateManyMutationInput!, where: WordWhereInput): BatchPayload!
   updateManyTalks(data: TalkUpdateManyMutationInput!, where: TalkWhereInput): BatchPayload!
+  updateManyAssignments(data: AssignmentUpdateManyMutationInput!, where: AssignmentWhereInput): BatchPayload!
+  updateManyHomeworks(data: HomeworkUpdateManyMutationInput!, where: HomeworkWhereInput): BatchPayload!
   updateManyStudies(data: StudyUpdateManyMutationInput!, where: StudyWhereInput): BatchPayload!
   updateManyTemplates(data: TemplateUpdateManyMutationInput!, where: TemplateWhereInput): BatchPayload!
   updateManyTasks(data: TaskUpdateManyMutationInput!, where: TaskWhereInput): BatchPayload!
@@ -6063,6 +7376,8 @@ type Mutation {
   deleteManyReviews(where: ReviewWhereInput): BatchPayload!
   deleteManyWords(where: WordWhereInput): BatchPayload!
   deleteManyTalks(where: TalkWhereInput): BatchPayload!
+  deleteManyAssignments(where: AssignmentWhereInput): BatchPayload!
+  deleteManyHomeworks(where: HomeworkWhereInput): BatchPayload!
   deleteManyStudies(where: StudyWhereInput): BatchPayload!
   deleteManyTemplates(where: TemplateWhereInput): BatchPayload!
   deleteManyTasks(where: TaskWhereInput): BatchPayload!
@@ -6717,6 +8032,8 @@ type Profile implements Node {
   authorOfWord(where: WordWhereInput, orderBy: WordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Word!]
   memberOfTalk(where: TalkWhereInput, orderBy: TalkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Talk!]
   authorOfTalk(where: TalkWhereInput, orderBy: TalkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Talk!]
+  authorOfAssignment(where: AssignmentWhereInput, orderBy: AssignmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Assignment!]
+  authorOfHomework(where: HomeworkWhereInput, orderBy: HomeworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Homework!]
 }
 
 """A connection to a list of items."""
@@ -6769,6 +8086,8 @@ input ProfileCreateInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateManyWithoutAssignedToProposalCardInput {
@@ -6833,6 +8152,16 @@ input ProfileCreateOneWithoutAuthEmailInput {
 
 input ProfileCreateOneWithoutAuthInviteInput {
   create: ProfileCreateWithoutAuthInviteInput
+  connect: ProfileWhereUniqueInput
+}
+
+input ProfileCreateOneWithoutAuthorOfAssignmentInput {
+  create: ProfileCreateWithoutAuthorOfAssignmentInput
+  connect: ProfileWhereUniqueInput
+}
+
+input ProfileCreateOneWithoutAuthorOfHomeworkInput {
+  create: ProfileCreateWithoutAuthorOfHomeworkInput
   connect: ProfileWhereUniqueInput
 }
 
@@ -6954,6 +8283,8 @@ input ProfileCreateWithoutAssignedToProposalCardInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAssignedToProposalSectionInput {
@@ -6995,6 +8326,8 @@ input ProfileCreateWithoutAssignedToProposalSectionInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthEmailInput {
@@ -7036,6 +8369,8 @@ input ProfileCreateWithoutAuthEmailInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthInviteInput {
@@ -7077,6 +8412,94 @@ input ProfileCreateWithoutAuthInviteInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+}
+
+input ProfileCreateWithoutAuthorOfAssignmentInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  publicReadableId: String
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
+  reviews: ReviewCreateManyWithoutAuthorInput
+  classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+}
+
+input ProfileCreateWithoutAuthorOfHomeworkInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  publicReadableId: String
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
+  reviews: ReviewCreateManyWithoutAuthorInput
+  classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthorOfProposalInput {
@@ -7118,6 +8541,8 @@ input ProfileCreateWithoutAuthorOfProposalInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthorOfTalkInput {
@@ -7159,6 +8584,8 @@ input ProfileCreateWithoutAuthorOfTalkInput {
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthorOfWordInput {
@@ -7200,6 +8627,8 @@ input ProfileCreateWithoutAuthorOfWordInput {
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthParticipantInput {
@@ -7241,6 +8670,8 @@ input ProfileCreateWithoutAuthParticipantInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutAuthTokenInput {
@@ -7282,6 +8713,8 @@ input ProfileCreateWithoutAuthTokenInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutClassNetworksCreatedInput {
@@ -7323,6 +8756,8 @@ input ProfileCreateWithoutClassNetworksCreatedInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutCollaboratorInConsentInput {
@@ -7364,6 +8799,8 @@ input ProfileCreateWithoutCollaboratorInConsentInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutCollaboratorInStudyInput {
@@ -7405,6 +8842,8 @@ input ProfileCreateWithoutCollaboratorInStudyInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutCollaboratorInTaskInput {
@@ -7446,6 +8885,8 @@ input ProfileCreateWithoutCollaboratorInTaskInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutCollaboratorOnProposalInput {
@@ -7487,6 +8928,8 @@ input ProfileCreateWithoutCollaboratorOnProposalInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutConsentCreatorInInput {
@@ -7528,6 +8971,8 @@ input ProfileCreateWithoutConsentCreatorInInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutConsentGivenForInput {
@@ -7569,6 +9014,8 @@ input ProfileCreateWithoutConsentGivenForInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutCreatorOfProposalInput {
@@ -7610,6 +9057,8 @@ input ProfileCreateWithoutCreatorOfProposalInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutJournalsInput {
@@ -7651,6 +9100,8 @@ input ProfileCreateWithoutJournalsInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutMemberOfTalkInput {
@@ -7692,6 +9143,8 @@ input ProfileCreateWithoutMemberOfTalkInput {
   classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
   authorOfWord: WordCreateManyWithoutAuthorInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutParticipantInInput {
@@ -7733,6 +9186,8 @@ input ProfileCreateWithoutParticipantInInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutPostsInput {
@@ -7774,6 +9229,8 @@ input ProfileCreateWithoutPostsInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutResearcherInInput {
@@ -7815,6 +9272,8 @@ input ProfileCreateWithoutResearcherInInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutResultsInput {
@@ -7856,6 +9315,8 @@ input ProfileCreateWithoutResultsInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutReviewsInput {
@@ -7897,6 +9358,8 @@ input ProfileCreateWithoutReviewsInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutStudentInInput {
@@ -7938,6 +9401,8 @@ input ProfileCreateWithoutStudentInInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutTaskCreatorInInput {
@@ -7979,6 +9444,8 @@ input ProfileCreateWithoutTaskCreatorInInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 input ProfileCreateWithoutTeacherInInput {
@@ -8020,6 +9487,8 @@ input ProfileCreateWithoutTeacherInInput {
   authorOfWord: WordCreateManyWithoutAuthorInput
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
 }
 
 """An edge in a connection."""
@@ -8400,6 +9869,8 @@ input ProfileUpdateDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateInput {
@@ -8441,6 +9912,8 @@ input ProfileUpdateInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateManyDataInput {
@@ -8687,6 +10160,24 @@ input ProfileUpdateOneRequiredWithoutTeacherInInput {
   upsert: ProfileUpsertWithoutTeacherInInput
 }
 
+input ProfileUpdateOneWithoutAuthorOfAssignmentInput {
+  create: ProfileCreateWithoutAuthorOfAssignmentInput
+  connect: ProfileWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ProfileUpdateWithoutAuthorOfAssignmentDataInput
+  upsert: ProfileUpsertWithoutAuthorOfAssignmentInput
+}
+
+input ProfileUpdateOneWithoutAuthorOfHomeworkInput {
+  create: ProfileCreateWithoutAuthorOfHomeworkInput
+  connect: ProfileWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ProfileUpdateWithoutAuthorOfHomeworkDataInput
+  upsert: ProfileUpsertWithoutAuthorOfHomeworkInput
+}
+
 input ProfileUpdateOneWithoutAuthorOfProposalInput {
   create: ProfileCreateWithoutAuthorOfProposalInput
   connect: ProfileWhereUniqueInput
@@ -8774,6 +10265,8 @@ input ProfileUpdateWithoutAssignedToProposalCardDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAssignedToProposalSectionDataInput {
@@ -8814,6 +10307,8 @@ input ProfileUpdateWithoutAssignedToProposalSectionDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthEmailDataInput {
@@ -8854,6 +10349,8 @@ input ProfileUpdateWithoutAuthEmailDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthInviteDataInput {
@@ -8894,6 +10391,92 @@ input ProfileUpdateWithoutAuthInviteDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+}
+
+input ProfileUpdateWithoutAuthorOfAssignmentDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  publicReadableId: String
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
+  reviews: ReviewUpdateManyWithoutAuthorInput
+  classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+}
+
+input ProfileUpdateWithoutAuthorOfHomeworkDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  publicReadableId: String
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
+  reviews: ReviewUpdateManyWithoutAuthorInput
+  classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthorOfProposalDataInput {
@@ -8934,6 +10517,8 @@ input ProfileUpdateWithoutAuthorOfProposalDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthorOfTalkDataInput {
@@ -8974,6 +10559,8 @@ input ProfileUpdateWithoutAuthorOfTalkDataInput {
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthorOfWordDataInput {
@@ -9014,6 +10601,8 @@ input ProfileUpdateWithoutAuthorOfWordDataInput {
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthParticipantDataInput {
@@ -9054,6 +10643,8 @@ input ProfileUpdateWithoutAuthParticipantDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutAuthTokenDataInput {
@@ -9094,6 +10685,8 @@ input ProfileUpdateWithoutAuthTokenDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutClassNetworksCreatedDataInput {
@@ -9134,6 +10727,8 @@ input ProfileUpdateWithoutClassNetworksCreatedDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutCollaboratorInConsentDataInput {
@@ -9174,6 +10769,8 @@ input ProfileUpdateWithoutCollaboratorInConsentDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutCollaboratorInStudyDataInput {
@@ -9214,6 +10811,8 @@ input ProfileUpdateWithoutCollaboratorInStudyDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutCollaboratorInTaskDataInput {
@@ -9254,6 +10853,8 @@ input ProfileUpdateWithoutCollaboratorInTaskDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutCollaboratorOnProposalDataInput {
@@ -9294,6 +10895,8 @@ input ProfileUpdateWithoutCollaboratorOnProposalDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutConsentCreatorInDataInput {
@@ -9334,6 +10937,8 @@ input ProfileUpdateWithoutConsentCreatorInDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutConsentGivenForDataInput {
@@ -9374,6 +10979,8 @@ input ProfileUpdateWithoutConsentGivenForDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutCreatorOfProposalDataInput {
@@ -9414,6 +11021,8 @@ input ProfileUpdateWithoutCreatorOfProposalDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutJournalsDataInput {
@@ -9454,6 +11063,8 @@ input ProfileUpdateWithoutJournalsDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutMemberOfTalkDataInput {
@@ -9494,6 +11105,8 @@ input ProfileUpdateWithoutMemberOfTalkDataInput {
   classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
   authorOfWord: WordUpdateManyWithoutAuthorInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutParticipantInDataInput {
@@ -9534,6 +11147,8 @@ input ProfileUpdateWithoutParticipantInDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutPostsDataInput {
@@ -9574,6 +11189,8 @@ input ProfileUpdateWithoutPostsDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutResearcherInDataInput {
@@ -9614,6 +11231,8 @@ input ProfileUpdateWithoutResearcherInDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutResultsDataInput {
@@ -9654,6 +11273,8 @@ input ProfileUpdateWithoutResultsDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutReviewsDataInput {
@@ -9694,6 +11315,8 @@ input ProfileUpdateWithoutReviewsDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutStudentInDataInput {
@@ -9734,6 +11357,8 @@ input ProfileUpdateWithoutStudentInDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutTaskCreatorInDataInput {
@@ -9774,6 +11399,8 @@ input ProfileUpdateWithoutTaskCreatorInDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithoutTeacherInDataInput {
@@ -9814,6 +11441,8 @@ input ProfileUpdateWithoutTeacherInDataInput {
   authorOfWord: WordUpdateManyWithoutAuthorInput
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
 }
 
 input ProfileUpdateWithWhereUniqueWithoutAssignedToProposalCardInput {
@@ -9879,6 +11508,16 @@ input ProfileUpsertWithoutAuthEmailInput {
 input ProfileUpsertWithoutAuthInviteInput {
   update: ProfileUpdateWithoutAuthInviteDataInput!
   create: ProfileCreateWithoutAuthInviteInput!
+}
+
+input ProfileUpsertWithoutAuthorOfAssignmentInput {
+  update: ProfileUpdateWithoutAuthorOfAssignmentDataInput!
+  create: ProfileCreateWithoutAuthorOfAssignmentInput!
+}
+
+input ProfileUpsertWithoutAuthorOfHomeworkInput {
+  update: ProfileUpdateWithoutAuthorOfHomeworkDataInput!
+  create: ProfileCreateWithoutAuthorOfHomeworkInput!
 }
 
 input ProfileUpsertWithoutAuthorOfProposalInput {
@@ -10346,6 +11985,12 @@ input ProfileWhereInput {
   authorOfTalk_every: TalkWhereInput
   authorOfTalk_some: TalkWhereInput
   authorOfTalk_none: TalkWhereInput
+  authorOfAssignment_every: AssignmentWhereInput
+  authorOfAssignment_some: AssignmentWhereInput
+  authorOfAssignment_none: AssignmentWhereInput
+  authorOfHomework_every: HomeworkWhereInput
+  authorOfHomework_some: HomeworkWhereInput
+  authorOfHomework_none: HomeworkWhereInput
 }
 
 input ProfileWhereUniqueInput {
@@ -12790,6 +14435,8 @@ type Query {
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review]!
   words(where: WordWhereInput, orderBy: WordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Word]!
   talks(where: TalkWhereInput, orderBy: TalkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Talk]!
+  assignments(where: AssignmentWhereInput, orderBy: AssignmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Assignment]!
+  homeworks(where: HomeworkWhereInput, orderBy: HomeworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Homework]!
   studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study]!
   templates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Template]!
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task]!
@@ -12813,6 +14460,8 @@ type Query {
   review(where: ReviewWhereUniqueInput!): Review
   word(where: WordWhereUniqueInput!): Word
   talk(where: TalkWhereUniqueInput!): Talk
+  assignment(where: AssignmentWhereUniqueInput!): Assignment
+  homework(where: HomeworkWhereUniqueInput!): Homework
   study(where: StudyWhereUniqueInput!): Study
   template(where: TemplateWhereUniqueInput!): Template
   task(where: TaskWhereUniqueInput!): Task
@@ -12836,6 +14485,8 @@ type Query {
   reviewsConnection(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ReviewConnection!
   wordsConnection(where: WordWhereInput, orderBy: WordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): WordConnection!
   talksConnection(where: TalkWhereInput, orderBy: TalkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TalkConnection!
+  assignmentsConnection(where: AssignmentWhereInput, orderBy: AssignmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AssignmentConnection!
+  homeworksConnection(where: HomeworkWhereInput, orderBy: HomeworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): HomeworkConnection!
   studiesConnection(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StudyConnection!
   templatesConnection(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TemplateConnection!
   tasksConnection(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TaskConnection!
@@ -15891,6 +17542,8 @@ type Subscription {
   review(where: ReviewSubscriptionWhereInput): ReviewSubscriptionPayload
   word(where: WordSubscriptionWhereInput): WordSubscriptionPayload
   talk(where: TalkSubscriptionWhereInput): TalkSubscriptionPayload
+  assignment(where: AssignmentSubscriptionWhereInput): AssignmentSubscriptionPayload
+  homework(where: HomeworkSubscriptionWhereInput): HomeworkSubscriptionPayload
   study(where: StudySubscriptionWhereInput): StudySubscriptionPayload
   template(where: TemplateSubscriptionWhereInput): TemplateSubscriptionPayload
   task(where: TaskSubscriptionWhereInput): TaskSubscriptionPayload
