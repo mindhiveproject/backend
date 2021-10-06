@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Thu Sep 23 2021 21:40:33 GMT+0200 (Central European Summer Time)
+# timestamp: Wed Oct 06 2021 20:57:28 GMT+0200 (Central European Summer Time)
 
 type AggregateAssignment {
   count: Int!
@@ -17984,6 +17984,7 @@ type Task implements Node {
   title: String!
   slug: String!
   description: String
+  descriptionForParticipants: String
   template: Template
   author: Profile!
   parameters: Json
@@ -18015,6 +18016,7 @@ input TaskCreateInput {
   title: String!
   slug: String!
   description: String
+  descriptionForParticipants: String
   parameters: Json
   settings: Json
   link: String
@@ -18064,6 +18066,7 @@ input TaskCreateWithoutAuthorInput {
   title: String!
   slug: String!
   description: String
+  descriptionForParticipants: String
   parameters: Json
   settings: Json
   link: String
@@ -18082,6 +18085,7 @@ input TaskCreateWithoutCollaboratorsInput {
   title: String!
   slug: String!
   description: String
+  descriptionForParticipants: String
   parameters: Json
   settings: Json
   link: String
@@ -18100,6 +18104,7 @@ input TaskCreateWithoutConsentInput {
   title: String!
   slug: String!
   description: String
+  descriptionForParticipants: String
   parameters: Json
   settings: Json
   link: String
@@ -18118,6 +18123,7 @@ input TaskCreateWithoutTemplateInput {
   title: String!
   slug: String!
   description: String
+  descriptionForParticipants: String
   parameters: Json
   settings: Json
   link: String
@@ -18149,6 +18155,8 @@ enum TaskOrderByInput {
   slug_DESC
   description_ASC
   description_DESC
+  descriptionForParticipants_ASC
+  descriptionForParticipants_DESC
   parameters_ASC
   parameters_DESC
   settings_ASC
@@ -18176,6 +18184,7 @@ type TaskPreviousValues {
   title: String!
   slug: String!
   description: String
+  descriptionForParticipants: String
   parameters: Json
   settings: Json
   link: String
@@ -18357,6 +18366,46 @@ input TaskScalarWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
+  descriptionForParticipants: String
+
+  """All values that are not equal to given value."""
+  descriptionForParticipants_not: String
+
+  """All values that are contained in given list."""
+  descriptionForParticipants_in: [String!]
+
+  """All values that are not contained in given list."""
+  descriptionForParticipants_not_in: [String!]
+
+  """All values less than the given value."""
+  descriptionForParticipants_lt: String
+
+  """All values less than or equal the given value."""
+  descriptionForParticipants_lte: String
+
+  """All values greater than the given value."""
+  descriptionForParticipants_gt: String
+
+  """All values greater than or equal the given value."""
+  descriptionForParticipants_gte: String
+
+  """All values containing the given string."""
+  descriptionForParticipants_contains: String
+
+  """All values not containing the given string."""
+  descriptionForParticipants_not_contains: String
+
+  """All values starting with the given string."""
+  descriptionForParticipants_starts_with: String
+
+  """All values not starting with the given string."""
+  descriptionForParticipants_not_starts_with: String
+
+  """All values ending with the given string."""
+  descriptionForParticipants_ends_with: String
+
+  """All values not ending with the given string."""
+  descriptionForParticipants_not_ends_with: String
   link: String
 
   """All values that are not equal to given value."""
@@ -18517,6 +18566,7 @@ input TaskUpdateDataInput {
   title: String
   slug: String
   description: String
+  descriptionForParticipants: String
   parameters: Json
   settings: Json
   link: String
@@ -18535,6 +18585,7 @@ input TaskUpdateInput {
   title: String
   slug: String
   description: String
+  descriptionForParticipants: String
   parameters: Json
   settings: Json
   link: String
@@ -18553,6 +18604,7 @@ input TaskUpdateManyDataInput {
   title: String
   slug: String
   description: String
+  descriptionForParticipants: String
   parameters: Json
   settings: Json
   link: String
@@ -18579,6 +18631,7 @@ input TaskUpdateManyMutationInput {
   title: String
   slug: String
   description: String
+  descriptionForParticipants: String
   parameters: Json
   settings: Json
   link: String
@@ -18653,6 +18706,7 @@ input TaskUpdateWithoutAuthorDataInput {
   title: String
   slug: String
   description: String
+  descriptionForParticipants: String
   parameters: Json
   settings: Json
   link: String
@@ -18670,6 +18724,7 @@ input TaskUpdateWithoutCollaboratorsDataInput {
   title: String
   slug: String
   description: String
+  descriptionForParticipants: String
   parameters: Json
   settings: Json
   link: String
@@ -18687,6 +18742,7 @@ input TaskUpdateWithoutConsentDataInput {
   title: String
   slug: String
   description: String
+  descriptionForParticipants: String
   parameters: Json
   settings: Json
   link: String
@@ -18704,6 +18760,7 @@ input TaskUpdateWithoutTemplateDataInput {
   title: String
   slug: String
   description: String
+  descriptionForParticipants: String
   parameters: Json
   settings: Json
   link: String
@@ -18946,6 +19003,46 @@ input TaskWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
+  descriptionForParticipants: String
+
+  """All values that are not equal to given value."""
+  descriptionForParticipants_not: String
+
+  """All values that are contained in given list."""
+  descriptionForParticipants_in: [String!]
+
+  """All values that are not contained in given list."""
+  descriptionForParticipants_not_in: [String!]
+
+  """All values less than the given value."""
+  descriptionForParticipants_lt: String
+
+  """All values less than or equal the given value."""
+  descriptionForParticipants_lte: String
+
+  """All values greater than the given value."""
+  descriptionForParticipants_gt: String
+
+  """All values greater than or equal the given value."""
+  descriptionForParticipants_gte: String
+
+  """All values containing the given string."""
+  descriptionForParticipants_contains: String
+
+  """All values not containing the given string."""
+  descriptionForParticipants_not_contains: String
+
+  """All values starting with the given string."""
+  descriptionForParticipants_starts_with: String
+
+  """All values not starting with the given string."""
+  descriptionForParticipants_not_starts_with: String
+
+  """All values ending with the given string."""
+  descriptionForParticipants_ends_with: String
+
+  """All values not ending with the given string."""
+  descriptionForParticipants_not_ends_with: String
   link: String
 
   """All values that are not equal to given value."""

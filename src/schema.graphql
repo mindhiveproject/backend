@@ -343,6 +343,7 @@ type Mutation {
     slug: String
     title: String
     description: String
+    descriptionForParticipants: String
     parameters: Json
     settings: Json
     collaborators: [String]

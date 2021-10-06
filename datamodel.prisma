@@ -190,6 +190,7 @@ type Task {
   title: String!
   slug: String! @unique
   description: String
+  descriptionForParticipants: String
   template: Template
   author: Profile! @relation(name:"Creatoroftask")
   parameters: Json
