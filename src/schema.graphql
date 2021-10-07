@@ -589,6 +589,8 @@ type Mutation {
     public: Boolean
   ): Homework
   deleteHomework(id: ID!): Homework
+
+  manageFavoriteTasks(id: ID!, action: String): SuccessMessage
 }
 
 type SuccessMessage {
@@ -622,4 +624,5 @@ type Profile {
   publicReadableId: String
   reviews: [Review]!
   classNetworksCreated: [ClassNetwork]!
+  favoriteTasks: [Task]!
 }

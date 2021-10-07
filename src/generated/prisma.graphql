@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Wed Oct 06 2021 20:57:28 GMT+0200 (Central European Summer Time)
+# timestamp: Thu Oct 07 2021 14:53:42 GMT+0200 (Central European Summer Time)
 
 type AggregateAssignment {
   count: Int!
@@ -8034,6 +8034,7 @@ type Profile implements Node {
   authorOfTalk(where: TalkWhereInput, orderBy: TalkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Talk!]
   authorOfAssignment(where: AssignmentWhereInput, orderBy: AssignmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Assignment!]
   authorOfHomework(where: HomeworkWhereInput, orderBy: HomeworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Homework!]
+  favoriteTasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task!]
 }
 
 """A connection to a list of items."""
@@ -8088,6 +8089,7 @@ input ProfileCreateInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateManyWithoutAssignedToProposalCardInput {
@@ -8285,6 +8287,7 @@ input ProfileCreateWithoutAssignedToProposalCardInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutAssignedToProposalSectionInput {
@@ -8328,6 +8331,7 @@ input ProfileCreateWithoutAssignedToProposalSectionInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutAuthEmailInput {
@@ -8371,6 +8375,7 @@ input ProfileCreateWithoutAuthEmailInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutAuthInviteInput {
@@ -8414,6 +8419,7 @@ input ProfileCreateWithoutAuthInviteInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutAuthorOfAssignmentInput {
@@ -8457,6 +8463,7 @@ input ProfileCreateWithoutAuthorOfAssignmentInput {
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutAuthorOfHomeworkInput {
@@ -8500,6 +8507,7 @@ input ProfileCreateWithoutAuthorOfHomeworkInput {
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutAuthorOfProposalInput {
@@ -8543,6 +8551,7 @@ input ProfileCreateWithoutAuthorOfProposalInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutAuthorOfTalkInput {
@@ -8586,6 +8595,7 @@ input ProfileCreateWithoutAuthorOfTalkInput {
   memberOfTalk: TalkCreateManyWithoutMembersInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutAuthorOfWordInput {
@@ -8629,6 +8639,7 @@ input ProfileCreateWithoutAuthorOfWordInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutAuthParticipantInput {
@@ -8672,6 +8683,7 @@ input ProfileCreateWithoutAuthParticipantInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutAuthTokenInput {
@@ -8715,6 +8727,7 @@ input ProfileCreateWithoutAuthTokenInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutClassNetworksCreatedInput {
@@ -8758,6 +8771,7 @@ input ProfileCreateWithoutClassNetworksCreatedInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutCollaboratorInConsentInput {
@@ -8801,6 +8815,7 @@ input ProfileCreateWithoutCollaboratorInConsentInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutCollaboratorInStudyInput {
@@ -8844,6 +8859,7 @@ input ProfileCreateWithoutCollaboratorInStudyInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutCollaboratorInTaskInput {
@@ -8887,6 +8903,7 @@ input ProfileCreateWithoutCollaboratorInTaskInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutCollaboratorOnProposalInput {
@@ -8930,6 +8947,7 @@ input ProfileCreateWithoutCollaboratorOnProposalInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutConsentCreatorInInput {
@@ -8973,6 +8991,7 @@ input ProfileCreateWithoutConsentCreatorInInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutConsentGivenForInput {
@@ -9016,6 +9035,7 @@ input ProfileCreateWithoutConsentGivenForInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutCreatorOfProposalInput {
@@ -9059,6 +9079,7 @@ input ProfileCreateWithoutCreatorOfProposalInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutJournalsInput {
@@ -9102,6 +9123,7 @@ input ProfileCreateWithoutJournalsInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutMemberOfTalkInput {
@@ -9145,6 +9167,7 @@ input ProfileCreateWithoutMemberOfTalkInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutParticipantInInput {
@@ -9188,6 +9211,7 @@ input ProfileCreateWithoutParticipantInInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutPostsInput {
@@ -9231,6 +9255,7 @@ input ProfileCreateWithoutPostsInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutResearcherInInput {
@@ -9274,6 +9299,7 @@ input ProfileCreateWithoutResearcherInInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutResultsInput {
@@ -9317,6 +9343,7 @@ input ProfileCreateWithoutResultsInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutReviewsInput {
@@ -9360,6 +9387,7 @@ input ProfileCreateWithoutReviewsInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutStudentInInput {
@@ -9403,6 +9431,7 @@ input ProfileCreateWithoutStudentInInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutTaskCreatorInInput {
@@ -9446,6 +9475,7 @@ input ProfileCreateWithoutTaskCreatorInInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 input ProfileCreateWithoutTeacherInInput {
@@ -9489,6 +9519,7 @@ input ProfileCreateWithoutTeacherInInput {
   authorOfTalk: TalkCreateManyWithoutAuthorInput
   authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
   authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
 }
 
 """An edge in a connection."""
@@ -9871,6 +9902,7 @@ input ProfileUpdateDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateInput {
@@ -9914,6 +9946,7 @@ input ProfileUpdateInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateManyDataInput {
@@ -10267,6 +10300,7 @@ input ProfileUpdateWithoutAssignedToProposalCardDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutAssignedToProposalSectionDataInput {
@@ -10309,6 +10343,7 @@ input ProfileUpdateWithoutAssignedToProposalSectionDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutAuthEmailDataInput {
@@ -10351,6 +10386,7 @@ input ProfileUpdateWithoutAuthEmailDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutAuthInviteDataInput {
@@ -10393,6 +10429,7 @@ input ProfileUpdateWithoutAuthInviteDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutAuthorOfAssignmentDataInput {
@@ -10435,6 +10472,7 @@ input ProfileUpdateWithoutAuthorOfAssignmentDataInput {
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutAuthorOfHomeworkDataInput {
@@ -10477,6 +10515,7 @@ input ProfileUpdateWithoutAuthorOfHomeworkDataInput {
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutAuthorOfProposalDataInput {
@@ -10519,6 +10558,7 @@ input ProfileUpdateWithoutAuthorOfProposalDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutAuthorOfTalkDataInput {
@@ -10561,6 +10601,7 @@ input ProfileUpdateWithoutAuthorOfTalkDataInput {
   memberOfTalk: TalkUpdateManyWithoutMembersInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutAuthorOfWordDataInput {
@@ -10603,6 +10644,7 @@ input ProfileUpdateWithoutAuthorOfWordDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutAuthParticipantDataInput {
@@ -10645,6 +10687,7 @@ input ProfileUpdateWithoutAuthParticipantDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutAuthTokenDataInput {
@@ -10687,6 +10730,7 @@ input ProfileUpdateWithoutAuthTokenDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutClassNetworksCreatedDataInput {
@@ -10729,6 +10773,7 @@ input ProfileUpdateWithoutClassNetworksCreatedDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutCollaboratorInConsentDataInput {
@@ -10771,6 +10816,7 @@ input ProfileUpdateWithoutCollaboratorInConsentDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutCollaboratorInStudyDataInput {
@@ -10813,6 +10859,7 @@ input ProfileUpdateWithoutCollaboratorInStudyDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutCollaboratorInTaskDataInput {
@@ -10855,6 +10902,7 @@ input ProfileUpdateWithoutCollaboratorInTaskDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutCollaboratorOnProposalDataInput {
@@ -10897,6 +10945,7 @@ input ProfileUpdateWithoutCollaboratorOnProposalDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutConsentCreatorInDataInput {
@@ -10939,6 +10988,7 @@ input ProfileUpdateWithoutConsentCreatorInDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutConsentGivenForDataInput {
@@ -10981,6 +11031,7 @@ input ProfileUpdateWithoutConsentGivenForDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutCreatorOfProposalDataInput {
@@ -11023,6 +11074,7 @@ input ProfileUpdateWithoutCreatorOfProposalDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutJournalsDataInput {
@@ -11065,6 +11117,7 @@ input ProfileUpdateWithoutJournalsDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutMemberOfTalkDataInput {
@@ -11107,6 +11160,7 @@ input ProfileUpdateWithoutMemberOfTalkDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutParticipantInDataInput {
@@ -11149,6 +11203,7 @@ input ProfileUpdateWithoutParticipantInDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutPostsDataInput {
@@ -11191,6 +11246,7 @@ input ProfileUpdateWithoutPostsDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutResearcherInDataInput {
@@ -11233,6 +11289,7 @@ input ProfileUpdateWithoutResearcherInDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutResultsDataInput {
@@ -11275,6 +11332,7 @@ input ProfileUpdateWithoutResultsDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutReviewsDataInput {
@@ -11317,6 +11375,7 @@ input ProfileUpdateWithoutReviewsDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutStudentInDataInput {
@@ -11359,6 +11418,7 @@ input ProfileUpdateWithoutStudentInDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutTaskCreatorInDataInput {
@@ -11401,6 +11461,7 @@ input ProfileUpdateWithoutTaskCreatorInDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithoutTeacherInDataInput {
@@ -11443,6 +11504,7 @@ input ProfileUpdateWithoutTeacherInDataInput {
   authorOfTalk: TalkUpdateManyWithoutAuthorInput
   authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
   authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
 }
 
 input ProfileUpdateWithWhereUniqueWithoutAssignedToProposalCardInput {
@@ -11991,6 +12053,9 @@ input ProfileWhereInput {
   authorOfHomework_every: HomeworkWhereInput
   authorOfHomework_some: HomeworkWhereInput
   authorOfHomework_none: HomeworkWhereInput
+  favoriteTasks_every: TaskWhereInput
+  favoriteTasks_some: TaskWhereInput
+  favoriteTasks_none: TaskWhereInput
 }
 
 input ProfileWhereUniqueInput {

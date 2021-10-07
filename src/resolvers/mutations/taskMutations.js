@@ -433,6 +433,34 @@ const taskMutations = {
       info
     );
   },
+
+  // add/remove a task to favorite tasks
+  async manageFavoriteTasks(parent, args, ctx, info) {
+    // Make sure that user is signed in
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw new Error(`You are not signed in`);
+    }
+
+    // connect the participant auth identity to profile
+    await ctx.db.mutation.updateProfile(
+      {
+        data: {
+          favoriteTasks: {
+            [args?.action]: {
+              id: args.id,
+            },
+          },
+        },
+        where: {
+          id: ctx.request.userId,
+        },
+      },
+      `{ id favoriteTasks{ id title } }`
+    );
+
+    return { message: 'OK' };
+  },
 };
 
 module.exports = taskMutations;

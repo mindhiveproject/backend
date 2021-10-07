@@ -55,6 +55,7 @@ type Profile {
   authorOfTalk: [Talk]! @relation(name:"TalkAuthor")
   authorOfAssignment: [Assignment]! @relation(name:"AssignmentAuthor")
   authorOfHomework: [Homework]! @relation(name:"HomeworkAuthor")
+  favoriteTasks: [Task]! @relation(name:"FavoriteTasks")
 }
 
 type AuthEmail {
