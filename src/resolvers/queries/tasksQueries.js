@@ -98,6 +98,56 @@ const taskQueries = {
       info
     );
   },
+
+  // get my favorite tasks
+  async favoriteTasks(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+
+    const profile = await ctx.db.query.profile(
+      {
+        where: {
+          id: ctx.request.userId,
+        },
+      },
+      `{ id favoriteTasks {id} }`
+    );
+
+    const tasksId = profile.favoriteTasks.map(task => task.id);
+
+    if (args.selector === 'me') {
+      return ctx.db.query.tasks(
+        {
+          where: {
+            id_in: tasksId,
+            OR: [
+              {
+                author: {
+                  id: ctx.request.userId,
+                },
+              },
+              {
+                collaborators_some: {
+                  id: ctx.request.userId,
+                },
+              },
+            ],
+          },
+        },
+        info
+      );
+    }
+
+    return ctx.db.query.tasks(
+      {
+        where: {
+          id_in: tasksId,
+        },
+      },
+      info
+    );
+  },
 };
 
 module.exports = taskQueries;

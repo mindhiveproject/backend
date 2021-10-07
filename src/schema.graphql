@@ -169,6 +169,8 @@ type Query {
 
   homeworks(where: HomeworkWhereInput): [Homework]!
   homework(where: HomeworkWhereUniqueInput): Homework
+
+  favoriteTasks(selector: String!): [Task]!
 }
 
 type Mutation {
