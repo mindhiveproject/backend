@@ -627,4 +627,5 @@ type Profile {
   reviews: [Review]!
   classNetworksCreated: [ClassNetwork]!
   favoriteTasks: [Task]!
+  authorOfHomework: [Homework]!
 }
