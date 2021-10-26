@@ -559,6 +559,8 @@ type Mutation {
 
   createTalk(members: [ID]!, settings: Json): Talk
   updateTalk(id: ID!, members: [ID]!, settings: Json): Talk
+  addMembersToTalk(id: ID!, members: [ID]!): Talk
+  leaveGroupChat(id: ID!): Talk
 
   createAssignment(
     title: String

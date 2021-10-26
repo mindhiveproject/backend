@@ -1,15 +1,11 @@
 const talkMutations = {
   async createTalk(parent, args, ctx, info) {
-    console.log('args', args);
     // Check login
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');
     }
-
     // transform array of members
     const members = args.members.map(member => ({ id: member }));
-    console.log('members', members);
-
     const talk = await ctx.db.mutation.createTalk(
       {
         data: {
@@ -29,7 +25,57 @@ const talkMutations = {
     return talk;
   },
 
-  // update the talk
+  // add new members to the group chat
+  async addMembersToTalk(parent, args, ctx, info) {
+    // check login
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    // check that the user is the member of the talk
+    // TODO
+
+    // add new members
+    // transform array of members
+    const members = args.members.map(member => ({ id: member }));
+    return ctx.db.mutation.updateTalk(
+      {
+        data: {
+          members: {
+            connect: members,
+          },
+        },
+        where: {
+          id: args.id,
+        },
+      },
+      info
+    );
+  },
+
+  // leave the group chat
+  async leaveGroupChat(parent, args, ctx, info) {
+    // check login
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    // check that the user is the member of the group chat
+    // TODO
+
+    // disconnect the current user
+    return ctx.db.mutation.updateTalk(
+      {
+        data: {
+          members: {
+            disconnect: { id: ctx.request.userId },
+          },
+        },
+        where: {
+          id: args.id,
+        },
+      },
+      info
+    );
+  },
 
   // delete talk
 };
