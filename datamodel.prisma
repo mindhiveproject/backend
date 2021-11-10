@@ -184,6 +184,7 @@ type Study {
   components: Json
   proposal: [ProposalBoard]! @relation(name:"StudyProposal")
   reviews: [Review]! @relation(name:"StudyReview")
+  featured: Boolean
 }
 
 type Task {

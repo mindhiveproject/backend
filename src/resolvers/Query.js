@@ -55,6 +55,18 @@ const Query = {
     );
   },
 
+  // return featured studies
+  featuredStudies(parent, args, ctx, info) {
+    return ctx.db.query.studies(
+      {
+        where: {
+          featured: true,
+        },
+      },
+      info
+    );
+  },
+
   // return results
   results(parent, args, ctx, info) {
     return ctx.db.query.results(

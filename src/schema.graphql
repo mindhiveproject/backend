@@ -46,6 +46,12 @@ type Query {
     skip: Int
     first: Int
   ): [Study]!
+  featuredStudies(
+    where: StudyWhereInput
+    orderBy: StudyOrderByInput
+    skip: Int
+    first: Int
+  ): [Study]!
   myStudies(
     where: StudyWhereInput
     orderBy: StudyOrderByInput
@@ -382,7 +388,7 @@ type Mutation {
     components: Json
     submitForPublishing: Boolean
   ): Study!
-  publishStudyToggle(id: ID!): Study
+  manageStudyVisibility(id: ID!, public: Boolean, featured: Boolean): Study
   deleteStudy(id: ID!): Study
   buildStudy(id: ID!, tasks: [ID]!): Study!
   joinStudy(id: ID!, info: Json, study: Json): Profile!

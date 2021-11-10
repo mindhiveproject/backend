@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Thu Oct 07 2021 14:53:42 GMT+0200 (Central European Summer Time)
+# timestamp: Mon Nov 08 2021 16:28:22 GMT+0100 (Central European Standard Time)
 
 type AggregateAssignment {
   count: Int!
@@ -16241,6 +16241,7 @@ type Study implements Node {
   components: Json
   proposal(where: ProposalBoardWhereInput, orderBy: ProposalBoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalBoard!]
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
+  featured: Boolean
 }
 
 """A connection to a list of items."""
@@ -16266,6 +16267,7 @@ input StudyCreateInput {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -16324,6 +16326,7 @@ input StudyCreateWithoutAuthorInput {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
@@ -16346,6 +16349,7 @@ input StudyCreateWithoutCollaboratorsInput {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -16368,6 +16372,7 @@ input StudyCreateWithoutConsentInput {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -16390,6 +16395,7 @@ input StudyCreateWithoutParticipantsInput {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
@@ -16412,6 +16418,7 @@ input StudyCreateWithoutProposalInput {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -16434,6 +16441,7 @@ input StudyCreateWithoutReviewsInput {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -16481,6 +16489,8 @@ enum StudyOrderByInput {
   submitForPublishing_DESC
   components_ASC
   components_DESC
+  featured_ASC
+  featured_DESC
 }
 
 type StudyPreviousValues {
@@ -16498,6 +16508,7 @@ type StudyPreviousValues {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
 }
 
 input StudyScalarWhereInput {
@@ -16841,6 +16852,10 @@ input StudyScalarWhereInput {
 
   """All values that are not equal to given value."""
   submitForPublishing_not: Boolean
+  featured: Boolean
+
+  """All values that are not equal to given value."""
+  featured_not: Boolean
 }
 
 type StudySubscriptionPayload {
@@ -16894,6 +16909,7 @@ input StudyUpdateDataInput {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -16916,6 +16932,7 @@ input StudyUpdateInput {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -16938,6 +16955,7 @@ input StudyUpdateManyDataInput {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
 }
 
 input StudyUpdateManyMutationInput {
@@ -16952,6 +16970,7 @@ input StudyUpdateManyMutationInput {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
 }
 
 input StudyUpdateManyWithoutAuthorInput {
@@ -17046,6 +17065,7 @@ input StudyUpdateWithoutAuthorDataInput {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
@@ -17067,6 +17087,7 @@ input StudyUpdateWithoutCollaboratorsDataInput {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -17088,6 +17109,7 @@ input StudyUpdateWithoutConsentDataInput {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -17109,6 +17131,7 @@ input StudyUpdateWithoutParticipantsDataInput {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
@@ -17130,6 +17153,7 @@ input StudyUpdateWithoutProposalDataInput {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -17151,6 +17175,7 @@ input StudyUpdateWithoutReviewsDataInput {
   public: Boolean
   submitForPublishing: Boolean
   components: Json
+  featured: Boolean
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -17560,6 +17585,10 @@ input StudyWhereInput {
 
   """All values that are not equal to given value."""
   submitForPublishing_not: Boolean
+  featured: Boolean
+
+  """All values that are not equal to given value."""
+  featured_not: Boolean
   author: ProfileWhereInput
   tasks_every: TaskWhereInput
   tasks_some: TaskWhereInput
