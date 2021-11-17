@@ -1,6 +1,5 @@
 const wordMutations = {
   async createWord(parent, args, ctx, info) {
-    // console.log('args', args);
     // Check login
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');

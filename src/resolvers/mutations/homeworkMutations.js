@@ -32,7 +32,6 @@ const homeworkMutations = {
 
   // update the homework
   updateHomework(parent, args, ctx, info) {
-    console.log('args', args);
     // take a copy of updates
     const updates = { ...args };
     // remove the ID from the updates

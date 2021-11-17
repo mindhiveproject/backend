@@ -50,6 +50,7 @@ const Query = {
         where: {
           public: true,
         },
+        orderBy: 'createdAt_DESC',
       },
       info
     );
@@ -220,6 +221,7 @@ const Query = {
             },
           ],
         },
+        orderBy: 'createdAt_DESC',
       },
       info
     );
@@ -264,6 +266,7 @@ const Query = {
         where: {
           id_in: profile.participantIn.map(study => study.id),
         },
+        orderBy: 'createdAt_DESC',
       },
       info
     );

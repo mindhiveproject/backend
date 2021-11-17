@@ -17,16 +17,14 @@ const taskMutations = {
     }
 
     // check whether the slug is already in the system
-    const existingTask = await ctx.db.query.task(
+    const existingTasks = await ctx.db.query.tasks(
       {
-        where: { slug: args.slug },
+        where: { slug_starts_with: args.slug },
       },
       `{ id }`
     );
-    if (existingTask) {
-      throw new Error(
-        `The task name ${args.title} is already taken. Please try to come up with another name.`
-      );
+    if (existingTasks.length) {
+      args.slug = `${args.slug}-${existingTasks.length + 1}`;
     }
 
     let collaborators = [];

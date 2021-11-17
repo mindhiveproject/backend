@@ -7,6 +7,7 @@ const taskQueries = {
           public: true,
           ...args.where,
         },
+        orderBy: 'createdAt_DESC',
       },
       info
     );
@@ -37,6 +38,7 @@ const taskQueries = {
           ],
           ...args.where,
         },
+        orderBy: 'createdAt_DESC',
       },
       info
     );
