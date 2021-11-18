@@ -177,6 +177,34 @@ const Query = {
     );
   },
 
+  // to get both student and teacher classes
+  async myStudentTeacherClasses(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in');
+    }
+
+    // query parameters where author is the current user
+    return ctx.db.query.classes(
+      {
+        where: {
+          OR: [
+            {
+              creator: {
+                id: ctx.request.userId,
+              },
+            },
+            {
+              students_some: {
+                id: ctx.request.userId,
+              },
+            },
+          ],
+        },
+      },
+      info
+    );
+  },
+
   // get only templates of the user
   async myTemplates(parent, args, ctx, info) {
     // check if the user has permission to see all users

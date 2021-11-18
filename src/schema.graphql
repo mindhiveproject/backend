@@ -13,6 +13,7 @@ type Query {
   ): [Class]!
   myClasses: [Class]!
   myStudentClasses: [Class]!
+  myStudentTeacherClasses: [Class]!
   myResults: [Result]!
   result(where: ResultWhereUniqueInput): Result
   results(
