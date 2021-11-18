@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Mon Nov 08 2021 16:28:22 GMT+0100 (Central European Standard Time)
+# timestamp: Wed Nov 17 2021 14:57:21 GMT+0100 (Central European Standard Time)
 
 type AggregateAssignment {
   count: Int!
@@ -18654,6 +18654,7 @@ input TaskSubscriptionWhereInput {
 enum TaskType {
   TASK
   SURVEY
+  BLOCK
 }
 
 input TaskUpdateDataInput {

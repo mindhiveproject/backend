@@ -11,6 +11,7 @@ enum Permission {
 enum TaskType {
   TASK
   SURVEY
+  BLOCK
 }
 
 type Profile {
