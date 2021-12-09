@@ -40,6 +40,11 @@ const studyMutations = {
               id: ctx.request.userId,
             },
           },
+          collaborators: {
+            connect: {
+              id: ctx.request.userId,
+            },
+          },
           consent:
             args.consent && args.consent.length
               ? {
