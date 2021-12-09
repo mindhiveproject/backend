@@ -191,6 +191,7 @@ type Study {
 type Task {
   id: ID! @id
   title: String!
+  subtitle: String
   slug: String! @unique
   description: String
   descriptionForParticipants: String

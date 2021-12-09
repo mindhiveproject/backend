@@ -306,6 +306,7 @@ type Mutation {
   deleteTemplate(id: ID!): Template
   createTask(
     title: String!
+    subtitle: String
     slug: String
     templateId: ID
     description: String
@@ -323,6 +324,7 @@ type Mutation {
     id: ID!
     slug: String
     title: String
+    subtitle: String
     description: String
     parameters: Json
     settings: Json
@@ -336,6 +338,7 @@ type Mutation {
   publishTaskToggle(id: ID!): Task
   createTaskWithTemplate(
     title: String!
+    subtitle: String
     slug: String
     description: String
     parameters: Json
@@ -351,6 +354,7 @@ type Mutation {
     id: ID!
     slug: String
     title: String
+    subtitle: String
     description: String
     descriptionForParticipants: String
     parameters: Json

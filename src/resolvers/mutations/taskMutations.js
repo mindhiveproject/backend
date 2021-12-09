@@ -42,6 +42,7 @@ const taskMutations = {
       {
         data: {
           title: args.title,
+          subtitle: args.subtitle,
           slug: args.slug,
           description: args.description,
           author: {
@@ -291,6 +292,7 @@ const taskMutations = {
       {
         data: {
           title: args.title,
+          subtitle: args.subtitle,
           slug: args.slug,
           description: args.description,
           author: {

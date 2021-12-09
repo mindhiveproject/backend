@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/shevchenko_yury-d70d0e/mindHive-backend/dev
-# timestamp: Wed Nov 17 2021 14:57:21 GMT+0100 (Central European Standard Time)
+# timestamp: Thu Dec 09 2021 15:26:28 GMT+0100 (Central European Standard Time)
 
 type AggregateAssignment {
   count: Int!
@@ -18076,6 +18076,7 @@ input TalkWhereUniqueInput {
 type Task implements Node {
   id: ID!
   title: String!
+  subtitle: String
   slug: String!
   description: String
   descriptionForParticipants: String
@@ -18108,6 +18109,7 @@ type TaskConnection {
 input TaskCreateInput {
   id: ID
   title: String!
+  subtitle: String
   slug: String!
   description: String
   descriptionForParticipants: String
@@ -18158,6 +18160,7 @@ input TaskCreateOneInput {
 input TaskCreateWithoutAuthorInput {
   id: ID
   title: String!
+  subtitle: String
   slug: String!
   description: String
   descriptionForParticipants: String
@@ -18177,6 +18180,7 @@ input TaskCreateWithoutAuthorInput {
 input TaskCreateWithoutCollaboratorsInput {
   id: ID
   title: String!
+  subtitle: String
   slug: String!
   description: String
   descriptionForParticipants: String
@@ -18196,6 +18200,7 @@ input TaskCreateWithoutCollaboratorsInput {
 input TaskCreateWithoutConsentInput {
   id: ID
   title: String!
+  subtitle: String
   slug: String!
   description: String
   descriptionForParticipants: String
@@ -18215,6 +18220,7 @@ input TaskCreateWithoutConsentInput {
 input TaskCreateWithoutTemplateInput {
   id: ID
   title: String!
+  subtitle: String
   slug: String!
   description: String
   descriptionForParticipants: String
@@ -18245,6 +18251,8 @@ enum TaskOrderByInput {
   id_DESC
   title_ASC
   title_DESC
+  subtitle_ASC
+  subtitle_DESC
   slug_ASC
   slug_DESC
   description_ASC
@@ -18276,6 +18284,7 @@ enum TaskOrderByInput {
 type TaskPreviousValues {
   id: ID!
   title: String!
+  subtitle: String
   slug: String!
   description: String
   descriptionForParticipants: String
@@ -18380,6 +18389,46 @@ input TaskScalarWhereInput {
 
   """All values not ending with the given string."""
   title_not_ends_with: String
+  subtitle: String
+
+  """All values that are not equal to given value."""
+  subtitle_not: String
+
+  """All values that are contained in given list."""
+  subtitle_in: [String!]
+
+  """All values that are not contained in given list."""
+  subtitle_not_in: [String!]
+
+  """All values less than the given value."""
+  subtitle_lt: String
+
+  """All values less than or equal the given value."""
+  subtitle_lte: String
+
+  """All values greater than the given value."""
+  subtitle_gt: String
+
+  """All values greater than or equal the given value."""
+  subtitle_gte: String
+
+  """All values containing the given string."""
+  subtitle_contains: String
+
+  """All values not containing the given string."""
+  subtitle_not_contains: String
+
+  """All values starting with the given string."""
+  subtitle_starts_with: String
+
+  """All values not starting with the given string."""
+  subtitle_not_starts_with: String
+
+  """All values ending with the given string."""
+  subtitle_ends_with: String
+
+  """All values not ending with the given string."""
+  subtitle_not_ends_with: String
   slug: String
 
   """All values that are not equal to given value."""
@@ -18659,6 +18708,7 @@ enum TaskType {
 
 input TaskUpdateDataInput {
   title: String
+  subtitle: String
   slug: String
   description: String
   descriptionForParticipants: String
@@ -18678,6 +18728,7 @@ input TaskUpdateDataInput {
 
 input TaskUpdateInput {
   title: String
+  subtitle: String
   slug: String
   description: String
   descriptionForParticipants: String
@@ -18697,6 +18748,7 @@ input TaskUpdateInput {
 
 input TaskUpdateManyDataInput {
   title: String
+  subtitle: String
   slug: String
   description: String
   descriptionForParticipants: String
@@ -18724,6 +18776,7 @@ input TaskUpdateManyInput {
 
 input TaskUpdateManyMutationInput {
   title: String
+  subtitle: String
   slug: String
   description: String
   descriptionForParticipants: String
@@ -18799,6 +18852,7 @@ input TaskUpdateOneRequiredInput {
 
 input TaskUpdateWithoutAuthorDataInput {
   title: String
+  subtitle: String
   slug: String
   description: String
   descriptionForParticipants: String
@@ -18817,6 +18871,7 @@ input TaskUpdateWithoutAuthorDataInput {
 
 input TaskUpdateWithoutCollaboratorsDataInput {
   title: String
+  subtitle: String
   slug: String
   description: String
   descriptionForParticipants: String
@@ -18835,6 +18890,7 @@ input TaskUpdateWithoutCollaboratorsDataInput {
 
 input TaskUpdateWithoutConsentDataInput {
   title: String
+  subtitle: String
   slug: String
   description: String
   descriptionForParticipants: String
@@ -18853,6 +18909,7 @@ input TaskUpdateWithoutConsentDataInput {
 
 input TaskUpdateWithoutTemplateDataInput {
   title: String
+  subtitle: String
   slug: String
   description: String
   descriptionForParticipants: String
@@ -19018,6 +19075,46 @@ input TaskWhereInput {
 
   """All values not ending with the given string."""
   title_not_ends_with: String
+  subtitle: String
+
+  """All values that are not equal to given value."""
+  subtitle_not: String
+
+  """All values that are contained in given list."""
+  subtitle_in: [String!]
+
+  """All values that are not contained in given list."""
+  subtitle_not_in: [String!]
+
+  """All values less than the given value."""
+  subtitle_lt: String
+
+  """All values less than or equal the given value."""
+  subtitle_lte: String
+
+  """All values greater than the given value."""
+  subtitle_gt: String
+
+  """All values greater than or equal the given value."""
+  subtitle_gte: String
+
+  """All values containing the given string."""
+  subtitle_contains: String
+
+  """All values not containing the given string."""
+  subtitle_not_contains: String
+
+  """All values starting with the given string."""
+  subtitle_starts_with: String
+
+  """All values not starting with the given string."""
+  subtitle_not_starts_with: String
+
+  """All values ending with the given string."""
+  subtitle_ends_with: String
+
+  """All values not ending with the given string."""
+  subtitle_not_ends_with: String
   slug: String
 
   """All values that are not equal to given value."""
