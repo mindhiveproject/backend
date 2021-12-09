@@ -57,12 +57,48 @@ const studiesQueries = {
       )
       .flat(2);
 
+    // TODO: find also all proposals where the user is collaborator on the study
+    const myStudyProposals = await ctx.db.query.studies(
+      {
+        where: {
+          OR: [
+            {
+              author: {
+                id: ctx.request.userId,
+              },
+            },
+            {
+              collaborators_some: {
+                id: ctx.request.userId,
+              },
+            },
+          ],
+        },
+      },
+      `{proposal { id } }`
+    );
+    const myStudyProposalsIDs = myStudyProposals
+      .map(study => study.proposal.map(proposal => proposal.id))
+      .flat(2);
+
     const proposalIDs = [
-      ...new Set([...allStudentProposals, ...allTeacherProposals]),
+      ...new Set([
+        ...allStudentProposals,
+        ...allTeacherProposals,
+        ...myStudyProposalsIDs,
+      ]),
     ];
 
     const submittedProposals = await ctx.db.query.proposalBoards(
-      { where: { id_in: proposalIDs, isSubmitted: true } },
+      {
+        where: {
+          OR: [
+            { id_in: proposalIDs, isSubmitted: true },
+            { author: { id: ctx.request.userId } }, // find also all proposals where the user is the author or collaborator
+            { collaborators_some: { id: ctx.request.userId } },
+          ],
+        },
+      },
       `{ id
           slug
           title
