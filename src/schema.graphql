@@ -165,7 +165,7 @@ type Query {
   ): [ClassNetwork]!
 
   participant(participantId: ID!, studyId: ID!): Profile
-  participantResults(participantId: ID!): [Result]!
+  participantResults(participantId: ID!, studyId: ID): [Result]!
   participantStudyResults(participantId: ID!, studyId: ID!): [Result]!
 
   myTalks: [Talk]!

@@ -148,6 +148,9 @@ const resultsQueries = {
           user: {
             id: args.participantId,
           },
+          study: {
+            id: args.studyId,
+          },
         },
       },
       info
