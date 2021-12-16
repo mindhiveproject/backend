@@ -138,6 +138,7 @@ const taskMutations = {
     const updates = { ...args };
     // remove the ID from the updates
     delete updates.id;
+    delete updates.slug; // do not update the slug
     // run the update method
     return ctx.db.mutation.updateTask(
       {
@@ -228,30 +229,32 @@ const taskMutations = {
       });
     }
 
+    let taskSlug;
     // check whether the slug is already in the tasks
-    const existingTask = await ctx.db.query.task(
+    const existingTasks = await ctx.db.query.tasks(
       {
-        where: { slug: args.slug },
+        where: { slug_starts_with: args.slug },
       },
       `{ id }`
     );
-    if (existingTask) {
-      throw new Error(
-        `The task name ${args.title} is already taken. Please try to come up with another name.`
-      );
+    if (existingTasks.length) {
+      taskSlug = `${args.slug}-${existingTasks.length + 1}`;
+    } else {
+      taskSlug = args.slug;
     }
 
+    let templateSlug;
     // check whether the slug is already in the templates
-    const existingTemplate = await ctx.db.query.template(
+    const existingTemplates = await ctx.db.query.templates(
       {
-        where: { slug: args.slug },
+        where: { slug_starts_with: args.slug },
       },
       `{ id }`
     );
-    if (existingTemplate) {
-      throw new Error(
-        `The task name ${args.title} is already taken. Please try to come up with another name.`
-      );
+    if (existingTemplates.length) {
+      templateSlug = `${args.slug}-${existingTemplates.length + 1}`;
+    } else {
+      templateSlug = args.slug;
     }
 
     let collaborators = [];
@@ -275,7 +278,7 @@ const taskMutations = {
             },
           },
           title: args.title,
-          slug: args.slug,
+          slug: templateSlug,
           shortDescription: args.shortDescription, // suppose to be a description for other researchers
           description: args.description,
           script: args.template.script,
@@ -293,7 +296,7 @@ const taskMutations = {
         data: {
           title: args.title,
           subtitle: args.subtitle,
-          slug: args.slug,
+          slug: taskSlug,
           description: args.description,
           author: {
             connect: { id: userId },
@@ -405,6 +408,7 @@ const taskMutations = {
     const updates = { ...args };
     // remove the ID from the updates
     delete updates.id;
+    delete updates.slug; // do not update the slug
     // remove template information
     delete updates.template;
 
