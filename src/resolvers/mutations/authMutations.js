@@ -189,11 +189,20 @@ const authMutations = {
       updatedProfile = await ctx.db.mutation.updateProfile(
         {
           data: {
-            studentIn: {
-              connect: {
-                code: args.class.code,
-              },
-            },
+            studentIn: args.permissions.includes('STUDENT')
+              ? {
+                  connect: {
+                    code: args.class.code,
+                  },
+                }
+              : null,
+            mentorIn: args.permissions.includes('MENTOR')
+              ? {
+                  connect: {
+                    code: args.class.code,
+                  },
+                }
+              : null,
           },
           where: {
             id: profile.id,
@@ -362,11 +371,20 @@ const authMutations = {
       updatedProfile = await ctx.db.mutation.updateProfile(
         {
           data: {
-            studentIn: {
-              connect: {
-                code: args.class.code,
-              },
-            },
+            studentIn: args.permissions.includes('STUDENT')
+              ? {
+                  connect: {
+                    code: args.class.code,
+                  },
+                }
+              : null,
+            mentorIn: args.permissions.includes('MENTOR')
+              ? {
+                  connect: {
+                    code: args.class.code,
+                  },
+                }
+              : null,
           },
           where: {
             id: profile.id,

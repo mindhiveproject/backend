@@ -252,6 +252,7 @@ type Mutation {
     description: String
     image: String
     largeImage: String
+    settings: Json
   ): Class!
   updateClass(
     id: ID!
@@ -260,13 +261,16 @@ type Mutation {
     description: String
     image: String
     largeImage: String
+    settings: Json
   ): Class!
   deleteClass(id: ID!): Class
   joinClass(id: ID!): SuccessMessage
   joinClassWithProfile(id: ID!, email: String): SuccessMessage
+  joinClassAsMentorWithProfile(id: ID!, email: String): SuccessMessage
   leaveClass(id: ID!): SuccessMessage
   expelFromClass(classId: ID!, studentId: ID!): SuccessMessage
   moveToClass(classId: ID!, studentId: ID!): SuccessMessage
+  removeMentorFromClass(classId: ID!, mentorId: ID!): SuccessMessage
   addResult(templateId: ID!, data: Json, dataPolicy: String): Result!
   deleteResult(id: ID!): Result
   submitResultFromAPI(
@@ -579,6 +583,7 @@ type Mutation {
     settings: Json
     classId: ID
     public: Boolean
+    isTemplate: Boolean
   ): Assignment
   updateAssignment(
     id: ID!
@@ -586,6 +591,7 @@ type Mutation {
     content: String
     settings: Json
     public: Boolean
+    isTemplate: Boolean
   ): Assignment
   deleteAssignment(id: ID!): Assignment
 

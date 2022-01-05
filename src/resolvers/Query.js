@@ -150,9 +150,18 @@ const Query = {
     return ctx.db.query.classes(
       {
         where: {
-          creator: {
-            id: ctx.request.userId,
-          },
+          OR: [
+            {
+              creator: {
+                id: ctx.request.userId,
+              },
+            },
+            {
+              mentors_some: {
+                id: ctx.request.userId,
+              },
+            },
+          ],
         },
       },
       info

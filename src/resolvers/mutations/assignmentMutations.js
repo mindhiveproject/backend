@@ -16,11 +16,13 @@ const assignmentMutations = {
               id: ctx.request.userId,
             },
           },
-          classes: {
-            connect: {
-              id: args.classId,
-            },
-          },
+          classes: args.classId
+            ? {
+                connect: {
+                  id: args.classId,
+                },
+              }
+            : null,
           ...newAssignment,
         },
       },

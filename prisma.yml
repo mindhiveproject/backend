@@ -1,4 +1,5 @@
 endpoint: ${env:PRISMA_ENDPOINT}
+#endpoint for production (uncomment before deploy)
 #endpoint: https://mindhive-production-b2502bdee8.herokuapp.com/mindhive-prod/dev
 datamodel: datamodel.prisma
 secret: ${env:PRISMA_SECRET}
