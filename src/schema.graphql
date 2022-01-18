@@ -330,6 +330,7 @@ type Mutation {
     title: String
     subtitle: String
     description: String
+    descriptionForParticipants: String
     parameters: Json
     settings: Json
     collaborators: [String]
