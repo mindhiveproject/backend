@@ -649,4 +649,5 @@ type Profile {
   classNetworksCreated: [ClassNetwork]!
   favoriteTasks: [Task]!
   authorOfHomework: [Homework]!
+  mentorIn: [Class]!
 }
