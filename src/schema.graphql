@@ -176,6 +176,7 @@ type Query {
 
   homeworks(where: HomeworkWhereInput): [Homework]!
   homework(where: HomeworkWhereUniqueInput): Homework
+  myHomeworks(where: HomeworkWhereInput): [Homework]!
 
   favoriteTasks(selector: String!): [Task]!
 }

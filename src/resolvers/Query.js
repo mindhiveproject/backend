@@ -5,12 +5,14 @@ const resultsQueries = require('./queries/resultsQueries');
 const usersQueries = require('./queries/usersQueries');
 const studiesQueries = require('./queries/studiesQueries');
 const tasksQueries = require('./queries/tasksQueries');
+const homeworksQueries = require('./queries/homeworksQueries');
 
 const Query = {
   ...resultsQueries,
   ...usersQueries,
   ...studiesQueries,
   ...tasksQueries,
+  ...homeworksQueries,
   schools: forwardTo('db'),
   class: forwardTo('db'),
   result: forwardTo('db'),
