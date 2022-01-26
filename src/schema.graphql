@@ -179,6 +179,14 @@ type Query {
   myHomeworks(where: HomeworkWhereInput): [Homework]!
 
   favoriteTasks(selector: String!): [Task]!
+
+  datas(
+    where: DataWhereInput
+    orderBy: DataOrderByInput
+    skip: Int
+    first: Int
+  ): [Data]!
+  data(where: DataWhereUniqueInput): Data
 }
 
 type Mutation {

@@ -45,6 +45,9 @@ const Query = {
   homeworks: forwardTo('db'),
   homework: forwardTo('db'),
 
+  datas: forwardTo('db'),
+  data: forwardTo('db'),
+
   // return only public studies by default
   studies(parent, args, ctx, info) {
     return ctx.db.query.studies(
