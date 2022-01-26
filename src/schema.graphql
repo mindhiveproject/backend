@@ -614,6 +614,8 @@ type Mutation {
   deleteHomework(id: ID!): Homework
 
   manageFavoriteTasks(id: ID!, action: String): SuccessMessage
+
+  joinStudyAsGuest(id: ID!, info: Json, study: Json): SuccessMessage
 }
 
 type SuccessMessage {

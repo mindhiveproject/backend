@@ -62,6 +62,18 @@ const joinTheStudy = async (profile, args, ctx, info) => {
     };
   }
 
+  // update general preference of participant
+  const generalInfo = {
+    ...profile.generalInfo,
+    ...args.info,
+  };
+  delete generalInfo.id;
+  delete generalInfo.step;
+  delete generalInfo.mode;
+  delete generalInfo.covered;
+  delete generalInfo.numberOfConsents;
+  delete generalInfo.activeConsent;
+
   const updatedProfile = await ctx.db.mutation.updateProfile(
     {
       data: {
@@ -78,6 +90,7 @@ const joinTheStudy = async (profile, args, ctx, info) => {
                 connect: consentIdsAgree,
               }
             : null,
+        generalInfo,
       },
       where: {
         id: profile.id,
@@ -92,6 +105,7 @@ const joinTheStudy = async (profile, args, ctx, info) => {
 const authMutations = {
   // general sign up flow
   async signUp(parent, args, ctx, info) {
+    console.log('args', args);
     // whether the private email address is used
     const privateAddress = !(args.info && args.info.useTeacherEmail);
 
@@ -753,6 +767,7 @@ const authMutations = {
 
   // join the study (for participants)
   async joinStudy(parent, args, ctx, info) {
+    console.log('args', args);
     // Check login
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');
@@ -761,7 +776,7 @@ const authMutations = {
       {
         where: { id: ctx.request.userId },
       },
-      `{ id info studiesInfo consentsInfo }`
+      `{ id info studiesInfo consentsInfo generalInfo }`
     );
     // join a study if there is a study
     if (args.study) {
@@ -821,6 +836,18 @@ const authMutations = {
     }
 
     return updatedProfile;
+  },
+
+  // join the study as a guest
+  async joinStudyAsGuest(parent, args, ctx, info) {
+    console.log('args', args);
+    console.log('args.info', args.info);
+
+    // join a study if there is a study
+    // if (args.study) {
+    //   await joinTheStudy(profile, args, ctx, info);
+    // }
+    return { message: 'Success' };
   },
 };
 
