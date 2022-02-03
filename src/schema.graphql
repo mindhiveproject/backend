@@ -187,6 +187,8 @@ type Query {
     first: Int
   ): [Data]!
   data(where: DataWhereUniqueInput): Data
+
+  guest(where: GuestWhereUniqueInput): Guest
 }
 
 type Mutation {
@@ -623,7 +625,7 @@ type Mutation {
 
   manageFavoriteTasks(id: ID!, action: String): SuccessMessage
 
-  joinStudyAsGuest(id: ID!, info: Json, study: Json): SuccessMessage
+  joinStudyAsGuest(id: ID!, info: Json, study: Json): Guest
 }
 
 type SuccessMessage {

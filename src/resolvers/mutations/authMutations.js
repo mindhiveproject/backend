@@ -12,6 +12,8 @@ const { transport, makeEmail } = require('../../mail');
 
 // general function to join a study
 const joinTheStudy = async (profile, args, ctx, info) => {
+  console.log('profile', profile);
+
   const { study } = args;
 
   // assign participants to one of the study blocks
@@ -780,7 +782,11 @@ const authMutations = {
     );
     // join a study if there is a study
     if (args.study) {
-      profile = await joinTheStudy(profile, args, ctx, info);
+      if (args.info && args.info.guest) {
+        await joinTheStudyAsGuest(profile, args, ctx, info);
+      } else {
+        profile = await joinTheStudy(profile, args, ctx, info);
+      }
     }
     return profile;
   },
@@ -840,14 +846,86 @@ const authMutations = {
 
   // join the study as a guest
   async joinStudyAsGuest(parent, args, ctx, info) {
-    console.log('args', args);
-    console.log('args.info', args.info);
+    const { study } = args;
 
-    // join a study if there is a study
-    // if (args.study) {
-    //   await joinTheStudy(profile, args, ctx, info);
-    // }
-    return { message: 'Success' };
+    // assign participants to one of the study blocks
+    const updatedInfo = { ...args.info };
+
+    if (study.components && study.components.blocks) {
+      const { blocks } = study.components;
+      // get a random block out of study between-subjects blocks
+      const block = blocks[Math.floor(Math.random() * blocks.length)];
+      updatedInfo.blockId = block.blockId;
+      updatedInfo.blockName = block.title;
+    }
+    console.log('updatedInfo', updatedInfo);
+
+    const studyInformation = {
+      [study.id]: updatedInfo,
+    };
+
+    console.log('studyInformation', studyInformation);
+
+    // update consent information
+    const consentIds = Object.keys(updatedInfo)
+      .filter(key => key.startsWith('consent-'))
+      .map(key => key.split('-')[1])
+      .map(id => ({ id }));
+
+    let consentInformation;
+    if (consentIds && consentIds.length) {
+      consentInformation = {
+        ...Object.fromEntries(
+          consentIds.map(consent => [
+            consent.id,
+            {
+              saveCoveredConsent: 'true',
+              decision: updatedInfo[`consent-${consent.id}`],
+              createdAt: Date.now(),
+              updatedAt: Date.now(),
+            },
+          ])
+        ),
+      };
+    } else {
+      consentInformation = {};
+    }
+
+    console.log('consentInformation', consentInformation);
+
+    // update general preference of participant
+    const generalInfo = {
+      ...args.info,
+    };
+    delete generalInfo.id;
+    delete generalInfo.step;
+    delete generalInfo.mode;
+    delete generalInfo.covered;
+    delete generalInfo.numberOfConsents;
+    delete generalInfo.activeConsent;
+
+    console.log('generalInfo', generalInfo);
+
+    const guest = await ctx.db.mutation.createGuest(
+      {
+        data: {
+          publicId: uniqid(),
+          publicReadableId: generate({ words: 3, number: false }).dashed,
+          guestParticipantIn: {
+            connect: {
+              id: study.id,
+            },
+          },
+          studiesInfo: studyInformation,
+          consentsInfo: consentInformation,
+          generalInfo,
+        },
+      },
+      info
+    );
+    console.log('guest', guest);
+
+    return guest;
   },
 };
 

@@ -48,6 +48,8 @@ const Query = {
   datas: forwardTo('db'),
   data: forwardTo('db'),
 
+  guest: forwardTo('db'),
+
   // return only public studies by default
   studies(parent, args, ctx, info) {
     return ctx.db.query.studies(

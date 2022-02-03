@@ -189,6 +189,7 @@ type Study {
   proposal: [ProposalBoard]! @relation(name:"StudyProposal")
   reviews: [Review]! @relation(name:"StudyReview")
   featured: Boolean
+  guests: [Guest]! @relation(name:"Guestparticipantofstudy")
 }
 
 type Task {
@@ -387,4 +388,18 @@ type Homework {
   public: Boolean
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+}
+
+type Guest {
+  id: ID! @id
+  publicId: String @unique
+  publicReadableId: String
+  results: [Result]!
+  guestParticipantIn: [Study]! @relation(name:"Guestparticipantofstudy")
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  guestAccountExpiry: String
 }

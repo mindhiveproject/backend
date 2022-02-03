@@ -72,6 +72,9 @@ const studiesQueries = {
                 id: ctx.request.userId,
               },
             },
+            {
+              featured: true, // include featured studies (their proposals also should be submitted)
+            },
           ],
         },
       },
