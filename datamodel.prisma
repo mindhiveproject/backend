@@ -190,6 +190,7 @@ type Study {
   reviews: [Review]! @relation(name:"StudyReview")
   featured: Boolean
   guests: [Guest]! @relation(name:"Guestparticipantofstudy")
+  isHidden: Boolean
 }
 
 type Task {

@@ -408,6 +408,7 @@ type Mutation {
     public: Boolean
     components: Json
     submitForPublishing: Boolean
+    isHidden: Boolean
   ): Study!
   manageStudyVisibility(id: ID!, public: Boolean, featured: Boolean): Study
   deleteStudy(id: ID!): Study

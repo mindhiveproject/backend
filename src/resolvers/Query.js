@@ -252,16 +252,27 @@ const Query = {
     return ctx.db.query.studies(
       {
         where: {
-          OR: [
+          AND: [
             {
-              author: {
-                id: ctx.request.userId,
-              },
+              OR: [
+                { isHidden: null },
+                { isHidden: false },
+                { isHidden: args.where.isHidden },
+              ],
             },
             {
-              collaborators_some: {
-                id: ctx.request.userId,
-              },
+              OR: [
+                {
+                  author: {
+                    id: ctx.request.userId,
+                  },
+                },
+                {
+                  collaborators_some: {
+                    id: ctx.request.userId,
+                  },
+                },
+              ],
             },
           ],
         },
