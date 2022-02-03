@@ -12,17 +12,14 @@ const { transport, makeEmail } = require('../../mail');
 
 // general function to join a study
 const joinTheStudy = async (profile, args, ctx, info) => {
-  console.log('profile', profile);
-
   const { study } = args;
-
   // assign participants to one of the study blocks
   const updatedInfo = { ...args.info };
-
   if (study.components && study.components.blocks) {
     const { blocks } = study.components;
+    const activeBlocks = blocks.filter(b => !b.skip);
     // get a random block out of study between-subjects blocks
-    const block = blocks[Math.floor(Math.random() * blocks.length)];
+    const block = activeBlocks[Math.floor(Math.random() * activeBlocks.length)];
     updatedInfo.blockId = block.blockId;
     updatedInfo.blockName = block.title;
   }
@@ -853,18 +850,19 @@ const authMutations = {
 
     if (study.components && study.components.blocks) {
       const { blocks } = study.components;
+      const activeBlocks = blocks.filter(b => !b.skip);
       // get a random block out of study between-subjects blocks
-      const block = blocks[Math.floor(Math.random() * blocks.length)];
+      const block =
+        activeBlocks[Math.floor(Math.random() * activeBlocks.length)];
       updatedInfo.blockId = block.blockId;
       updatedInfo.blockName = block.title;
     }
-    console.log('updatedInfo', updatedInfo);
 
     const studyInformation = {
       [study.id]: updatedInfo,
     };
 
-    console.log('studyInformation', studyInformation);
+    // console.log('studyInformation', studyInformation);
 
     // update consent information
     const consentIds = Object.keys(updatedInfo)
