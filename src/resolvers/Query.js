@@ -254,11 +254,7 @@ const Query = {
         where: {
           AND: [
             {
-              OR: [
-                { isHidden: null },
-                { isHidden: false },
-                { isHidden: args.where.isHidden },
-              ],
+              OR: [{ isHidden: null }, { isHidden: false }],
             },
             {
               OR: [

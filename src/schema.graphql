@@ -627,6 +627,8 @@ type Mutation {
   manageFavoriteTasks(id: ID!, action: String): SuccessMessage
 
   joinStudyAsGuest(id: ID!, info: Json, study: Json): Guest
+
+  updateUserStudyHideInDevelop(studyId: ID!, isHidden: Boolean!): SuccessMessage
 }
 
 type SuccessMessage {

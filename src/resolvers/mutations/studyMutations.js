@@ -312,6 +312,46 @@ const studyMutations = {
 
     return study;
   },
+
+  async updateUserStudyHideInDevelop(parent, args, ctx, info) {
+    // Check login
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    const profile = await ctx.db.query.profile(
+      {
+        where: { id: ctx.request.userId },
+      },
+      `{ id studiesInfo }`
+    );
+
+    const { studiesInfo } = profile;
+    if (studiesInfo[args.studyId]) {
+      studiesInfo[args.studyId] = {
+        ...studiesInfo[args.studyId],
+        hideInDevelop: args.isHidden,
+      };
+    } else {
+      studiesInfo[args.studyId] = {
+        hideInDevelop: args.isHidden,
+      };
+    }
+
+    // update profile
+    await ctx.db.mutation.updateProfile(
+      {
+        data: {
+          studiesInfo,
+        },
+        where: {
+          id: ctx.request.userId,
+        },
+      },
+      `{ id username permissions }`
+    );
+
+    return { message: 'You updated the study!' };
+  },
 };
 
 module.exports = studyMutations;
