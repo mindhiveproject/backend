@@ -324,9 +324,9 @@ const studyMutations = {
       },
       `{ id studiesInfo }`
     );
-
-    const { studiesInfo } = profile;
-    if (studiesInfo[args.studyId]) {
+    let studiesInfo = {};
+    if (profile.studiesInfo && profile.studiesInfo[args.studyId]) {
+      studiesInfo = profile.studiesInfo;
       studiesInfo[args.studyId] = {
         ...studiesInfo[args.studyId],
         hideInDevelop: args.isHidden,
