@@ -77,6 +77,29 @@ const talkMutations = {
     );
   },
 
+  // update chat settings
+  async updateChatSettings(parent, args, ctx, info) {
+    // check login
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    // check that the user is the member of the group chat
+    // TODO
+
+    // disconnect the current user
+    return ctx.db.mutation.updateTalk(
+      {
+        data: {
+          settings: args.settings,
+        },
+        where: {
+          id: args.id,
+        },
+      },
+      info
+    );
+  },
+
   // delete talk
 };
 
