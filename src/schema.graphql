@@ -165,6 +165,7 @@ type Query {
   ): [ClassNetwork]!
 
   participant(participantId: ID!, studyId: ID!): Profile
+  guestParticipant(participantId: ID!, studyId: ID!): Guest
   participantResults(participantId: ID!, studyId: ID): [Result]!
   participantStudyResults(participantId: ID!, studyId: ID!): [Result]!
 
@@ -295,6 +296,7 @@ type Mutation {
     dataPolicy: String
     resultType: ResultType
     version: String
+    guestId: ID
   ): SuccessMessage
   updateResultsInfo(id: ID!, info: Json): SuccessMessage
   createTemplate(

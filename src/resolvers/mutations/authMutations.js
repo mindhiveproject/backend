@@ -766,7 +766,6 @@ const authMutations = {
 
   // join the study (for participants)
   async joinStudy(parent, args, ctx, info) {
-    console.log('args', args);
     // Check login
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');
@@ -779,11 +778,7 @@ const authMutations = {
     );
     // join a study if there is a study
     if (args.study) {
-      if (args.info && args.info.guest) {
-        await joinTheStudyAsGuest(profile, args, ctx, info);
-      } else {
-        profile = await joinTheStudy(profile, args, ctx, info);
-      }
+      profile = await joinTheStudy(profile, args, ctx, info);
     }
     return profile;
   },

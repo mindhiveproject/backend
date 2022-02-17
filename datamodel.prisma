@@ -145,6 +145,7 @@ type Result {
   template: Template #relationship to Template
   task: Task!
   user: Profile! #relationship to Profile
+  guest: Guest #relationship to Guest Profile
   quantity: Int!
   data: Json
   dataPolicy: String

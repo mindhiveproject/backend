@@ -145,9 +145,18 @@ const resultsQueries = {
     const results = await ctx.db.query.results(
       {
         where: {
-          user: {
-            id: args.participantId,
-          },
+          OR: [
+            {
+              user: {
+                id: args.participantId,
+              },
+            },
+            {
+              guest: {
+                id: args.participantId,
+              },
+            },
+          ],
           study: {
             id: args.studyId,
           },
@@ -167,9 +176,18 @@ const resultsQueries = {
     const results = await ctx.db.query.results(
       {
         where: {
-          user: {
-            id: args.participantId,
-          },
+          OR: [
+            {
+              user: {
+                id: args.participantId,
+              },
+            },
+            {
+              guest: {
+                id: args.participantId,
+              },
+            },
+          ],
           study: {
             id: args.studyId,
           },

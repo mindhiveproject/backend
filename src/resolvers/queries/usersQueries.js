@@ -76,6 +76,24 @@ const usersQueries = {
 
     return participant;
   },
+
+  // query a guest participant of a study
+  async guestParticipant(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+
+    const participant = await ctx.db.query.guest(
+      {
+        where: {
+          id: args.participantId,
+        },
+      },
+      info
+    );
+
+    return participant;
+  },
 };
 
 module.exports = usersQueries;
