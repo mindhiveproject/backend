@@ -578,6 +578,12 @@ type Mutation {
     status: ResultType!
   ): SuccessMessage
 
+  changeStatusGuestParticipantStudyResults(
+    participantId: ID!
+    studyId: ID!
+    status: ResultType!
+  ): SuccessMessage
+
   editAccount(
     username: String
     email: String

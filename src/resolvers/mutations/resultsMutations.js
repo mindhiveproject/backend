@@ -289,6 +289,34 @@ const resultsMutations = {
       message: `${results.length} results were updated to the status - ${args.status}`,
     };
   },
+
+  // change the status of participant data in a specific study (called by study owner or collaborator)
+  async changeStatusGuestParticipantStudyResults(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+
+    const results = await ctx.db.mutation.updateManyResults(
+      {
+        where: {
+          guest: {
+            id: args.participantId,
+          },
+          study: {
+            id: args.studyId,
+          },
+        },
+        data: {
+          resultType: args.status,
+        },
+      },
+      info
+    );
+
+    return {
+      message: `${results.length} results were updated to the status - ${args.status}`,
+    };
+  },
 };
 
 module.exports = resultsMutations;

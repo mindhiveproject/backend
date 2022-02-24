@@ -104,7 +104,6 @@ const joinTheStudy = async (profile, args, ctx, info) => {
 const authMutations = {
   // general sign up flow
   async signUp(parent, args, ctx, info) {
-    console.log('args', args);
     // whether the private email address is used
     const privateAddress = !(args.info && args.info.useTeacherEmail);
 
@@ -884,8 +883,6 @@ const authMutations = {
       consentInformation = {};
     }
 
-    console.log('consentInformation', consentInformation);
-
     // update general preference of participant
     const generalInfo = {
       ...args.info,
@@ -896,8 +893,6 @@ const authMutations = {
     delete generalInfo.covered;
     delete generalInfo.numberOfConsents;
     delete generalInfo.activeConsent;
-
-    console.log('generalInfo', generalInfo);
 
     const guest = await ctx.db.mutation.createGuest(
       {
@@ -916,7 +911,6 @@ const authMutations = {
       },
       info
     );
-    console.log('guest', guest);
 
     return guest;
   },
