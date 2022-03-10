@@ -14,8 +14,10 @@ const proposalMutations = {
     const arguments = {
       title: template.description,
       description: template.description,
-      slug: `${template.slug}-${Date.now()}-${Math.round(Math.random() * 100000)}`, // to do where the slug should be taken from?
-    }
+      slug: `${template.slug}-${Date.now()}-${Math.round(
+        Math.random() * 100000
+      )}`, // to do where the slug should be taken from?
+    };
     // create a new board
     const board = await ctx.db.mutation.createProposalBoard(
       {
@@ -27,50 +29,54 @@ const proposalMutations = {
           },
           study: {
             connect: {
-              id: args.study
-            }
+              id: args.study,
+            },
           },
-          ...arguments
+          ...arguments,
         },
       },
       info
     );
     // create new sections
-    await Promise.all(template.sections.map(async (section, i) => {
-      const templateSection = template.sections[i];
-      const newSection = await ctx.db.mutation.createProposalSection(
-        {
-          data: {
-            title: templateSection.title,
-            position: templateSection.position,
-            board: {
-              connect: { id: board.id },
-            },
-          },
-        },
-        `{ id }`
-      );
-      // create cards of this section
-      await Promise.all(templateSection.cards.map( async (card, i) => {
-        const templateCard = section.cards[i];
-        const newCard = await ctx.db.mutation.createProposalCard(
+    await Promise.all(
+      template.sections.map(async (section, i) => {
+        const templateSection = template.sections[i];
+        const newSection = await ctx.db.mutation.createProposalSection(
           {
             data: {
-              section: {
-                connect: {
-                  id: newSection.id,
-                },
+              title: templateSection.title,
+              position: templateSection.position,
+              board: {
+                connect: { id: board.id },
               },
-              title: templateCard.title,
-              description: templateCard.description,
-              content: templateCard.content,
-              position: templateCard.position,
             },
           },
           `{ id }`
         );
-      }))
-    }))
+        // create cards of this section
+        await Promise.all(
+          templateSection.cards.map(async (card, i) => {
+            const templateCard = section.cards[i];
+            const newCard = await ctx.db.mutation.createProposalCard(
+              {
+                data: {
+                  section: {
+                    connect: {
+                      id: newSection.id,
+                    },
+                  },
+                  title: templateCard.title,
+                  description: templateCard.description,
+                  content: templateCard.content,
+                  position: templateCard.position,
+                },
+              },
+              `{ id }`
+            );
+          })
+        );
+      })
+    );
     return board;
   },
 
@@ -149,7 +155,6 @@ const proposalMutations = {
 
   // create new section
   async createProposalSection(parent, args, ctx, info) {
-
     // create new section
     const section = await ctx.db.mutation.createProposalSection(
       {
@@ -235,10 +240,9 @@ const proposalMutations = {
 
   // update card
   async updateProposalCard(parent, args, ctx, info) {
-
     // add collaborators
     let assignedTo = [];
-    if(args.assignedTo){
+    if (args.assignedTo) {
       // get the card
       const card = await ctx.db.query.proposalCard(
         {
@@ -269,7 +273,6 @@ const proposalMutations = {
         );
         assignedTo = assignedTo.filter(c => c);
       }
-
     }
 
     // update new card
