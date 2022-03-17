@@ -600,6 +600,7 @@ type Mutation {
   updateTalk(id: ID!, members: [ID]!, settings: Json): Talk
   addMembersToTalk(id: ID!, members: [ID]!): Talk
   leaveGroupChat(id: ID!): Talk
+  deleteGroupChat(id: ID!): Talk
   updateChatSettings(id: ID!, settings: Json): Talk
 
   createAssignment(

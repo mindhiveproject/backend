@@ -5,12 +5,12 @@ const studiesQueries = {
     const { where } = args;
     const theclass = await ctx.db.query.class(
       { where },
-      `{ id title students { id researcherIn { id slug title createdAt participants { id } author { username } collaborators { username } }} }`
+      `{ id studies { id slug title createdAt participants { id } author { username } collaborators { username } } }`
     );
     // 2. prepare the object to return
-    const studies = theclass.students.map(student => student.researcherIn);
-    const uniqueStudies = [...new Set(studies.flat())];
-    return uniqueStudies;
+    // const studies = theclass.students.map(student => student.researcherIn);
+    // const uniqueStudies = [...new Set(studies.flat())];
+    return theclass.studies;
   },
 
   // get all studies for admin

@@ -59,7 +59,14 @@ const talkMutations = {
       throw new Error('You must be logged in to do that!');
     }
     // check that the user is the member of the group chat
-    // TODO
+    const where = { id: args.id };
+    const chat = await ctx.db.query.talk({ where }, `{ members {id} }`);
+    const isChatMember = chat.members
+      .map(member => member.id)
+      .includes(ctx.request.userId);
+    if (!isChatMember) {
+      throw new Error(`You are not a member of the chat!`);
+    }
 
     // disconnect the current user
     return ctx.db.mutation.updateTalk(
@@ -75,6 +82,32 @@ const talkMutations = {
       },
       info
     );
+  },
+
+  // delete the group chat
+  async deleteGroupChat(parent, args, ctx, info) {
+    // check login
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    // check that the user is the author of the group chat
+    const where = { id: args.id };
+    const chat = await ctx.db.query.talk(
+      { where },
+      `{ author {id} words {id}}`
+    );
+    const ownsChat = chat.author.id === ctx.request.userId;
+    if (!ownsChat) {
+      throw new Error(`You don't have permission to do that!`);
+    }
+    // delete all messages
+    await ctx.db.mutation.deleteManyWords(
+      { where: { id_in: chat.words.map(word => word.id) } },
+      info
+    );
+
+    // disconnect the current user
+    return ctx.db.mutation.deleteTalk({ where }, info);
   },
 
   // update chat settings
