@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/shevchenko_yury-d70d0e/mindhive-us-back/dev
-# timestamp: Wed Feb 16 2022 12:12:28 GMT+0100 (Central European Standard Time)
+# timestamp: Thu Mar 17 2022 07:47:05 GMT+0100 (Central European Standard Time)
 
 type AggregateAssignment {
   count: Int!
@@ -2766,6 +2766,7 @@ type Class implements Node {
   network: ClassNetwork
   assignments(where: AssignmentWhereInput, orderBy: AssignmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Assignment!]
   mentors(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
+  studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study!]
   settings: Json
 }
 
@@ -2793,6 +2794,7 @@ input ClassCreateInput {
   network: ClassNetworkCreateOneWithoutClassesInput
   assignments: AssignmentCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
+  studies: StudyCreateManyWithoutClassesInput
 }
 
 input ClassCreateManyWithoutAssignmentsInput {
@@ -2820,6 +2822,11 @@ input ClassCreateManyWithoutStudentsInput {
   connect: [ClassWhereUniqueInput!]
 }
 
+input ClassCreateManyWithoutStudiesInput {
+  create: [ClassCreateWithoutStudiesInput!]
+  connect: [ClassWhereUniqueInput!]
+}
+
 input ClassCreateOneWithoutInvitesInput {
   create: ClassCreateWithoutInvitesInput
   connect: ClassWhereUniqueInput
@@ -2838,6 +2845,7 @@ input ClassCreateWithoutAssignmentsInput {
   invites: AuthInviteCreateManyWithoutInvitedInInput
   network: ClassNetworkCreateOneWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
+  studies: StudyCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutCreatorInput {
@@ -2853,6 +2861,7 @@ input ClassCreateWithoutCreatorInput {
   network: ClassNetworkCreateOneWithoutClassesInput
   assignments: AssignmentCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
+  studies: StudyCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutInvitesInput {
@@ -2868,6 +2877,7 @@ input ClassCreateWithoutInvitesInput {
   network: ClassNetworkCreateOneWithoutClassesInput
   assignments: AssignmentCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
+  studies: StudyCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutMentorsInput {
@@ -2883,6 +2893,7 @@ input ClassCreateWithoutMentorsInput {
   invites: AuthInviteCreateManyWithoutInvitedInInput
   network: ClassNetworkCreateOneWithoutClassesInput
   assignments: AssignmentCreateManyWithoutClassesInput
+  studies: StudyCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutNetworkInput {
@@ -2898,6 +2909,7 @@ input ClassCreateWithoutNetworkInput {
   invites: AuthInviteCreateManyWithoutInvitedInInput
   assignments: AssignmentCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
+  studies: StudyCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutStudentsInput {
@@ -2909,6 +2921,23 @@ input ClassCreateWithoutStudentsInput {
   largeImage: String
   settings: Json
   creator: ProfileCreateOneWithoutTeacherInInput!
+  invites: AuthInviteCreateManyWithoutInvitedInInput
+  network: ClassNetworkCreateOneWithoutClassesInput
+  assignments: AssignmentCreateManyWithoutClassesInput
+  mentors: ProfileCreateManyWithoutMentorInInput
+  studies: StudyCreateManyWithoutClassesInput
+}
+
+input ClassCreateWithoutStudiesInput {
+  id: ID
+  code: String!
+  title: String!
+  description: String
+  image: String
+  largeImage: String
+  settings: Json
+  creator: ProfileCreateOneWithoutTeacherInInput!
+  students: ProfileCreateManyWithoutStudentInInput
   invites: AuthInviteCreateManyWithoutInvitedInInput
   network: ClassNetworkCreateOneWithoutClassesInput
   assignments: AssignmentCreateManyWithoutClassesInput
@@ -3866,6 +3895,7 @@ input ClassUpdateInput {
   network: ClassNetworkUpdateOneWithoutClassesInput
   assignments: AssignmentUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
+  studies: StudyUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateManyDataInput {
@@ -3946,6 +3976,18 @@ input ClassUpdateManyWithoutStudentsInput {
   upsert: [ClassUpsertWithWhereUniqueWithoutStudentsInput!]
 }
 
+input ClassUpdateManyWithoutStudiesInput {
+  create: [ClassCreateWithoutStudiesInput!]
+  connect: [ClassWhereUniqueInput!]
+  set: [ClassWhereUniqueInput!]
+  disconnect: [ClassWhereUniqueInput!]
+  delete: [ClassWhereUniqueInput!]
+  update: [ClassUpdateWithWhereUniqueWithoutStudiesInput!]
+  updateMany: [ClassUpdateManyWithWhereNestedInput!]
+  deleteMany: [ClassScalarWhereInput!]
+  upsert: [ClassUpsertWithWhereUniqueWithoutStudiesInput!]
+}
+
 input ClassUpdateManyWithWhereNestedInput {
   where: ClassScalarWhereInput!
   data: ClassUpdateManyDataInput!
@@ -3970,6 +4012,7 @@ input ClassUpdateWithoutAssignmentsDataInput {
   invites: AuthInviteUpdateManyWithoutInvitedInInput
   network: ClassNetworkUpdateOneWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
+  studies: StudyUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutCreatorDataInput {
@@ -3984,6 +4027,7 @@ input ClassUpdateWithoutCreatorDataInput {
   network: ClassNetworkUpdateOneWithoutClassesInput
   assignments: AssignmentUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
+  studies: StudyUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutInvitesDataInput {
@@ -3998,6 +4042,7 @@ input ClassUpdateWithoutInvitesDataInput {
   network: ClassNetworkUpdateOneWithoutClassesInput
   assignments: AssignmentUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
+  studies: StudyUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutMentorsDataInput {
@@ -4012,6 +4057,7 @@ input ClassUpdateWithoutMentorsDataInput {
   invites: AuthInviteUpdateManyWithoutInvitedInInput
   network: ClassNetworkUpdateOneWithoutClassesInput
   assignments: AssignmentUpdateManyWithoutClassesInput
+  studies: StudyUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutNetworkDataInput {
@@ -4026,6 +4072,7 @@ input ClassUpdateWithoutNetworkDataInput {
   invites: AuthInviteUpdateManyWithoutInvitedInInput
   assignments: AssignmentUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
+  studies: StudyUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutStudentsDataInput {
@@ -4036,6 +4083,22 @@ input ClassUpdateWithoutStudentsDataInput {
   largeImage: String
   settings: Json
   creator: ProfileUpdateOneRequiredWithoutTeacherInInput
+  invites: AuthInviteUpdateManyWithoutInvitedInInput
+  network: ClassNetworkUpdateOneWithoutClassesInput
+  assignments: AssignmentUpdateManyWithoutClassesInput
+  mentors: ProfileUpdateManyWithoutMentorInInput
+  studies: StudyUpdateManyWithoutClassesInput
+}
+
+input ClassUpdateWithoutStudiesDataInput {
+  code: String
+  title: String
+  description: String
+  image: String
+  largeImage: String
+  settings: Json
+  creator: ProfileUpdateOneRequiredWithoutTeacherInInput
+  students: ProfileUpdateManyWithoutStudentInInput
   invites: AuthInviteUpdateManyWithoutInvitedInInput
   network: ClassNetworkUpdateOneWithoutClassesInput
   assignments: AssignmentUpdateManyWithoutClassesInput
@@ -4065,6 +4128,11 @@ input ClassUpdateWithWhereUniqueWithoutNetworkInput {
 input ClassUpdateWithWhereUniqueWithoutStudentsInput {
   where: ClassWhereUniqueInput!
   data: ClassUpdateWithoutStudentsDataInput!
+}
+
+input ClassUpdateWithWhereUniqueWithoutStudiesInput {
+  where: ClassWhereUniqueInput!
+  data: ClassUpdateWithoutStudiesDataInput!
 }
 
 input ClassUpsertWithoutInvitesInput {
@@ -4100,6 +4168,12 @@ input ClassUpsertWithWhereUniqueWithoutStudentsInput {
   where: ClassWhereUniqueInput!
   update: ClassUpdateWithoutStudentsDataInput!
   create: ClassCreateWithoutStudentsInput!
+}
+
+input ClassUpsertWithWhereUniqueWithoutStudiesInput {
+  where: ClassWhereUniqueInput!
+  update: ClassUpdateWithoutStudiesDataInput!
+  create: ClassCreateWithoutStudiesInput!
 }
 
 input ClassWhereInput {
@@ -4409,6 +4483,9 @@ input ClassWhereInput {
   mentors_every: ProfileWhereInput
   mentors_some: ProfileWhereInput
   mentors_none: ProfileWhereInput
+  studies_every: StudyWhereInput
+  studies_some: StudyWhereInput
+  studies_none: StudyWhereInput
 }
 
 input ClassWhereUniqueInput {
@@ -17230,6 +17307,7 @@ type Study implements Node {
   featured: Boolean
   guests(where: GuestWhereInput, orderBy: GuestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Guest!]
   isHidden: Boolean
+  classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class!]
 }
 
 """A connection to a list of items."""
@@ -17266,10 +17344,16 @@ input StudyCreateInput {
   proposal: ProposalBoardCreateManyWithoutStudyInput
   reviews: ReviewCreateManyWithoutStudyInput
   guests: GuestCreateManyWithoutGuestParticipantInInput
+  classes: ClassCreateManyWithoutStudiesInput
 }
 
 input StudyCreateManyWithoutAuthorInput {
   create: [StudyCreateWithoutAuthorInput!]
+  connect: [StudyWhereUniqueInput!]
+}
+
+input StudyCreateManyWithoutClassesInput {
+  create: [StudyCreateWithoutClassesInput!]
   connect: [StudyWhereUniqueInput!]
 }
 
@@ -17331,6 +17415,33 @@ input StudyCreateWithoutAuthorInput {
   proposal: ProposalBoardCreateManyWithoutStudyInput
   reviews: ReviewCreateManyWithoutStudyInput
   guests: GuestCreateManyWithoutGuestParticipantInInput
+  classes: ClassCreateManyWithoutStudiesInput
+}
+
+input StudyCreateWithoutClassesInput {
+  id: ID
+  title: String!
+  slug: String!
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  public: Boolean
+  submitForPublishing: Boolean
+  components: Json
+  featured: Boolean
+  isHidden: Boolean
+  author: ProfileCreateOneWithoutResearcherInInput!
+  tasks: TaskCreateManyInput
+  participants: ProfileCreateManyWithoutParticipantInInput
+  collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
+  consent: ConsentCreateManyWithoutStudiesInput
+  messages: MessageCreateManyInput
+  proposal: ProposalBoardCreateManyWithoutStudyInput
+  reviews: ReviewCreateManyWithoutStudyInput
+  guests: GuestCreateManyWithoutGuestParticipantInInput
 }
 
 input StudyCreateWithoutCollaboratorsInput {
@@ -17356,6 +17467,7 @@ input StudyCreateWithoutCollaboratorsInput {
   proposal: ProposalBoardCreateManyWithoutStudyInput
   reviews: ReviewCreateManyWithoutStudyInput
   guests: GuestCreateManyWithoutGuestParticipantInInput
+  classes: ClassCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutConsentInput {
@@ -17381,6 +17493,7 @@ input StudyCreateWithoutConsentInput {
   proposal: ProposalBoardCreateManyWithoutStudyInput
   reviews: ReviewCreateManyWithoutStudyInput
   guests: GuestCreateManyWithoutGuestParticipantInInput
+  classes: ClassCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutGuestsInput {
@@ -17406,6 +17519,7 @@ input StudyCreateWithoutGuestsInput {
   messages: MessageCreateManyInput
   proposal: ProposalBoardCreateManyWithoutStudyInput
   reviews: ReviewCreateManyWithoutStudyInput
+  classes: ClassCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutParticipantsInput {
@@ -17431,6 +17545,7 @@ input StudyCreateWithoutParticipantsInput {
   proposal: ProposalBoardCreateManyWithoutStudyInput
   reviews: ReviewCreateManyWithoutStudyInput
   guests: GuestCreateManyWithoutGuestParticipantInInput
+  classes: ClassCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutProposalInput {
@@ -17456,6 +17571,7 @@ input StudyCreateWithoutProposalInput {
   messages: MessageCreateManyInput
   reviews: ReviewCreateManyWithoutStudyInput
   guests: GuestCreateManyWithoutGuestParticipantInInput
+  classes: ClassCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutReviewsInput {
@@ -17481,6 +17597,7 @@ input StudyCreateWithoutReviewsInput {
   messages: MessageCreateManyInput
   proposal: ProposalBoardCreateManyWithoutStudyInput
   guests: GuestCreateManyWithoutGuestParticipantInInput
+  classes: ClassCreateManyWithoutStudiesInput
 }
 
 """An edge in a connection."""
@@ -17959,6 +18076,7 @@ input StudyUpdateDataInput {
   proposal: ProposalBoardUpdateManyWithoutStudyInput
   reviews: ReviewUpdateManyWithoutStudyInput
   guests: GuestUpdateManyWithoutGuestParticipantInInput
+  classes: ClassUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateInput {
@@ -17984,6 +18102,7 @@ input StudyUpdateInput {
   proposal: ProposalBoardUpdateManyWithoutStudyInput
   reviews: ReviewUpdateManyWithoutStudyInput
   guests: GuestUpdateManyWithoutGuestParticipantInInput
+  classes: ClassUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateManyDataInput {
@@ -18028,6 +18147,18 @@ input StudyUpdateManyWithoutAuthorInput {
   updateMany: [StudyUpdateManyWithWhereNestedInput!]
   deleteMany: [StudyScalarWhereInput!]
   upsert: [StudyUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input StudyUpdateManyWithoutClassesInput {
+  create: [StudyCreateWithoutClassesInput!]
+  connect: [StudyWhereUniqueInput!]
+  set: [StudyWhereUniqueInput!]
+  disconnect: [StudyWhereUniqueInput!]
+  delete: [StudyWhereUniqueInput!]
+  update: [StudyUpdateWithWhereUniqueWithoutClassesInput!]
+  updateMany: [StudyUpdateManyWithWhereNestedInput!]
+  deleteMany: [StudyScalarWhereInput!]
+  upsert: [StudyUpsertWithWhereUniqueWithoutClassesInput!]
 }
 
 input StudyUpdateManyWithoutCollaboratorsInput {
@@ -18132,6 +18263,32 @@ input StudyUpdateWithoutAuthorDataInput {
   proposal: ProposalBoardUpdateManyWithoutStudyInput
   reviews: ReviewUpdateManyWithoutStudyInput
   guests: GuestUpdateManyWithoutGuestParticipantInInput
+  classes: ClassUpdateManyWithoutStudiesInput
+}
+
+input StudyUpdateWithoutClassesDataInput {
+  title: String
+  slug: String
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  public: Boolean
+  submitForPublishing: Boolean
+  components: Json
+  featured: Boolean
+  isHidden: Boolean
+  author: ProfileUpdateOneRequiredWithoutResearcherInInput
+  tasks: TaskUpdateManyInput
+  participants: ProfileUpdateManyWithoutParticipantInInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
+  consent: ConsentUpdateManyWithoutStudiesInput
+  messages: MessageUpdateManyInput
+  proposal: ProposalBoardUpdateManyWithoutStudyInput
+  reviews: ReviewUpdateManyWithoutStudyInput
+  guests: GuestUpdateManyWithoutGuestParticipantInInput
 }
 
 input StudyUpdateWithoutCollaboratorsDataInput {
@@ -18156,6 +18313,7 @@ input StudyUpdateWithoutCollaboratorsDataInput {
   proposal: ProposalBoardUpdateManyWithoutStudyInput
   reviews: ReviewUpdateManyWithoutStudyInput
   guests: GuestUpdateManyWithoutGuestParticipantInInput
+  classes: ClassUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutConsentDataInput {
@@ -18180,6 +18338,7 @@ input StudyUpdateWithoutConsentDataInput {
   proposal: ProposalBoardUpdateManyWithoutStudyInput
   reviews: ReviewUpdateManyWithoutStudyInput
   guests: GuestUpdateManyWithoutGuestParticipantInInput
+  classes: ClassUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutGuestsDataInput {
@@ -18204,6 +18363,7 @@ input StudyUpdateWithoutGuestsDataInput {
   messages: MessageUpdateManyInput
   proposal: ProposalBoardUpdateManyWithoutStudyInput
   reviews: ReviewUpdateManyWithoutStudyInput
+  classes: ClassUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutParticipantsDataInput {
@@ -18228,6 +18388,7 @@ input StudyUpdateWithoutParticipantsDataInput {
   proposal: ProposalBoardUpdateManyWithoutStudyInput
   reviews: ReviewUpdateManyWithoutStudyInput
   guests: GuestUpdateManyWithoutGuestParticipantInInput
+  classes: ClassUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutProposalDataInput {
@@ -18252,6 +18413,7 @@ input StudyUpdateWithoutProposalDataInput {
   messages: MessageUpdateManyInput
   reviews: ReviewUpdateManyWithoutStudyInput
   guests: GuestUpdateManyWithoutGuestParticipantInInput
+  classes: ClassUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutReviewsDataInput {
@@ -18276,11 +18438,17 @@ input StudyUpdateWithoutReviewsDataInput {
   messages: MessageUpdateManyInput
   proposal: ProposalBoardUpdateManyWithoutStudyInput
   guests: GuestUpdateManyWithoutGuestParticipantInInput
+  classes: ClassUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithWhereUniqueWithoutAuthorInput {
   where: StudyWhereUniqueInput!
   data: StudyUpdateWithoutAuthorDataInput!
+}
+
+input StudyUpdateWithWhereUniqueWithoutClassesInput {
+  where: StudyWhereUniqueInput!
+  data: StudyUpdateWithoutClassesDataInput!
 }
 
 input StudyUpdateWithWhereUniqueWithoutCollaboratorsInput {
@@ -18322,6 +18490,12 @@ input StudyUpsertWithWhereUniqueWithoutAuthorInput {
   where: StudyWhereUniqueInput!
   update: StudyUpdateWithoutAuthorDataInput!
   create: StudyCreateWithoutAuthorInput!
+}
+
+input StudyUpsertWithWhereUniqueWithoutClassesInput {
+  where: StudyWhereUniqueInput!
+  update: StudyUpdateWithoutClassesDataInput!
+  create: StudyCreateWithoutClassesInput!
 }
 
 input StudyUpsertWithWhereUniqueWithoutCollaboratorsInput {
@@ -18722,6 +18896,9 @@ input StudyWhereInput {
   guests_every: GuestWhereInput
   guests_some: GuestWhereInput
   guests_none: GuestWhereInput
+  classes_every: ClassWhereInput
+  classes_some: ClassWhereInput
+  classes_none: ClassWhereInput
 }
 
 input StudyWhereUniqueInput {

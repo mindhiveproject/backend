@@ -26,10 +26,23 @@ const studyMutations = {
       );
     }
 
+    let collaborators = [];
+    if (args.collaborators && args.collaborators.length) {
+      collaborators = await Promise.all(
+        args.collaborators.map(username =>
+          ctx.db.query.profile({ where: { username } }, `{ id }`)
+        )
+      );
+      args.collaborators = [];
+      collaborators = collaborators.filter(c => c);
+    }
+
     // take a copy of updates
     const updates = { ...args };
-    // remove the consent from the updates
+    // remove variables from the updates
+    delete updates.collaborators;
     delete updates.consent;
+    delete updates.classes;
 
     const study = await ctx.db.mutation.createStudy(
       {
@@ -41,14 +54,18 @@ const studyMutations = {
             },
           },
           collaborators: {
-            connect: {
-              id: ctx.request.userId,
-            },
+            connect: collaborators,
           },
           consent:
             args.consent && args.consent.length
               ? {
                   connect: args.consent.map(consent => ({ id: consent })),
+                }
+              : null,
+          classes:
+            args.classes && args.classes.length
+              ? {
+                  connect: args.classes.map(cl => ({ id: cl })),
                 }
               : null,
           ...updates,
@@ -76,7 +93,7 @@ const studyMutations = {
       {
         where: { id: args.id },
       },
-      `{ id collaborators { id } consent { id } }`
+      `{ id collaborators { id } consent { id } classes { id } }`
     );
 
     // disconnect the current collaborators if needed
@@ -123,10 +140,29 @@ const studyMutations = {
       );
     }
 
+    // disconnect the current classes
+    await ctx.db.mutation.updateStudy(
+      {
+        data: {
+          classes: {
+            disconnect: study.classes,
+          },
+        },
+        where: {
+          id: args.id,
+        },
+      },
+      `{ id }`
+    );
+
     // take a copy of updates
     const updates = { ...args };
-    // remove the ID from the updates
+    // remove variables from the updates
     delete updates.id;
+    delete updates.collaborators;
+    delete updates.consent;
+    delete updates.classes;
+
     // run the update method
     return ctx.db.mutation.updateStudy(
       {
@@ -139,6 +175,12 @@ const studyMutations = {
             args.consent && args.consent.length
               ? {
                   connect: args.consent.map(consent => ({ id: consent })),
+                }
+              : null,
+          classes:
+            args.classes && args.classes.length
+              ? {
+                  connect: args.classes.map(cl => ({ id: cl })),
                 }
               : null,
         },

@@ -21,44 +21,51 @@ const studiesQueries = {
 
   // get the studies that are ready to be reviewed
   async proposalsForReview(parent, args, ctx, info) {
-    // 1. get the classes
+    // 1. get the classes in the class network of the user (where the user is student, mentor, or teacher)
     const { where } = args;
     const theClasses = await ctx.db.query.classes(
       { where },
       `{ id
          title
-         creator {
-           id
-           authorOfProposal {
-             id
-            }
-         }
          students {
            id
-          authorOfProposal {
+          collaboratorInStudy {
             id
            }
           }
          }`
     );
 
-    // 2. prepare the object to return
-    const allStudentProposals = theClasses
+    // 2. get all studies of the students (where they are collaborators)
+    const allStudentStudies = theClasses
       .map(theClass =>
         theClass.students.map(student =>
-          student.authorOfProposal.map(proposal => proposal.id)
+          student.collaboratorInStudy.map(study => study.id)
         )
       )
       .flat(3);
 
-    const allTeacherProposals = theClasses
-      .map(theClass =>
-        theClass.creator.authorOfProposal.map(proposal => proposal.id)
-      )
+    // 3. get other studies (featured studies and studies where other students are collaborators)
+    const otherStudies = await ctx.db.query.studies(
+      {
+        where: {
+          OR: [
+            { id_in: allStudentStudies },
+            {
+              featured: true, // include featured studies (their proposals also should be submitted)
+            },
+          ],
+        },
+      },
+      `{proposal { id }}`
+    );
+    const otherStudyProposalsIDs = otherStudies
+      .map(study => study.proposal.map(proposal => proposal.id))
       .flat(2);
+    const otherProposalIDs = [...new Set([...otherStudyProposalsIDs])];
 
-    // TODO: find also all proposals where the user is collaborator on the study
-    const myStudyProposals = await ctx.db.query.studies(
+    // 4. get my studies
+    const myStudies = await ctx.db.query.studies(
       {
         where: {
           OR: [
@@ -72,31 +79,23 @@ const studiesQueries = {
                 id: ctx.request.userId,
               },
             },
-            {
-              featured: true, // include featured studies (their proposals also should be submitted)
-            },
           ],
         },
       },
-      `{proposal { id } }`
+      `{proposal { id }}`
     );
-    const myStudyProposalsIDs = myStudyProposals
+    const myStudyProposalsIDs = myStudies
       .map(study => study.proposal.map(proposal => proposal.id))
       .flat(2);
+    const myProposalIDs = [...new Set([...myStudyProposalsIDs])];
 
-    const proposalIDs = [
-      ...new Set([
-        ...allStudentProposals,
-        ...allTeacherProposals,
-        ...myStudyProposalsIDs,
-      ]),
-    ];
-
-    const submittedProposals = await ctx.db.query.proposalBoards(
+    // 5. pull all proposals
+    const proposals = await ctx.db.query.proposalBoards(
       {
         where: {
           OR: [
-            { id_in: proposalIDs, isSubmitted: true },
+            { id_in: myProposalIDs }, // submitted and not submitted
+            { id_in: otherProposalIDs, isSubmitted: true }, // only submitted
             { author: { id: ctx.request.userId } }, // find also all proposals where the user is the author or collaborator
             { collaborators_some: { id: ctx.request.userId } },
           ],
@@ -128,7 +127,7 @@ const studiesQueries = {
         }`
     );
 
-    return submittedProposals;
+    return proposals;
   },
 };
 

@@ -394,6 +394,8 @@ type Mutation {
     consent: [ID]
     components: Json
     submitForPublishing: Boolean
+    collaborators: [String]
+    classes: [String]
   ): Study!
   updateStudy(
     id: ID!
@@ -411,6 +413,7 @@ type Mutation {
     components: Json
     submitForPublishing: Boolean
     isHidden: Boolean
+    classes: [String]
   ): Study!
   manageStudyVisibility(id: ID!, public: Boolean, featured: Boolean): Study
   deleteStudy(id: ID!): Study
