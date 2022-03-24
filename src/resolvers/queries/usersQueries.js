@@ -42,7 +42,9 @@ const usersQueries = {
       ...me.mentorIn.map(c => c.network?.classes.map(cl => cl.id)),
     ].flat();
     // merge ids
-    const allClassIds = [...new Set([...classIds, ...allClassInNetworkIds])];
+    const allClassIds = [
+      ...new Set([...classIds, ...allClassInNetworkIds]),
+    ].filter(id => !!id);
 
     const users = await ctx.db.query.profiles(
       {
