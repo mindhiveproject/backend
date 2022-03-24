@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/shevchenko_yury-d70d0e/mindhive-us-back/dev
-# timestamp: Thu Mar 17 2022 07:47:05 GMT+0100 (Central European Standard Time)
+# timestamp: Thu Mar 24 2022 15:10:46 GMT+0100 (Central European Standard Time)
 
 type AggregateAssignment {
   count: Int!
@@ -8845,6 +8845,7 @@ type Profile implements Node {
   authorOfHomework(where: HomeworkWhereInput, orderBy: HomeworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Homework!]
   favoriteTasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task!]
   mentorIn(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class!]
+  isPublic: Boolean
 }
 
 """A connection to a list of items."""
@@ -8869,6 +8870,7 @@ input ProfileCreateInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9074,6 +9076,7 @@ input ProfileCreateWithoutAssignedToProposalCardInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9119,6 +9122,7 @@ input ProfileCreateWithoutAssignedToProposalSectionInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9164,6 +9168,7 @@ input ProfileCreateWithoutAuthEmailInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authToken: AuthTokenCreateManyWithoutProfileInput
   authInvite: AuthInviteCreateManyWithoutProfileInput
@@ -9209,6 +9214,7 @@ input ProfileCreateWithoutAuthInviteInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9254,6 +9260,7 @@ input ProfileCreateWithoutAuthorOfAssignmentInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9299,6 +9306,7 @@ input ProfileCreateWithoutAuthorOfHomeworkInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9344,6 +9352,7 @@ input ProfileCreateWithoutAuthorOfProposalInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9389,6 +9398,7 @@ input ProfileCreateWithoutAuthorOfTalkInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9434,6 +9444,7 @@ input ProfileCreateWithoutAuthorOfWordInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9479,6 +9490,7 @@ input ProfileCreateWithoutAuthParticipantInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9524,6 +9536,7 @@ input ProfileCreateWithoutAuthTokenInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authInvite: AuthInviteCreateManyWithoutProfileInput
@@ -9569,6 +9582,7 @@ input ProfileCreateWithoutClassNetworksCreatedInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9614,6 +9628,7 @@ input ProfileCreateWithoutCollaboratorInConsentInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9659,6 +9674,7 @@ input ProfileCreateWithoutCollaboratorInStudyInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9704,6 +9720,7 @@ input ProfileCreateWithoutCollaboratorInTaskInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9749,6 +9766,7 @@ input ProfileCreateWithoutCollaboratorOnProposalInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9794,6 +9812,7 @@ input ProfileCreateWithoutConsentCreatorInInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9839,6 +9858,7 @@ input ProfileCreateWithoutConsentGivenForInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9884,6 +9904,7 @@ input ProfileCreateWithoutCreatorOfProposalInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9929,6 +9950,7 @@ input ProfileCreateWithoutJournalsInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -9974,6 +9996,7 @@ input ProfileCreateWithoutMemberOfTalkInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -10019,6 +10042,7 @@ input ProfileCreateWithoutMentorInInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -10064,6 +10088,7 @@ input ProfileCreateWithoutParticipantInInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -10109,6 +10134,7 @@ input ProfileCreateWithoutPostsInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -10154,6 +10180,7 @@ input ProfileCreateWithoutResearcherInInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -10199,6 +10226,7 @@ input ProfileCreateWithoutResultsInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -10244,6 +10272,7 @@ input ProfileCreateWithoutReviewsInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -10289,6 +10318,7 @@ input ProfileCreateWithoutStudentInInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -10334,6 +10364,7 @@ input ProfileCreateWithoutTaskCreatorInInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -10379,6 +10410,7 @@ input ProfileCreateWithoutTeacherInInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileCreatepermissionsInput
   authEmail: AuthEmailCreateManyWithoutProfileInput
   authToken: AuthTokenCreateManyWithoutProfileInput
@@ -10444,6 +10476,8 @@ enum ProfileOrderByInput {
   publicId_DESC
   publicReadableId_ASC
   publicReadableId_DESC
+  isPublic_ASC
+  isPublic_DESC
 }
 
 type ProfilePreviousValues {
@@ -10459,6 +10493,7 @@ type ProfilePreviousValues {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
 }
 
 input ProfileScalarWhereInput {
@@ -10710,6 +10745,10 @@ input ProfileScalarWhereInput {
 
   """All values not ending with the given string."""
   publicReadableId_not_ends_with: String
+  isPublic: Boolean
+
+  """All values that are not equal to given value."""
+  isPublic_not: Boolean
 }
 
 type ProfileSubscriptionPayload {
@@ -10762,6 +10801,7 @@ input ProfileUpdateDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -10807,6 +10847,7 @@ input ProfileUpdateInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -10852,6 +10893,7 @@ input ProfileUpdateManyDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
 }
 
@@ -10866,6 +10908,7 @@ input ProfileUpdateManyMutationInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
 }
 
@@ -11076,13 +11119,6 @@ input ProfileUpdateOneRequiredWithoutResearcherInInput {
   upsert: ProfileUpsertWithoutResearcherInInput
 }
 
-input ProfileUpdateOneRequiredWithoutResultsInput {
-  create: ProfileCreateWithoutResultsInput
-  connect: ProfileWhereUniqueInput
-  update: ProfileUpdateWithoutResultsDataInput
-  upsert: ProfileUpsertWithoutResultsInput
-}
-
 input ProfileUpdateOneRequiredWithoutTaskCreatorInInput {
   create: ProfileCreateWithoutTaskCreatorInInput
   connect: ProfileWhereUniqueInput
@@ -11151,6 +11187,15 @@ input ProfileUpdateOneWithoutCreatorOfProposalInput {
   upsert: ProfileUpsertWithoutCreatorOfProposalInput
 }
 
+input ProfileUpdateOneWithoutResultsInput {
+  create: ProfileCreateWithoutResultsInput
+  connect: ProfileWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ProfileUpdateWithoutResultsDataInput
+  upsert: ProfileUpsertWithoutResultsInput
+}
+
 input ProfileUpdateOneWithoutReviewsInput {
   create: ProfileCreateWithoutReviewsInput
   connect: ProfileWhereUniqueInput
@@ -11175,6 +11220,7 @@ input ProfileUpdateWithoutAssignedToProposalCardDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -11219,6 +11265,7 @@ input ProfileUpdateWithoutAssignedToProposalSectionDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -11263,6 +11310,7 @@ input ProfileUpdateWithoutAuthEmailDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
   authInvite: AuthInviteUpdateManyWithoutProfileInput
@@ -11307,6 +11355,7 @@ input ProfileUpdateWithoutAuthInviteDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -11351,6 +11400,7 @@ input ProfileUpdateWithoutAuthorOfAssignmentDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -11395,6 +11445,7 @@ input ProfileUpdateWithoutAuthorOfHomeworkDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -11439,6 +11490,7 @@ input ProfileUpdateWithoutAuthorOfProposalDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -11483,6 +11535,7 @@ input ProfileUpdateWithoutAuthorOfTalkDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -11527,6 +11580,7 @@ input ProfileUpdateWithoutAuthorOfWordDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -11571,6 +11625,7 @@ input ProfileUpdateWithoutAuthParticipantDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -11615,6 +11670,7 @@ input ProfileUpdateWithoutAuthTokenDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authInvite: AuthInviteUpdateManyWithoutProfileInput
@@ -11659,6 +11715,7 @@ input ProfileUpdateWithoutClassNetworksCreatedDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -11703,6 +11760,7 @@ input ProfileUpdateWithoutCollaboratorInConsentDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -11747,6 +11805,7 @@ input ProfileUpdateWithoutCollaboratorInStudyDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -11791,6 +11850,7 @@ input ProfileUpdateWithoutCollaboratorInTaskDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -11835,6 +11895,7 @@ input ProfileUpdateWithoutCollaboratorOnProposalDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -11879,6 +11940,7 @@ input ProfileUpdateWithoutConsentCreatorInDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -11923,6 +11985,7 @@ input ProfileUpdateWithoutConsentGivenForDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -11967,6 +12030,7 @@ input ProfileUpdateWithoutCreatorOfProposalDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -12011,6 +12075,7 @@ input ProfileUpdateWithoutJournalsDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -12055,6 +12120,7 @@ input ProfileUpdateWithoutMemberOfTalkDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -12099,6 +12165,7 @@ input ProfileUpdateWithoutMentorInDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -12143,6 +12210,7 @@ input ProfileUpdateWithoutParticipantInDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -12187,6 +12255,7 @@ input ProfileUpdateWithoutPostsDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -12231,6 +12300,7 @@ input ProfileUpdateWithoutResearcherInDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -12275,6 +12345,7 @@ input ProfileUpdateWithoutResultsDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -12319,6 +12390,7 @@ input ProfileUpdateWithoutReviewsDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -12363,6 +12435,7 @@ input ProfileUpdateWithoutStudentInDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -12407,6 +12480,7 @@ input ProfileUpdateWithoutTaskCreatorInDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -12451,6 +12525,7 @@ input ProfileUpdateWithoutTeacherInDataInput {
   consentsInfo: Json
   publicId: String
   publicReadableId: String
+  isPublic: Boolean
   permissions: ProfileUpdatepermissionsInput
   authEmail: AuthEmailUpdateManyWithoutProfileInput
   authToken: AuthTokenUpdateManyWithoutProfileInput
@@ -12954,6 +13029,10 @@ input ProfileWhereInput {
 
   """All values not ending with the given string."""
   publicReadableId_not_ends_with: String
+  isPublic: Boolean
+
+  """All values that are not equal to given value."""
+  isPublic_not: Boolean
   authEmail_every: AuthEmailWhereInput
   authEmail_some: AuthEmailWhereInput
   authEmail_none: AuthEmailWhereInput
@@ -15564,7 +15643,7 @@ type Result implements Node {
   id: ID!
   template: Template
   task: Task!
-  user: Profile!
+  user: Profile
   guest: Guest
   quantity: Int!
   data: Json
@@ -15603,7 +15682,7 @@ input ResultCreateInput {
   testVersion: String
   template: TemplateCreateOneInput
   task: TaskCreateOneInput!
-  user: ProfileCreateOneWithoutResultsInput!
+  user: ProfileCreateOneWithoutResultsInput
   guest: GuestCreateOneWithoutResultsInput
   study: StudyCreateOneInput
   incrementalData: DataCreateManyInput
@@ -15632,7 +15711,7 @@ input ResultCreateWithoutGuestInput {
   testVersion: String
   template: TemplateCreateOneInput
   task: TaskCreateOneInput!
-  user: ProfileCreateOneWithoutResultsInput!
+  user: ProfileCreateOneWithoutResultsInput
   study: StudyCreateOneInput
   incrementalData: DataCreateManyInput
   fullData: DataCreateOneInput
@@ -16047,7 +16126,7 @@ input ResultUpdateInput {
   testVersion: String
   template: TemplateUpdateOneInput
   task: TaskUpdateOneRequiredInput
-  user: ProfileUpdateOneRequiredWithoutResultsInput
+  user: ProfileUpdateOneWithoutResultsInput
   guest: GuestUpdateOneWithoutResultsInput
   study: StudyUpdateOneInput
   incrementalData: DataUpdateManyInput
@@ -16116,7 +16195,7 @@ input ResultUpdateWithoutGuestDataInput {
   testVersion: String
   template: TemplateUpdateOneInput
   task: TaskUpdateOneRequiredInput
-  user: ProfileUpdateOneRequiredWithoutResultsInput
+  user: ProfileUpdateOneWithoutResultsInput
   study: StudyUpdateOneInput
   incrementalData: DataUpdateManyInput
   fullData: DataUpdateOneInput

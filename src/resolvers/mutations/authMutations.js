@@ -794,6 +794,7 @@ const authMutations = {
         data: {
           username: args.username,
           generalInfo: { ...args.info },
+          isPublic: args.isPublic,
         },
         where: {
           id: ctx.request.userId,
@@ -855,8 +856,6 @@ const authMutations = {
     const studyInformation = {
       [study.id]: updatedInfo,
     };
-
-    // console.log('studyInformation', studyInformation);
 
     // update consent information
     const consentIds = Object.keys(updatedInfo)

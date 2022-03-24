@@ -101,30 +101,7 @@ const studiesQueries = {
           ],
         },
       },
-      `{ id
-          slug
-          title
-          createdAt
-          isSubmitted
-          study {
-            title
-          }
-          reviews {
-            id
-            stage
-          }
-          author {
-            id
-            studentIn {
-              id
-              title
-            }
-            teacherIn {
-              id
-              title
-            }
-          }
-        }`
+      info
     );
 
     return proposals;

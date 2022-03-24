@@ -106,6 +106,7 @@ type Query {
   ): [Consent]!
   messages: [Message]!
   allUsernames: [Profile]!
+  allPublicUsernames: [Profile]!
   classStudies(where: StudyWhereUniqueInput): [Study]!
   myJournals(
     where: JournalWhereInput
@@ -286,7 +287,7 @@ type Mutation {
   addResult(templateId: ID!, data: Json, dataPolicy: String): Result!
   deleteResult(id: ID!): Result
   submitResultFromAPI(
-    userId: ID!
+    userId: ID
     templateId: ID
     taskId: ID
     studyId: ID
@@ -587,11 +588,14 @@ type Mutation {
     status: ResultType!
   ): SuccessMessage
 
+  changeResultStatus(id: ID!, status: ResultType!): SuccessMessage
+
   editAccount(
     username: String
     email: String
     password: String
     info: Json
+    isPublic: Boolean
   ): Profile
 
   createWord(talk: ID!, message: String!, settings: Json): Word
@@ -678,4 +682,5 @@ type Profile {
   favoriteTasks: [Task]!
   authorOfHomework: [Homework]!
   mentorIn: [Class]!
+  isPublic: Boolean
 }

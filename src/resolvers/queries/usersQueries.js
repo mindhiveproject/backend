@@ -13,6 +13,60 @@ const usersQueries = {
     );
     return notParticipants;
   },
+
+  // get all public usernames (people in the class, admin and scientists)
+  async allPublicUsernames(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+
+    const me = await ctx.db.query.profile(
+      {
+        where: {
+          id: ctx.request.userId,
+        },
+      },
+      `{ id studentIn { id network{id classes{id}} } teacherIn { id network{id classes{id}} } mentorIn { id network{id classes{id}} } }`
+    );
+
+    // get all classes
+    const classIds = [
+      ...me.studentIn.map(c => c.id),
+      ...me.teacherIn.map(c => c.id),
+      ...me.mentorIn.map(c => c.id),
+    ];
+    // get all classes in the class networks
+    const allClassInNetworkIds = [
+      ...me.studentIn.map(c => c.network?.classes.map(cl => cl.id)),
+      ...me.teacherIn.map(c => c.network?.classes.map(cl => cl.id)),
+      ...me.mentorIn.map(c => c.network?.classes.map(cl => cl.id)),
+    ].flat();
+    // merge ids
+    const allClassIds = [...new Set([...classIds, ...allClassInNetworkIds])];
+
+    const users = await ctx.db.query.profiles(
+      {
+        where: {
+          OR: [
+            { isPublic: true },
+            {
+              studentIn_some: { id_in: allClassIds },
+            },
+            {
+              teacherIn_some: { id_in: allClassIds },
+            },
+            {
+              mentorIn_some: { id_in: allClassIds },
+            },
+          ],
+        },
+      },
+      info
+    );
+
+    return users;
+  },
+
   // study participants
   async myStudyParticipants(parent, args, ctx, info) {
     // 1. check if the user has permission to see the study (Scientist of this study) or Admin

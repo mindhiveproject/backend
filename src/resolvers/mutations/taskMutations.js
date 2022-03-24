@@ -77,7 +77,6 @@ const taskMutations = {
 
   // update task
   async updateTask(parent, args, ctx, info) {
-    console.log('args', args);
     // verify that the user has the right to update the template
     const where = { id: args.id };
     const preTask = await ctx.db.query.task(

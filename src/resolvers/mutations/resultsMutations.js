@@ -1,7 +1,6 @@
 const resultsMutations = {
   // submit a new result from open API
   async submitResultFromAPI(parent, args, ctx, info) {
-    // console.log('args', args);
     const messageId = args.metadata && args.metadata.id;
     const payload = args.metadata && args.metadata.payload;
     const token = `${payload.slice(0, 4)}-${messageId}`;
@@ -28,9 +27,11 @@ const resultsMutations = {
       const createdResult = await ctx.db.mutation.createResult(
         {
           data: {
-            user: {
-              connect: { id: args.userId },
-            },
+            user: args.userId
+              ? {
+                  connect: { id: args.userId },
+                }
+              : null,
             guest: args.guestId
               ? {
                   connect: { id: args.guestId },
@@ -315,6 +316,29 @@ const resultsMutations = {
 
     return {
       message: `${results.length} results were updated to the status - ${args.status}`,
+    };
+  },
+
+  // change the status of specific result
+  async changeResultStatus(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+
+    const results = await ctx.db.mutation.updateResult(
+      {
+        where: {
+          id: args.id,
+        },
+        data: {
+          resultType: args.status,
+        },
+      },
+      info
+    );
+
+    return {
+      message: `Result was updated to the status - ${args.status}`,
     };
   },
 };
