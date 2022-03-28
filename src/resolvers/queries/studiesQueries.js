@@ -1,4 +1,32 @@
 const studiesQueries = {
+  async myAndPublicStudies(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    const studies = await ctx.db.query.studies(
+      {
+        where: {
+          OR: [
+            { public: true },
+            {
+              author: {
+                id: ctx.request.userId,
+              },
+            },
+            {
+              collaborators_some: {
+                id: ctx.request.userId,
+              },
+            },
+          ],
+        },
+        orderBy: 'createdAt_DESC',
+      },
+      info
+    );
+    return studies;
+  },
+
   // get the studies of the students of a class
   async classStudies(parent, args, ctx, info) {
     // 1. get the class
@@ -13,8 +41,20 @@ const studiesQueries = {
     return theclass.studies;
   },
 
+  // count all studies
+  async countStudies(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    const studiesConnection = await ctx.db.query.studiesConnection({}, info);
+    return studiesConnection;
+  },
+
   // get all studies for admin
   async allStudies(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
     const studies = await ctx.db.query.studies({}, info);
     return studies;
   },

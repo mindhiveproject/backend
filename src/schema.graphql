@@ -47,6 +47,12 @@ type Query {
     skip: Int
     first: Int
   ): [Study]!
+  myAndPublicStudies(
+    where: StudyWhereInput
+    orderBy: StudyOrderByInput
+    skip: Int
+    first: Int
+  ): [Study]!
   featuredStudies(
     where: StudyWhereInput
     orderBy: StudyOrderByInput
@@ -191,6 +197,8 @@ type Query {
   data(where: DataWhereUniqueInput): Data
 
   guest(where: GuestWhereUniqueInput): Guest
+
+  countStudies(where: StudyWhereInput): StudyConnection
 }
 
 type Mutation {

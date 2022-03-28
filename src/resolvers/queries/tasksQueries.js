@@ -77,12 +77,6 @@ const taskQueries = {
     );
   },
 
-  // get all studies for admin
-  async allStudies(parent, args, ctx, info) {
-    const studies = await ctx.db.query.studies({}, info);
-    return studies;
-  },
-
   // get all tasks
   async allTasks(parent, args, ctx, info) {
     // check if the user has permission to see all users
