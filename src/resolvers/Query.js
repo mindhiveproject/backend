@@ -142,6 +142,15 @@ const Query = {
     );
   },
 
+  // count all classes
+  async countClasses(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    const classesConnection = await ctx.db.query.classesConnection({}, info);
+    return classesConnection;
+  },
+
   // show all classes
   async classes(parent, args, ctx, info) {
     // query all classes

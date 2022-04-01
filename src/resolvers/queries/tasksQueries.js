@@ -77,6 +77,22 @@ const taskQueries = {
     );
   },
 
+  // count all components
+  async countComponents(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    const componentsConnection = await ctx.db.query.tasksConnection(
+      {
+        where: {
+          ...args.where,
+        },
+      },
+      info
+    );
+    return componentsConnection;
+  },
+
   // get all tasks
   async allTasks(parent, args, ctx, info) {
     // check if the user has permission to see all users

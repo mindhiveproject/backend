@@ -150,6 +150,15 @@ const usersQueries = {
 
     return participant;
   },
+
+  // count all users
+  async countUsers(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    const profilesConnection = await ctx.db.query.profilesConnection({}, info);
+    return profilesConnection;
+  },
 };
 
 module.exports = usersQueries;

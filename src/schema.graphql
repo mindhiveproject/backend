@@ -2,7 +2,12 @@
 
 type Query {
   me: Profile
-  users: [Profile]!
+  users(
+    where: ProfileWhereInput
+    orderBy: ProfileOrderByInput
+    skip: Int
+    first: Int
+  ): [Profile]!
   schools: [School]!
   class(where: ClassWhereUniqueInput): Class
   classes(
@@ -199,6 +204,9 @@ type Query {
   guest(where: GuestWhereUniqueInput): Guest
 
   countStudies(where: StudyWhereInput): StudyConnection
+  countComponents(where: TaskWhereInput): TaskConnection
+  countUsers(where: ProfileWhereInput): ProfileConnection
+  countClasses(where: ClassWhereInput): ClassConnection
 }
 
 type Mutation {
