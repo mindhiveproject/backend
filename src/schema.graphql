@@ -117,7 +117,7 @@ type Query {
   ): [Consent]!
   messages: [Message]!
   allUsernames: [Profile]!
-  allPublicUsernames: [Profile]!
+  allPublicUsernames(usernames: [String]): [Profile]!
   classStudies(where: StudyWhereUniqueInput): [Study]!
   myJournals(
     where: JournalWhereInput

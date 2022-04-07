@@ -60,6 +60,9 @@ const usersQueries = {
             {
               mentorIn_some: { id_in: allClassIds },
             },
+            {
+              username_in: args.usernames,
+            },
           ],
         },
       },
