@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/shevchenko_yury-d70d0e/mindhive-us-back/dev
-# timestamp: Thu Mar 24 2022 15:10:46 GMT+0100 (Central European Standard Time)
+# timestamp: Tue Apr 12 2022 14:14:52 GMT+0200 (Central European Summer Time)
 
 type AggregateAssignment {
   count: Int!
@@ -2763,7 +2763,7 @@ type Class implements Node {
   creator: Profile!
   students(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
   invites(where: AuthInviteWhereInput, orderBy: AuthInviteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthInvite!]
-  network: ClassNetwork
+  network(where: ClassNetworkWhereInput, orderBy: ClassNetworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ClassNetwork!]
   assignments(where: AssignmentWhereInput, orderBy: AssignmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Assignment!]
   mentors(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
   studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study!]
@@ -2791,7 +2791,7 @@ input ClassCreateInput {
   creator: ProfileCreateOneWithoutTeacherInInput!
   students: ProfileCreateManyWithoutStudentInInput
   invites: AuthInviteCreateManyWithoutInvitedInInput
-  network: ClassNetworkCreateOneWithoutClassesInput
+  network: ClassNetworkCreateManyWithoutClassesInput
   assignments: AssignmentCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
@@ -2843,7 +2843,7 @@ input ClassCreateWithoutAssignmentsInput {
   creator: ProfileCreateOneWithoutTeacherInInput!
   students: ProfileCreateManyWithoutStudentInInput
   invites: AuthInviteCreateManyWithoutInvitedInInput
-  network: ClassNetworkCreateOneWithoutClassesInput
+  network: ClassNetworkCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
 }
@@ -2858,7 +2858,7 @@ input ClassCreateWithoutCreatorInput {
   settings: Json
   students: ProfileCreateManyWithoutStudentInInput
   invites: AuthInviteCreateManyWithoutInvitedInInput
-  network: ClassNetworkCreateOneWithoutClassesInput
+  network: ClassNetworkCreateManyWithoutClassesInput
   assignments: AssignmentCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
@@ -2874,7 +2874,7 @@ input ClassCreateWithoutInvitesInput {
   settings: Json
   creator: ProfileCreateOneWithoutTeacherInInput!
   students: ProfileCreateManyWithoutStudentInInput
-  network: ClassNetworkCreateOneWithoutClassesInput
+  network: ClassNetworkCreateManyWithoutClassesInput
   assignments: AssignmentCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
@@ -2891,7 +2891,7 @@ input ClassCreateWithoutMentorsInput {
   creator: ProfileCreateOneWithoutTeacherInInput!
   students: ProfileCreateManyWithoutStudentInInput
   invites: AuthInviteCreateManyWithoutInvitedInInput
-  network: ClassNetworkCreateOneWithoutClassesInput
+  network: ClassNetworkCreateManyWithoutClassesInput
   assignments: AssignmentCreateManyWithoutClassesInput
   studies: StudyCreateManyWithoutClassesInput
 }
@@ -2922,7 +2922,7 @@ input ClassCreateWithoutStudentsInput {
   settings: Json
   creator: ProfileCreateOneWithoutTeacherInInput!
   invites: AuthInviteCreateManyWithoutInvitedInInput
-  network: ClassNetworkCreateOneWithoutClassesInput
+  network: ClassNetworkCreateManyWithoutClassesInput
   assignments: AssignmentCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
@@ -2939,7 +2939,7 @@ input ClassCreateWithoutStudiesInput {
   creator: ProfileCreateOneWithoutTeacherInInput!
   students: ProfileCreateManyWithoutStudentInInput
   invites: AuthInviteCreateManyWithoutInvitedInInput
-  network: ClassNetworkCreateOneWithoutClassesInput
+  network: ClassNetworkCreateManyWithoutClassesInput
   assignments: AssignmentCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
 }
@@ -2983,14 +2983,14 @@ input ClassNetworkCreateInput {
   classes: ClassCreateManyWithoutNetworkInput
 }
 
-input ClassNetworkCreateManyWithoutCreatorInput {
-  create: [ClassNetworkCreateWithoutCreatorInput!]
+input ClassNetworkCreateManyWithoutClassesInput {
+  create: [ClassNetworkCreateWithoutClassesInput!]
   connect: [ClassNetworkWhereUniqueInput!]
 }
 
-input ClassNetworkCreateOneWithoutClassesInput {
-  create: ClassNetworkCreateWithoutClassesInput
-  connect: ClassNetworkWhereUniqueInput
+input ClassNetworkCreateManyWithoutCreatorInput {
+  create: [ClassNetworkCreateWithoutCreatorInput!]
+  connect: [ClassNetworkWhereUniqueInput!]
 }
 
 input ClassNetworkCreateWithoutClassesInput {
@@ -3276,6 +3276,18 @@ input ClassNetworkUpdateManyMutationInput {
   settings: Json
 }
 
+input ClassNetworkUpdateManyWithoutClassesInput {
+  create: [ClassNetworkCreateWithoutClassesInput!]
+  connect: [ClassNetworkWhereUniqueInput!]
+  set: [ClassNetworkWhereUniqueInput!]
+  disconnect: [ClassNetworkWhereUniqueInput!]
+  delete: [ClassNetworkWhereUniqueInput!]
+  update: [ClassNetworkUpdateWithWhereUniqueWithoutClassesInput!]
+  updateMany: [ClassNetworkUpdateManyWithWhereNestedInput!]
+  deleteMany: [ClassNetworkScalarWhereInput!]
+  upsert: [ClassNetworkUpsertWithWhereUniqueWithoutClassesInput!]
+}
+
 input ClassNetworkUpdateManyWithoutCreatorInput {
   create: [ClassNetworkCreateWithoutCreatorInput!]
   connect: [ClassNetworkWhereUniqueInput!]
@@ -3293,15 +3305,6 @@ input ClassNetworkUpdateManyWithWhereNestedInput {
   data: ClassNetworkUpdateManyDataInput!
 }
 
-input ClassNetworkUpdateOneWithoutClassesInput {
-  create: ClassNetworkCreateWithoutClassesInput
-  connect: ClassNetworkWhereUniqueInput
-  disconnect: Boolean
-  delete: Boolean
-  update: ClassNetworkUpdateWithoutClassesDataInput
-  upsert: ClassNetworkUpsertWithoutClassesInput
-}
-
 input ClassNetworkUpdateWithoutClassesDataInput {
   title: String
   description: String
@@ -3316,12 +3319,18 @@ input ClassNetworkUpdateWithoutCreatorDataInput {
   classes: ClassUpdateManyWithoutNetworkInput
 }
 
+input ClassNetworkUpdateWithWhereUniqueWithoutClassesInput {
+  where: ClassNetworkWhereUniqueInput!
+  data: ClassNetworkUpdateWithoutClassesDataInput!
+}
+
 input ClassNetworkUpdateWithWhereUniqueWithoutCreatorInput {
   where: ClassNetworkWhereUniqueInput!
   data: ClassNetworkUpdateWithoutCreatorDataInput!
 }
 
-input ClassNetworkUpsertWithoutClassesInput {
+input ClassNetworkUpsertWithWhereUniqueWithoutClassesInput {
+  where: ClassNetworkWhereUniqueInput!
   update: ClassNetworkUpdateWithoutClassesDataInput!
   create: ClassNetworkCreateWithoutClassesInput!
 }
@@ -3892,7 +3901,7 @@ input ClassUpdateInput {
   creator: ProfileUpdateOneRequiredWithoutTeacherInInput
   students: ProfileUpdateManyWithoutStudentInInput
   invites: AuthInviteUpdateManyWithoutInvitedInInput
-  network: ClassNetworkUpdateOneWithoutClassesInput
+  network: ClassNetworkUpdateManyWithoutClassesInput
   assignments: AssignmentUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
@@ -4010,7 +4019,7 @@ input ClassUpdateWithoutAssignmentsDataInput {
   creator: ProfileUpdateOneRequiredWithoutTeacherInInput
   students: ProfileUpdateManyWithoutStudentInInput
   invites: AuthInviteUpdateManyWithoutInvitedInInput
-  network: ClassNetworkUpdateOneWithoutClassesInput
+  network: ClassNetworkUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
 }
@@ -4024,7 +4033,7 @@ input ClassUpdateWithoutCreatorDataInput {
   settings: Json
   students: ProfileUpdateManyWithoutStudentInInput
   invites: AuthInviteUpdateManyWithoutInvitedInInput
-  network: ClassNetworkUpdateOneWithoutClassesInput
+  network: ClassNetworkUpdateManyWithoutClassesInput
   assignments: AssignmentUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
@@ -4039,7 +4048,7 @@ input ClassUpdateWithoutInvitesDataInput {
   settings: Json
   creator: ProfileUpdateOneRequiredWithoutTeacherInInput
   students: ProfileUpdateManyWithoutStudentInInput
-  network: ClassNetworkUpdateOneWithoutClassesInput
+  network: ClassNetworkUpdateManyWithoutClassesInput
   assignments: AssignmentUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
@@ -4055,7 +4064,7 @@ input ClassUpdateWithoutMentorsDataInput {
   creator: ProfileUpdateOneRequiredWithoutTeacherInInput
   students: ProfileUpdateManyWithoutStudentInInput
   invites: AuthInviteUpdateManyWithoutInvitedInInput
-  network: ClassNetworkUpdateOneWithoutClassesInput
+  network: ClassNetworkUpdateManyWithoutClassesInput
   assignments: AssignmentUpdateManyWithoutClassesInput
   studies: StudyUpdateManyWithoutClassesInput
 }
@@ -4084,7 +4093,7 @@ input ClassUpdateWithoutStudentsDataInput {
   settings: Json
   creator: ProfileUpdateOneRequiredWithoutTeacherInInput
   invites: AuthInviteUpdateManyWithoutInvitedInInput
-  network: ClassNetworkUpdateOneWithoutClassesInput
+  network: ClassNetworkUpdateManyWithoutClassesInput
   assignments: AssignmentUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
@@ -4100,7 +4109,7 @@ input ClassUpdateWithoutStudiesDataInput {
   creator: ProfileUpdateOneRequiredWithoutTeacherInInput
   students: ProfileUpdateManyWithoutStudentInInput
   invites: AuthInviteUpdateManyWithoutInvitedInInput
-  network: ClassNetworkUpdateOneWithoutClassesInput
+  network: ClassNetworkUpdateManyWithoutClassesInput
   assignments: AssignmentUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
 }
@@ -4476,7 +4485,9 @@ input ClassWhereInput {
   invites_every: AuthInviteWhereInput
   invites_some: AuthInviteWhereInput
   invites_none: AuthInviteWhereInput
-  network: ClassNetworkWhereInput
+  network_every: ClassNetworkWhereInput
+  network_some: ClassNetworkWhereInput
+  network_none: ClassNetworkWhereInput
   assignments_every: AssignmentWhereInput
   assignments_some: AssignmentWhereInput
   assignments_none: AssignmentWhereInput

@@ -161,7 +161,9 @@ type Query {
     first: Int
   ): [Review]!
 
-  proposalsForReview(
+  proposalsFeaturedStudies: [ProposalBoard]
+  proposalsMyStudies: [ProposalBoard]
+  proposalsOfClass(
     where: ClassWhereInput
     orderBy: ClassOrderByInput
     skip: Int

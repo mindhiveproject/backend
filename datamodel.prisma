@@ -118,7 +118,7 @@ type Class {
   creator: Profile! @relation(name:"Classcreator")
   students: [Profile]! @relation(name:"Studentofclass")
   invites: [AuthInvite]! @relation(name:"Invite")
-  network: ClassNetwork @relation(name:"Classnetwork")
+  network: [ClassNetwork] @relation(name:"Classnetwork")
   assignments: [Assignment]! @relation(name:"ClassAssignment")
   mentors: [Profile]! @relation(name:"ClassMentor")
   studies: [Study]! @relation(name:"StudyClasses")
