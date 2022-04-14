@@ -227,10 +227,18 @@ const resultsMutations = {
         },
         `{ id incrementalData { id } }`
       );
-      await incrementalResult.incrementalData.map(data =>
-        ctx.db.mutation.deleteData({ where: { id: data.id } }, `{ id }`)
-      );
-      await ctx.db.mutation.deleteResult({ where: whereIncr }, info);
+
+      if (incrementalResult) {
+        if (
+          incrementalResult.incrementalData &&
+          incrementalResult.incrementalData.length > 0
+        ) {
+          await incrementalResult.incrementalData.map(data =>
+            ctx.db.mutation.deleteData({ where: { id: data.id } }, `{ id }`)
+          );
+        }
+        await ctx.db.mutation.deleteResult({ where: whereIncr }, info);
+      }
     }
 
     // 2. if there is no full result, find incremental results, check ownership and update info on it
