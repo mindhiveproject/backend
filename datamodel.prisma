@@ -346,6 +346,7 @@ type Review {
   content: Json
   stage: ReviewStage
   createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Word {
