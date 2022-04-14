@@ -227,10 +227,9 @@ const resultsMutations = {
         },
         `{ id incrementalData { id } }`
       );
-      incrementalResult.incrementalData.map(data =>
+      await incrementalResult.incrementalData.map(data =>
         ctx.db.mutation.deleteData({ where: { id: data.id } }, `{ id }`)
       );
-
       await ctx.db.mutation.deleteResult({ where: whereIncr }, info);
     }
 
