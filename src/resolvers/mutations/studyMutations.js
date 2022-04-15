@@ -367,7 +367,11 @@ const studyMutations = {
       `{ id studiesInfo }`
     );
     let studiesInfo = {};
-    if (profile.studiesInfo && profile.studiesInfo[args.studyId]) {
+    if (
+      profile.studiesInfo &&
+      Object.getPrototypeOf(profile.studiesInfo) === Object.prototype &&
+      Object.keys(profile.studiesInfo).length > 0
+    ) {
       studiesInfo = profile.studiesInfo;
       studiesInfo[args.studyId] = {
         ...studiesInfo[args.studyId],
