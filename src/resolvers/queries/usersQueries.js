@@ -31,15 +31,15 @@ const usersQueries = {
 
     // get all classes
     const classIds = [
-      ...me.studentIn.map(c => c.id),
-      ...me.teacherIn.map(c => c.id),
-      ...me.mentorIn.map(c => c.id),
+      ...me.studentIn?.map(c => c.id),
+      ...me.teacherIn?.map(c => c.id),
+      ...me.mentorIn?.map(c => c.id),
     ];
     // get all classes in the class networks
     const allClassInNetworkIds = [
-      ...me.studentIn.map(c => c.network?.classes.map(cl => cl.id)),
-      ...me.teacherIn.map(c => c.network?.classes.map(cl => cl.id)),
-      ...me.mentorIn.map(c => c.network?.classes.map(cl => cl.id)),
+      ...me.studentIn?.map(c => c.network?.classes?.map(cl => cl.id)),
+      ...me.teacherIn?.map(c => c.network?.classes?.map(cl => cl.id)),
+      ...me.mentorIn?.map(c => c.network?.classes?.map(cl => cl.id)),
     ].flat();
     // merge ids
     const allClassIds = [
