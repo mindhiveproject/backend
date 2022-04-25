@@ -59,6 +59,9 @@ type Profile {
   favoriteTasks: [Task]! @relation(name:"FavoriteTasks")
   mentorIn: [Class]! @relation(name:"ClassMentor")
   isPublic: Boolean
+  creatorOfScript: [Script]! @relation(name:"ScriptCreator")
+  authorOfScript: [Script]! @relation(name:"ScriptAuthor")
+  collaboratorOnScript: [Script]! @relation(name:"ScriptCollaborators")
 }
 
 type AuthEmail {
@@ -195,6 +198,7 @@ type Study {
   guests: [Guest]! @relation(name:"Guestparticipantofstudy")
   isHidden: Boolean
   classes: [Class]! @relation(name:"StudyClasses")
+  scripts: [Script]! @relation(name:"ScriptStudies")
 }
 
 type Task {
@@ -408,4 +412,22 @@ type Guest {
   studiesInfo: Json
   consentsInfo: Json
   guestAccountExpiry: String
+}
+
+type Script {
+  id: ID! @id
+  title: String!
+  slug: String! @unique
+  description: String
+  creator: Profile @relation(name:"ScriptCreator")
+  author: Profile @relation(name:"ScriptAuthor")
+  collaborators: [Profile]! @relation(name:"ScriptCollaborators")
+  studies: [Study]! @relation(name:"ScriptStudies")
+  isTemplate: Boolean
+  isPublic: Boolean
+  isFeatured: Boolean
+  settings: Json
+  content: String
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }

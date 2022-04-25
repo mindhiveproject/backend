@@ -50,6 +50,9 @@ const Query = {
 
   guest: forwardTo('db'),
 
+  script: forwardTo('db'),
+  scripts: forwardTo('db'),
+
   // return only public studies by default
   studies(parent, args, ctx, info) {
     return ctx.db.query.studies(
@@ -386,6 +389,34 @@ const Query = {
             },
             {
               members_some: {
+                id: ctx.request.userId,
+              },
+            },
+          ],
+        },
+      },
+      info
+    );
+  },
+
+  // get scripts of the user
+  async myScripts(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in');
+    }
+
+    // query parameters where author is the current user
+    return ctx.db.query.scripts(
+      {
+        where: {
+          OR: [
+            {
+              author: {
+                id: ctx.request.userId,
+              },
+            },
+            {
+              creator: {
                 id: ctx.request.userId,
               },
             },

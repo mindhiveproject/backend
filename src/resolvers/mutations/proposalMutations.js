@@ -11,8 +11,8 @@ const proposalMutations = {
     );
 
     // make a full copy
-    const arguments = {
-      title: template.description,
+    const argumentsToCopy = {
+      title: template.title,
       description: template.description,
       slug: `${template.slug}-${Date.now()}-${Math.round(
         Math.random() * 100000
@@ -32,7 +32,7 @@ const proposalMutations = {
               id: args.study,
             },
           },
-          ...arguments,
+          ...argumentsToCopy,
         },
       },
       info

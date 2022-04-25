@@ -209,6 +209,10 @@ type Query {
   countComponents(where: TaskWhereInput): TaskConnection
   countUsers(where: ProfileWhereInput): ProfileConnection
   countClasses(where: ClassWhereInput): ClassConnection
+
+  script(where: ScriptWhereUniqueInput!): Script
+  scripts(where: ScriptWhereInput): [Script]!
+  myScripts: [Script]!
 }
 
 type Mutation {
@@ -664,6 +668,20 @@ type Mutation {
   joinStudyAsGuest(id: ID!, info: Json, study: Json): Guest
 
   updateUserStudyHideInDevelop(studyId: ID!, isHidden: Boolean!): SuccessMessage
+
+  createScript(title: String!, description: String, content: String): Script!
+  copyScript(id: ID!): Script!
+  updateScript(
+    id: ID!
+    title: String
+    description: String
+    isTemplate: Boolean
+    isPublic: Boolean
+    isFeatured: Boolean
+    settings: Json
+    content: String
+  ): Script!
+  deleteScript(id: ID!): SuccessMessage
 }
 
 type SuccessMessage {
