@@ -669,7 +669,14 @@ type Mutation {
 
   updateUserStudyHideInDevelop(studyId: ID!, isHidden: Boolean!): SuccessMessage
 
-  createScript(title: String!, description: String, content: String): Script!
+  createScript(
+    title: String!
+    description: String
+    content: String
+    isTemplate: Boolean
+    isPublic: Boolean
+    isFeatured: Boolean
+  ): Script!
   copyScript(id: ID!): Script!
   updateScript(
     id: ID!
