@@ -42,7 +42,11 @@ server.start(
   {
     cors: {
       credentials: true,
-      origin: [process.env.FRONTEND_URL, process.env.STARBOARD_URL],
+      origin: [
+        process.env.FRONTEND_URL,
+        process.env.STARBOARD_URL,
+        process.env.STARBOARD_BACKUP_URL,
+      ],
     },
     // https://github.com/expressjs/body-parser#bodyparserjsonoptions
     bodyParserOptions: { limit: '100mb', type: 'application/json' },
