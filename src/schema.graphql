@@ -209,10 +209,26 @@ type Query {
   countComponents(where: TaskWhereInput): TaskConnection
   countUsers(where: ProfileWhereInput): ProfileConnection
   countClasses(where: ClassWhereInput): ClassConnection
+  countStudyParticipants(where: ProfileWhereInput): ProfileConnection
+  countStudyGuestParticipants(where: GuestWhereInput): GuestConnection
 
   script(where: ScriptWhereUniqueInput!): Script
   scripts(where: ScriptWhereInput): [Script]!
   myScripts: [Script]!
+
+  participantsInStudy(
+    where: ProfileWhereInput
+    orderBy: ProfileOrderByInput
+    skip: Int
+    first: Int
+  ): [Profile]!
+
+  guestParticipantsInStudy(
+    where: GuestWhereInput
+    orderBy: GuestOrderByInput
+    skip: Int
+    first: Int
+  ): [Guest]!
 }
 
 type Mutation {

@@ -73,6 +73,38 @@ const usersQueries = {
   },
 
   // study participants
+  async participantsInStudy(parent, args, ctx, info) {
+    // 1. check if the user has permission to see the study (Scientist of this study) or Admin
+    const { where } = args;
+    // const mystudy = await ctx.db.query.study(
+    //   { where },
+    //   `{ id title author {id} collaborators {id}}`
+    // );
+    // const ownsStudy = mystudy.author.id === ctx.request.userId;
+    // const hasPermissions = ctx.request.user.permissions.some(permission =>
+    //   ['ADMIN'].includes(permission)
+    // );
+    // let collaboratorInStudy;
+    // if (mystudy.collaborators) {
+    //   const collaboratorsIds = mystudy.collaborators.map(
+    //     collaborator => collaborator.id
+    //   );
+    //   collaboratorInStudy = collaboratorsIds.includes(ctx.request.userId);
+    // }
+    //
+    // if (!ownsStudy && !hasPermissions && !collaboratorInStudy) {
+    //   throw new Error(`You don't have permission to do that!`);
+    // }
+    return ctx.db.query.profiles({ where }, info);
+  },
+
+  // study guest participants
+  async guestParticipantsInStudy(parent, args, ctx, info) {
+    const { where } = args;
+    return ctx.db.query.guests({ where }, info);
+  },
+
+  // study participants
   async myStudyParticipants(parent, args, ctx, info) {
     // 1. check if the user has permission to see the study (Scientist of this study) or Admin
     const { where } = args;
@@ -161,6 +193,24 @@ const usersQueries = {
     }
     const profilesConnection = await ctx.db.query.profilesConnection({}, info);
     return profilesConnection;
+  },
+
+  // count all study participants
+  async countStudyParticipants(parent, args, ctx, info) {
+    const { where } = args;
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    return ctx.db.query.profilesConnection({ where }, info);
+  },
+
+  // count all study guest participants
+  async countStudyGuestParticipants(parent, args, ctx, info) {
+    const { where } = args;
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    return ctx.db.query.guestsConnection({ where }, info);
   },
 };
 
