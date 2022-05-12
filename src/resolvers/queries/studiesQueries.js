@@ -6,17 +6,22 @@ const studiesQueries = {
     const studies = await ctx.db.query.studies(
       {
         where: {
-          OR: [
-            { public: true },
+          AND: [
+            { OR: [{ isHidden: null }, { isHidden: false }] },
             {
-              author: {
-                id: ctx.request.userId,
-              },
-            },
-            {
-              collaborators_some: {
-                id: ctx.request.userId,
-              },
+              OR: [
+                { public: true },
+                {
+                  author: {
+                    id: ctx.request.userId,
+                  },
+                },
+                {
+                  collaborators_some: {
+                    id: ctx.request.userId,
+                  },
+                },
+              ],
             },
           ],
         },

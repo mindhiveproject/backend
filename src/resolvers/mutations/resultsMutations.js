@@ -124,6 +124,7 @@ const resultsMutations = {
 
   // update the information about results
   async updateResultsInfo(parent, args, ctx, info) {
+    console.log('args', args);
     // update the user email if there is an email
     const profile = await ctx.db.query.profile(
       {
@@ -227,12 +228,14 @@ const resultsMutations = {
         },
         `{ id incrementalData { id } }`
       );
+      console.log('incrementalResult', incrementalResult);
 
       if (incrementalResult) {
         if (
           incrementalResult.incrementalData &&
           incrementalResult.incrementalData.length > 0
         ) {
+          console.log('236 deleting data');
           await incrementalResult.incrementalData.map(data =>
             ctx.db.mutation.deleteData({ where: { id: data.id } }, `{ id }`)
           );

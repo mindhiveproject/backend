@@ -208,6 +208,33 @@ const studyMutations = {
     );
   },
 
+  // "pre-delete" study (which makes the study invisible for a user, but not to an admin)
+  async preDeleteStudy(parent, args, ctx, info) {
+    const where = { id: args.id };
+    // find study
+    const study = await ctx.db.query.study(
+      { where },
+      `{ id title author {id} collaborators {id} }`
+    );
+    // check whether user has permissions to hide the item
+    // TODO
+    const ownsStudy = study.author.id === ctx.request.userId;
+    const hasPermissions = ctx.request.user.permissions.some(permission =>
+      ['ADMIN'].includes(permission)
+    );
+    const isCollaborator = study.collaborators
+      .map(collaborator => collaborator.id)
+      .includes(ctx.request.userId);
+    if (!ownsStudy && !hasPermissions && !isCollaborator) {
+      throw new Error(`You don't have permission to do that!`);
+    }
+    // hide it
+    return ctx.db.mutation.updateStudy(
+      { where, data: { isHidden: true } },
+      info
+    );
+  },
+
   // delete study
   async deleteStudy(parent, args, ctx, info) {
     const where = { id: args.id };
