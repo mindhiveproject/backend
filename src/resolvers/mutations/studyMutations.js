@@ -41,7 +41,7 @@ const studyMutations = {
     const updates = { ...args };
     // remove variables from the updates
     delete updates.collaborators;
-    delete updates.consent;
+    delete updates.consentId;
     delete updates.classes;
 
     const study = await ctx.db.mutation.createStudy(
@@ -57,9 +57,9 @@ const studyMutations = {
             connect: collaborators,
           },
           consent:
-            args.consent && args.consent.length
+            args.consentId && args.consentId.length
               ? {
-                  connect: args.consent.map(consent => ({ id: consent })),
+                  connect: args.consentId.map(id => ({ id })),
                 }
               : null,
           classes:
@@ -120,9 +120,9 @@ const studyMutations = {
 
     // disconnect the current consents if needed
     if (
-      args.consent &&
+      args.consentId &&
       study.consent &&
-      args.consent.length !== study.consent.length
+      args.consentId.length !== study.consent.length
     ) {
       // remove previous connections
       await ctx.db.mutation.updateStudy(
@@ -160,7 +160,7 @@ const studyMutations = {
     // remove variables from the updates
     delete updates.id;
     delete updates.collaborators;
-    delete updates.consent;
+    delete updates.consentId;
     delete updates.classes;
 
     // run the update method
@@ -172,9 +172,9 @@ const studyMutations = {
             connect: collaborators,
           },
           consent:
-            args.consent && args.consent.length
+            args.consentId && args.consentId.length
               ? {
-                  connect: args.consent.map(consent => ({ id: consent })),
+                  connect: args.consentId.map(id => ({ id })),
                 }
               : null,
           classes:

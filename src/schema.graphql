@@ -430,7 +430,7 @@ type Mutation {
     image: String
     largeImage: String
     info: Json
-    consent: [ID]
+    consentId: [ID]
     components: Json
     submitForPublishing: Boolean
     collaborators: [String]
@@ -447,7 +447,7 @@ type Mutation {
     largeImage: String
     info: Json
     collaborators: [String]
-    consent: [ID]
+    consentId: [ID]
     public: Boolean
     components: Json
     submitForPublishing: Boolean
