@@ -216,6 +216,9 @@ type Query {
   scripts(where: ScriptWhereInput): [Script]!
   myScripts: [Script]!
 
+  tag(where: TagWhereUniqueInput!): Tag
+  tags(where: TagWhereInput): [Tag]!
+
   participantsInStudy(
     where: ProfileWhereInput
     orderBy: ProfileOrderByInput
@@ -435,6 +438,7 @@ type Mutation {
     submitForPublishing: Boolean
     collaborators: [String]
     classes: [String]
+    tags: [ID]
   ): Study!
   updateStudy(
     id: ID!
@@ -453,6 +457,7 @@ type Mutation {
     submitForPublishing: Boolean
     isHidden: Boolean
     classes: [String]
+    tags: [ID]
   ): Study!
   manageStudyVisibility(id: ID!, public: Boolean, featured: Boolean): Study
   preDeleteStudy(id: ID!): Study
@@ -706,6 +711,10 @@ type Mutation {
     content: String
   ): Script!
   deleteScript(id: ID!): SuccessMessage
+
+  createTag(title: String!, description: String): Tag!
+  updateTag(id: ID!, title: String, description: String): Tag!
+  deleteTag(id: ID!): SuccessMessage
 }
 
 type SuccessMessage {

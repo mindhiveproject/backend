@@ -53,6 +53,9 @@ const Query = {
   script: forwardTo('db'),
   scripts: forwardTo('db'),
 
+  tag: forwardTo('db'),
+  tags: forwardTo('db'),
+
   // return only public studies by default
   studies(parent, args, ctx, info) {
     return ctx.db.query.studies(

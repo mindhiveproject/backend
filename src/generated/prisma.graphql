@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/shevchenko_yury-d70d0e/mindhive-us-back/dev
-# timestamp: Thu Apr 21 2022 15:17:09 GMT+0200 (Central European Summer Time)
+# timestamp: Tue Jun 21 2022 18:50:42 GMT+0200 (Central European Summer Time)
 
 type AggregateAssignment {
   count: Int!
@@ -93,6 +93,10 @@ type AggregateStudy {
   count: Int!
 }
 
+type AggregateTag {
+  count: Int!
+}
+
 type AggregateTalk {
   count: Int!
 }
@@ -121,6 +125,7 @@ type Assignment implements Node {
   isTemplate: Boolean
   createdAt: DateTime!
   updatedAt: DateTime!
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
 
 """A connection to a list of items."""
@@ -143,6 +148,7 @@ input AssignmentCreateInput {
   author: ProfileCreateOneWithoutAuthorOfAssignmentInput
   classes: ClassCreateManyWithoutAssignmentsInput
   homework: HomeworkCreateManyWithoutAssignmentInput
+  tags: TagCreateManyWithoutAssignmentsInput
 }
 
 input AssignmentCreateManyWithoutAuthorInput {
@@ -152,6 +158,11 @@ input AssignmentCreateManyWithoutAuthorInput {
 
 input AssignmentCreateManyWithoutClassesInput {
   create: [AssignmentCreateWithoutClassesInput!]
+  connect: [AssignmentWhereUniqueInput!]
+}
+
+input AssignmentCreateManyWithoutTagsInput {
+  create: [AssignmentCreateWithoutTagsInput!]
   connect: [AssignmentWhereUniqueInput!]
 }
 
@@ -169,6 +180,7 @@ input AssignmentCreateWithoutAuthorInput {
   isTemplate: Boolean
   classes: ClassCreateManyWithoutAssignmentsInput
   homework: HomeworkCreateManyWithoutAssignmentInput
+  tags: TagCreateManyWithoutAssignmentsInput
 }
 
 input AssignmentCreateWithoutClassesInput {
@@ -180,6 +192,7 @@ input AssignmentCreateWithoutClassesInput {
   isTemplate: Boolean
   author: ProfileCreateOneWithoutAuthorOfAssignmentInput
   homework: HomeworkCreateManyWithoutAssignmentInput
+  tags: TagCreateManyWithoutAssignmentsInput
 }
 
 input AssignmentCreateWithoutHomeworkInput {
@@ -191,6 +204,19 @@ input AssignmentCreateWithoutHomeworkInput {
   isTemplate: Boolean
   author: ProfileCreateOneWithoutAuthorOfAssignmentInput
   classes: ClassCreateManyWithoutAssignmentsInput
+  tags: TagCreateManyWithoutAssignmentsInput
+}
+
+input AssignmentCreateWithoutTagsInput {
+  id: ID
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  isTemplate: Boolean
+  author: ProfileCreateOneWithoutAuthorOfAssignmentInput
+  classes: ClassCreateManyWithoutAssignmentsInput
+  homework: HomeworkCreateManyWithoutAssignmentInput
 }
 
 """An edge in a connection."""
@@ -463,6 +489,7 @@ input AssignmentUpdateInput {
   author: ProfileUpdateOneWithoutAuthorOfAssignmentInput
   classes: ClassUpdateManyWithoutAssignmentsInput
   homework: HomeworkUpdateManyWithoutAssignmentInput
+  tags: TagUpdateManyWithoutAssignmentsInput
 }
 
 input AssignmentUpdateManyDataInput {
@@ -505,6 +532,18 @@ input AssignmentUpdateManyWithoutClassesInput {
   upsert: [AssignmentUpsertWithWhereUniqueWithoutClassesInput!]
 }
 
+input AssignmentUpdateManyWithoutTagsInput {
+  create: [AssignmentCreateWithoutTagsInput!]
+  connect: [AssignmentWhereUniqueInput!]
+  set: [AssignmentWhereUniqueInput!]
+  disconnect: [AssignmentWhereUniqueInput!]
+  delete: [AssignmentWhereUniqueInput!]
+  update: [AssignmentUpdateWithWhereUniqueWithoutTagsInput!]
+  updateMany: [AssignmentUpdateManyWithWhereNestedInput!]
+  deleteMany: [AssignmentScalarWhereInput!]
+  upsert: [AssignmentUpsertWithWhereUniqueWithoutTagsInput!]
+}
+
 input AssignmentUpdateManyWithWhereNestedInput {
   where: AssignmentScalarWhereInput!
   data: AssignmentUpdateManyDataInput!
@@ -527,6 +566,7 @@ input AssignmentUpdateWithoutAuthorDataInput {
   isTemplate: Boolean
   classes: ClassUpdateManyWithoutAssignmentsInput
   homework: HomeworkUpdateManyWithoutAssignmentInput
+  tags: TagUpdateManyWithoutAssignmentsInput
 }
 
 input AssignmentUpdateWithoutClassesDataInput {
@@ -537,6 +577,7 @@ input AssignmentUpdateWithoutClassesDataInput {
   isTemplate: Boolean
   author: ProfileUpdateOneWithoutAuthorOfAssignmentInput
   homework: HomeworkUpdateManyWithoutAssignmentInput
+  tags: TagUpdateManyWithoutAssignmentsInput
 }
 
 input AssignmentUpdateWithoutHomeworkDataInput {
@@ -547,6 +588,18 @@ input AssignmentUpdateWithoutHomeworkDataInput {
   isTemplate: Boolean
   author: ProfileUpdateOneWithoutAuthorOfAssignmentInput
   classes: ClassUpdateManyWithoutAssignmentsInput
+  tags: TagUpdateManyWithoutAssignmentsInput
+}
+
+input AssignmentUpdateWithoutTagsDataInput {
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  isTemplate: Boolean
+  author: ProfileUpdateOneWithoutAuthorOfAssignmentInput
+  classes: ClassUpdateManyWithoutAssignmentsInput
+  homework: HomeworkUpdateManyWithoutAssignmentInput
 }
 
 input AssignmentUpdateWithWhereUniqueWithoutAuthorInput {
@@ -557,6 +610,11 @@ input AssignmentUpdateWithWhereUniqueWithoutAuthorInput {
 input AssignmentUpdateWithWhereUniqueWithoutClassesInput {
   where: AssignmentWhereUniqueInput!
   data: AssignmentUpdateWithoutClassesDataInput!
+}
+
+input AssignmentUpdateWithWhereUniqueWithoutTagsInput {
+  where: AssignmentWhereUniqueInput!
+  data: AssignmentUpdateWithoutTagsDataInput!
 }
 
 input AssignmentUpsertWithoutHomeworkInput {
@@ -574,6 +632,12 @@ input AssignmentUpsertWithWhereUniqueWithoutClassesInput {
   where: AssignmentWhereUniqueInput!
   update: AssignmentUpdateWithoutClassesDataInput!
   create: AssignmentCreateWithoutClassesInput!
+}
+
+input AssignmentUpsertWithWhereUniqueWithoutTagsInput {
+  where: AssignmentWhereUniqueInput!
+  update: AssignmentUpdateWithoutTagsDataInput!
+  create: AssignmentCreateWithoutTagsInput!
 }
 
 input AssignmentWhereInput {
@@ -764,6 +828,9 @@ input AssignmentWhereInput {
   homework_every: HomeworkWhereInput
   homework_some: HomeworkWhereInput
   homework_none: HomeworkWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
 }
 
 input AssignmentWhereUniqueInput {
@@ -2772,6 +2839,7 @@ type Class implements Node {
   mentors(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
   studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study!]
   settings: Json
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
 
 """A connection to a list of items."""
@@ -2799,6 +2867,7 @@ input ClassCreateInput {
   assignments: AssignmentCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
+  tags: TagCreateManyWithoutClassesInput
 }
 
 input ClassCreateManyWithoutAssignmentsInput {
@@ -2831,6 +2900,11 @@ input ClassCreateManyWithoutStudiesInput {
   connect: [ClassWhereUniqueInput!]
 }
 
+input ClassCreateManyWithoutTagsInput {
+  create: [ClassCreateWithoutTagsInput!]
+  connect: [ClassWhereUniqueInput!]
+}
+
 input ClassCreateOneWithoutInvitesInput {
   create: ClassCreateWithoutInvitesInput
   connect: ClassWhereUniqueInput
@@ -2850,6 +2924,7 @@ input ClassCreateWithoutAssignmentsInput {
   network: ClassNetworkCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
+  tags: TagCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutCreatorInput {
@@ -2866,6 +2941,7 @@ input ClassCreateWithoutCreatorInput {
   assignments: AssignmentCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
+  tags: TagCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutInvitesInput {
@@ -2882,6 +2958,7 @@ input ClassCreateWithoutInvitesInput {
   assignments: AssignmentCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
+  tags: TagCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutMentorsInput {
@@ -2898,6 +2975,7 @@ input ClassCreateWithoutMentorsInput {
   network: ClassNetworkCreateManyWithoutClassesInput
   assignments: AssignmentCreateManyWithoutClassesInput
   studies: StudyCreateManyWithoutClassesInput
+  tags: TagCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutNetworkInput {
@@ -2914,6 +2992,7 @@ input ClassCreateWithoutNetworkInput {
   assignments: AssignmentCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
+  tags: TagCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutStudentsInput {
@@ -2930,6 +3009,7 @@ input ClassCreateWithoutStudentsInput {
   assignments: AssignmentCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
+  tags: TagCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutStudiesInput {
@@ -2946,6 +3026,24 @@ input ClassCreateWithoutStudiesInput {
   network: ClassNetworkCreateManyWithoutClassesInput
   assignments: AssignmentCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
+  tags: TagCreateManyWithoutClassesInput
+}
+
+input ClassCreateWithoutTagsInput {
+  id: ID
+  code: String!
+  title: String!
+  description: String
+  image: String
+  largeImage: String
+  settings: Json
+  creator: ProfileCreateOneWithoutTeacherInInput!
+  students: ProfileCreateManyWithoutStudentInInput
+  invites: AuthInviteCreateManyWithoutInvitedInInput
+  network: ClassNetworkCreateManyWithoutClassesInput
+  assignments: AssignmentCreateManyWithoutClassesInput
+  mentors: ProfileCreateManyWithoutMentorInInput
+  studies: StudyCreateManyWithoutClassesInput
 }
 
 """An edge in a connection."""
@@ -2966,6 +3064,7 @@ type ClassNetwork implements Node {
   updatedAt: DateTime!
   creator: Profile!
   classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class!]
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
 
 """A connection to a list of items."""
@@ -2985,6 +3084,7 @@ input ClassNetworkCreateInput {
   settings: Json
   creator: ProfileCreateOneWithoutClassNetworksCreatedInput!
   classes: ClassCreateManyWithoutNetworkInput
+  tags: TagCreateManyWithoutClassNetworksInput
 }
 
 input ClassNetworkCreateManyWithoutClassesInput {
@@ -2997,12 +3097,18 @@ input ClassNetworkCreateManyWithoutCreatorInput {
   connect: [ClassNetworkWhereUniqueInput!]
 }
 
+input ClassNetworkCreateManyWithoutTagsInput {
+  create: [ClassNetworkCreateWithoutTagsInput!]
+  connect: [ClassNetworkWhereUniqueInput!]
+}
+
 input ClassNetworkCreateWithoutClassesInput {
   id: ID
   title: String
   description: String
   settings: Json
   creator: ProfileCreateOneWithoutClassNetworksCreatedInput!
+  tags: TagCreateManyWithoutClassNetworksInput
 }
 
 input ClassNetworkCreateWithoutCreatorInput {
@@ -3010,6 +3116,16 @@ input ClassNetworkCreateWithoutCreatorInput {
   title: String
   description: String
   settings: Json
+  classes: ClassCreateManyWithoutNetworkInput
+  tags: TagCreateManyWithoutClassNetworksInput
+}
+
+input ClassNetworkCreateWithoutTagsInput {
+  id: ID
+  title: String
+  description: String
+  settings: Json
+  creator: ProfileCreateOneWithoutClassNetworksCreatedInput!
   classes: ClassCreateManyWithoutNetworkInput
 }
 
@@ -3266,6 +3382,7 @@ input ClassNetworkUpdateInput {
   settings: Json
   creator: ProfileUpdateOneRequiredWithoutClassNetworksCreatedInput
   classes: ClassUpdateManyWithoutNetworkInput
+  tags: TagUpdateManyWithoutClassNetworksInput
 }
 
 input ClassNetworkUpdateManyDataInput {
@@ -3304,6 +3421,18 @@ input ClassNetworkUpdateManyWithoutCreatorInput {
   upsert: [ClassNetworkUpsertWithWhereUniqueWithoutCreatorInput!]
 }
 
+input ClassNetworkUpdateManyWithoutTagsInput {
+  create: [ClassNetworkCreateWithoutTagsInput!]
+  connect: [ClassNetworkWhereUniqueInput!]
+  set: [ClassNetworkWhereUniqueInput!]
+  disconnect: [ClassNetworkWhereUniqueInput!]
+  delete: [ClassNetworkWhereUniqueInput!]
+  update: [ClassNetworkUpdateWithWhereUniqueWithoutTagsInput!]
+  updateMany: [ClassNetworkUpdateManyWithWhereNestedInput!]
+  deleteMany: [ClassNetworkScalarWhereInput!]
+  upsert: [ClassNetworkUpsertWithWhereUniqueWithoutTagsInput!]
+}
+
 input ClassNetworkUpdateManyWithWhereNestedInput {
   where: ClassNetworkScalarWhereInput!
   data: ClassNetworkUpdateManyDataInput!
@@ -3314,12 +3443,22 @@ input ClassNetworkUpdateWithoutClassesDataInput {
   description: String
   settings: Json
   creator: ProfileUpdateOneRequiredWithoutClassNetworksCreatedInput
+  tags: TagUpdateManyWithoutClassNetworksInput
 }
 
 input ClassNetworkUpdateWithoutCreatorDataInput {
   title: String
   description: String
   settings: Json
+  classes: ClassUpdateManyWithoutNetworkInput
+  tags: TagUpdateManyWithoutClassNetworksInput
+}
+
+input ClassNetworkUpdateWithoutTagsDataInput {
+  title: String
+  description: String
+  settings: Json
+  creator: ProfileUpdateOneRequiredWithoutClassNetworksCreatedInput
   classes: ClassUpdateManyWithoutNetworkInput
 }
 
@@ -3333,6 +3472,11 @@ input ClassNetworkUpdateWithWhereUniqueWithoutCreatorInput {
   data: ClassNetworkUpdateWithoutCreatorDataInput!
 }
 
+input ClassNetworkUpdateWithWhereUniqueWithoutTagsInput {
+  where: ClassNetworkWhereUniqueInput!
+  data: ClassNetworkUpdateWithoutTagsDataInput!
+}
+
 input ClassNetworkUpsertWithWhereUniqueWithoutClassesInput {
   where: ClassNetworkWhereUniqueInput!
   update: ClassNetworkUpdateWithoutClassesDataInput!
@@ -3343,6 +3487,12 @@ input ClassNetworkUpsertWithWhereUniqueWithoutCreatorInput {
   where: ClassNetworkWhereUniqueInput!
   update: ClassNetworkUpdateWithoutCreatorDataInput!
   create: ClassNetworkCreateWithoutCreatorInput!
+}
+
+input ClassNetworkUpsertWithWhereUniqueWithoutTagsInput {
+  where: ClassNetworkWhereUniqueInput!
+  update: ClassNetworkUpdateWithoutTagsDataInput!
+  create: ClassNetworkCreateWithoutTagsInput!
 }
 
 input ClassNetworkWhereInput {
@@ -3522,6 +3672,9 @@ input ClassNetworkWhereInput {
   classes_every: ClassWhereInput
   classes_some: ClassWhereInput
   classes_none: ClassWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
 }
 
 input ClassNetworkWhereUniqueInput {
@@ -3909,6 +4062,7 @@ input ClassUpdateInput {
   assignments: AssignmentUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
+  tags: TagUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateManyDataInput {
@@ -4001,6 +4155,18 @@ input ClassUpdateManyWithoutStudiesInput {
   upsert: [ClassUpsertWithWhereUniqueWithoutStudiesInput!]
 }
 
+input ClassUpdateManyWithoutTagsInput {
+  create: [ClassCreateWithoutTagsInput!]
+  connect: [ClassWhereUniqueInput!]
+  set: [ClassWhereUniqueInput!]
+  disconnect: [ClassWhereUniqueInput!]
+  delete: [ClassWhereUniqueInput!]
+  update: [ClassUpdateWithWhereUniqueWithoutTagsInput!]
+  updateMany: [ClassUpdateManyWithWhereNestedInput!]
+  deleteMany: [ClassScalarWhereInput!]
+  upsert: [ClassUpsertWithWhereUniqueWithoutTagsInput!]
+}
+
 input ClassUpdateManyWithWhereNestedInput {
   where: ClassScalarWhereInput!
   data: ClassUpdateManyDataInput!
@@ -4026,6 +4192,7 @@ input ClassUpdateWithoutAssignmentsDataInput {
   network: ClassNetworkUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
+  tags: TagUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutCreatorDataInput {
@@ -4041,6 +4208,7 @@ input ClassUpdateWithoutCreatorDataInput {
   assignments: AssignmentUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
+  tags: TagUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutInvitesDataInput {
@@ -4056,6 +4224,7 @@ input ClassUpdateWithoutInvitesDataInput {
   assignments: AssignmentUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
+  tags: TagUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutMentorsDataInput {
@@ -4071,6 +4240,7 @@ input ClassUpdateWithoutMentorsDataInput {
   network: ClassNetworkUpdateManyWithoutClassesInput
   assignments: AssignmentUpdateManyWithoutClassesInput
   studies: StudyUpdateManyWithoutClassesInput
+  tags: TagUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutNetworkDataInput {
@@ -4086,6 +4256,7 @@ input ClassUpdateWithoutNetworkDataInput {
   assignments: AssignmentUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
+  tags: TagUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutStudentsDataInput {
@@ -4101,6 +4272,7 @@ input ClassUpdateWithoutStudentsDataInput {
   assignments: AssignmentUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
+  tags: TagUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutStudiesDataInput {
@@ -4116,6 +4288,23 @@ input ClassUpdateWithoutStudiesDataInput {
   network: ClassNetworkUpdateManyWithoutClassesInput
   assignments: AssignmentUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
+  tags: TagUpdateManyWithoutClassesInput
+}
+
+input ClassUpdateWithoutTagsDataInput {
+  code: String
+  title: String
+  description: String
+  image: String
+  largeImage: String
+  settings: Json
+  creator: ProfileUpdateOneRequiredWithoutTeacherInInput
+  students: ProfileUpdateManyWithoutStudentInInput
+  invites: AuthInviteUpdateManyWithoutInvitedInInput
+  network: ClassNetworkUpdateManyWithoutClassesInput
+  assignments: AssignmentUpdateManyWithoutClassesInput
+  mentors: ProfileUpdateManyWithoutMentorInInput
+  studies: StudyUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithWhereUniqueWithoutAssignmentsInput {
@@ -4146,6 +4335,11 @@ input ClassUpdateWithWhereUniqueWithoutStudentsInput {
 input ClassUpdateWithWhereUniqueWithoutStudiesInput {
   where: ClassWhereUniqueInput!
   data: ClassUpdateWithoutStudiesDataInput!
+}
+
+input ClassUpdateWithWhereUniqueWithoutTagsInput {
+  where: ClassWhereUniqueInput!
+  data: ClassUpdateWithoutTagsDataInput!
 }
 
 input ClassUpsertWithoutInvitesInput {
@@ -4187,6 +4381,12 @@ input ClassUpsertWithWhereUniqueWithoutStudiesInput {
   where: ClassWhereUniqueInput!
   update: ClassUpdateWithoutStudiesDataInput!
   create: ClassCreateWithoutStudiesInput!
+}
+
+input ClassUpsertWithWhereUniqueWithoutTagsInput {
+  where: ClassWhereUniqueInput!
+  update: ClassUpdateWithoutTagsDataInput!
+  create: ClassCreateWithoutTagsInput!
 }
 
 input ClassWhereInput {
@@ -4501,6 +4701,9 @@ input ClassWhereInput {
   studies_every: StudyWhereInput
   studies_some: StudyWhereInput
   studies_none: StudyWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
 }
 
 input ClassWhereUniqueInput {
@@ -6417,6 +6620,7 @@ type Homework implements Node {
   public: Boolean
   createdAt: DateTime!
   updatedAt: DateTime!
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
 
 """A connection to a list of items."""
@@ -6437,6 +6641,7 @@ input HomeworkCreateInput {
   public: Boolean
   author: ProfileCreateOneWithoutAuthorOfHomeworkInput
   assignment: AssignmentCreateOneWithoutHomeworkInput
+  tags: TagCreateManyWithoutHomeworksInput
 }
 
 input HomeworkCreateManyWithoutAssignmentInput {
@@ -6449,6 +6654,11 @@ input HomeworkCreateManyWithoutAuthorInput {
   connect: [HomeworkWhereUniqueInput!]
 }
 
+input HomeworkCreateManyWithoutTagsInput {
+  create: [HomeworkCreateWithoutTagsInput!]
+  connect: [HomeworkWhereUniqueInput!]
+}
+
 input HomeworkCreateWithoutAssignmentInput {
   id: ID
   title: String
@@ -6456,6 +6666,7 @@ input HomeworkCreateWithoutAssignmentInput {
   settings: Json
   public: Boolean
   author: ProfileCreateOneWithoutAuthorOfHomeworkInput
+  tags: TagCreateManyWithoutHomeworksInput
 }
 
 input HomeworkCreateWithoutAuthorInput {
@@ -6464,6 +6675,17 @@ input HomeworkCreateWithoutAuthorInput {
   content: String
   settings: Json
   public: Boolean
+  assignment: AssignmentCreateOneWithoutHomeworkInput
+  tags: TagCreateManyWithoutHomeworksInput
+}
+
+input HomeworkCreateWithoutTagsInput {
+  id: ID
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  author: ProfileCreateOneWithoutAuthorOfHomeworkInput
   assignment: AssignmentCreateOneWithoutHomeworkInput
 }
 
@@ -6728,6 +6950,7 @@ input HomeworkUpdateInput {
   public: Boolean
   author: ProfileUpdateOneWithoutAuthorOfHomeworkInput
   assignment: AssignmentUpdateOneWithoutHomeworkInput
+  tags: TagUpdateManyWithoutHomeworksInput
 }
 
 input HomeworkUpdateManyDataInput {
@@ -6768,6 +6991,18 @@ input HomeworkUpdateManyWithoutAuthorInput {
   upsert: [HomeworkUpsertWithWhereUniqueWithoutAuthorInput!]
 }
 
+input HomeworkUpdateManyWithoutTagsInput {
+  create: [HomeworkCreateWithoutTagsInput!]
+  connect: [HomeworkWhereUniqueInput!]
+  set: [HomeworkWhereUniqueInput!]
+  disconnect: [HomeworkWhereUniqueInput!]
+  delete: [HomeworkWhereUniqueInput!]
+  update: [HomeworkUpdateWithWhereUniqueWithoutTagsInput!]
+  updateMany: [HomeworkUpdateManyWithWhereNestedInput!]
+  deleteMany: [HomeworkScalarWhereInput!]
+  upsert: [HomeworkUpsertWithWhereUniqueWithoutTagsInput!]
+}
+
 input HomeworkUpdateManyWithWhereNestedInput {
   where: HomeworkScalarWhereInput!
   data: HomeworkUpdateManyDataInput!
@@ -6779,6 +7014,7 @@ input HomeworkUpdateWithoutAssignmentDataInput {
   settings: Json
   public: Boolean
   author: ProfileUpdateOneWithoutAuthorOfHomeworkInput
+  tags: TagUpdateManyWithoutHomeworksInput
 }
 
 input HomeworkUpdateWithoutAuthorDataInput {
@@ -6786,6 +7022,16 @@ input HomeworkUpdateWithoutAuthorDataInput {
   content: String
   settings: Json
   public: Boolean
+  assignment: AssignmentUpdateOneWithoutHomeworkInput
+  tags: TagUpdateManyWithoutHomeworksInput
+}
+
+input HomeworkUpdateWithoutTagsDataInput {
+  title: String
+  content: String
+  settings: Json
+  public: Boolean
+  author: ProfileUpdateOneWithoutAuthorOfHomeworkInput
   assignment: AssignmentUpdateOneWithoutHomeworkInput
 }
 
@@ -6799,6 +7045,11 @@ input HomeworkUpdateWithWhereUniqueWithoutAuthorInput {
   data: HomeworkUpdateWithoutAuthorDataInput!
 }
 
+input HomeworkUpdateWithWhereUniqueWithoutTagsInput {
+  where: HomeworkWhereUniqueInput!
+  data: HomeworkUpdateWithoutTagsDataInput!
+}
+
 input HomeworkUpsertWithWhereUniqueWithoutAssignmentInput {
   where: HomeworkWhereUniqueInput!
   update: HomeworkUpdateWithoutAssignmentDataInput!
@@ -6809,6 +7060,12 @@ input HomeworkUpsertWithWhereUniqueWithoutAuthorInput {
   where: HomeworkWhereUniqueInput!
   update: HomeworkUpdateWithoutAuthorDataInput!
   create: HomeworkCreateWithoutAuthorInput!
+}
+
+input HomeworkUpsertWithWhereUniqueWithoutTagsInput {
+  where: HomeworkWhereUniqueInput!
+  update: HomeworkUpdateWithoutTagsDataInput!
+  create: HomeworkCreateWithoutTagsInput!
 }
 
 input HomeworkWhereInput {
@@ -6990,6 +7247,9 @@ input HomeworkWhereInput {
   updatedAt_gte: DateTime
   author: ProfileWhereInput
   assignment: AssignmentWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
 }
 
 input HomeworkWhereUniqueInput {
@@ -7005,6 +7265,7 @@ type Journal implements Node {
   settings: Json
   createdAt: DateTime!
   updatedAt: DateTime!
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
 
 """A connection to a list of items."""
@@ -7024,10 +7285,16 @@ input JournalCreateInput {
   settings: Json
   creator: ProfileCreateOneWithoutJournalsInput!
   posts: PostCreateManyWithoutJournalInput
+  tags: TagCreateManyWithoutJournalsInput
 }
 
 input JournalCreateManyWithoutCreatorInput {
   create: [JournalCreateWithoutCreatorInput!]
+  connect: [JournalWhereUniqueInput!]
+}
+
+input JournalCreateManyWithoutTagsInput {
+  create: [JournalCreateWithoutTagsInput!]
   connect: [JournalWhereUniqueInput!]
 }
 
@@ -7042,6 +7309,7 @@ input JournalCreateWithoutCreatorInput {
   description: String
   settings: Json
   posts: PostCreateManyWithoutJournalInput
+  tags: TagCreateManyWithoutJournalsInput
 }
 
 input JournalCreateWithoutPostsInput {
@@ -7050,6 +7318,16 @@ input JournalCreateWithoutPostsInput {
   description: String
   settings: Json
   creator: ProfileCreateOneWithoutJournalsInput!
+  tags: TagCreateManyWithoutJournalsInput
+}
+
+input JournalCreateWithoutTagsInput {
+  id: ID
+  title: String
+  description: String
+  settings: Json
+  creator: ProfileCreateOneWithoutJournalsInput!
+  posts: PostCreateManyWithoutJournalInput
 }
 
 """An edge in a connection."""
@@ -7305,6 +7583,7 @@ input JournalUpdateInput {
   settings: Json
   creator: ProfileUpdateOneRequiredWithoutJournalsInput
   posts: PostUpdateManyWithoutJournalInput
+  tags: TagUpdateManyWithoutJournalsInput
 }
 
 input JournalUpdateManyDataInput {
@@ -7331,6 +7610,18 @@ input JournalUpdateManyWithoutCreatorInput {
   upsert: [JournalUpsertWithWhereUniqueWithoutCreatorInput!]
 }
 
+input JournalUpdateManyWithoutTagsInput {
+  create: [JournalCreateWithoutTagsInput!]
+  connect: [JournalWhereUniqueInput!]
+  set: [JournalWhereUniqueInput!]
+  disconnect: [JournalWhereUniqueInput!]
+  delete: [JournalWhereUniqueInput!]
+  update: [JournalUpdateWithWhereUniqueWithoutTagsInput!]
+  updateMany: [JournalUpdateManyWithWhereNestedInput!]
+  deleteMany: [JournalScalarWhereInput!]
+  upsert: [JournalUpsertWithWhereUniqueWithoutTagsInput!]
+}
+
 input JournalUpdateManyWithWhereNestedInput {
   where: JournalScalarWhereInput!
   data: JournalUpdateManyDataInput!
@@ -7348,6 +7639,7 @@ input JournalUpdateWithoutCreatorDataInput {
   description: String
   settings: Json
   posts: PostUpdateManyWithoutJournalInput
+  tags: TagUpdateManyWithoutJournalsInput
 }
 
 input JournalUpdateWithoutPostsDataInput {
@@ -7355,11 +7647,25 @@ input JournalUpdateWithoutPostsDataInput {
   description: String
   settings: Json
   creator: ProfileUpdateOneRequiredWithoutJournalsInput
+  tags: TagUpdateManyWithoutJournalsInput
+}
+
+input JournalUpdateWithoutTagsDataInput {
+  title: String
+  description: String
+  settings: Json
+  creator: ProfileUpdateOneRequiredWithoutJournalsInput
+  posts: PostUpdateManyWithoutJournalInput
 }
 
 input JournalUpdateWithWhereUniqueWithoutCreatorInput {
   where: JournalWhereUniqueInput!
   data: JournalUpdateWithoutCreatorDataInput!
+}
+
+input JournalUpdateWithWhereUniqueWithoutTagsInput {
+  where: JournalWhereUniqueInput!
+  data: JournalUpdateWithoutTagsDataInput!
 }
 
 input JournalUpsertWithoutPostsInput {
@@ -7371,6 +7677,12 @@ input JournalUpsertWithWhereUniqueWithoutCreatorInput {
   where: JournalWhereUniqueInput!
   update: JournalUpdateWithoutCreatorDataInput!
   create: JournalCreateWithoutCreatorInput!
+}
+
+input JournalUpsertWithWhereUniqueWithoutTagsInput {
+  where: JournalWhereUniqueInput!
+  update: JournalUpdateWithoutTagsDataInput!
+  create: JournalCreateWithoutTagsInput!
 }
 
 input JournalWhereInput {
@@ -7550,6 +7862,9 @@ input JournalWhereInput {
   posts_every: PostWhereInput
   posts_some: PostWhereInput
   posts_none: PostWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
 }
 
 input JournalWhereUniqueInput {
@@ -8074,6 +8389,7 @@ type Mutation {
   createHomework(data: HomeworkCreateInput!): Homework!
   createGuest(data: GuestCreateInput!): Guest!
   createScript(data: ScriptCreateInput!): Script!
+  createTag(data: TagCreateInput!): Tag!
   createStudy(data: StudyCreateInput!): Study!
   createTemplate(data: TemplateCreateInput!): Template!
   createTask(data: TaskCreateInput!): Task!
@@ -8101,6 +8417,7 @@ type Mutation {
   updateHomework(data: HomeworkUpdateInput!, where: HomeworkWhereUniqueInput!): Homework
   updateGuest(data: GuestUpdateInput!, where: GuestWhereUniqueInput!): Guest
   updateScript(data: ScriptUpdateInput!, where: ScriptWhereUniqueInput!): Script
+  updateTag(data: TagUpdateInput!, where: TagWhereUniqueInput!): Tag
   updateStudy(data: StudyUpdateInput!, where: StudyWhereUniqueInput!): Study
   updateTemplate(data: TemplateUpdateInput!, where: TemplateWhereUniqueInput!): Template
   updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task
@@ -8128,6 +8445,7 @@ type Mutation {
   deleteHomework(where: HomeworkWhereUniqueInput!): Homework
   deleteGuest(where: GuestWhereUniqueInput!): Guest
   deleteScript(where: ScriptWhereUniqueInput!): Script
+  deleteTag(where: TagWhereUniqueInput!): Tag
   deleteStudy(where: StudyWhereUniqueInput!): Study
   deleteTemplate(where: TemplateWhereUniqueInput!): Template
   deleteTask(where: TaskWhereUniqueInput!): Task
@@ -8155,6 +8473,7 @@ type Mutation {
   upsertHomework(where: HomeworkWhereUniqueInput!, create: HomeworkCreateInput!, update: HomeworkUpdateInput!): Homework!
   upsertGuest(where: GuestWhereUniqueInput!, create: GuestCreateInput!, update: GuestUpdateInput!): Guest!
   upsertScript(where: ScriptWhereUniqueInput!, create: ScriptCreateInput!, update: ScriptUpdateInput!): Script!
+  upsertTag(where: TagWhereUniqueInput!, create: TagCreateInput!, update: TagUpdateInput!): Tag!
   upsertStudy(where: StudyWhereUniqueInput!, create: StudyCreateInput!, update: StudyUpdateInput!): Study!
   upsertTemplate(where: TemplateWhereUniqueInput!, create: TemplateCreateInput!, update: TemplateUpdateInput!): Template!
   upsertTask(where: TaskWhereUniqueInput!, create: TaskCreateInput!, update: TaskUpdateInput!): Task!
@@ -8181,6 +8500,7 @@ type Mutation {
   updateManyHomeworks(data: HomeworkUpdateManyMutationInput!, where: HomeworkWhereInput): BatchPayload!
   updateManyGuests(data: GuestUpdateManyMutationInput!, where: GuestWhereInput): BatchPayload!
   updateManyScripts(data: ScriptUpdateManyMutationInput!, where: ScriptWhereInput): BatchPayload!
+  updateManyTags(data: TagUpdateManyMutationInput!, where: TagWhereInput): BatchPayload!
   updateManyStudies(data: StudyUpdateManyMutationInput!, where: StudyWhereInput): BatchPayload!
   updateManyTemplates(data: TemplateUpdateManyMutationInput!, where: TemplateWhereInput): BatchPayload!
   updateManyTasks(data: TaskUpdateManyMutationInput!, where: TaskWhereInput): BatchPayload!
@@ -8208,6 +8528,7 @@ type Mutation {
   deleteManyHomeworks(where: HomeworkWhereInput): BatchPayload!
   deleteManyGuests(where: GuestWhereInput): BatchPayload!
   deleteManyScripts(where: ScriptWhereInput): BatchPayload!
+  deleteManyTags(where: TagWhereInput): BatchPayload!
   deleteManyStudies(where: StudyWhereInput): BatchPayload!
   deleteManyTemplates(where: TemplateWhereInput): BatchPayload!
   deleteManyTasks(where: TaskWhereInput): BatchPayload!
@@ -8262,6 +8583,7 @@ type Post implements Node {
   settings: Json
   createdAt: DateTime!
   updatedAt: DateTime!
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
 
 """A connection to a list of items."""
@@ -8281,6 +8603,7 @@ input PostCreateInput {
   settings: Json
   author: ProfileCreateOneWithoutPostsInput!
   journal: JournalCreateOneWithoutPostsInput!
+  tags: TagCreateManyWithoutPostsInput
 }
 
 input PostCreateManyWithoutAuthorInput {
@@ -8293,12 +8616,18 @@ input PostCreateManyWithoutJournalInput {
   connect: [PostWhereUniqueInput!]
 }
 
+input PostCreateManyWithoutTagsInput {
+  create: [PostCreateWithoutTagsInput!]
+  connect: [PostWhereUniqueInput!]
+}
+
 input PostCreateWithoutAuthorInput {
   id: ID
   title: String
   content: String
   settings: Json
   journal: JournalCreateOneWithoutPostsInput!
+  tags: TagCreateManyWithoutPostsInput
 }
 
 input PostCreateWithoutJournalInput {
@@ -8307,6 +8636,16 @@ input PostCreateWithoutJournalInput {
   content: String
   settings: Json
   author: ProfileCreateOneWithoutPostsInput!
+  tags: TagCreateManyWithoutPostsInput
+}
+
+input PostCreateWithoutTagsInput {
+  id: ID
+  title: String
+  content: String
+  settings: Json
+  author: ProfileCreateOneWithoutPostsInput!
+  journal: JournalCreateOneWithoutPostsInput!
 }
 
 """An edge in a connection."""
@@ -8562,6 +8901,7 @@ input PostUpdateInput {
   settings: Json
   author: ProfileUpdateOneRequiredWithoutPostsInput
   journal: JournalUpdateOneRequiredWithoutPostsInput
+  tags: TagUpdateManyWithoutPostsInput
 }
 
 input PostUpdateManyDataInput {
@@ -8600,6 +8940,18 @@ input PostUpdateManyWithoutJournalInput {
   upsert: [PostUpsertWithWhereUniqueWithoutJournalInput!]
 }
 
+input PostUpdateManyWithoutTagsInput {
+  create: [PostCreateWithoutTagsInput!]
+  connect: [PostWhereUniqueInput!]
+  set: [PostWhereUniqueInput!]
+  disconnect: [PostWhereUniqueInput!]
+  delete: [PostWhereUniqueInput!]
+  update: [PostUpdateWithWhereUniqueWithoutTagsInput!]
+  updateMany: [PostUpdateManyWithWhereNestedInput!]
+  deleteMany: [PostScalarWhereInput!]
+  upsert: [PostUpsertWithWhereUniqueWithoutTagsInput!]
+}
+
 input PostUpdateManyWithWhereNestedInput {
   where: PostScalarWhereInput!
   data: PostUpdateManyDataInput!
@@ -8610,6 +8962,7 @@ input PostUpdateWithoutAuthorDataInput {
   content: String
   settings: Json
   journal: JournalUpdateOneRequiredWithoutPostsInput
+  tags: TagUpdateManyWithoutPostsInput
 }
 
 input PostUpdateWithoutJournalDataInput {
@@ -8617,6 +8970,15 @@ input PostUpdateWithoutJournalDataInput {
   content: String
   settings: Json
   author: ProfileUpdateOneRequiredWithoutPostsInput
+  tags: TagUpdateManyWithoutPostsInput
+}
+
+input PostUpdateWithoutTagsDataInput {
+  title: String
+  content: String
+  settings: Json
+  author: ProfileUpdateOneRequiredWithoutPostsInput
+  journal: JournalUpdateOneRequiredWithoutPostsInput
 }
 
 input PostUpdateWithWhereUniqueWithoutAuthorInput {
@@ -8629,6 +8991,11 @@ input PostUpdateWithWhereUniqueWithoutJournalInput {
   data: PostUpdateWithoutJournalDataInput!
 }
 
+input PostUpdateWithWhereUniqueWithoutTagsInput {
+  where: PostWhereUniqueInput!
+  data: PostUpdateWithoutTagsDataInput!
+}
+
 input PostUpsertWithWhereUniqueWithoutAuthorInput {
   where: PostWhereUniqueInput!
   update: PostUpdateWithoutAuthorDataInput!
@@ -8639,6 +9006,12 @@ input PostUpsertWithWhereUniqueWithoutJournalInput {
   where: PostWhereUniqueInput!
   update: PostUpdateWithoutJournalDataInput!
   create: PostCreateWithoutJournalInput!
+}
+
+input PostUpsertWithWhereUniqueWithoutTagsInput {
+  where: PostWhereUniqueInput!
+  update: PostUpdateWithoutTagsDataInput!
+  create: PostCreateWithoutTagsInput!
 }
 
 input PostWhereInput {
@@ -8816,6 +9189,9 @@ input PostWhereInput {
   updatedAt_gte: DateTime
   author: ProfileWhereInput
   journal: JournalWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
 }
 
 input PostWhereUniqueInput {
@@ -8870,6 +9246,7 @@ type Profile implements Node {
   creatorOfScript(where: ScriptWhereInput, orderBy: ScriptOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Script!]
   authorOfScript(where: ScriptWhereInput, orderBy: ScriptOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Script!]
   collaboratorOnScript(where: ScriptWhereInput, orderBy: ScriptOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Script!]
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
 
 """A connection to a list of items."""
@@ -8930,6 +9307,7 @@ input ProfileCreateInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateManyWithoutAssignedToProposalCardInput {
@@ -8989,6 +9367,11 @@ input ProfileCreateManyWithoutParticipantInInput {
 
 input ProfileCreateManyWithoutStudentInInput {
   create: [ProfileCreateWithoutStudentInInput!]
+  connect: [ProfileWhereUniqueInput!]
+}
+
+input ProfileCreateManyWithoutTagsInput {
+  create: [ProfileCreateWithoutTagsInput!]
   connect: [ProfileWhereUniqueInput!]
 }
 
@@ -9153,6 +9536,7 @@ input ProfileCreateWithoutAssignedToProposalCardInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutAssignedToProposalSectionInput {
@@ -9202,6 +9586,7 @@ input ProfileCreateWithoutAssignedToProposalSectionInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutAuthEmailInput {
@@ -9251,6 +9636,7 @@ input ProfileCreateWithoutAuthEmailInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutAuthInviteInput {
@@ -9300,6 +9686,7 @@ input ProfileCreateWithoutAuthInviteInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutAuthorOfAssignmentInput {
@@ -9349,6 +9736,7 @@ input ProfileCreateWithoutAuthorOfAssignmentInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutAuthorOfHomeworkInput {
@@ -9398,6 +9786,7 @@ input ProfileCreateWithoutAuthorOfHomeworkInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutAuthorOfProposalInput {
@@ -9447,6 +9836,7 @@ input ProfileCreateWithoutAuthorOfProposalInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutAuthorOfScriptInput {
@@ -9496,6 +9886,7 @@ input ProfileCreateWithoutAuthorOfScriptInput {
   mentorIn: ClassCreateManyWithoutMentorsInput
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutAuthorOfTalkInput {
@@ -9545,6 +9936,7 @@ input ProfileCreateWithoutAuthorOfTalkInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutAuthorOfWordInput {
@@ -9594,6 +9986,7 @@ input ProfileCreateWithoutAuthorOfWordInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutAuthParticipantInput {
@@ -9643,6 +10036,7 @@ input ProfileCreateWithoutAuthParticipantInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutAuthTokenInput {
@@ -9692,6 +10086,7 @@ input ProfileCreateWithoutAuthTokenInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutClassNetworksCreatedInput {
@@ -9741,6 +10136,7 @@ input ProfileCreateWithoutClassNetworksCreatedInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutCollaboratorInConsentInput {
@@ -9790,6 +10186,7 @@ input ProfileCreateWithoutCollaboratorInConsentInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutCollaboratorInStudyInput {
@@ -9839,6 +10236,7 @@ input ProfileCreateWithoutCollaboratorInStudyInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutCollaboratorInTaskInput {
@@ -9888,6 +10286,7 @@ input ProfileCreateWithoutCollaboratorInTaskInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutCollaboratorOnProposalInput {
@@ -9937,6 +10336,7 @@ input ProfileCreateWithoutCollaboratorOnProposalInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutCollaboratorOnScriptInput {
@@ -9986,6 +10386,7 @@ input ProfileCreateWithoutCollaboratorOnScriptInput {
   mentorIn: ClassCreateManyWithoutMentorsInput
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutConsentCreatorInInput {
@@ -10035,6 +10436,7 @@ input ProfileCreateWithoutConsentCreatorInInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutConsentGivenForInput {
@@ -10084,6 +10486,7 @@ input ProfileCreateWithoutConsentGivenForInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutCreatorOfProposalInput {
@@ -10133,6 +10536,7 @@ input ProfileCreateWithoutCreatorOfProposalInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutCreatorOfScriptInput {
@@ -10182,6 +10586,7 @@ input ProfileCreateWithoutCreatorOfScriptInput {
   mentorIn: ClassCreateManyWithoutMentorsInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutJournalsInput {
@@ -10231,6 +10636,7 @@ input ProfileCreateWithoutJournalsInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutMemberOfTalkInput {
@@ -10280,6 +10686,7 @@ input ProfileCreateWithoutMemberOfTalkInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutMentorInInput {
@@ -10329,6 +10736,7 @@ input ProfileCreateWithoutMentorInInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutParticipantInInput {
@@ -10378,6 +10786,7 @@ input ProfileCreateWithoutParticipantInInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutPostsInput {
@@ -10427,6 +10836,7 @@ input ProfileCreateWithoutPostsInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutResearcherInInput {
@@ -10476,6 +10886,7 @@ input ProfileCreateWithoutResearcherInInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutResultsInput {
@@ -10525,6 +10936,7 @@ input ProfileCreateWithoutResultsInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutReviewsInput {
@@ -10574,6 +10986,7 @@ input ProfileCreateWithoutReviewsInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutStudentInInput {
@@ -10596,6 +11009,57 @@ input ProfileCreateWithoutStudentInInput {
   authParticipant: AuthParticipantCreateManyWithoutProfileInput
   results: ResultCreateManyWithoutUserInput
   teacherIn: ClassCreateManyWithoutCreatorInput
+  participantIn: StudyCreateManyWithoutParticipantsInput
+  researcherIn: StudyCreateManyWithoutAuthorInput
+  taskCreatorIn: TaskCreateManyWithoutAuthorInput
+  consentCreatorIn: ConsentCreateManyWithoutAuthorInput
+  collaboratorInStudy: StudyCreateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskCreateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentCreateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentCreateManyWithoutParticipantsInput
+  journals: JournalCreateManyWithoutCreatorInput
+  posts: PostCreateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardCreateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardCreateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardCreateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionCreateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardCreateManyWithoutAssignedToInput
+  reviews: ReviewCreateManyWithoutAuthorInput
+  classNetworksCreated: ClassNetworkCreateManyWithoutCreatorInput
+  authorOfWord: WordCreateManyWithoutAuthorInput
+  memberOfTalk: TalkCreateManyWithoutMembersInput
+  authorOfTalk: TalkCreateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentCreateManyWithoutAuthorInput
+  authorOfHomework: HomeworkCreateManyWithoutAuthorInput
+  favoriteTasks: TaskCreateManyInput
+  mentorIn: ClassCreateManyWithoutMentorsInput
+  creatorOfScript: ScriptCreateManyWithoutCreatorInput
+  authorOfScript: ScriptCreateManyWithoutAuthorInput
+  collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
+}
+
+input ProfileCreateWithoutTagsInput {
+  id: ID
+  username: String!
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  publicReadableId: String
+  isPublic: Boolean
+  permissions: ProfileCreatepermissionsInput
+  authEmail: AuthEmailCreateManyWithoutProfileInput
+  authToken: AuthTokenCreateManyWithoutProfileInput
+  authInvite: AuthInviteCreateManyWithoutProfileInput
+  authParticipant: AuthParticipantCreateManyWithoutProfileInput
+  results: ResultCreateManyWithoutUserInput
+  teacherIn: ClassCreateManyWithoutCreatorInput
+  studentIn: ClassCreateManyWithoutStudentsInput
   participantIn: StudyCreateManyWithoutParticipantsInput
   researcherIn: StudyCreateManyWithoutAuthorInput
   taskCreatorIn: TaskCreateManyWithoutAuthorInput
@@ -10672,6 +11136,7 @@ input ProfileCreateWithoutTaskCreatorInInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 input ProfileCreateWithoutTeacherInInput {
@@ -10721,6 +11186,7 @@ input ProfileCreateWithoutTeacherInInput {
   creatorOfScript: ScriptCreateManyWithoutCreatorInput
   authorOfScript: ScriptCreateManyWithoutAuthorInput
   collaboratorOnScript: ScriptCreateManyWithoutCollaboratorsInput
+  tags: TagCreateManyWithoutProfilesInput
 }
 
 """An edge in a connection."""
@@ -11116,6 +11582,7 @@ input ProfileUpdateDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateInput {
@@ -11165,6 +11632,7 @@ input ProfileUpdateInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateManyDataInput {
@@ -11339,6 +11807,18 @@ input ProfileUpdateManyWithoutStudentInInput {
   updateMany: [ProfileUpdateManyWithWhereNestedInput!]
   deleteMany: [ProfileScalarWhereInput!]
   upsert: [ProfileUpsertWithWhereUniqueWithoutStudentInInput!]
+}
+
+input ProfileUpdateManyWithoutTagsInput {
+  create: [ProfileCreateWithoutTagsInput!]
+  connect: [ProfileWhereUniqueInput!]
+  set: [ProfileWhereUniqueInput!]
+  disconnect: [ProfileWhereUniqueInput!]
+  delete: [ProfileWhereUniqueInput!]
+  update: [ProfileUpdateWithWhereUniqueWithoutTagsInput!]
+  updateMany: [ProfileUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProfileScalarWhereInput!]
+  upsert: [ProfileUpsertWithWhereUniqueWithoutTagsInput!]
 }
 
 input ProfileUpdateManyWithWhereNestedInput {
@@ -11570,6 +12050,7 @@ input ProfileUpdateWithoutAssignedToProposalCardDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutAssignedToProposalSectionDataInput {
@@ -11618,6 +12099,7 @@ input ProfileUpdateWithoutAssignedToProposalSectionDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutAuthEmailDataInput {
@@ -11666,6 +12148,7 @@ input ProfileUpdateWithoutAuthEmailDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutAuthInviteDataInput {
@@ -11714,6 +12197,7 @@ input ProfileUpdateWithoutAuthInviteDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutAuthorOfAssignmentDataInput {
@@ -11762,6 +12246,7 @@ input ProfileUpdateWithoutAuthorOfAssignmentDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutAuthorOfHomeworkDataInput {
@@ -11810,6 +12295,7 @@ input ProfileUpdateWithoutAuthorOfHomeworkDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutAuthorOfProposalDataInput {
@@ -11858,6 +12344,7 @@ input ProfileUpdateWithoutAuthorOfProposalDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutAuthorOfScriptDataInput {
@@ -11906,6 +12393,7 @@ input ProfileUpdateWithoutAuthorOfScriptDataInput {
   mentorIn: ClassUpdateManyWithoutMentorsInput
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutAuthorOfTalkDataInput {
@@ -11954,6 +12442,7 @@ input ProfileUpdateWithoutAuthorOfTalkDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutAuthorOfWordDataInput {
@@ -12002,6 +12491,7 @@ input ProfileUpdateWithoutAuthorOfWordDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutAuthParticipantDataInput {
@@ -12050,6 +12540,7 @@ input ProfileUpdateWithoutAuthParticipantDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutAuthTokenDataInput {
@@ -12098,6 +12589,7 @@ input ProfileUpdateWithoutAuthTokenDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutClassNetworksCreatedDataInput {
@@ -12146,6 +12638,7 @@ input ProfileUpdateWithoutClassNetworksCreatedDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutCollaboratorInConsentDataInput {
@@ -12194,6 +12687,7 @@ input ProfileUpdateWithoutCollaboratorInConsentDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutCollaboratorInStudyDataInput {
@@ -12242,6 +12736,7 @@ input ProfileUpdateWithoutCollaboratorInStudyDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutCollaboratorInTaskDataInput {
@@ -12290,6 +12785,7 @@ input ProfileUpdateWithoutCollaboratorInTaskDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutCollaboratorOnProposalDataInput {
@@ -12338,6 +12834,7 @@ input ProfileUpdateWithoutCollaboratorOnProposalDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutCollaboratorOnScriptDataInput {
@@ -12386,6 +12883,7 @@ input ProfileUpdateWithoutCollaboratorOnScriptDataInput {
   mentorIn: ClassUpdateManyWithoutMentorsInput
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutConsentCreatorInDataInput {
@@ -12434,6 +12932,7 @@ input ProfileUpdateWithoutConsentCreatorInDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutConsentGivenForDataInput {
@@ -12482,6 +12981,7 @@ input ProfileUpdateWithoutConsentGivenForDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutCreatorOfProposalDataInput {
@@ -12530,6 +13030,7 @@ input ProfileUpdateWithoutCreatorOfProposalDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutCreatorOfScriptDataInput {
@@ -12578,6 +13079,7 @@ input ProfileUpdateWithoutCreatorOfScriptDataInput {
   mentorIn: ClassUpdateManyWithoutMentorsInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutJournalsDataInput {
@@ -12626,6 +13128,7 @@ input ProfileUpdateWithoutJournalsDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutMemberOfTalkDataInput {
@@ -12674,6 +13177,7 @@ input ProfileUpdateWithoutMemberOfTalkDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutMentorInDataInput {
@@ -12722,6 +13226,7 @@ input ProfileUpdateWithoutMentorInDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutParticipantInDataInput {
@@ -12770,6 +13275,7 @@ input ProfileUpdateWithoutParticipantInDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutPostsDataInput {
@@ -12818,6 +13324,7 @@ input ProfileUpdateWithoutPostsDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutResearcherInDataInput {
@@ -12866,6 +13373,7 @@ input ProfileUpdateWithoutResearcherInDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutResultsDataInput {
@@ -12914,6 +13422,7 @@ input ProfileUpdateWithoutResultsDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutReviewsDataInput {
@@ -12962,6 +13471,7 @@ input ProfileUpdateWithoutReviewsDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutStudentInDataInput {
@@ -12983,6 +13493,56 @@ input ProfileUpdateWithoutStudentInDataInput {
   authParticipant: AuthParticipantUpdateManyWithoutProfileInput
   results: ResultUpdateManyWithoutUserInput
   teacherIn: ClassUpdateManyWithoutCreatorInput
+  participantIn: StudyUpdateManyWithoutParticipantsInput
+  researcherIn: StudyUpdateManyWithoutAuthorInput
+  taskCreatorIn: TaskUpdateManyWithoutAuthorInput
+  consentCreatorIn: ConsentUpdateManyWithoutAuthorInput
+  collaboratorInStudy: StudyUpdateManyWithoutCollaboratorsInput
+  collaboratorInTask: TaskUpdateManyWithoutCollaboratorsInput
+  collaboratorInConsent: ConsentUpdateManyWithoutCollaboratorsInput
+  consentGivenFor: ConsentUpdateManyWithoutParticipantsInput
+  journals: JournalUpdateManyWithoutCreatorInput
+  posts: PostUpdateManyWithoutAuthorInput
+  creatorOfProposal: ProposalBoardUpdateManyWithoutCreatorInput
+  authorOfProposal: ProposalBoardUpdateManyWithoutAuthorInput
+  collaboratorOnProposal: ProposalBoardUpdateManyWithoutCollaboratorsInput
+  assignedToProposalSection: ProposalSectionUpdateManyWithoutAssignedToInput
+  assignedToProposalCard: ProposalCardUpdateManyWithoutAssignedToInput
+  reviews: ReviewUpdateManyWithoutAuthorInput
+  classNetworksCreated: ClassNetworkUpdateManyWithoutCreatorInput
+  authorOfWord: WordUpdateManyWithoutAuthorInput
+  memberOfTalk: TalkUpdateManyWithoutMembersInput
+  authorOfTalk: TalkUpdateManyWithoutAuthorInput
+  authorOfAssignment: AssignmentUpdateManyWithoutAuthorInput
+  authorOfHomework: HomeworkUpdateManyWithoutAuthorInput
+  favoriteTasks: TaskUpdateManyInput
+  mentorIn: ClassUpdateManyWithoutMentorsInput
+  creatorOfScript: ScriptUpdateManyWithoutCreatorInput
+  authorOfScript: ScriptUpdateManyWithoutAuthorInput
+  collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
+}
+
+input ProfileUpdateWithoutTagsDataInput {
+  username: String
+  image: String
+  largeImage: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  publicId: String
+  publicReadableId: String
+  isPublic: Boolean
+  permissions: ProfileUpdatepermissionsInput
+  authEmail: AuthEmailUpdateManyWithoutProfileInput
+  authToken: AuthTokenUpdateManyWithoutProfileInput
+  authInvite: AuthInviteUpdateManyWithoutProfileInput
+  authParticipant: AuthParticipantUpdateManyWithoutProfileInput
+  results: ResultUpdateManyWithoutUserInput
+  teacherIn: ClassUpdateManyWithoutCreatorInput
+  studentIn: ClassUpdateManyWithoutStudentsInput
   participantIn: StudyUpdateManyWithoutParticipantsInput
   researcherIn: StudyUpdateManyWithoutAuthorInput
   taskCreatorIn: TaskUpdateManyWithoutAuthorInput
@@ -13058,6 +13618,7 @@ input ProfileUpdateWithoutTaskCreatorInDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithoutTeacherInDataInput {
@@ -13106,6 +13667,7 @@ input ProfileUpdateWithoutTeacherInDataInput {
   creatorOfScript: ScriptUpdateManyWithoutCreatorInput
   authorOfScript: ScriptUpdateManyWithoutAuthorInput
   collaboratorOnScript: ScriptUpdateManyWithoutCollaboratorsInput
+  tags: TagUpdateManyWithoutProfilesInput
 }
 
 input ProfileUpdateWithWhereUniqueWithoutAssignedToProposalCardInput {
@@ -13166,6 +13728,11 @@ input ProfileUpdateWithWhereUniqueWithoutParticipantInInput {
 input ProfileUpdateWithWhereUniqueWithoutStudentInInput {
   where: ProfileWhereUniqueInput!
   data: ProfileUpdateWithoutStudentInDataInput!
+}
+
+input ProfileUpdateWithWhereUniqueWithoutTagsInput {
+  where: ProfileWhereUniqueInput!
+  data: ProfileUpdateWithoutTagsDataInput!
 }
 
 input ProfileUpsertNestedInput {
@@ -13348,6 +13915,12 @@ input ProfileUpsertWithWhereUniqueWithoutStudentInInput {
   where: ProfileWhereUniqueInput!
   update: ProfileUpdateWithoutStudentInDataInput!
   create: ProfileCreateWithoutStudentInInput!
+}
+
+input ProfileUpsertWithWhereUniqueWithoutTagsInput {
+  where: ProfileWhereUniqueInput!
+  update: ProfileUpdateWithoutTagsDataInput!
+  create: ProfileCreateWithoutTagsInput!
 }
 
 input ProfileWhereInput {
@@ -13705,6 +14278,9 @@ input ProfileWhereInput {
   collaboratorOnScript_every: ScriptWhereInput
   collaboratorOnScript_some: ScriptWhereInput
   collaboratorOnScript_none: ScriptWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
 }
 
 input ProfileWhereUniqueInput {
@@ -13729,6 +14305,7 @@ type ProposalBoard implements Node {
   isSubmitted: Boolean
   checklist: Json
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
 
 """A connection to a list of items."""
@@ -13755,6 +14332,7 @@ input ProposalBoardCreateInput {
   study: StudyCreateOneWithoutProposalInput
   sections: ProposalSectionCreateManyWithoutBoardInput
   reviews: ReviewCreateManyWithoutProposalInput
+  tags: TagCreateManyWithoutProposalsInput
 }
 
 input ProposalBoardCreateManyWithoutAuthorInput {
@@ -13774,6 +14352,11 @@ input ProposalBoardCreateManyWithoutCreatorInput {
 
 input ProposalBoardCreateManyWithoutStudyInput {
   create: [ProposalBoardCreateWithoutStudyInput!]
+  connect: [ProposalBoardWhereUniqueInput!]
+}
+
+input ProposalBoardCreateManyWithoutTagsInput {
+  create: [ProposalBoardCreateWithoutTagsInput!]
   connect: [ProposalBoardWhereUniqueInput!]
 }
 
@@ -13800,6 +14383,7 @@ input ProposalBoardCreateWithoutAuthorInput {
   study: StudyCreateOneWithoutProposalInput
   sections: ProposalSectionCreateManyWithoutBoardInput
   reviews: ReviewCreateManyWithoutProposalInput
+  tags: TagCreateManyWithoutProposalsInput
 }
 
 input ProposalBoardCreateWithoutCollaboratorsInput {
@@ -13815,6 +14399,7 @@ input ProposalBoardCreateWithoutCollaboratorsInput {
   study: StudyCreateOneWithoutProposalInput
   sections: ProposalSectionCreateManyWithoutBoardInput
   reviews: ReviewCreateManyWithoutProposalInput
+  tags: TagCreateManyWithoutProposalsInput
 }
 
 input ProposalBoardCreateWithoutCreatorInput {
@@ -13830,6 +14415,7 @@ input ProposalBoardCreateWithoutCreatorInput {
   study: StudyCreateOneWithoutProposalInput
   sections: ProposalSectionCreateManyWithoutBoardInput
   reviews: ReviewCreateManyWithoutProposalInput
+  tags: TagCreateManyWithoutProposalsInput
 }
 
 input ProposalBoardCreateWithoutReviewsInput {
@@ -13845,6 +14431,7 @@ input ProposalBoardCreateWithoutReviewsInput {
   collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
   study: StudyCreateOneWithoutProposalInput
   sections: ProposalSectionCreateManyWithoutBoardInput
+  tags: TagCreateManyWithoutProposalsInput
 }
 
 input ProposalBoardCreateWithoutSectionsInput {
@@ -13860,6 +14447,7 @@ input ProposalBoardCreateWithoutSectionsInput {
   collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
   study: StudyCreateOneWithoutProposalInput
   reviews: ReviewCreateManyWithoutProposalInput
+  tags: TagCreateManyWithoutProposalsInput
 }
 
 input ProposalBoardCreateWithoutStudyInput {
@@ -13873,6 +14461,23 @@ input ProposalBoardCreateWithoutStudyInput {
   creator: ProfileCreateOneWithoutCreatorOfProposalInput
   author: ProfileCreateOneWithoutAuthorOfProposalInput
   collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
+  sections: ProposalSectionCreateManyWithoutBoardInput
+  reviews: ReviewCreateManyWithoutProposalInput
+  tags: TagCreateManyWithoutProposalsInput
+}
+
+input ProposalBoardCreateWithoutTagsInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  isTemplate: Boolean
+  isSubmitted: Boolean
+  checklist: Json
+  creator: ProfileCreateOneWithoutCreatorOfProposalInput
+  author: ProfileCreateOneWithoutAuthorOfProposalInput
+  collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
+  study: StudyCreateOneWithoutProposalInput
   sections: ProposalSectionCreateManyWithoutBoardInput
   reviews: ReviewCreateManyWithoutProposalInput
 }
@@ -14194,6 +14799,7 @@ input ProposalBoardUpdateInput {
   study: StudyUpdateOneWithoutProposalInput
   sections: ProposalSectionUpdateManyWithoutBoardInput
   reviews: ReviewUpdateManyWithoutProposalInput
+  tags: TagUpdateManyWithoutProposalsInput
 }
 
 input ProposalBoardUpdateManyDataInput {
@@ -14262,6 +14868,18 @@ input ProposalBoardUpdateManyWithoutStudyInput {
   upsert: [ProposalBoardUpsertWithWhereUniqueWithoutStudyInput!]
 }
 
+input ProposalBoardUpdateManyWithoutTagsInput {
+  create: [ProposalBoardCreateWithoutTagsInput!]
+  connect: [ProposalBoardWhereUniqueInput!]
+  set: [ProposalBoardWhereUniqueInput!]
+  disconnect: [ProposalBoardWhereUniqueInput!]
+  delete: [ProposalBoardWhereUniqueInput!]
+  update: [ProposalBoardUpdateWithWhereUniqueWithoutTagsInput!]
+  updateMany: [ProposalBoardUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProposalBoardScalarWhereInput!]
+  upsert: [ProposalBoardUpsertWithWhereUniqueWithoutTagsInput!]
+}
+
 input ProposalBoardUpdateManyWithWhereNestedInput {
   where: ProposalBoardScalarWhereInput!
   data: ProposalBoardUpdateManyDataInput!
@@ -14295,6 +14913,7 @@ input ProposalBoardUpdateWithoutAuthorDataInput {
   study: StudyUpdateOneWithoutProposalInput
   sections: ProposalSectionUpdateManyWithoutBoardInput
   reviews: ReviewUpdateManyWithoutProposalInput
+  tags: TagUpdateManyWithoutProposalsInput
 }
 
 input ProposalBoardUpdateWithoutCollaboratorsDataInput {
@@ -14309,6 +14928,7 @@ input ProposalBoardUpdateWithoutCollaboratorsDataInput {
   study: StudyUpdateOneWithoutProposalInput
   sections: ProposalSectionUpdateManyWithoutBoardInput
   reviews: ReviewUpdateManyWithoutProposalInput
+  tags: TagUpdateManyWithoutProposalsInput
 }
 
 input ProposalBoardUpdateWithoutCreatorDataInput {
@@ -14323,6 +14943,7 @@ input ProposalBoardUpdateWithoutCreatorDataInput {
   study: StudyUpdateOneWithoutProposalInput
   sections: ProposalSectionUpdateManyWithoutBoardInput
   reviews: ReviewUpdateManyWithoutProposalInput
+  tags: TagUpdateManyWithoutProposalsInput
 }
 
 input ProposalBoardUpdateWithoutReviewsDataInput {
@@ -14337,6 +14958,7 @@ input ProposalBoardUpdateWithoutReviewsDataInput {
   collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
   study: StudyUpdateOneWithoutProposalInput
   sections: ProposalSectionUpdateManyWithoutBoardInput
+  tags: TagUpdateManyWithoutProposalsInput
 }
 
 input ProposalBoardUpdateWithoutSectionsDataInput {
@@ -14351,6 +14973,7 @@ input ProposalBoardUpdateWithoutSectionsDataInput {
   collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
   study: StudyUpdateOneWithoutProposalInput
   reviews: ReviewUpdateManyWithoutProposalInput
+  tags: TagUpdateManyWithoutProposalsInput
 }
 
 input ProposalBoardUpdateWithoutStudyDataInput {
@@ -14363,6 +14986,22 @@ input ProposalBoardUpdateWithoutStudyDataInput {
   creator: ProfileUpdateOneWithoutCreatorOfProposalInput
   author: ProfileUpdateOneWithoutAuthorOfProposalInput
   collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
+  sections: ProposalSectionUpdateManyWithoutBoardInput
+  reviews: ReviewUpdateManyWithoutProposalInput
+  tags: TagUpdateManyWithoutProposalsInput
+}
+
+input ProposalBoardUpdateWithoutTagsDataInput {
+  title: String
+  slug: String
+  description: String
+  isTemplate: Boolean
+  isSubmitted: Boolean
+  checklist: Json
+  creator: ProfileUpdateOneWithoutCreatorOfProposalInput
+  author: ProfileUpdateOneWithoutAuthorOfProposalInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
+  study: StudyUpdateOneWithoutProposalInput
   sections: ProposalSectionUpdateManyWithoutBoardInput
   reviews: ReviewUpdateManyWithoutProposalInput
 }
@@ -14385,6 +15024,11 @@ input ProposalBoardUpdateWithWhereUniqueWithoutCreatorInput {
 input ProposalBoardUpdateWithWhereUniqueWithoutStudyInput {
   where: ProposalBoardWhereUniqueInput!
   data: ProposalBoardUpdateWithoutStudyDataInput!
+}
+
+input ProposalBoardUpdateWithWhereUniqueWithoutTagsInput {
+  where: ProposalBoardWhereUniqueInput!
+  data: ProposalBoardUpdateWithoutTagsDataInput!
 }
 
 input ProposalBoardUpsertWithoutReviewsInput {
@@ -14419,6 +15063,12 @@ input ProposalBoardUpsertWithWhereUniqueWithoutStudyInput {
   where: ProposalBoardWhereUniqueInput!
   update: ProposalBoardUpdateWithoutStudyDataInput!
   create: ProposalBoardCreateWithoutStudyInput!
+}
+
+input ProposalBoardUpsertWithWhereUniqueWithoutTagsInput {
+  where: ProposalBoardWhereUniqueInput!
+  update: ProposalBoardUpdateWithoutTagsDataInput!
+  create: ProposalBoardCreateWithoutTagsInput!
 }
 
 input ProposalBoardWhereInput {
@@ -14654,6 +15304,9 @@ input ProposalBoardWhereInput {
   reviews_every: ReviewWhereInput
   reviews_some: ReviewWhereInput
   reviews_none: ReviewWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
 }
 
 input ProposalBoardWhereUniqueInput {
@@ -14673,6 +15326,7 @@ type ProposalCard implements Node {
   createdAt: DateTime!
   updatedAt: DateTime!
   comment: String
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
 
 """A connection to a list of items."""
@@ -14695,6 +15349,7 @@ input ProposalCardCreateInput {
   comment: String
   section: ProposalSectionCreateOneWithoutCardsInput!
   assignedTo: ProfileCreateManyWithoutAssignedToProposalCardInput
+  tags: TagCreateManyWithoutProposalCardsInput
 }
 
 input ProposalCardCreateManyWithoutAssignedToInput {
@@ -14707,6 +15362,11 @@ input ProposalCardCreateManyWithoutSectionInput {
   connect: [ProposalCardWhereUniqueInput!]
 }
 
+input ProposalCardCreateManyWithoutTagsInput {
+  create: [ProposalCardCreateWithoutTagsInput!]
+  connect: [ProposalCardWhereUniqueInput!]
+}
+
 input ProposalCardCreateWithoutAssignedToInput {
   id: ID
   title: String!
@@ -14716,6 +15376,7 @@ input ProposalCardCreateWithoutAssignedToInput {
   settings: Json
   comment: String
   section: ProposalSectionCreateOneWithoutCardsInput!
+  tags: TagCreateManyWithoutProposalCardsInput
 }
 
 input ProposalCardCreateWithoutSectionInput {
@@ -14726,6 +15387,19 @@ input ProposalCardCreateWithoutSectionInput {
   content: String
   settings: Json
   comment: String
+  assignedTo: ProfileCreateManyWithoutAssignedToProposalCardInput
+  tags: TagCreateManyWithoutProposalCardsInput
+}
+
+input ProposalCardCreateWithoutTagsInput {
+  id: ID
+  title: String!
+  description: String
+  position: Float!
+  content: String
+  settings: Json
+  comment: String
+  section: ProposalSectionCreateOneWithoutCardsInput!
   assignedTo: ProfileCreateManyWithoutAssignedToProposalCardInput
 }
 
@@ -15096,6 +15770,7 @@ input ProposalCardUpdateInput {
   comment: String
   section: ProposalSectionUpdateOneRequiredWithoutCardsInput
   assignedTo: ProfileUpdateManyWithoutAssignedToProposalCardInput
+  tags: TagUpdateManyWithoutProposalCardsInput
 }
 
 input ProposalCardUpdateManyDataInput {
@@ -15140,6 +15815,18 @@ input ProposalCardUpdateManyWithoutSectionInput {
   upsert: [ProposalCardUpsertWithWhereUniqueWithoutSectionInput!]
 }
 
+input ProposalCardUpdateManyWithoutTagsInput {
+  create: [ProposalCardCreateWithoutTagsInput!]
+  connect: [ProposalCardWhereUniqueInput!]
+  set: [ProposalCardWhereUniqueInput!]
+  disconnect: [ProposalCardWhereUniqueInput!]
+  delete: [ProposalCardWhereUniqueInput!]
+  update: [ProposalCardUpdateWithWhereUniqueWithoutTagsInput!]
+  updateMany: [ProposalCardUpdateManyWithWhereNestedInput!]
+  deleteMany: [ProposalCardScalarWhereInput!]
+  upsert: [ProposalCardUpsertWithWhereUniqueWithoutTagsInput!]
+}
+
 input ProposalCardUpdateManyWithWhereNestedInput {
   where: ProposalCardScalarWhereInput!
   data: ProposalCardUpdateManyDataInput!
@@ -15153,6 +15840,7 @@ input ProposalCardUpdateWithoutAssignedToDataInput {
   settings: Json
   comment: String
   section: ProposalSectionUpdateOneRequiredWithoutCardsInput
+  tags: TagUpdateManyWithoutProposalCardsInput
 }
 
 input ProposalCardUpdateWithoutSectionDataInput {
@@ -15162,6 +15850,18 @@ input ProposalCardUpdateWithoutSectionDataInput {
   content: String
   settings: Json
   comment: String
+  assignedTo: ProfileUpdateManyWithoutAssignedToProposalCardInput
+  tags: TagUpdateManyWithoutProposalCardsInput
+}
+
+input ProposalCardUpdateWithoutTagsDataInput {
+  title: String
+  description: String
+  position: Float
+  content: String
+  settings: Json
+  comment: String
+  section: ProposalSectionUpdateOneRequiredWithoutCardsInput
   assignedTo: ProfileUpdateManyWithoutAssignedToProposalCardInput
 }
 
@@ -15175,6 +15875,11 @@ input ProposalCardUpdateWithWhereUniqueWithoutSectionInput {
   data: ProposalCardUpdateWithoutSectionDataInput!
 }
 
+input ProposalCardUpdateWithWhereUniqueWithoutTagsInput {
+  where: ProposalCardWhereUniqueInput!
+  data: ProposalCardUpdateWithoutTagsDataInput!
+}
+
 input ProposalCardUpsertWithWhereUniqueWithoutAssignedToInput {
   where: ProposalCardWhereUniqueInput!
   update: ProposalCardUpdateWithoutAssignedToDataInput!
@@ -15185,6 +15890,12 @@ input ProposalCardUpsertWithWhereUniqueWithoutSectionInput {
   where: ProposalCardWhereUniqueInput!
   update: ProposalCardUpdateWithoutSectionDataInput!
   create: ProposalCardCreateWithoutSectionInput!
+}
+
+input ProposalCardUpsertWithWhereUniqueWithoutTagsInput {
+  where: ProposalCardWhereUniqueInput!
+  update: ProposalCardUpdateWithoutTagsDataInput!
+  create: ProposalCardCreateWithoutTagsInput!
 }
 
 input ProposalCardWhereInput {
@@ -15466,6 +16177,9 @@ input ProposalCardWhereInput {
   assignedTo_every: ProfileWhereInput
   assignedTo_some: ProfileWhereInput
   assignedTo_none: ProfileWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
 }
 
 input ProposalCardWhereUniqueInput {
@@ -16153,6 +16867,7 @@ type Query {
   homeworks(where: HomeworkWhereInput, orderBy: HomeworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Homework]!
   guests(where: GuestWhereInput, orderBy: GuestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Guest]!
   scripts(where: ScriptWhereInput, orderBy: ScriptOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Script]!
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag]!
   studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study]!
   templates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Template]!
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task]!
@@ -16180,6 +16895,7 @@ type Query {
   homework(where: HomeworkWhereUniqueInput!): Homework
   guest(where: GuestWhereUniqueInput!): Guest
   script(where: ScriptWhereUniqueInput!): Script
+  tag(where: TagWhereUniqueInput!): Tag
   study(where: StudyWhereUniqueInput!): Study
   template(where: TemplateWhereUniqueInput!): Template
   task(where: TaskWhereUniqueInput!): Task
@@ -16207,6 +16923,7 @@ type Query {
   homeworksConnection(where: HomeworkWhereInput, orderBy: HomeworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): HomeworkConnection!
   guestsConnection(where: GuestWhereInput, orderBy: GuestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GuestConnection!
   scriptsConnection(where: ScriptWhereInput, orderBy: ScriptOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ScriptConnection!
+  tagsConnection(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TagConnection!
   studiesConnection(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StudyConnection!
   templatesConnection(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TemplateConnection!
   tasksConnection(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TaskConnection!
@@ -17619,6 +18336,7 @@ type School implements Node {
   createdAt: DateTime!
   updatedAt: DateTime!
   creator: Profile!
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
 
 """A connection to a list of items."""
@@ -17632,6 +18350,21 @@ type SchoolConnection {
 }
 
 input SchoolCreateInput {
+  id: ID
+  title: String!
+  description: String
+  image: String
+  largeImage: String
+  creator: ProfileCreateOneInput!
+  tags: TagCreateManyWithoutSchoolsInput
+}
+
+input SchoolCreateManyWithoutTagsInput {
+  create: [SchoolCreateWithoutTagsInput!]
+  connect: [SchoolWhereUniqueInput!]
+}
+
+input SchoolCreateWithoutTagsInput {
   id: ID
   title: String!
   description: String
@@ -17674,6 +18407,261 @@ type SchoolPreviousValues {
   largeImage: String
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+input SchoolScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SchoolScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SchoolScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SchoolScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  image: String
+
+  """All values that are not equal to given value."""
+  image_not: String
+
+  """All values that are contained in given list."""
+  image_in: [String!]
+
+  """All values that are not contained in given list."""
+  image_not_in: [String!]
+
+  """All values less than the given value."""
+  image_lt: String
+
+  """All values less than or equal the given value."""
+  image_lte: String
+
+  """All values greater than the given value."""
+  image_gt: String
+
+  """All values greater than or equal the given value."""
+  image_gte: String
+
+  """All values containing the given string."""
+  image_contains: String
+
+  """All values not containing the given string."""
+  image_not_contains: String
+
+  """All values starting with the given string."""
+  image_starts_with: String
+
+  """All values not starting with the given string."""
+  image_not_starts_with: String
+
+  """All values ending with the given string."""
+  image_ends_with: String
+
+  """All values not ending with the given string."""
+  image_not_ends_with: String
+  largeImage: String
+
+  """All values that are not equal to given value."""
+  largeImage_not: String
+
+  """All values that are contained in given list."""
+  largeImage_in: [String!]
+
+  """All values that are not contained in given list."""
+  largeImage_not_in: [String!]
+
+  """All values less than the given value."""
+  largeImage_lt: String
+
+  """All values less than or equal the given value."""
+  largeImage_lte: String
+
+  """All values greater than the given value."""
+  largeImage_gt: String
+
+  """All values greater than or equal the given value."""
+  largeImage_gte: String
+
+  """All values containing the given string."""
+  largeImage_contains: String
+
+  """All values not containing the given string."""
+  largeImage_not_contains: String
+
+  """All values starting with the given string."""
+  largeImage_starts_with: String
+
+  """All values not starting with the given string."""
+  largeImage_not_starts_with: String
+
+  """All values ending with the given string."""
+  largeImage_ends_with: String
+
+  """All values not ending with the given string."""
+  largeImage_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 type SchoolSubscriptionPayload {
@@ -17721,6 +18709,14 @@ input SchoolUpdateInput {
   image: String
   largeImage: String
   creator: ProfileUpdateOneRequiredInput
+  tags: TagUpdateManyWithoutSchoolsInput
+}
+
+input SchoolUpdateManyDataInput {
+  title: String
+  description: String
+  image: String
+  largeImage: String
 }
 
 input SchoolUpdateManyMutationInput {
@@ -17728,6 +18724,42 @@ input SchoolUpdateManyMutationInput {
   description: String
   image: String
   largeImage: String
+}
+
+input SchoolUpdateManyWithoutTagsInput {
+  create: [SchoolCreateWithoutTagsInput!]
+  connect: [SchoolWhereUniqueInput!]
+  set: [SchoolWhereUniqueInput!]
+  disconnect: [SchoolWhereUniqueInput!]
+  delete: [SchoolWhereUniqueInput!]
+  update: [SchoolUpdateWithWhereUniqueWithoutTagsInput!]
+  updateMany: [SchoolUpdateManyWithWhereNestedInput!]
+  deleteMany: [SchoolScalarWhereInput!]
+  upsert: [SchoolUpsertWithWhereUniqueWithoutTagsInput!]
+}
+
+input SchoolUpdateManyWithWhereNestedInput {
+  where: SchoolScalarWhereInput!
+  data: SchoolUpdateManyDataInput!
+}
+
+input SchoolUpdateWithoutTagsDataInput {
+  title: String
+  description: String
+  image: String
+  largeImage: String
+  creator: ProfileUpdateOneRequiredInput
+}
+
+input SchoolUpdateWithWhereUniqueWithoutTagsInput {
+  where: SchoolWhereUniqueInput!
+  data: SchoolUpdateWithoutTagsDataInput!
+}
+
+input SchoolUpsertWithWhereUniqueWithoutTagsInput {
+  where: SchoolWhereUniqueInput!
+  update: SchoolUpdateWithoutTagsDataInput!
+  create: SchoolCreateWithoutTagsInput!
 }
 
 input SchoolWhereInput {
@@ -17984,6 +19016,9 @@ input SchoolWhereInput {
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
   creator: ProfileWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
 }
 
 input SchoolWhereUniqueInput {
@@ -18006,6 +19041,7 @@ type Script implements Node {
   content: String
   createdAt: DateTime!
   updatedAt: DateTime!
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
 
 """A connection to a list of items."""
@@ -18032,6 +19068,7 @@ input ScriptCreateInput {
   author: ProfileCreateOneWithoutAuthorOfScriptInput
   collaborators: ProfileCreateManyWithoutCollaboratorOnScriptInput
   studies: StudyCreateManyWithoutScriptsInput
+  tags: TagCreateManyWithoutScriptsInput
 }
 
 input ScriptCreateManyWithoutAuthorInput {
@@ -18054,6 +19091,11 @@ input ScriptCreateManyWithoutStudiesInput {
   connect: [ScriptWhereUniqueInput!]
 }
 
+input ScriptCreateManyWithoutTagsInput {
+  create: [ScriptCreateWithoutTagsInput!]
+  connect: [ScriptWhereUniqueInput!]
+}
+
 input ScriptCreateWithoutAuthorInput {
   id: ID
   title: String!
@@ -18067,6 +19109,7 @@ input ScriptCreateWithoutAuthorInput {
   creator: ProfileCreateOneWithoutCreatorOfScriptInput
   collaborators: ProfileCreateManyWithoutCollaboratorOnScriptInput
   studies: StudyCreateManyWithoutScriptsInput
+  tags: TagCreateManyWithoutScriptsInput
 }
 
 input ScriptCreateWithoutCollaboratorsInput {
@@ -18082,6 +19125,7 @@ input ScriptCreateWithoutCollaboratorsInput {
   creator: ProfileCreateOneWithoutCreatorOfScriptInput
   author: ProfileCreateOneWithoutAuthorOfScriptInput
   studies: StudyCreateManyWithoutScriptsInput
+  tags: TagCreateManyWithoutScriptsInput
 }
 
 input ScriptCreateWithoutCreatorInput {
@@ -18097,6 +19141,7 @@ input ScriptCreateWithoutCreatorInput {
   author: ProfileCreateOneWithoutAuthorOfScriptInput
   collaborators: ProfileCreateManyWithoutCollaboratorOnScriptInput
   studies: StudyCreateManyWithoutScriptsInput
+  tags: TagCreateManyWithoutScriptsInput
 }
 
 input ScriptCreateWithoutStudiesInput {
@@ -18112,6 +19157,23 @@ input ScriptCreateWithoutStudiesInput {
   creator: ProfileCreateOneWithoutCreatorOfScriptInput
   author: ProfileCreateOneWithoutAuthorOfScriptInput
   collaborators: ProfileCreateManyWithoutCollaboratorOnScriptInput
+  tags: TagCreateManyWithoutScriptsInput
+}
+
+input ScriptCreateWithoutTagsInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  isTemplate: Boolean
+  isPublic: Boolean
+  isFeatured: Boolean
+  settings: Json
+  content: String
+  creator: ProfileCreateOneWithoutCreatorOfScriptInput
+  author: ProfileCreateOneWithoutAuthorOfScriptInput
+  collaborators: ProfileCreateManyWithoutCollaboratorOnScriptInput
+  studies: StudyCreateManyWithoutScriptsInput
 }
 
 """An edge in a connection."""
@@ -18481,6 +19543,7 @@ input ScriptUpdateInput {
   author: ProfileUpdateOneWithoutAuthorOfScriptInput
   collaborators: ProfileUpdateManyWithoutCollaboratorOnScriptInput
   studies: StudyUpdateManyWithoutScriptsInput
+  tags: TagUpdateManyWithoutScriptsInput
 }
 
 input ScriptUpdateManyDataInput {
@@ -18553,6 +19616,18 @@ input ScriptUpdateManyWithoutStudiesInput {
   upsert: [ScriptUpsertWithWhereUniqueWithoutStudiesInput!]
 }
 
+input ScriptUpdateManyWithoutTagsInput {
+  create: [ScriptCreateWithoutTagsInput!]
+  connect: [ScriptWhereUniqueInput!]
+  set: [ScriptWhereUniqueInput!]
+  disconnect: [ScriptWhereUniqueInput!]
+  delete: [ScriptWhereUniqueInput!]
+  update: [ScriptUpdateWithWhereUniqueWithoutTagsInput!]
+  updateMany: [ScriptUpdateManyWithWhereNestedInput!]
+  deleteMany: [ScriptScalarWhereInput!]
+  upsert: [ScriptUpsertWithWhereUniqueWithoutTagsInput!]
+}
+
 input ScriptUpdateManyWithWhereNestedInput {
   where: ScriptScalarWhereInput!
   data: ScriptUpdateManyDataInput!
@@ -18570,6 +19645,7 @@ input ScriptUpdateWithoutAuthorDataInput {
   creator: ProfileUpdateOneWithoutCreatorOfScriptInput
   collaborators: ProfileUpdateManyWithoutCollaboratorOnScriptInput
   studies: StudyUpdateManyWithoutScriptsInput
+  tags: TagUpdateManyWithoutScriptsInput
 }
 
 input ScriptUpdateWithoutCollaboratorsDataInput {
@@ -18584,6 +19660,7 @@ input ScriptUpdateWithoutCollaboratorsDataInput {
   creator: ProfileUpdateOneWithoutCreatorOfScriptInput
   author: ProfileUpdateOneWithoutAuthorOfScriptInput
   studies: StudyUpdateManyWithoutScriptsInput
+  tags: TagUpdateManyWithoutScriptsInput
 }
 
 input ScriptUpdateWithoutCreatorDataInput {
@@ -18598,6 +19675,7 @@ input ScriptUpdateWithoutCreatorDataInput {
   author: ProfileUpdateOneWithoutAuthorOfScriptInput
   collaborators: ProfileUpdateManyWithoutCollaboratorOnScriptInput
   studies: StudyUpdateManyWithoutScriptsInput
+  tags: TagUpdateManyWithoutScriptsInput
 }
 
 input ScriptUpdateWithoutStudiesDataInput {
@@ -18612,6 +19690,22 @@ input ScriptUpdateWithoutStudiesDataInput {
   creator: ProfileUpdateOneWithoutCreatorOfScriptInput
   author: ProfileUpdateOneWithoutAuthorOfScriptInput
   collaborators: ProfileUpdateManyWithoutCollaboratorOnScriptInput
+  tags: TagUpdateManyWithoutScriptsInput
+}
+
+input ScriptUpdateWithoutTagsDataInput {
+  title: String
+  slug: String
+  description: String
+  isTemplate: Boolean
+  isPublic: Boolean
+  isFeatured: Boolean
+  settings: Json
+  content: String
+  creator: ProfileUpdateOneWithoutCreatorOfScriptInput
+  author: ProfileUpdateOneWithoutAuthorOfScriptInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorOnScriptInput
+  studies: StudyUpdateManyWithoutScriptsInput
 }
 
 input ScriptUpdateWithWhereUniqueWithoutAuthorInput {
@@ -18632,6 +19726,11 @@ input ScriptUpdateWithWhereUniqueWithoutCreatorInput {
 input ScriptUpdateWithWhereUniqueWithoutStudiesInput {
   where: ScriptWhereUniqueInput!
   data: ScriptUpdateWithoutStudiesDataInput!
+}
+
+input ScriptUpdateWithWhereUniqueWithoutTagsInput {
+  where: ScriptWhereUniqueInput!
+  data: ScriptUpdateWithoutTagsDataInput!
 }
 
 input ScriptUpsertWithWhereUniqueWithoutAuthorInput {
@@ -18656,6 +19755,12 @@ input ScriptUpsertWithWhereUniqueWithoutStudiesInput {
   where: ScriptWhereUniqueInput!
   update: ScriptUpdateWithoutStudiesDataInput!
   create: ScriptCreateWithoutStudiesInput!
+}
+
+input ScriptUpsertWithWhereUniqueWithoutTagsInput {
+  where: ScriptWhereUniqueInput!
+  update: ScriptUpdateWithoutTagsDataInput!
+  create: ScriptCreateWithoutTagsInput!
 }
 
 input ScriptWhereInput {
@@ -18931,6 +20036,9 @@ input ScriptWhereInput {
   studies_every: StudyWhereInput
   studies_some: StudyWhereInput
   studies_none: StudyWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
 }
 
 input ScriptWhereUniqueInput {
@@ -18966,6 +20074,7 @@ type Study implements Node {
   isHidden: Boolean
   classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class!]
   scripts(where: ScriptWhereInput, orderBy: ScriptOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Script!]
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
 
 """A connection to a list of items."""
@@ -19004,6 +20113,7 @@ input StudyCreateInput {
   guests: GuestCreateManyWithoutGuestParticipantInInput
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
+  tags: TagCreateManyWithoutStudiesInput
 }
 
 input StudyCreateManyWithoutAuthorInput {
@@ -19038,6 +20148,11 @@ input StudyCreateManyWithoutParticipantsInput {
 
 input StudyCreateManyWithoutScriptsInput {
   create: [StudyCreateWithoutScriptsInput!]
+  connect: [StudyWhereUniqueInput!]
+}
+
+input StudyCreateManyWithoutTagsInput {
+  create: [StudyCreateWithoutTagsInput!]
   connect: [StudyWhereUniqueInput!]
 }
 
@@ -19081,6 +20196,7 @@ input StudyCreateWithoutAuthorInput {
   guests: GuestCreateManyWithoutGuestParticipantInInput
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
+  tags: TagCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutClassesInput {
@@ -19108,6 +20224,7 @@ input StudyCreateWithoutClassesInput {
   reviews: ReviewCreateManyWithoutStudyInput
   guests: GuestCreateManyWithoutGuestParticipantInInput
   scripts: ScriptCreateManyWithoutStudiesInput
+  tags: TagCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutCollaboratorsInput {
@@ -19135,6 +20252,7 @@ input StudyCreateWithoutCollaboratorsInput {
   guests: GuestCreateManyWithoutGuestParticipantInInput
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
+  tags: TagCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutConsentInput {
@@ -19162,6 +20280,7 @@ input StudyCreateWithoutConsentInput {
   guests: GuestCreateManyWithoutGuestParticipantInInput
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
+  tags: TagCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutGuestsInput {
@@ -19189,6 +20308,7 @@ input StudyCreateWithoutGuestsInput {
   reviews: ReviewCreateManyWithoutStudyInput
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
+  tags: TagCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutParticipantsInput {
@@ -19216,6 +20336,7 @@ input StudyCreateWithoutParticipantsInput {
   guests: GuestCreateManyWithoutGuestParticipantInInput
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
+  tags: TagCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutProposalInput {
@@ -19243,6 +20364,7 @@ input StudyCreateWithoutProposalInput {
   guests: GuestCreateManyWithoutGuestParticipantInInput
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
+  tags: TagCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutReviewsInput {
@@ -19270,6 +20392,7 @@ input StudyCreateWithoutReviewsInput {
   guests: GuestCreateManyWithoutGuestParticipantInInput
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
+  tags: TagCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutScriptsInput {
@@ -19297,6 +20420,35 @@ input StudyCreateWithoutScriptsInput {
   reviews: ReviewCreateManyWithoutStudyInput
   guests: GuestCreateManyWithoutGuestParticipantInInput
   classes: ClassCreateManyWithoutStudiesInput
+  tags: TagCreateManyWithoutStudiesInput
+}
+
+input StudyCreateWithoutTagsInput {
+  id: ID
+  title: String!
+  slug: String!
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  public: Boolean
+  submitForPublishing: Boolean
+  components: Json
+  featured: Boolean
+  isHidden: Boolean
+  author: ProfileCreateOneWithoutResearcherInInput!
+  tasks: TaskCreateManyInput
+  participants: ProfileCreateManyWithoutParticipantInInput
+  collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
+  consent: ConsentCreateManyWithoutStudiesInput
+  messages: MessageCreateManyInput
+  proposal: ProposalBoardCreateManyWithoutStudyInput
+  reviews: ReviewCreateManyWithoutStudyInput
+  guests: GuestCreateManyWithoutGuestParticipantInInput
+  classes: ClassCreateManyWithoutStudiesInput
+  scripts: ScriptCreateManyWithoutStudiesInput
 }
 
 """An edge in a connection."""
@@ -19777,6 +20929,7 @@ input StudyUpdateDataInput {
   guests: GuestUpdateManyWithoutGuestParticipantInInput
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
+  tags: TagUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateInput {
@@ -19804,6 +20957,7 @@ input StudyUpdateInput {
   guests: GuestUpdateManyWithoutGuestParticipantInInput
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
+  tags: TagUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateManyDataInput {
@@ -19922,6 +21076,18 @@ input StudyUpdateManyWithoutScriptsInput {
   upsert: [StudyUpsertWithWhereUniqueWithoutScriptsInput!]
 }
 
+input StudyUpdateManyWithoutTagsInput {
+  create: [StudyCreateWithoutTagsInput!]
+  connect: [StudyWhereUniqueInput!]
+  set: [StudyWhereUniqueInput!]
+  disconnect: [StudyWhereUniqueInput!]
+  delete: [StudyWhereUniqueInput!]
+  update: [StudyUpdateWithWhereUniqueWithoutTagsInput!]
+  updateMany: [StudyUpdateManyWithWhereNestedInput!]
+  deleteMany: [StudyScalarWhereInput!]
+  upsert: [StudyUpsertWithWhereUniqueWithoutTagsInput!]
+}
+
 input StudyUpdateManyWithWhereNestedInput {
   where: StudyScalarWhereInput!
   data: StudyUpdateManyDataInput!
@@ -19978,6 +21144,7 @@ input StudyUpdateWithoutAuthorDataInput {
   guests: GuestUpdateManyWithoutGuestParticipantInInput
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
+  tags: TagUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutClassesDataInput {
@@ -20004,6 +21171,7 @@ input StudyUpdateWithoutClassesDataInput {
   reviews: ReviewUpdateManyWithoutStudyInput
   guests: GuestUpdateManyWithoutGuestParticipantInInput
   scripts: ScriptUpdateManyWithoutStudiesInput
+  tags: TagUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutCollaboratorsDataInput {
@@ -20030,6 +21198,7 @@ input StudyUpdateWithoutCollaboratorsDataInput {
   guests: GuestUpdateManyWithoutGuestParticipantInInput
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
+  tags: TagUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutConsentDataInput {
@@ -20056,6 +21225,7 @@ input StudyUpdateWithoutConsentDataInput {
   guests: GuestUpdateManyWithoutGuestParticipantInInput
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
+  tags: TagUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutGuestsDataInput {
@@ -20082,6 +21252,7 @@ input StudyUpdateWithoutGuestsDataInput {
   reviews: ReviewUpdateManyWithoutStudyInput
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
+  tags: TagUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutParticipantsDataInput {
@@ -20108,6 +21279,7 @@ input StudyUpdateWithoutParticipantsDataInput {
   guests: GuestUpdateManyWithoutGuestParticipantInInput
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
+  tags: TagUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutProposalDataInput {
@@ -20134,6 +21306,7 @@ input StudyUpdateWithoutProposalDataInput {
   guests: GuestUpdateManyWithoutGuestParticipantInInput
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
+  tags: TagUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutReviewsDataInput {
@@ -20160,6 +21333,7 @@ input StudyUpdateWithoutReviewsDataInput {
   guests: GuestUpdateManyWithoutGuestParticipantInInput
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
+  tags: TagUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutScriptsDataInput {
@@ -20186,6 +21360,34 @@ input StudyUpdateWithoutScriptsDataInput {
   reviews: ReviewUpdateManyWithoutStudyInput
   guests: GuestUpdateManyWithoutGuestParticipantInInput
   classes: ClassUpdateManyWithoutStudiesInput
+  tags: TagUpdateManyWithoutStudiesInput
+}
+
+input StudyUpdateWithoutTagsDataInput {
+  title: String
+  slug: String
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  public: Boolean
+  submitForPublishing: Boolean
+  components: Json
+  featured: Boolean
+  isHidden: Boolean
+  author: ProfileUpdateOneRequiredWithoutResearcherInInput
+  tasks: TaskUpdateManyInput
+  participants: ProfileUpdateManyWithoutParticipantInInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
+  consent: ConsentUpdateManyWithoutStudiesInput
+  messages: MessageUpdateManyInput
+  proposal: ProposalBoardUpdateManyWithoutStudyInput
+  reviews: ReviewUpdateManyWithoutStudyInput
+  guests: GuestUpdateManyWithoutGuestParticipantInInput
+  classes: ClassUpdateManyWithoutStudiesInput
+  scripts: ScriptUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithWhereUniqueWithoutAuthorInput {
@@ -20221,6 +21423,11 @@ input StudyUpdateWithWhereUniqueWithoutParticipantsInput {
 input StudyUpdateWithWhereUniqueWithoutScriptsInput {
   where: StudyWhereUniqueInput!
   data: StudyUpdateWithoutScriptsDataInput!
+}
+
+input StudyUpdateWithWhereUniqueWithoutTagsInput {
+  where: StudyWhereUniqueInput!
+  data: StudyUpdateWithoutTagsDataInput!
 }
 
 input StudyUpsertNestedInput {
@@ -20278,6 +21485,12 @@ input StudyUpsertWithWhereUniqueWithoutScriptsInput {
   where: StudyWhereUniqueInput!
   update: StudyUpdateWithoutScriptsDataInput!
   create: StudyCreateWithoutScriptsInput!
+}
+
+input StudyUpsertWithWhereUniqueWithoutTagsInput {
+  where: StudyWhereUniqueInput!
+  update: StudyUpdateWithoutTagsDataInput!
+  create: StudyCreateWithoutTagsInput!
 }
 
 input StudyWhereInput {
@@ -20660,6 +21873,9 @@ input StudyWhereInput {
   scripts_every: ScriptWhereInput
   scripts_some: ScriptWhereInput
   scripts_none: ScriptWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
 }
 
 input StudyWhereUniqueInput {
@@ -20689,12 +21905,1492 @@ type Subscription {
   homework(where: HomeworkSubscriptionWhereInput): HomeworkSubscriptionPayload
   guest(where: GuestSubscriptionWhereInput): GuestSubscriptionPayload
   script(where: ScriptSubscriptionWhereInput): ScriptSubscriptionPayload
+  tag(where: TagSubscriptionWhereInput): TagSubscriptionPayload
   study(where: StudySubscriptionWhereInput): StudySubscriptionPayload
   template(where: TemplateSubscriptionWhereInput): TemplateSubscriptionPayload
   task(where: TaskSubscriptionWhereInput): TaskSubscriptionPayload
   profile(where: ProfileSubscriptionWhereInput): ProfileSubscriptionPayload
   message(where: MessageSubscriptionWhereInput): MessageSubscriptionPayload
   data(where: DataSubscriptionWhereInput): DataSubscriptionPayload
+}
+
+type Tag implements Node {
+  id: ID!
+  title: String!
+  slug: String!
+  description: String
+  profiles(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
+  schools(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [School!]
+  classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class!]
+  classNetworks(where: ClassNetworkWhereInput, orderBy: ClassNetworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ClassNetwork!]
+  studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study!]
+  tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task!]
+  journals(where: JournalWhereInput, orderBy: JournalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Journal!]
+  posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
+  proposals(where: ProposalBoardWhereInput, orderBy: ProposalBoardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalBoard!]
+  proposalCards(where: ProposalCardWhereInput, orderBy: ProposalCardOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProposalCard!]
+  assignments(where: AssignmentWhereInput, orderBy: AssignmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Assignment!]
+  homeworks(where: HomeworkWhereInput, orderBy: HomeworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Homework!]
+  scripts(where: ScriptWhereInput, orderBy: ScriptOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Script!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type TagConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TagEdge]!
+  aggregate: AggregateTag!
+}
+
+input TagCreateInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  profiles: ProfileCreateManyWithoutTagsInput
+  schools: SchoolCreateManyWithoutTagsInput
+  classes: ClassCreateManyWithoutTagsInput
+  classNetworks: ClassNetworkCreateManyWithoutTagsInput
+  studies: StudyCreateManyWithoutTagsInput
+  tasks: TaskCreateManyWithoutTagsInput
+  journals: JournalCreateManyWithoutTagsInput
+  posts: PostCreateManyWithoutTagsInput
+  proposals: ProposalBoardCreateManyWithoutTagsInput
+  proposalCards: ProposalCardCreateManyWithoutTagsInput
+  assignments: AssignmentCreateManyWithoutTagsInput
+  homeworks: HomeworkCreateManyWithoutTagsInput
+  scripts: ScriptCreateManyWithoutTagsInput
+}
+
+input TagCreateManyWithoutAssignmentsInput {
+  create: [TagCreateWithoutAssignmentsInput!]
+  connect: [TagWhereUniqueInput!]
+}
+
+input TagCreateManyWithoutClassesInput {
+  create: [TagCreateWithoutClassesInput!]
+  connect: [TagWhereUniqueInput!]
+}
+
+input TagCreateManyWithoutClassNetworksInput {
+  create: [TagCreateWithoutClassNetworksInput!]
+  connect: [TagWhereUniqueInput!]
+}
+
+input TagCreateManyWithoutHomeworksInput {
+  create: [TagCreateWithoutHomeworksInput!]
+  connect: [TagWhereUniqueInput!]
+}
+
+input TagCreateManyWithoutJournalsInput {
+  create: [TagCreateWithoutJournalsInput!]
+  connect: [TagWhereUniqueInput!]
+}
+
+input TagCreateManyWithoutPostsInput {
+  create: [TagCreateWithoutPostsInput!]
+  connect: [TagWhereUniqueInput!]
+}
+
+input TagCreateManyWithoutProfilesInput {
+  create: [TagCreateWithoutProfilesInput!]
+  connect: [TagWhereUniqueInput!]
+}
+
+input TagCreateManyWithoutProposalCardsInput {
+  create: [TagCreateWithoutProposalCardsInput!]
+  connect: [TagWhereUniqueInput!]
+}
+
+input TagCreateManyWithoutProposalsInput {
+  create: [TagCreateWithoutProposalsInput!]
+  connect: [TagWhereUniqueInput!]
+}
+
+input TagCreateManyWithoutSchoolsInput {
+  create: [TagCreateWithoutSchoolsInput!]
+  connect: [TagWhereUniqueInput!]
+}
+
+input TagCreateManyWithoutScriptsInput {
+  create: [TagCreateWithoutScriptsInput!]
+  connect: [TagWhereUniqueInput!]
+}
+
+input TagCreateManyWithoutStudiesInput {
+  create: [TagCreateWithoutStudiesInput!]
+  connect: [TagWhereUniqueInput!]
+}
+
+input TagCreateManyWithoutTasksInput {
+  create: [TagCreateWithoutTasksInput!]
+  connect: [TagWhereUniqueInput!]
+}
+
+input TagCreateWithoutAssignmentsInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  profiles: ProfileCreateManyWithoutTagsInput
+  schools: SchoolCreateManyWithoutTagsInput
+  classes: ClassCreateManyWithoutTagsInput
+  classNetworks: ClassNetworkCreateManyWithoutTagsInput
+  studies: StudyCreateManyWithoutTagsInput
+  tasks: TaskCreateManyWithoutTagsInput
+  journals: JournalCreateManyWithoutTagsInput
+  posts: PostCreateManyWithoutTagsInput
+  proposals: ProposalBoardCreateManyWithoutTagsInput
+  proposalCards: ProposalCardCreateManyWithoutTagsInput
+  homeworks: HomeworkCreateManyWithoutTagsInput
+  scripts: ScriptCreateManyWithoutTagsInput
+}
+
+input TagCreateWithoutClassesInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  profiles: ProfileCreateManyWithoutTagsInput
+  schools: SchoolCreateManyWithoutTagsInput
+  classNetworks: ClassNetworkCreateManyWithoutTagsInput
+  studies: StudyCreateManyWithoutTagsInput
+  tasks: TaskCreateManyWithoutTagsInput
+  journals: JournalCreateManyWithoutTagsInput
+  posts: PostCreateManyWithoutTagsInput
+  proposals: ProposalBoardCreateManyWithoutTagsInput
+  proposalCards: ProposalCardCreateManyWithoutTagsInput
+  assignments: AssignmentCreateManyWithoutTagsInput
+  homeworks: HomeworkCreateManyWithoutTagsInput
+  scripts: ScriptCreateManyWithoutTagsInput
+}
+
+input TagCreateWithoutClassNetworksInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  profiles: ProfileCreateManyWithoutTagsInput
+  schools: SchoolCreateManyWithoutTagsInput
+  classes: ClassCreateManyWithoutTagsInput
+  studies: StudyCreateManyWithoutTagsInput
+  tasks: TaskCreateManyWithoutTagsInput
+  journals: JournalCreateManyWithoutTagsInput
+  posts: PostCreateManyWithoutTagsInput
+  proposals: ProposalBoardCreateManyWithoutTagsInput
+  proposalCards: ProposalCardCreateManyWithoutTagsInput
+  assignments: AssignmentCreateManyWithoutTagsInput
+  homeworks: HomeworkCreateManyWithoutTagsInput
+  scripts: ScriptCreateManyWithoutTagsInput
+}
+
+input TagCreateWithoutHomeworksInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  profiles: ProfileCreateManyWithoutTagsInput
+  schools: SchoolCreateManyWithoutTagsInput
+  classes: ClassCreateManyWithoutTagsInput
+  classNetworks: ClassNetworkCreateManyWithoutTagsInput
+  studies: StudyCreateManyWithoutTagsInput
+  tasks: TaskCreateManyWithoutTagsInput
+  journals: JournalCreateManyWithoutTagsInput
+  posts: PostCreateManyWithoutTagsInput
+  proposals: ProposalBoardCreateManyWithoutTagsInput
+  proposalCards: ProposalCardCreateManyWithoutTagsInput
+  assignments: AssignmentCreateManyWithoutTagsInput
+  scripts: ScriptCreateManyWithoutTagsInput
+}
+
+input TagCreateWithoutJournalsInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  profiles: ProfileCreateManyWithoutTagsInput
+  schools: SchoolCreateManyWithoutTagsInput
+  classes: ClassCreateManyWithoutTagsInput
+  classNetworks: ClassNetworkCreateManyWithoutTagsInput
+  studies: StudyCreateManyWithoutTagsInput
+  tasks: TaskCreateManyWithoutTagsInput
+  posts: PostCreateManyWithoutTagsInput
+  proposals: ProposalBoardCreateManyWithoutTagsInput
+  proposalCards: ProposalCardCreateManyWithoutTagsInput
+  assignments: AssignmentCreateManyWithoutTagsInput
+  homeworks: HomeworkCreateManyWithoutTagsInput
+  scripts: ScriptCreateManyWithoutTagsInput
+}
+
+input TagCreateWithoutPostsInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  profiles: ProfileCreateManyWithoutTagsInput
+  schools: SchoolCreateManyWithoutTagsInput
+  classes: ClassCreateManyWithoutTagsInput
+  classNetworks: ClassNetworkCreateManyWithoutTagsInput
+  studies: StudyCreateManyWithoutTagsInput
+  tasks: TaskCreateManyWithoutTagsInput
+  journals: JournalCreateManyWithoutTagsInput
+  proposals: ProposalBoardCreateManyWithoutTagsInput
+  proposalCards: ProposalCardCreateManyWithoutTagsInput
+  assignments: AssignmentCreateManyWithoutTagsInput
+  homeworks: HomeworkCreateManyWithoutTagsInput
+  scripts: ScriptCreateManyWithoutTagsInput
+}
+
+input TagCreateWithoutProfilesInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  schools: SchoolCreateManyWithoutTagsInput
+  classes: ClassCreateManyWithoutTagsInput
+  classNetworks: ClassNetworkCreateManyWithoutTagsInput
+  studies: StudyCreateManyWithoutTagsInput
+  tasks: TaskCreateManyWithoutTagsInput
+  journals: JournalCreateManyWithoutTagsInput
+  posts: PostCreateManyWithoutTagsInput
+  proposals: ProposalBoardCreateManyWithoutTagsInput
+  proposalCards: ProposalCardCreateManyWithoutTagsInput
+  assignments: AssignmentCreateManyWithoutTagsInput
+  homeworks: HomeworkCreateManyWithoutTagsInput
+  scripts: ScriptCreateManyWithoutTagsInput
+}
+
+input TagCreateWithoutProposalCardsInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  profiles: ProfileCreateManyWithoutTagsInput
+  schools: SchoolCreateManyWithoutTagsInput
+  classes: ClassCreateManyWithoutTagsInput
+  classNetworks: ClassNetworkCreateManyWithoutTagsInput
+  studies: StudyCreateManyWithoutTagsInput
+  tasks: TaskCreateManyWithoutTagsInput
+  journals: JournalCreateManyWithoutTagsInput
+  posts: PostCreateManyWithoutTagsInput
+  proposals: ProposalBoardCreateManyWithoutTagsInput
+  assignments: AssignmentCreateManyWithoutTagsInput
+  homeworks: HomeworkCreateManyWithoutTagsInput
+  scripts: ScriptCreateManyWithoutTagsInput
+}
+
+input TagCreateWithoutProposalsInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  profiles: ProfileCreateManyWithoutTagsInput
+  schools: SchoolCreateManyWithoutTagsInput
+  classes: ClassCreateManyWithoutTagsInput
+  classNetworks: ClassNetworkCreateManyWithoutTagsInput
+  studies: StudyCreateManyWithoutTagsInput
+  tasks: TaskCreateManyWithoutTagsInput
+  journals: JournalCreateManyWithoutTagsInput
+  posts: PostCreateManyWithoutTagsInput
+  proposalCards: ProposalCardCreateManyWithoutTagsInput
+  assignments: AssignmentCreateManyWithoutTagsInput
+  homeworks: HomeworkCreateManyWithoutTagsInput
+  scripts: ScriptCreateManyWithoutTagsInput
+}
+
+input TagCreateWithoutSchoolsInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  profiles: ProfileCreateManyWithoutTagsInput
+  classes: ClassCreateManyWithoutTagsInput
+  classNetworks: ClassNetworkCreateManyWithoutTagsInput
+  studies: StudyCreateManyWithoutTagsInput
+  tasks: TaskCreateManyWithoutTagsInput
+  journals: JournalCreateManyWithoutTagsInput
+  posts: PostCreateManyWithoutTagsInput
+  proposals: ProposalBoardCreateManyWithoutTagsInput
+  proposalCards: ProposalCardCreateManyWithoutTagsInput
+  assignments: AssignmentCreateManyWithoutTagsInput
+  homeworks: HomeworkCreateManyWithoutTagsInput
+  scripts: ScriptCreateManyWithoutTagsInput
+}
+
+input TagCreateWithoutScriptsInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  profiles: ProfileCreateManyWithoutTagsInput
+  schools: SchoolCreateManyWithoutTagsInput
+  classes: ClassCreateManyWithoutTagsInput
+  classNetworks: ClassNetworkCreateManyWithoutTagsInput
+  studies: StudyCreateManyWithoutTagsInput
+  tasks: TaskCreateManyWithoutTagsInput
+  journals: JournalCreateManyWithoutTagsInput
+  posts: PostCreateManyWithoutTagsInput
+  proposals: ProposalBoardCreateManyWithoutTagsInput
+  proposalCards: ProposalCardCreateManyWithoutTagsInput
+  assignments: AssignmentCreateManyWithoutTagsInput
+  homeworks: HomeworkCreateManyWithoutTagsInput
+}
+
+input TagCreateWithoutStudiesInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  profiles: ProfileCreateManyWithoutTagsInput
+  schools: SchoolCreateManyWithoutTagsInput
+  classes: ClassCreateManyWithoutTagsInput
+  classNetworks: ClassNetworkCreateManyWithoutTagsInput
+  tasks: TaskCreateManyWithoutTagsInput
+  journals: JournalCreateManyWithoutTagsInput
+  posts: PostCreateManyWithoutTagsInput
+  proposals: ProposalBoardCreateManyWithoutTagsInput
+  proposalCards: ProposalCardCreateManyWithoutTagsInput
+  assignments: AssignmentCreateManyWithoutTagsInput
+  homeworks: HomeworkCreateManyWithoutTagsInput
+  scripts: ScriptCreateManyWithoutTagsInput
+}
+
+input TagCreateWithoutTasksInput {
+  id: ID
+  title: String!
+  slug: String!
+  description: String
+  profiles: ProfileCreateManyWithoutTagsInput
+  schools: SchoolCreateManyWithoutTagsInput
+  classes: ClassCreateManyWithoutTagsInput
+  classNetworks: ClassNetworkCreateManyWithoutTagsInput
+  studies: StudyCreateManyWithoutTagsInput
+  journals: JournalCreateManyWithoutTagsInput
+  posts: PostCreateManyWithoutTagsInput
+  proposals: ProposalBoardCreateManyWithoutTagsInput
+  proposalCards: ProposalCardCreateManyWithoutTagsInput
+  assignments: AssignmentCreateManyWithoutTagsInput
+  homeworks: HomeworkCreateManyWithoutTagsInput
+  scripts: ScriptCreateManyWithoutTagsInput
+}
+
+"""An edge in a connection."""
+type TagEdge {
+  """The item at the end of the edge."""
+  node: Tag!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum TagOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  slug_ASC
+  slug_DESC
+  description_ASC
+  description_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type TagPreviousValues {
+  id: ID!
+  title: String!
+  slug: String!
+  description: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input TagScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TagScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TagScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TagScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  slug: String
+
+  """All values that are not equal to given value."""
+  slug_not: String
+
+  """All values that are contained in given list."""
+  slug_in: [String!]
+
+  """All values that are not contained in given list."""
+  slug_not_in: [String!]
+
+  """All values less than the given value."""
+  slug_lt: String
+
+  """All values less than or equal the given value."""
+  slug_lte: String
+
+  """All values greater than the given value."""
+  slug_gt: String
+
+  """All values greater than or equal the given value."""
+  slug_gte: String
+
+  """All values containing the given string."""
+  slug_contains: String
+
+  """All values not containing the given string."""
+  slug_not_contains: String
+
+  """All values starting with the given string."""
+  slug_starts_with: String
+
+  """All values not starting with the given string."""
+  slug_not_starts_with: String
+
+  """All values ending with the given string."""
+  slug_ends_with: String
+
+  """All values not ending with the given string."""
+  slug_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+type TagSubscriptionPayload {
+  mutation: MutationType!
+  node: Tag
+  updatedFields: [String!]
+  previousValues: TagPreviousValues
+}
+
+input TagSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TagSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TagSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TagSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: TagWhereInput
+}
+
+input TagUpdateInput {
+  title: String
+  slug: String
+  description: String
+  profiles: ProfileUpdateManyWithoutTagsInput
+  schools: SchoolUpdateManyWithoutTagsInput
+  classes: ClassUpdateManyWithoutTagsInput
+  classNetworks: ClassNetworkUpdateManyWithoutTagsInput
+  studies: StudyUpdateManyWithoutTagsInput
+  tasks: TaskUpdateManyWithoutTagsInput
+  journals: JournalUpdateManyWithoutTagsInput
+  posts: PostUpdateManyWithoutTagsInput
+  proposals: ProposalBoardUpdateManyWithoutTagsInput
+  proposalCards: ProposalCardUpdateManyWithoutTagsInput
+  assignments: AssignmentUpdateManyWithoutTagsInput
+  homeworks: HomeworkUpdateManyWithoutTagsInput
+  scripts: ScriptUpdateManyWithoutTagsInput
+}
+
+input TagUpdateManyDataInput {
+  title: String
+  slug: String
+  description: String
+}
+
+input TagUpdateManyMutationInput {
+  title: String
+  slug: String
+  description: String
+}
+
+input TagUpdateManyWithoutAssignmentsInput {
+  create: [TagCreateWithoutAssignmentsInput!]
+  connect: [TagWhereUniqueInput!]
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  delete: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutAssignmentsInput!]
+  updateMany: [TagUpdateManyWithWhereNestedInput!]
+  deleteMany: [TagScalarWhereInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutAssignmentsInput!]
+}
+
+input TagUpdateManyWithoutClassesInput {
+  create: [TagCreateWithoutClassesInput!]
+  connect: [TagWhereUniqueInput!]
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  delete: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutClassesInput!]
+  updateMany: [TagUpdateManyWithWhereNestedInput!]
+  deleteMany: [TagScalarWhereInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutClassesInput!]
+}
+
+input TagUpdateManyWithoutClassNetworksInput {
+  create: [TagCreateWithoutClassNetworksInput!]
+  connect: [TagWhereUniqueInput!]
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  delete: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutClassNetworksInput!]
+  updateMany: [TagUpdateManyWithWhereNestedInput!]
+  deleteMany: [TagScalarWhereInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutClassNetworksInput!]
+}
+
+input TagUpdateManyWithoutHomeworksInput {
+  create: [TagCreateWithoutHomeworksInput!]
+  connect: [TagWhereUniqueInput!]
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  delete: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutHomeworksInput!]
+  updateMany: [TagUpdateManyWithWhereNestedInput!]
+  deleteMany: [TagScalarWhereInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutHomeworksInput!]
+}
+
+input TagUpdateManyWithoutJournalsInput {
+  create: [TagCreateWithoutJournalsInput!]
+  connect: [TagWhereUniqueInput!]
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  delete: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutJournalsInput!]
+  updateMany: [TagUpdateManyWithWhereNestedInput!]
+  deleteMany: [TagScalarWhereInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutJournalsInput!]
+}
+
+input TagUpdateManyWithoutPostsInput {
+  create: [TagCreateWithoutPostsInput!]
+  connect: [TagWhereUniqueInput!]
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  delete: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutPostsInput!]
+  updateMany: [TagUpdateManyWithWhereNestedInput!]
+  deleteMany: [TagScalarWhereInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutPostsInput!]
+}
+
+input TagUpdateManyWithoutProfilesInput {
+  create: [TagCreateWithoutProfilesInput!]
+  connect: [TagWhereUniqueInput!]
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  delete: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutProfilesInput!]
+  updateMany: [TagUpdateManyWithWhereNestedInput!]
+  deleteMany: [TagScalarWhereInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutProfilesInput!]
+}
+
+input TagUpdateManyWithoutProposalCardsInput {
+  create: [TagCreateWithoutProposalCardsInput!]
+  connect: [TagWhereUniqueInput!]
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  delete: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutProposalCardsInput!]
+  updateMany: [TagUpdateManyWithWhereNestedInput!]
+  deleteMany: [TagScalarWhereInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutProposalCardsInput!]
+}
+
+input TagUpdateManyWithoutProposalsInput {
+  create: [TagCreateWithoutProposalsInput!]
+  connect: [TagWhereUniqueInput!]
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  delete: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutProposalsInput!]
+  updateMany: [TagUpdateManyWithWhereNestedInput!]
+  deleteMany: [TagScalarWhereInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutProposalsInput!]
+}
+
+input TagUpdateManyWithoutSchoolsInput {
+  create: [TagCreateWithoutSchoolsInput!]
+  connect: [TagWhereUniqueInput!]
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  delete: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutSchoolsInput!]
+  updateMany: [TagUpdateManyWithWhereNestedInput!]
+  deleteMany: [TagScalarWhereInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutSchoolsInput!]
+}
+
+input TagUpdateManyWithoutScriptsInput {
+  create: [TagCreateWithoutScriptsInput!]
+  connect: [TagWhereUniqueInput!]
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  delete: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutScriptsInput!]
+  updateMany: [TagUpdateManyWithWhereNestedInput!]
+  deleteMany: [TagScalarWhereInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutScriptsInput!]
+}
+
+input TagUpdateManyWithoutStudiesInput {
+  create: [TagCreateWithoutStudiesInput!]
+  connect: [TagWhereUniqueInput!]
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  delete: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutStudiesInput!]
+  updateMany: [TagUpdateManyWithWhereNestedInput!]
+  deleteMany: [TagScalarWhereInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutStudiesInput!]
+}
+
+input TagUpdateManyWithoutTasksInput {
+  create: [TagCreateWithoutTasksInput!]
+  connect: [TagWhereUniqueInput!]
+  set: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
+  delete: [TagWhereUniqueInput!]
+  update: [TagUpdateWithWhereUniqueWithoutTasksInput!]
+  updateMany: [TagUpdateManyWithWhereNestedInput!]
+  deleteMany: [TagScalarWhereInput!]
+  upsert: [TagUpsertWithWhereUniqueWithoutTasksInput!]
+}
+
+input TagUpdateManyWithWhereNestedInput {
+  where: TagScalarWhereInput!
+  data: TagUpdateManyDataInput!
+}
+
+input TagUpdateWithoutAssignmentsDataInput {
+  title: String
+  slug: String
+  description: String
+  profiles: ProfileUpdateManyWithoutTagsInput
+  schools: SchoolUpdateManyWithoutTagsInput
+  classes: ClassUpdateManyWithoutTagsInput
+  classNetworks: ClassNetworkUpdateManyWithoutTagsInput
+  studies: StudyUpdateManyWithoutTagsInput
+  tasks: TaskUpdateManyWithoutTagsInput
+  journals: JournalUpdateManyWithoutTagsInput
+  posts: PostUpdateManyWithoutTagsInput
+  proposals: ProposalBoardUpdateManyWithoutTagsInput
+  proposalCards: ProposalCardUpdateManyWithoutTagsInput
+  homeworks: HomeworkUpdateManyWithoutTagsInput
+  scripts: ScriptUpdateManyWithoutTagsInput
+}
+
+input TagUpdateWithoutClassesDataInput {
+  title: String
+  slug: String
+  description: String
+  profiles: ProfileUpdateManyWithoutTagsInput
+  schools: SchoolUpdateManyWithoutTagsInput
+  classNetworks: ClassNetworkUpdateManyWithoutTagsInput
+  studies: StudyUpdateManyWithoutTagsInput
+  tasks: TaskUpdateManyWithoutTagsInput
+  journals: JournalUpdateManyWithoutTagsInput
+  posts: PostUpdateManyWithoutTagsInput
+  proposals: ProposalBoardUpdateManyWithoutTagsInput
+  proposalCards: ProposalCardUpdateManyWithoutTagsInput
+  assignments: AssignmentUpdateManyWithoutTagsInput
+  homeworks: HomeworkUpdateManyWithoutTagsInput
+  scripts: ScriptUpdateManyWithoutTagsInput
+}
+
+input TagUpdateWithoutClassNetworksDataInput {
+  title: String
+  slug: String
+  description: String
+  profiles: ProfileUpdateManyWithoutTagsInput
+  schools: SchoolUpdateManyWithoutTagsInput
+  classes: ClassUpdateManyWithoutTagsInput
+  studies: StudyUpdateManyWithoutTagsInput
+  tasks: TaskUpdateManyWithoutTagsInput
+  journals: JournalUpdateManyWithoutTagsInput
+  posts: PostUpdateManyWithoutTagsInput
+  proposals: ProposalBoardUpdateManyWithoutTagsInput
+  proposalCards: ProposalCardUpdateManyWithoutTagsInput
+  assignments: AssignmentUpdateManyWithoutTagsInput
+  homeworks: HomeworkUpdateManyWithoutTagsInput
+  scripts: ScriptUpdateManyWithoutTagsInput
+}
+
+input TagUpdateWithoutHomeworksDataInput {
+  title: String
+  slug: String
+  description: String
+  profiles: ProfileUpdateManyWithoutTagsInput
+  schools: SchoolUpdateManyWithoutTagsInput
+  classes: ClassUpdateManyWithoutTagsInput
+  classNetworks: ClassNetworkUpdateManyWithoutTagsInput
+  studies: StudyUpdateManyWithoutTagsInput
+  tasks: TaskUpdateManyWithoutTagsInput
+  journals: JournalUpdateManyWithoutTagsInput
+  posts: PostUpdateManyWithoutTagsInput
+  proposals: ProposalBoardUpdateManyWithoutTagsInput
+  proposalCards: ProposalCardUpdateManyWithoutTagsInput
+  assignments: AssignmentUpdateManyWithoutTagsInput
+  scripts: ScriptUpdateManyWithoutTagsInput
+}
+
+input TagUpdateWithoutJournalsDataInput {
+  title: String
+  slug: String
+  description: String
+  profiles: ProfileUpdateManyWithoutTagsInput
+  schools: SchoolUpdateManyWithoutTagsInput
+  classes: ClassUpdateManyWithoutTagsInput
+  classNetworks: ClassNetworkUpdateManyWithoutTagsInput
+  studies: StudyUpdateManyWithoutTagsInput
+  tasks: TaskUpdateManyWithoutTagsInput
+  posts: PostUpdateManyWithoutTagsInput
+  proposals: ProposalBoardUpdateManyWithoutTagsInput
+  proposalCards: ProposalCardUpdateManyWithoutTagsInput
+  assignments: AssignmentUpdateManyWithoutTagsInput
+  homeworks: HomeworkUpdateManyWithoutTagsInput
+  scripts: ScriptUpdateManyWithoutTagsInput
+}
+
+input TagUpdateWithoutPostsDataInput {
+  title: String
+  slug: String
+  description: String
+  profiles: ProfileUpdateManyWithoutTagsInput
+  schools: SchoolUpdateManyWithoutTagsInput
+  classes: ClassUpdateManyWithoutTagsInput
+  classNetworks: ClassNetworkUpdateManyWithoutTagsInput
+  studies: StudyUpdateManyWithoutTagsInput
+  tasks: TaskUpdateManyWithoutTagsInput
+  journals: JournalUpdateManyWithoutTagsInput
+  proposals: ProposalBoardUpdateManyWithoutTagsInput
+  proposalCards: ProposalCardUpdateManyWithoutTagsInput
+  assignments: AssignmentUpdateManyWithoutTagsInput
+  homeworks: HomeworkUpdateManyWithoutTagsInput
+  scripts: ScriptUpdateManyWithoutTagsInput
+}
+
+input TagUpdateWithoutProfilesDataInput {
+  title: String
+  slug: String
+  description: String
+  schools: SchoolUpdateManyWithoutTagsInput
+  classes: ClassUpdateManyWithoutTagsInput
+  classNetworks: ClassNetworkUpdateManyWithoutTagsInput
+  studies: StudyUpdateManyWithoutTagsInput
+  tasks: TaskUpdateManyWithoutTagsInput
+  journals: JournalUpdateManyWithoutTagsInput
+  posts: PostUpdateManyWithoutTagsInput
+  proposals: ProposalBoardUpdateManyWithoutTagsInput
+  proposalCards: ProposalCardUpdateManyWithoutTagsInput
+  assignments: AssignmentUpdateManyWithoutTagsInput
+  homeworks: HomeworkUpdateManyWithoutTagsInput
+  scripts: ScriptUpdateManyWithoutTagsInput
+}
+
+input TagUpdateWithoutProposalCardsDataInput {
+  title: String
+  slug: String
+  description: String
+  profiles: ProfileUpdateManyWithoutTagsInput
+  schools: SchoolUpdateManyWithoutTagsInput
+  classes: ClassUpdateManyWithoutTagsInput
+  classNetworks: ClassNetworkUpdateManyWithoutTagsInput
+  studies: StudyUpdateManyWithoutTagsInput
+  tasks: TaskUpdateManyWithoutTagsInput
+  journals: JournalUpdateManyWithoutTagsInput
+  posts: PostUpdateManyWithoutTagsInput
+  proposals: ProposalBoardUpdateManyWithoutTagsInput
+  assignments: AssignmentUpdateManyWithoutTagsInput
+  homeworks: HomeworkUpdateManyWithoutTagsInput
+  scripts: ScriptUpdateManyWithoutTagsInput
+}
+
+input TagUpdateWithoutProposalsDataInput {
+  title: String
+  slug: String
+  description: String
+  profiles: ProfileUpdateManyWithoutTagsInput
+  schools: SchoolUpdateManyWithoutTagsInput
+  classes: ClassUpdateManyWithoutTagsInput
+  classNetworks: ClassNetworkUpdateManyWithoutTagsInput
+  studies: StudyUpdateManyWithoutTagsInput
+  tasks: TaskUpdateManyWithoutTagsInput
+  journals: JournalUpdateManyWithoutTagsInput
+  posts: PostUpdateManyWithoutTagsInput
+  proposalCards: ProposalCardUpdateManyWithoutTagsInput
+  assignments: AssignmentUpdateManyWithoutTagsInput
+  homeworks: HomeworkUpdateManyWithoutTagsInput
+  scripts: ScriptUpdateManyWithoutTagsInput
+}
+
+input TagUpdateWithoutSchoolsDataInput {
+  title: String
+  slug: String
+  description: String
+  profiles: ProfileUpdateManyWithoutTagsInput
+  classes: ClassUpdateManyWithoutTagsInput
+  classNetworks: ClassNetworkUpdateManyWithoutTagsInput
+  studies: StudyUpdateManyWithoutTagsInput
+  tasks: TaskUpdateManyWithoutTagsInput
+  journals: JournalUpdateManyWithoutTagsInput
+  posts: PostUpdateManyWithoutTagsInput
+  proposals: ProposalBoardUpdateManyWithoutTagsInput
+  proposalCards: ProposalCardUpdateManyWithoutTagsInput
+  assignments: AssignmentUpdateManyWithoutTagsInput
+  homeworks: HomeworkUpdateManyWithoutTagsInput
+  scripts: ScriptUpdateManyWithoutTagsInput
+}
+
+input TagUpdateWithoutScriptsDataInput {
+  title: String
+  slug: String
+  description: String
+  profiles: ProfileUpdateManyWithoutTagsInput
+  schools: SchoolUpdateManyWithoutTagsInput
+  classes: ClassUpdateManyWithoutTagsInput
+  classNetworks: ClassNetworkUpdateManyWithoutTagsInput
+  studies: StudyUpdateManyWithoutTagsInput
+  tasks: TaskUpdateManyWithoutTagsInput
+  journals: JournalUpdateManyWithoutTagsInput
+  posts: PostUpdateManyWithoutTagsInput
+  proposals: ProposalBoardUpdateManyWithoutTagsInput
+  proposalCards: ProposalCardUpdateManyWithoutTagsInput
+  assignments: AssignmentUpdateManyWithoutTagsInput
+  homeworks: HomeworkUpdateManyWithoutTagsInput
+}
+
+input TagUpdateWithoutStudiesDataInput {
+  title: String
+  slug: String
+  description: String
+  profiles: ProfileUpdateManyWithoutTagsInput
+  schools: SchoolUpdateManyWithoutTagsInput
+  classes: ClassUpdateManyWithoutTagsInput
+  classNetworks: ClassNetworkUpdateManyWithoutTagsInput
+  tasks: TaskUpdateManyWithoutTagsInput
+  journals: JournalUpdateManyWithoutTagsInput
+  posts: PostUpdateManyWithoutTagsInput
+  proposals: ProposalBoardUpdateManyWithoutTagsInput
+  proposalCards: ProposalCardUpdateManyWithoutTagsInput
+  assignments: AssignmentUpdateManyWithoutTagsInput
+  homeworks: HomeworkUpdateManyWithoutTagsInput
+  scripts: ScriptUpdateManyWithoutTagsInput
+}
+
+input TagUpdateWithoutTasksDataInput {
+  title: String
+  slug: String
+  description: String
+  profiles: ProfileUpdateManyWithoutTagsInput
+  schools: SchoolUpdateManyWithoutTagsInput
+  classes: ClassUpdateManyWithoutTagsInput
+  classNetworks: ClassNetworkUpdateManyWithoutTagsInput
+  studies: StudyUpdateManyWithoutTagsInput
+  journals: JournalUpdateManyWithoutTagsInput
+  posts: PostUpdateManyWithoutTagsInput
+  proposals: ProposalBoardUpdateManyWithoutTagsInput
+  proposalCards: ProposalCardUpdateManyWithoutTagsInput
+  assignments: AssignmentUpdateManyWithoutTagsInput
+  homeworks: HomeworkUpdateManyWithoutTagsInput
+  scripts: ScriptUpdateManyWithoutTagsInput
+}
+
+input TagUpdateWithWhereUniqueWithoutAssignmentsInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateWithoutAssignmentsDataInput!
+}
+
+input TagUpdateWithWhereUniqueWithoutClassesInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateWithoutClassesDataInput!
+}
+
+input TagUpdateWithWhereUniqueWithoutClassNetworksInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateWithoutClassNetworksDataInput!
+}
+
+input TagUpdateWithWhereUniqueWithoutHomeworksInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateWithoutHomeworksDataInput!
+}
+
+input TagUpdateWithWhereUniqueWithoutJournalsInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateWithoutJournalsDataInput!
+}
+
+input TagUpdateWithWhereUniqueWithoutPostsInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateWithoutPostsDataInput!
+}
+
+input TagUpdateWithWhereUniqueWithoutProfilesInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateWithoutProfilesDataInput!
+}
+
+input TagUpdateWithWhereUniqueWithoutProposalCardsInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateWithoutProposalCardsDataInput!
+}
+
+input TagUpdateWithWhereUniqueWithoutProposalsInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateWithoutProposalsDataInput!
+}
+
+input TagUpdateWithWhereUniqueWithoutSchoolsInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateWithoutSchoolsDataInput!
+}
+
+input TagUpdateWithWhereUniqueWithoutScriptsInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateWithoutScriptsDataInput!
+}
+
+input TagUpdateWithWhereUniqueWithoutStudiesInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateWithoutStudiesDataInput!
+}
+
+input TagUpdateWithWhereUniqueWithoutTasksInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateWithoutTasksDataInput!
+}
+
+input TagUpsertWithWhereUniqueWithoutAssignmentsInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutAssignmentsDataInput!
+  create: TagCreateWithoutAssignmentsInput!
+}
+
+input TagUpsertWithWhereUniqueWithoutClassesInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutClassesDataInput!
+  create: TagCreateWithoutClassesInput!
+}
+
+input TagUpsertWithWhereUniqueWithoutClassNetworksInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutClassNetworksDataInput!
+  create: TagCreateWithoutClassNetworksInput!
+}
+
+input TagUpsertWithWhereUniqueWithoutHomeworksInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutHomeworksDataInput!
+  create: TagCreateWithoutHomeworksInput!
+}
+
+input TagUpsertWithWhereUniqueWithoutJournalsInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutJournalsDataInput!
+  create: TagCreateWithoutJournalsInput!
+}
+
+input TagUpsertWithWhereUniqueWithoutPostsInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutPostsDataInput!
+  create: TagCreateWithoutPostsInput!
+}
+
+input TagUpsertWithWhereUniqueWithoutProfilesInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutProfilesDataInput!
+  create: TagCreateWithoutProfilesInput!
+}
+
+input TagUpsertWithWhereUniqueWithoutProposalCardsInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutProposalCardsDataInput!
+  create: TagCreateWithoutProposalCardsInput!
+}
+
+input TagUpsertWithWhereUniqueWithoutProposalsInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutProposalsDataInput!
+  create: TagCreateWithoutProposalsInput!
+}
+
+input TagUpsertWithWhereUniqueWithoutSchoolsInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutSchoolsDataInput!
+  create: TagCreateWithoutSchoolsInput!
+}
+
+input TagUpsertWithWhereUniqueWithoutScriptsInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutScriptsDataInput!
+  create: TagCreateWithoutScriptsInput!
+}
+
+input TagUpsertWithWhereUniqueWithoutStudiesInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutStudiesDataInput!
+  create: TagCreateWithoutStudiesInput!
+}
+
+input TagUpsertWithWhereUniqueWithoutTasksInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateWithoutTasksDataInput!
+  create: TagCreateWithoutTasksInput!
+}
+
+input TagWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TagWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TagWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TagWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  slug: String
+
+  """All values that are not equal to given value."""
+  slug_not: String
+
+  """All values that are contained in given list."""
+  slug_in: [String!]
+
+  """All values that are not contained in given list."""
+  slug_not_in: [String!]
+
+  """All values less than the given value."""
+  slug_lt: String
+
+  """All values less than or equal the given value."""
+  slug_lte: String
+
+  """All values greater than the given value."""
+  slug_gt: String
+
+  """All values greater than or equal the given value."""
+  slug_gte: String
+
+  """All values containing the given string."""
+  slug_contains: String
+
+  """All values not containing the given string."""
+  slug_not_contains: String
+
+  """All values starting with the given string."""
+  slug_starts_with: String
+
+  """All values not starting with the given string."""
+  slug_not_starts_with: String
+
+  """All values ending with the given string."""
+  slug_ends_with: String
+
+  """All values not ending with the given string."""
+  slug_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  profiles_every: ProfileWhereInput
+  profiles_some: ProfileWhereInput
+  profiles_none: ProfileWhereInput
+  schools_every: SchoolWhereInput
+  schools_some: SchoolWhereInput
+  schools_none: SchoolWhereInput
+  classes_every: ClassWhereInput
+  classes_some: ClassWhereInput
+  classes_none: ClassWhereInput
+  classNetworks_every: ClassNetworkWhereInput
+  classNetworks_some: ClassNetworkWhereInput
+  classNetworks_none: ClassNetworkWhereInput
+  studies_every: StudyWhereInput
+  studies_some: StudyWhereInput
+  studies_none: StudyWhereInput
+  tasks_every: TaskWhereInput
+  tasks_some: TaskWhereInput
+  tasks_none: TaskWhereInput
+  journals_every: JournalWhereInput
+  journals_some: JournalWhereInput
+  journals_none: JournalWhereInput
+  posts_every: PostWhereInput
+  posts_some: PostWhereInput
+  posts_none: PostWhereInput
+  proposals_every: ProposalBoardWhereInput
+  proposals_some: ProposalBoardWhereInput
+  proposals_none: ProposalBoardWhereInput
+  proposalCards_every: ProposalCardWhereInput
+  proposalCards_some: ProposalCardWhereInput
+  proposalCards_none: ProposalCardWhereInput
+  assignments_every: AssignmentWhereInput
+  assignments_some: AssignmentWhereInput
+  assignments_none: AssignmentWhereInput
+  homeworks_every: HomeworkWhereInput
+  homeworks_some: HomeworkWhereInput
+  homeworks_none: HomeworkWhereInput
+  scripts_every: ScriptWhereInput
+  scripts_some: ScriptWhereInput
+  scripts_none: ScriptWhereInput
+}
+
+input TagWhereUniqueInput {
+  id: ID
+  slug: String
 }
 
 type Talk implements Node {
@@ -21145,6 +23841,7 @@ type Task implements Node {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
 
 """A connection to a list of items."""
@@ -21176,6 +23873,7 @@ input TaskCreateInput {
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
   consent: ConsentCreateOneWithoutTasksInput
+  tags: TagCreateManyWithoutTasksInput
 }
 
 input TaskCreateManyInput {
@@ -21195,6 +23893,11 @@ input TaskCreateManyWithoutCollaboratorsInput {
 
 input TaskCreateManyWithoutConsentInput {
   create: [TaskCreateWithoutConsentInput!]
+  connect: [TaskWhereUniqueInput!]
+}
+
+input TaskCreateManyWithoutTagsInput {
+  create: [TaskCreateWithoutTagsInput!]
   connect: [TaskWhereUniqueInput!]
 }
 
@@ -21226,6 +23929,7 @@ input TaskCreateWithoutAuthorInput {
   template: TemplateCreateOneWithoutTasksInput
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
   consent: ConsentCreateOneWithoutTasksInput
+  tags: TagCreateManyWithoutTasksInput
 }
 
 input TaskCreateWithoutCollaboratorsInput {
@@ -21246,6 +23950,7 @@ input TaskCreateWithoutCollaboratorsInput {
   template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   consent: ConsentCreateOneWithoutTasksInput
+  tags: TagCreateManyWithoutTasksInput
 }
 
 input TaskCreateWithoutConsentInput {
@@ -21266,6 +23971,28 @@ input TaskCreateWithoutConsentInput {
   template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
+  tags: TagCreateManyWithoutTasksInput
+}
+
+input TaskCreateWithoutTagsInput {
+  id: ID
+  title: String!
+  subtitle: String
+  slug: String!
+  description: String
+  descriptionForParticipants: String
+  parameters: Json
+  settings: Json
+  link: String
+  public: Boolean
+  submitForPublishing: Boolean
+  taskType: TaskType
+  isOriginal: Boolean
+  isExternal: Boolean
+  template: TemplateCreateOneWithoutTasksInput
+  author: ProfileCreateOneWithoutTaskCreatorInInput!
+  collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
+  consent: ConsentCreateOneWithoutTasksInput
 }
 
 input TaskCreateWithoutTemplateInput {
@@ -21286,6 +24013,7 @@ input TaskCreateWithoutTemplateInput {
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
   consent: ConsentCreateOneWithoutTasksInput
+  tags: TagCreateManyWithoutTasksInput
 }
 
 """An edge in a connection."""
@@ -21775,6 +24503,7 @@ input TaskUpdateDataInput {
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
   consent: ConsentUpdateOneWithoutTasksInput
+  tags: TagUpdateManyWithoutTasksInput
 }
 
 input TaskUpdateInput {
@@ -21795,6 +24524,7 @@ input TaskUpdateInput {
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
   consent: ConsentUpdateOneWithoutTasksInput
+  tags: TagUpdateManyWithoutTasksInput
 }
 
 input TaskUpdateManyDataInput {
@@ -21877,6 +24607,18 @@ input TaskUpdateManyWithoutConsentInput {
   upsert: [TaskUpsertWithWhereUniqueWithoutConsentInput!]
 }
 
+input TaskUpdateManyWithoutTagsInput {
+  create: [TaskCreateWithoutTagsInput!]
+  connect: [TaskWhereUniqueInput!]
+  set: [TaskWhereUniqueInput!]
+  disconnect: [TaskWhereUniqueInput!]
+  delete: [TaskWhereUniqueInput!]
+  update: [TaskUpdateWithWhereUniqueWithoutTagsInput!]
+  updateMany: [TaskUpdateManyWithWhereNestedInput!]
+  deleteMany: [TaskScalarWhereInput!]
+  upsert: [TaskUpsertWithWhereUniqueWithoutTagsInput!]
+}
+
 input TaskUpdateManyWithoutTemplateInput {
   create: [TaskCreateWithoutTemplateInput!]
   connect: [TaskWhereUniqueInput!]
@@ -21918,6 +24660,7 @@ input TaskUpdateWithoutAuthorDataInput {
   template: TemplateUpdateOneWithoutTasksInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
   consent: ConsentUpdateOneWithoutTasksInput
+  tags: TagUpdateManyWithoutTasksInput
 }
 
 input TaskUpdateWithoutCollaboratorsDataInput {
@@ -21937,6 +24680,7 @@ input TaskUpdateWithoutCollaboratorsDataInput {
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   consent: ConsentUpdateOneWithoutTasksInput
+  tags: TagUpdateManyWithoutTasksInput
 }
 
 input TaskUpdateWithoutConsentDataInput {
@@ -21956,6 +24700,27 @@ input TaskUpdateWithoutConsentDataInput {
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
+  tags: TagUpdateManyWithoutTasksInput
+}
+
+input TaskUpdateWithoutTagsDataInput {
+  title: String
+  subtitle: String
+  slug: String
+  description: String
+  descriptionForParticipants: String
+  parameters: Json
+  settings: Json
+  link: String
+  public: Boolean
+  submitForPublishing: Boolean
+  taskType: TaskType
+  isOriginal: Boolean
+  isExternal: Boolean
+  template: TemplateUpdateOneWithoutTasksInput
+  author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
+  consent: ConsentUpdateOneWithoutTasksInput
 }
 
 input TaskUpdateWithoutTemplateDataInput {
@@ -21975,6 +24740,7 @@ input TaskUpdateWithoutTemplateDataInput {
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
   consent: ConsentUpdateOneWithoutTasksInput
+  tags: TagUpdateManyWithoutTasksInput
 }
 
 input TaskUpdateWithWhereUniqueNestedInput {
@@ -21995,6 +24761,11 @@ input TaskUpdateWithWhereUniqueWithoutCollaboratorsInput {
 input TaskUpdateWithWhereUniqueWithoutConsentInput {
   where: TaskWhereUniqueInput!
   data: TaskUpdateWithoutConsentDataInput!
+}
+
+input TaskUpdateWithWhereUniqueWithoutTagsInput {
+  where: TaskWhereUniqueInput!
+  data: TaskUpdateWithoutTagsDataInput!
 }
 
 input TaskUpdateWithWhereUniqueWithoutTemplateInput {
@@ -22029,6 +24800,12 @@ input TaskUpsertWithWhereUniqueWithoutConsentInput {
   where: TaskWhereUniqueInput!
   update: TaskUpdateWithoutConsentDataInput!
   create: TaskCreateWithoutConsentInput!
+}
+
+input TaskUpsertWithWhereUniqueWithoutTagsInput {
+  where: TaskWhereUniqueInput!
+  update: TaskUpdateWithoutTagsDataInput!
+  create: TaskCreateWithoutTagsInput!
 }
 
 input TaskUpsertWithWhereUniqueWithoutTemplateInput {
@@ -22402,6 +25179,9 @@ input TaskWhereInput {
   collaborators_some: ProfileWhereInput
   collaborators_none: ProfileWhereInput
   consent: ConsentWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
 }
 
 input TaskWhereUniqueInput {

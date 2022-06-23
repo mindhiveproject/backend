@@ -62,6 +62,7 @@ type Profile {
   creatorOfScript: [Script]! @relation(name:"ScriptCreator")
   authorOfScript: [Script]! @relation(name:"ScriptAuthor")
   collaboratorOnScript: [Script]! @relation(name:"ScriptCollaborators")
+  tags: [Tag]! @relation(name:"TagProfiles")
 }
 
 type AuthEmail {
@@ -107,6 +108,7 @@ type School {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   creator: Profile!
+  tags: [Tag]! @relation(name:"TagSchools")
 }
 
 type Class {
@@ -126,6 +128,7 @@ type Class {
   mentors: [Profile]! @relation(name:"ClassMentor")
   studies: [Study]! @relation(name:"StudyClasses")
   settings: Json
+  tags: [Tag]! @relation(name:"TagClasses")
 }
 
 type ClassNetwork {
@@ -137,6 +140,7 @@ type ClassNetwork {
   updatedAt: DateTime! @updatedAt
   creator: Profile! @relation(name:"Classnetworkcreator")
   classes: [Class]! @relation(name:"Classnetwork")
+  tags: [Tag]! @relation(name:"TagClassNetworks")
 }
 
 enum ResultType {
@@ -199,6 +203,7 @@ type Study {
   isHidden: Boolean
   classes: [Class]! @relation(name:"StudyClasses")
   scripts: [Script]! @relation(name:"ScriptStudies")
+  tags: [Tag]! @relation(name:"TagStudies")
 }
 
 type Task {
@@ -222,6 +227,7 @@ type Task {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  tags: [Tag]! @relation(name:"TagTasks")
 }
 
 type Template {
@@ -279,6 +285,7 @@ type Journal {
   settings: Json
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  tags: [Tag]! @relation(name:"TagJournals")
 }
 
 type Post {
@@ -290,6 +297,7 @@ type Post {
   settings: Json
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  tags: [Tag]! @relation(name:"TagPosts")
 }
 
 type ProposalBoard {
@@ -308,6 +316,7 @@ type ProposalBoard {
   isSubmitted: Boolean
   checklist: Json
   reviews: [Review]! @relation(name:"ProposalReview")
+  tags: [Tag]! @relation(name:"TagProposals")
 }
 
 type ProposalSection {
@@ -334,6 +343,7 @@ type ProposalCard {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   comment: String
+  tags: [Tag]! @relation(name:"TagProposalCards")
 }
 
 enum ReviewStage {
@@ -386,6 +396,7 @@ type Assignment {
   isTemplate: Boolean
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  tags: [Tag]! @relation(name:"TagAssignments")
 }
 
 type Homework {
@@ -398,6 +409,7 @@ type Homework {
   public: Boolean
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+  tags: [Tag]! @relation(name:"TagHomeworks")
 }
 
 type Guest {
@@ -428,6 +440,29 @@ type Script {
   isFeatured: Boolean
   settings: Json
   content: String
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  tags: [Tag]! @relation(name:"TagScripts")
+}
+
+type Tag {
+  id: ID! @id
+  title: String!
+  slug: String! @unique
+  description: String
+  profiles: [Profile]! @relation(name:"TagProfiles")
+  schools: [School]! @relation(name:"TagSchools")
+  classes: [Class]! @relation(name:"TagClasses")
+  classNetworks: [ClassNetwork]! @relation(name:"TagClassNetworks")
+  studies: [Study]! @relation(name:"TagStudies")
+  tasks: [Task]! @relation(name:"TagTasks")
+  journals: [Journal]! @relation(name:"TagJournals")
+  posts: [Post]! @relation(name:"TagPosts")
+  proposals: [ProposalBoard]! @relation(name:"TagProposals")
+  proposalCards: [ProposalCard]! @relation(name:"TagProposalCards")
+  assignments: [Assignment]! @relation(name:"TagAssignments")
+  homeworks: [Homework]! @relation(name:"TagHomeworks")
+  scripts: [Script]! @relation(name:"TagScripts")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

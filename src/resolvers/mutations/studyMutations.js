@@ -43,6 +43,7 @@ const studyMutations = {
     delete updates.collaborators;
     delete updates.consentId;
     delete updates.classes;
+    delete updates.tags;
 
     const study = await ctx.db.mutation.createStudy(
       {
@@ -66,6 +67,12 @@ const studyMutations = {
             args.classes && args.classes.length
               ? {
                   connect: args.classes.map(cl => ({ id: cl })),
+                }
+              : null,
+          tags:
+            args.tags && args.tags.length
+              ? {
+                  connect: args.tags.map(tag => ({ id: tag })),
                 }
               : null,
           ...updates,
@@ -93,7 +100,7 @@ const studyMutations = {
       {
         where: { id: args.id },
       },
-      `{ id collaborators { id } consent { id } classes { id } }`
+      `{ id collaborators { id } consent { id } classes { id } tags { id } }`
     );
 
     // disconnect the current collaborators if needed
@@ -140,12 +147,15 @@ const studyMutations = {
       );
     }
 
-    // disconnect the current classes
+    // disconnect the current classes and current tags
     await ctx.db.mutation.updateStudy(
       {
         data: {
           classes: {
             disconnect: study.classes,
+          },
+          tags: {
+            disconnect: study.tags,
           },
         },
         where: {
@@ -162,6 +172,7 @@ const studyMutations = {
     delete updates.collaborators;
     delete updates.consentId;
     delete updates.classes;
+    delete updates.tags;
 
     // run the update method
     return ctx.db.mutation.updateStudy(
@@ -181,6 +192,12 @@ const studyMutations = {
             args.classes && args.classes.length
               ? {
                   connect: args.classes.map(cl => ({ id: cl })),
+                }
+              : null,
+          tags:
+            args.tags && args.tags.length
+              ? {
+                  connect: args.tags.map(tag => ({ id: tag })),
                 }
               : null,
         },
