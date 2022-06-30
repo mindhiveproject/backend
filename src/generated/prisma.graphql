@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/shevchenko_yury-d70d0e/mindhive-us-back/dev
-# timestamp: Tue Jun 21 2022 18:50:42 GMT+0200 (Central European Summer Time)
+# timestamp: Thu Jun 30 2022 13:53:10 GMT+0200 (Central European Summer Time)
 
 type AggregateAssignment {
   count: Int!
@@ -20075,6 +20075,7 @@ type Study implements Node {
   classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class!]
   scripts(where: ScriptWhereInput, orderBy: ScriptOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Script!]
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+  diagram: String
 }
 
 """A connection to a list of items."""
@@ -20102,6 +20103,7 @@ input StudyCreateInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -20186,6 +20188,7 @@ input StudyCreateWithoutAuthorInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
@@ -20214,6 +20217,7 @@ input StudyCreateWithoutClassesInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -20242,6 +20246,7 @@ input StudyCreateWithoutCollaboratorsInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -20270,6 +20275,7 @@ input StudyCreateWithoutConsentInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -20298,6 +20304,7 @@ input StudyCreateWithoutGuestsInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -20326,6 +20333,7 @@ input StudyCreateWithoutParticipantsInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
@@ -20354,6 +20362,7 @@ input StudyCreateWithoutProposalInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -20382,6 +20391,7 @@ input StudyCreateWithoutReviewsInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -20410,6 +20420,7 @@ input StudyCreateWithoutScriptsInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -20438,6 +20449,7 @@ input StudyCreateWithoutTagsInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -20493,6 +20505,8 @@ enum StudyOrderByInput {
   featured_DESC
   isHidden_ASC
   isHidden_DESC
+  diagram_ASC
+  diagram_DESC
 }
 
 type StudyPreviousValues {
@@ -20512,6 +20526,7 @@ type StudyPreviousValues {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
 }
 
 input StudyScalarWhereInput {
@@ -20863,6 +20878,46 @@ input StudyScalarWhereInput {
 
   """All values that are not equal to given value."""
   isHidden_not: Boolean
+  diagram: String
+
+  """All values that are not equal to given value."""
+  diagram_not: String
+
+  """All values that are contained in given list."""
+  diagram_in: [String!]
+
+  """All values that are not contained in given list."""
+  diagram_not_in: [String!]
+
+  """All values less than the given value."""
+  diagram_lt: String
+
+  """All values less than or equal the given value."""
+  diagram_lte: String
+
+  """All values greater than the given value."""
+  diagram_gt: String
+
+  """All values greater than or equal the given value."""
+  diagram_gte: String
+
+  """All values containing the given string."""
+  diagram_contains: String
+
+  """All values not containing the given string."""
+  diagram_not_contains: String
+
+  """All values starting with the given string."""
+  diagram_starts_with: String
+
+  """All values not starting with the given string."""
+  diagram_not_starts_with: String
+
+  """All values ending with the given string."""
+  diagram_ends_with: String
+
+  """All values not ending with the given string."""
+  diagram_not_ends_with: String
 }
 
 type StudySubscriptionPayload {
@@ -20918,6 +20973,7 @@ input StudyUpdateDataInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -20946,6 +21002,7 @@ input StudyUpdateInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -20974,6 +21031,7 @@ input StudyUpdateManyDataInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
 }
 
 input StudyUpdateManyMutationInput {
@@ -20990,6 +21048,7 @@ input StudyUpdateManyMutationInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
 }
 
 input StudyUpdateManyWithoutAuthorInput {
@@ -21134,6 +21193,7 @@ input StudyUpdateWithoutAuthorDataInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
@@ -21161,6 +21221,7 @@ input StudyUpdateWithoutClassesDataInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -21188,6 +21249,7 @@ input StudyUpdateWithoutCollaboratorsDataInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -21215,6 +21277,7 @@ input StudyUpdateWithoutConsentDataInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -21242,6 +21305,7 @@ input StudyUpdateWithoutGuestsDataInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -21269,6 +21333,7 @@ input StudyUpdateWithoutParticipantsDataInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
@@ -21296,6 +21361,7 @@ input StudyUpdateWithoutProposalDataInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -21323,6 +21389,7 @@ input StudyUpdateWithoutReviewsDataInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -21350,6 +21417,7 @@ input StudyUpdateWithoutScriptsDataInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -21377,6 +21445,7 @@ input StudyUpdateWithoutTagsDataInput {
   components: Json
   featured: Boolean
   isHidden: Boolean
+  diagram: String
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -21842,6 +21911,46 @@ input StudyWhereInput {
 
   """All values that are not equal to given value."""
   isHidden_not: Boolean
+  diagram: String
+
+  """All values that are not equal to given value."""
+  diagram_not: String
+
+  """All values that are contained in given list."""
+  diagram_in: [String!]
+
+  """All values that are not contained in given list."""
+  diagram_not_in: [String!]
+
+  """All values less than the given value."""
+  diagram_lt: String
+
+  """All values less than or equal the given value."""
+  diagram_lte: String
+
+  """All values greater than the given value."""
+  diagram_gt: String
+
+  """All values greater than or equal the given value."""
+  diagram_gte: String
+
+  """All values containing the given string."""
+  diagram_contains: String
+
+  """All values not containing the given string."""
+  diagram_not_contains: String
+
+  """All values starting with the given string."""
+  diagram_starts_with: String
+
+  """All values not starting with the given string."""
+  diagram_not_starts_with: String
+
+  """All values ending with the given string."""
+  diagram_ends_with: String
+
+  """All values not ending with the given string."""
+  diagram_not_ends_with: String
   author: ProfileWhereInput
   tasks_every: TaskWhereInput
   tasks_some: TaskWhereInput

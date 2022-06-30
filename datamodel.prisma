@@ -204,6 +204,7 @@ type Study {
   classes: [Class]! @relation(name:"StudyClasses")
   scripts: [Script]! @relation(name:"ScriptStudies")
   tags: [Tag]! @relation(name:"TagStudies")
+  diagram: String
 }
 
 type Task {

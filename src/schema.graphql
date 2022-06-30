@@ -439,6 +439,7 @@ type Mutation {
     collaborators: [String]
     classes: [String]
     tags: [ID]
+    diagram: String
   ): Study!
   updateStudy(
     id: ID!
@@ -458,6 +459,7 @@ type Mutation {
     isHidden: Boolean
     classes: [String]
     tags: [ID]
+    diagram: String
   ): Study!
   manageStudyVisibility(id: ID!, public: Boolean, featured: Boolean): Study
   preDeleteStudy(id: ID!): Study
