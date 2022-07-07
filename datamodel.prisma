@@ -181,6 +181,7 @@ type Study {
   slug: String! @unique
   shortDescription: String
   description: String
+  descriptionInProposalCard: ProposalCard @relation(name:"ProposalCardStudyDescription")
   author: Profile! @relation(name:"Creatorofstudy")
   tasks: [Task]!
   settings: Json
@@ -345,6 +346,7 @@ type ProposalCard {
   updatedAt: DateTime! @updatedAt
   comment: String
   tags: [Tag]! @relation(name:"TagProposalCards")
+  studyDescription: [Study]! @relation(name:"ProposalCardStudyDescription")
 }
 
 enum ReviewStage {

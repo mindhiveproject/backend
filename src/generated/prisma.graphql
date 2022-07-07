@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/shevchenko_yury-d70d0e/mindhive-us-back/dev
-# timestamp: Thu Jun 30 2022 13:53:10 GMT+0200 (Central European Summer Time)
+# timestamp: Tue Jul 05 2022 12:47:14 GMT+0200 (Central European Summer Time)
 
 type AggregateAssignment {
   count: Int!
@@ -15327,6 +15327,7 @@ type ProposalCard implements Node {
   updatedAt: DateTime!
   comment: String
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+  studyDescription(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study!]
 }
 
 """A connection to a list of items."""
@@ -15350,6 +15351,7 @@ input ProposalCardCreateInput {
   section: ProposalSectionCreateOneWithoutCardsInput!
   assignedTo: ProfileCreateManyWithoutAssignedToProposalCardInput
   tags: TagCreateManyWithoutProposalCardsInput
+  studyDescription: StudyCreateManyWithoutDescriptionInProposalCardInput
 }
 
 input ProposalCardCreateManyWithoutAssignedToInput {
@@ -15367,6 +15369,11 @@ input ProposalCardCreateManyWithoutTagsInput {
   connect: [ProposalCardWhereUniqueInput!]
 }
 
+input ProposalCardCreateOneWithoutStudyDescriptionInput {
+  create: ProposalCardCreateWithoutStudyDescriptionInput
+  connect: ProposalCardWhereUniqueInput
+}
+
 input ProposalCardCreateWithoutAssignedToInput {
   id: ID
   title: String!
@@ -15377,6 +15384,7 @@ input ProposalCardCreateWithoutAssignedToInput {
   comment: String
   section: ProposalSectionCreateOneWithoutCardsInput!
   tags: TagCreateManyWithoutProposalCardsInput
+  studyDescription: StudyCreateManyWithoutDescriptionInProposalCardInput
 }
 
 input ProposalCardCreateWithoutSectionInput {
@@ -15387,6 +15395,20 @@ input ProposalCardCreateWithoutSectionInput {
   content: String
   settings: Json
   comment: String
+  assignedTo: ProfileCreateManyWithoutAssignedToProposalCardInput
+  tags: TagCreateManyWithoutProposalCardsInput
+  studyDescription: StudyCreateManyWithoutDescriptionInProposalCardInput
+}
+
+input ProposalCardCreateWithoutStudyDescriptionInput {
+  id: ID
+  title: String!
+  description: String
+  position: Float!
+  content: String
+  settings: Json
+  comment: String
+  section: ProposalSectionCreateOneWithoutCardsInput!
   assignedTo: ProfileCreateManyWithoutAssignedToProposalCardInput
   tags: TagCreateManyWithoutProposalCardsInput
 }
@@ -15401,6 +15423,7 @@ input ProposalCardCreateWithoutTagsInput {
   comment: String
   section: ProposalSectionCreateOneWithoutCardsInput!
   assignedTo: ProfileCreateManyWithoutAssignedToProposalCardInput
+  studyDescription: StudyCreateManyWithoutDescriptionInProposalCardInput
 }
 
 """An edge in a connection."""
@@ -15771,6 +15794,7 @@ input ProposalCardUpdateInput {
   section: ProposalSectionUpdateOneRequiredWithoutCardsInput
   assignedTo: ProfileUpdateManyWithoutAssignedToProposalCardInput
   tags: TagUpdateManyWithoutProposalCardsInput
+  studyDescription: StudyUpdateManyWithoutDescriptionInProposalCardInput
 }
 
 input ProposalCardUpdateManyDataInput {
@@ -15832,6 +15856,15 @@ input ProposalCardUpdateManyWithWhereNestedInput {
   data: ProposalCardUpdateManyDataInput!
 }
 
+input ProposalCardUpdateOneWithoutStudyDescriptionInput {
+  create: ProposalCardCreateWithoutStudyDescriptionInput
+  connect: ProposalCardWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ProposalCardUpdateWithoutStudyDescriptionDataInput
+  upsert: ProposalCardUpsertWithoutStudyDescriptionInput
+}
+
 input ProposalCardUpdateWithoutAssignedToDataInput {
   title: String
   description: String
@@ -15841,6 +15874,7 @@ input ProposalCardUpdateWithoutAssignedToDataInput {
   comment: String
   section: ProposalSectionUpdateOneRequiredWithoutCardsInput
   tags: TagUpdateManyWithoutProposalCardsInput
+  studyDescription: StudyUpdateManyWithoutDescriptionInProposalCardInput
 }
 
 input ProposalCardUpdateWithoutSectionDataInput {
@@ -15850,6 +15884,19 @@ input ProposalCardUpdateWithoutSectionDataInput {
   content: String
   settings: Json
   comment: String
+  assignedTo: ProfileUpdateManyWithoutAssignedToProposalCardInput
+  tags: TagUpdateManyWithoutProposalCardsInput
+  studyDescription: StudyUpdateManyWithoutDescriptionInProposalCardInput
+}
+
+input ProposalCardUpdateWithoutStudyDescriptionDataInput {
+  title: String
+  description: String
+  position: Float
+  content: String
+  settings: Json
+  comment: String
+  section: ProposalSectionUpdateOneRequiredWithoutCardsInput
   assignedTo: ProfileUpdateManyWithoutAssignedToProposalCardInput
   tags: TagUpdateManyWithoutProposalCardsInput
 }
@@ -15863,6 +15910,7 @@ input ProposalCardUpdateWithoutTagsDataInput {
   comment: String
   section: ProposalSectionUpdateOneRequiredWithoutCardsInput
   assignedTo: ProfileUpdateManyWithoutAssignedToProposalCardInput
+  studyDescription: StudyUpdateManyWithoutDescriptionInProposalCardInput
 }
 
 input ProposalCardUpdateWithWhereUniqueWithoutAssignedToInput {
@@ -15878,6 +15926,11 @@ input ProposalCardUpdateWithWhereUniqueWithoutSectionInput {
 input ProposalCardUpdateWithWhereUniqueWithoutTagsInput {
   where: ProposalCardWhereUniqueInput!
   data: ProposalCardUpdateWithoutTagsDataInput!
+}
+
+input ProposalCardUpsertWithoutStudyDescriptionInput {
+  update: ProposalCardUpdateWithoutStudyDescriptionDataInput!
+  create: ProposalCardCreateWithoutStudyDescriptionInput!
 }
 
 input ProposalCardUpsertWithWhereUniqueWithoutAssignedToInput {
@@ -16180,6 +16233,9 @@ input ProposalCardWhereInput {
   tags_every: TagWhereInput
   tags_some: TagWhereInput
   tags_none: TagWhereInput
+  studyDescription_every: StudyWhereInput
+  studyDescription_some: StudyWhereInput
+  studyDescription_none: StudyWhereInput
 }
 
 input ProposalCardWhereUniqueInput {
@@ -20052,6 +20108,7 @@ type Study implements Node {
   slug: String!
   shortDescription: String
   description: String
+  descriptionInProposalCard: ProposalCard
   author: Profile!
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task!]
   settings: Json
@@ -20104,6 +20161,7 @@ input StudyCreateInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardCreateOneWithoutStudyDescriptionInput
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -20135,6 +20193,11 @@ input StudyCreateManyWithoutCollaboratorsInput {
 
 input StudyCreateManyWithoutConsentInput {
   create: [StudyCreateWithoutConsentInput!]
+  connect: [StudyWhereUniqueInput!]
+}
+
+input StudyCreateManyWithoutDescriptionInProposalCardInput {
+  create: [StudyCreateWithoutDescriptionInProposalCardInput!]
   connect: [StudyWhereUniqueInput!]
 }
 
@@ -20189,6 +20252,7 @@ input StudyCreateWithoutAuthorInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardCreateOneWithoutStudyDescriptionInput
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
@@ -20218,6 +20282,7 @@ input StudyCreateWithoutClassesInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardCreateOneWithoutStudyDescriptionInput
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -20247,6 +20312,7 @@ input StudyCreateWithoutCollaboratorsInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardCreateOneWithoutStudyDescriptionInput
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -20276,10 +20342,41 @@ input StudyCreateWithoutConsentInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardCreateOneWithoutStudyDescriptionInput
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
+  messages: MessageCreateManyInput
+  proposal: ProposalBoardCreateManyWithoutStudyInput
+  reviews: ReviewCreateManyWithoutStudyInput
+  guests: GuestCreateManyWithoutGuestParticipantInInput
+  classes: ClassCreateManyWithoutStudiesInput
+  scripts: ScriptCreateManyWithoutStudiesInput
+  tags: TagCreateManyWithoutStudiesInput
+}
+
+input StudyCreateWithoutDescriptionInProposalCardInput {
+  id: ID
+  title: String!
+  slug: String!
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  public: Boolean
+  submitForPublishing: Boolean
+  components: Json
+  featured: Boolean
+  isHidden: Boolean
+  diagram: String
+  author: ProfileCreateOneWithoutResearcherInInput!
+  tasks: TaskCreateManyInput
+  participants: ProfileCreateManyWithoutParticipantInInput
+  collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
+  consent: ConsentCreateManyWithoutStudiesInput
   messages: MessageCreateManyInput
   proposal: ProposalBoardCreateManyWithoutStudyInput
   reviews: ReviewCreateManyWithoutStudyInput
@@ -20305,6 +20402,7 @@ input StudyCreateWithoutGuestsInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardCreateOneWithoutStudyDescriptionInput
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -20334,6 +20432,7 @@ input StudyCreateWithoutParticipantsInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardCreateOneWithoutStudyDescriptionInput
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
@@ -20363,6 +20462,7 @@ input StudyCreateWithoutProposalInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardCreateOneWithoutStudyDescriptionInput
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -20392,6 +20492,7 @@ input StudyCreateWithoutReviewsInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardCreateOneWithoutStudyDescriptionInput
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -20421,6 +20522,7 @@ input StudyCreateWithoutScriptsInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardCreateOneWithoutStudyDescriptionInput
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -20450,6 +20552,7 @@ input StudyCreateWithoutTagsInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardCreateOneWithoutStudyDescriptionInput
   author: ProfileCreateOneWithoutResearcherInInput!
   tasks: TaskCreateManyInput
   participants: ProfileCreateManyWithoutParticipantInInput
@@ -20974,6 +21077,7 @@ input StudyUpdateDataInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardUpdateOneWithoutStudyDescriptionInput
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -21003,6 +21107,7 @@ input StudyUpdateInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardUpdateOneWithoutStudyDescriptionInput
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -21097,6 +21202,18 @@ input StudyUpdateManyWithoutConsentInput {
   updateMany: [StudyUpdateManyWithWhereNestedInput!]
   deleteMany: [StudyScalarWhereInput!]
   upsert: [StudyUpsertWithWhereUniqueWithoutConsentInput!]
+}
+
+input StudyUpdateManyWithoutDescriptionInProposalCardInput {
+  create: [StudyCreateWithoutDescriptionInProposalCardInput!]
+  connect: [StudyWhereUniqueInput!]
+  set: [StudyWhereUniqueInput!]
+  disconnect: [StudyWhereUniqueInput!]
+  delete: [StudyWhereUniqueInput!]
+  update: [StudyUpdateWithWhereUniqueWithoutDescriptionInProposalCardInput!]
+  updateMany: [StudyUpdateManyWithWhereNestedInput!]
+  deleteMany: [StudyScalarWhereInput!]
+  upsert: [StudyUpsertWithWhereUniqueWithoutDescriptionInProposalCardInput!]
 }
 
 input StudyUpdateManyWithoutGuestsInput {
@@ -21194,6 +21311,7 @@ input StudyUpdateWithoutAuthorDataInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardUpdateOneWithoutStudyDescriptionInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
@@ -21222,6 +21340,7 @@ input StudyUpdateWithoutClassesDataInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardUpdateOneWithoutStudyDescriptionInput
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -21250,6 +21369,7 @@ input StudyUpdateWithoutCollaboratorsDataInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardUpdateOneWithoutStudyDescriptionInput
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -21278,10 +21398,40 @@ input StudyUpdateWithoutConsentDataInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardUpdateOneWithoutStudyDescriptionInput
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
+  messages: MessageUpdateManyInput
+  proposal: ProposalBoardUpdateManyWithoutStudyInput
+  reviews: ReviewUpdateManyWithoutStudyInput
+  guests: GuestUpdateManyWithoutGuestParticipantInInput
+  classes: ClassUpdateManyWithoutStudiesInput
+  scripts: ScriptUpdateManyWithoutStudiesInput
+  tags: TagUpdateManyWithoutStudiesInput
+}
+
+input StudyUpdateWithoutDescriptionInProposalCardDataInput {
+  title: String
+  slug: String
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  public: Boolean
+  submitForPublishing: Boolean
+  components: Json
+  featured: Boolean
+  isHidden: Boolean
+  diagram: String
+  author: ProfileUpdateOneRequiredWithoutResearcherInInput
+  tasks: TaskUpdateManyInput
+  participants: ProfileUpdateManyWithoutParticipantInInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
+  consent: ConsentUpdateManyWithoutStudiesInput
   messages: MessageUpdateManyInput
   proposal: ProposalBoardUpdateManyWithoutStudyInput
   reviews: ReviewUpdateManyWithoutStudyInput
@@ -21306,6 +21456,7 @@ input StudyUpdateWithoutGuestsDataInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardUpdateOneWithoutStudyDescriptionInput
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -21334,6 +21485,7 @@ input StudyUpdateWithoutParticipantsDataInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardUpdateOneWithoutStudyDescriptionInput
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
@@ -21362,6 +21514,7 @@ input StudyUpdateWithoutProposalDataInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardUpdateOneWithoutStudyDescriptionInput
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -21390,6 +21543,7 @@ input StudyUpdateWithoutReviewsDataInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardUpdateOneWithoutStudyDescriptionInput
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -21418,6 +21572,7 @@ input StudyUpdateWithoutScriptsDataInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardUpdateOneWithoutStudyDescriptionInput
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -21446,6 +21601,7 @@ input StudyUpdateWithoutTagsDataInput {
   featured: Boolean
   isHidden: Boolean
   diagram: String
+  descriptionInProposalCard: ProposalCardUpdateOneWithoutStudyDescriptionInput
   author: ProfileUpdateOneRequiredWithoutResearcherInInput
   tasks: TaskUpdateManyInput
   participants: ProfileUpdateManyWithoutParticipantInInput
@@ -21477,6 +21633,11 @@ input StudyUpdateWithWhereUniqueWithoutCollaboratorsInput {
 input StudyUpdateWithWhereUniqueWithoutConsentInput {
   where: StudyWhereUniqueInput!
   data: StudyUpdateWithoutConsentDataInput!
+}
+
+input StudyUpdateWithWhereUniqueWithoutDescriptionInProposalCardInput {
+  where: StudyWhereUniqueInput!
+  data: StudyUpdateWithoutDescriptionInProposalCardDataInput!
 }
 
 input StudyUpdateWithWhereUniqueWithoutGuestsInput {
@@ -21536,6 +21697,12 @@ input StudyUpsertWithWhereUniqueWithoutConsentInput {
   where: StudyWhereUniqueInput!
   update: StudyUpdateWithoutConsentDataInput!
   create: StudyCreateWithoutConsentInput!
+}
+
+input StudyUpsertWithWhereUniqueWithoutDescriptionInProposalCardInput {
+  where: StudyWhereUniqueInput!
+  update: StudyUpdateWithoutDescriptionInProposalCardDataInput!
+  create: StudyCreateWithoutDescriptionInProposalCardInput!
 }
 
 input StudyUpsertWithWhereUniqueWithoutGuestsInput {
@@ -21951,6 +22118,7 @@ input StudyWhereInput {
 
   """All values not ending with the given string."""
   diagram_not_ends_with: String
+  descriptionInProposalCard: ProposalCardWhereInput
   author: ProfileWhereInput
   tasks_every: TaskWhereInput
   tasks_some: TaskWhereInput

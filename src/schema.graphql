@@ -232,6 +232,8 @@ type Query {
     skip: Int
     first: Int
   ): [Guest]!
+
+  profile(where: ProfileWhereUniqueInput): Profile
 }
 
 type Mutation {
@@ -428,6 +430,7 @@ type Mutation {
   createStudy(
     title: String!
     description: String
+    descriptionInProposalCardId: ID
     shortDescription: String
     settings: Json
     image: String
@@ -445,8 +448,9 @@ type Mutation {
     id: ID!
     slug: String
     title: String
-    shortDescription: String
     description: String
+    descriptionInProposalCardId: ID
+    shortDescription: String
     settings: Json
     image: String
     largeImage: String

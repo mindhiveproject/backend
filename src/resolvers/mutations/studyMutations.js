@@ -44,6 +44,7 @@ const studyMutations = {
     delete updates.consentId;
     delete updates.classes;
     delete updates.tags;
+    delete updates.descriptionInProposalCardId;
 
     const study = await ctx.db.mutation.createStudy(
       {
@@ -75,6 +76,11 @@ const studyMutations = {
                   connect: args.tags.map(tag => ({ id: tag })),
                 }
               : null,
+          descriptionInProposalCard: args.descriptionInProposalCardId
+            ? {
+                connect: { id: args.descriptionInProposalCardId },
+              }
+            : null,
           ...updates,
         },
       },
@@ -173,6 +179,7 @@ const studyMutations = {
     delete updates.consentId;
     delete updates.classes;
     delete updates.tags;
+    delete updates.descriptionInProposalCardId;
 
     // run the update method
     return ctx.db.mutation.updateStudy(
@@ -200,6 +207,11 @@ const studyMutations = {
                   connect: args.tags.map(tag => ({ id: tag })),
                 }
               : null,
+          descriptionInProposalCard: args.descriptionInProposalCardId
+            ? {
+                connect: { id: args.descriptionInProposalCardId },
+              }
+            : null,
         },
         where: {
           id: args.id,
