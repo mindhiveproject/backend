@@ -380,6 +380,8 @@ type Mutation {
     isOriginal: Boolean
     isExternal: Boolean
     link: String
+    image: String
+    largeImage: String
   ): Task!
   updateTask(
     id: ID!
@@ -395,6 +397,8 @@ type Mutation {
     taskType: TaskType
     submitForPublishing: Boolean
     link: String
+    image: String
+    largeImage: String
   ): Task!
   deleteTask(id: ID!): Task
   publishTaskToggle(id: ID!): Task
@@ -411,6 +415,8 @@ type Mutation {
     submitForPublishing: Boolean
     template: Json
     isOriginal: Boolean
+    image: String
+    largeImage: String
   ): Task!
   updateTaskWithTemplate(
     id: ID!
@@ -426,6 +432,8 @@ type Mutation {
     taskType: TaskType
     submitForPublishing: Boolean
     template: Json
+    image: String
+    largeImage: String
   ): Task!
   createStudy(
     title: String!

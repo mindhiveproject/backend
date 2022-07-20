@@ -230,6 +230,8 @@ type Task {
   isOriginal: Boolean
   isExternal: Boolean
   tags: [Tag]! @relation(name:"TagTasks")
+  image: String
+  largeImage: String
 }
 
 type Template {

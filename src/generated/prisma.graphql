@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/shevchenko_yury-d70d0e/mindhive-us-back/dev
-# timestamp: Tue Jul 05 2022 12:47:14 GMT+0200 (Central European Summer Time)
+# timestamp: Wed Jul 20 2022 10:49:11 GMT+0200 (Central European Summer Time)
 
 type AggregateAssignment {
   count: Int!
@@ -24119,6 +24119,8 @@ type Task implements Node {
   isOriginal: Boolean
   isExternal: Boolean
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+  image: String
+  largeImage: String
 }
 
 """A connection to a list of items."""
@@ -24146,6 +24148,8 @@ input TaskCreateInput {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  image: String
+  largeImage: String
   template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
@@ -24203,6 +24207,8 @@ input TaskCreateWithoutAuthorInput {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  image: String
+  largeImage: String
   template: TemplateCreateOneWithoutTasksInput
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
   consent: ConsentCreateOneWithoutTasksInput
@@ -24224,6 +24230,8 @@ input TaskCreateWithoutCollaboratorsInput {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  image: String
+  largeImage: String
   template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   consent: ConsentCreateOneWithoutTasksInput
@@ -24245,6 +24253,8 @@ input TaskCreateWithoutConsentInput {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  image: String
+  largeImage: String
   template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
@@ -24266,6 +24276,8 @@ input TaskCreateWithoutTagsInput {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  image: String
+  largeImage: String
   template: TemplateCreateOneWithoutTasksInput
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
@@ -24287,6 +24299,8 @@ input TaskCreateWithoutTemplateInput {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  image: String
+  largeImage: String
   author: ProfileCreateOneWithoutTaskCreatorInInput!
   collaborators: ProfileCreateManyWithoutCollaboratorInTaskInput
   consent: ConsentCreateOneWithoutTasksInput
@@ -24335,6 +24349,10 @@ enum TaskOrderByInput {
   isOriginal_DESC
   isExternal_ASC
   isExternal_DESC
+  image_ASC
+  image_DESC
+  largeImage_ASC
+  largeImage_DESC
 }
 
 type TaskPreviousValues {
@@ -24354,6 +24372,8 @@ type TaskPreviousValues {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  image: String
+  largeImage: String
 }
 
 input TaskScalarWhereInput {
@@ -24715,6 +24735,86 @@ input TaskScalarWhereInput {
 
   """All values that are not equal to given value."""
   isExternal_not: Boolean
+  image: String
+
+  """All values that are not equal to given value."""
+  image_not: String
+
+  """All values that are contained in given list."""
+  image_in: [String!]
+
+  """All values that are not contained in given list."""
+  image_not_in: [String!]
+
+  """All values less than the given value."""
+  image_lt: String
+
+  """All values less than or equal the given value."""
+  image_lte: String
+
+  """All values greater than the given value."""
+  image_gt: String
+
+  """All values greater than or equal the given value."""
+  image_gte: String
+
+  """All values containing the given string."""
+  image_contains: String
+
+  """All values not containing the given string."""
+  image_not_contains: String
+
+  """All values starting with the given string."""
+  image_starts_with: String
+
+  """All values not starting with the given string."""
+  image_not_starts_with: String
+
+  """All values ending with the given string."""
+  image_ends_with: String
+
+  """All values not ending with the given string."""
+  image_not_ends_with: String
+  largeImage: String
+
+  """All values that are not equal to given value."""
+  largeImage_not: String
+
+  """All values that are contained in given list."""
+  largeImage_in: [String!]
+
+  """All values that are not contained in given list."""
+  largeImage_not_in: [String!]
+
+  """All values less than the given value."""
+  largeImage_lt: String
+
+  """All values less than or equal the given value."""
+  largeImage_lte: String
+
+  """All values greater than the given value."""
+  largeImage_gt: String
+
+  """All values greater than or equal the given value."""
+  largeImage_gte: String
+
+  """All values containing the given string."""
+  largeImage_contains: String
+
+  """All values not containing the given string."""
+  largeImage_not_contains: String
+
+  """All values starting with the given string."""
+  largeImage_starts_with: String
+
+  """All values not starting with the given string."""
+  largeImage_not_starts_with: String
+
+  """All values ending with the given string."""
+  largeImage_ends_with: String
+
+  """All values not ending with the given string."""
+  largeImage_not_ends_with: String
 }
 
 type TaskSubscriptionPayload {
@@ -24776,6 +24876,8 @@ input TaskUpdateDataInput {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  image: String
+  largeImage: String
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
@@ -24797,6 +24899,8 @@ input TaskUpdateInput {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  image: String
+  largeImage: String
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
@@ -24818,6 +24922,8 @@ input TaskUpdateManyDataInput {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  image: String
+  largeImage: String
 }
 
 input TaskUpdateManyInput {
@@ -24846,6 +24952,8 @@ input TaskUpdateManyMutationInput {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  image: String
+  largeImage: String
 }
 
 input TaskUpdateManyWithoutAuthorInput {
@@ -24934,6 +25042,8 @@ input TaskUpdateWithoutAuthorDataInput {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  image: String
+  largeImage: String
   template: TemplateUpdateOneWithoutTasksInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
   consent: ConsentUpdateOneWithoutTasksInput
@@ -24954,6 +25064,8 @@ input TaskUpdateWithoutCollaboratorsDataInput {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  image: String
+  largeImage: String
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   consent: ConsentUpdateOneWithoutTasksInput
@@ -24974,6 +25086,8 @@ input TaskUpdateWithoutConsentDataInput {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  image: String
+  largeImage: String
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
@@ -24994,6 +25108,8 @@ input TaskUpdateWithoutTagsDataInput {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  image: String
+  largeImage: String
   template: TemplateUpdateOneWithoutTasksInput
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
@@ -25014,6 +25130,8 @@ input TaskUpdateWithoutTemplateDataInput {
   taskType: TaskType
   isOriginal: Boolean
   isExternal: Boolean
+  image: String
+  largeImage: String
   author: ProfileUpdateOneRequiredWithoutTaskCreatorInInput
   collaborators: ProfileUpdateManyWithoutCollaboratorInTaskInput
   consent: ConsentUpdateOneWithoutTasksInput
@@ -25450,6 +25568,86 @@ input TaskWhereInput {
 
   """All values that are not equal to given value."""
   isExternal_not: Boolean
+  image: String
+
+  """All values that are not equal to given value."""
+  image_not: String
+
+  """All values that are contained in given list."""
+  image_in: [String!]
+
+  """All values that are not contained in given list."""
+  image_not_in: [String!]
+
+  """All values less than the given value."""
+  image_lt: String
+
+  """All values less than or equal the given value."""
+  image_lte: String
+
+  """All values greater than the given value."""
+  image_gt: String
+
+  """All values greater than or equal the given value."""
+  image_gte: String
+
+  """All values containing the given string."""
+  image_contains: String
+
+  """All values not containing the given string."""
+  image_not_contains: String
+
+  """All values starting with the given string."""
+  image_starts_with: String
+
+  """All values not starting with the given string."""
+  image_not_starts_with: String
+
+  """All values ending with the given string."""
+  image_ends_with: String
+
+  """All values not ending with the given string."""
+  image_not_ends_with: String
+  largeImage: String
+
+  """All values that are not equal to given value."""
+  largeImage_not: String
+
+  """All values that are contained in given list."""
+  largeImage_in: [String!]
+
+  """All values that are not contained in given list."""
+  largeImage_not_in: [String!]
+
+  """All values less than the given value."""
+  largeImage_lt: String
+
+  """All values less than or equal the given value."""
+  largeImage_lte: String
+
+  """All values greater than the given value."""
+  largeImage_gt: String
+
+  """All values greater than or equal the given value."""
+  largeImage_gte: String
+
+  """All values containing the given string."""
+  largeImage_contains: String
+
+  """All values not containing the given string."""
+  largeImage_not_contains: String
+
+  """All values starting with the given string."""
+  largeImage_starts_with: String
+
+  """All values not starting with the given string."""
+  largeImage_not_starts_with: String
+
+  """All values ending with the given string."""
+  largeImage_ends_with: String
+
+  """All values not ending with the given string."""
+  largeImage_not_ends_with: String
   template: TemplateWhereInput
   author: ProfileWhereInput
   collaborators_every: ProfileWhereInput

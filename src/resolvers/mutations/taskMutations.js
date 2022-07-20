@@ -69,6 +69,8 @@ const taskMutations = {
           isOriginal: args.isOriginal,
           isExternal: args.isExternal,
           link: args.link,
+          image: args.image,
+          largeImage: args.largeImage,
         },
       },
       info
@@ -320,6 +322,8 @@ const taskMutations = {
           taskType: args.taskType,
           submitForPublishing: args.submitForPublishing,
           isOriginal: args.isOriginal,
+          image: args.image,
+          largeImage: args.largeImage,
         },
       },
       info
