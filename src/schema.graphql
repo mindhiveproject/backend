@@ -766,4 +766,6 @@ type Profile {
   authorOfHomework: [Homework]!
   mentorIn: [Class]!
   isPublic: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
 }

@@ -63,6 +63,8 @@ type Profile {
   authorOfScript: [Script]! @relation(name:"ScriptAuthor")
   collaboratorOnScript: [Script]! @relation(name:"ScriptCollaborators")
   tags: [Tag]! @relation(name:"TagProfiles")
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type AuthEmail {

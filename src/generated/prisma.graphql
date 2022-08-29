@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/shevchenko_yury-d70d0e/mindhive-us-back/dev
-# timestamp: Wed Jul 20 2022 10:49:11 GMT+0200 (Central European Summer Time)
+# timestamp: Mon Aug 29 2022 15:12:37 GMT+0200 (Central European Summer Time)
 
 type AggregateAssignment {
   count: Int!
@@ -9247,6 +9247,8 @@ type Profile implements Node {
   authorOfScript(where: ScriptWhereInput, orderBy: ScriptOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Script!]
   collaboratorOnScript(where: ScriptWhereInput, orderBy: ScriptOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Script!]
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -11223,6 +11225,10 @@ enum ProfileOrderByInput {
   publicReadableId_DESC
   isPublic_ASC
   isPublic_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type ProfilePreviousValues {
@@ -11239,6 +11245,8 @@ type ProfilePreviousValues {
   publicId: String
   publicReadableId: String
   isPublic: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input ProfileScalarWhereInput {
@@ -11494,6 +11502,50 @@ input ProfileScalarWhereInput {
 
   """All values that are not equal to given value."""
   isPublic_not: Boolean
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 type ProfileSubscriptionPayload {
@@ -14176,6 +14228,50 @@ input ProfileWhereInput {
 
   """All values that are not equal to given value."""
   isPublic_not: Boolean
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
   authEmail_every: AuthEmailWhereInput
   authEmail_some: AuthEmailWhereInput
   authEmail_none: AuthEmailWhereInput
