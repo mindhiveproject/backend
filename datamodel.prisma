@@ -63,6 +63,7 @@ type Profile {
   authorOfScript: [Script]! @relation(name:"ScriptAuthor")
   collaboratorOnScript: [Script]! @relation(name:"ScriptCollaborators")
   tags: [Tag]! @relation(name:"TagProfiles")
+  updates: [Update]! @relation(name:"PlatformUpdates")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -470,6 +471,17 @@ type Tag {
   assignments: [Assignment]! @relation(name:"TagAssignments")
   homeworks: [Homework]! @relation(name:"TagHomeworks")
   scripts: [Script]! @relation(name:"TagScripts")
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Update {
+  id: ID! @id
+  user: Profile! @relation(name:"PlatformUpdates")
+  updateArea: String
+  link: String
+  content: Json
+  hasOpen: Boolean
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

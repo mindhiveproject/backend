@@ -55,6 +55,8 @@ const Query = {
 
   tag: forwardTo('db'),
   tags: forwardTo('db'),
+  update: forwardTo('db'),
+  updates: forwardTo('db'),
 
   profile: forwardTo('db'),
 
@@ -426,6 +428,24 @@ const Query = {
               },
             },
           ],
+        },
+      },
+      info
+    );
+  },
+
+  // return updates of the logged in user
+  myUpdates(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in');
+    }
+    // query parameters where author is the current user
+    return ctx.db.query.updates(
+      {
+        where: {
+          user: {
+            id: ctx.request.userId,
+          },
         },
       },
       info

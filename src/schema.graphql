@@ -219,6 +219,10 @@ type Query {
   tag(where: TagWhereUniqueInput!): Tag
   tags(where: TagWhereInput): [Tag]!
 
+  update(where: UpdateWhereUniqueInput!): Update
+  updates(where: UpdateWhereInput): [Update]!
+  myUpdates: [Update]!
+
   participantsInStudy(
     where: ProfileWhereInput
     orderBy: ProfileOrderByInput
@@ -729,6 +733,10 @@ type Mutation {
   createTag(title: String!, description: String): Tag!
   updateTag(id: ID!, title: String, description: String): Tag!
   deleteTag(id: ID!): SuccessMessage
+
+  createUpdate(forUsers: [ID]!, updateArea: String, link: String, content: Json): SuccessMessage
+  openUpdate(id: ID!, hasOpen: Boolean!): SuccessMessage
+  deleteUpdate(id: ID!): SuccessMessage
 }
 
 type SuccessMessage {
@@ -766,6 +774,7 @@ type Profile {
   authorOfHomework: [Homework]!
   mentorIn: [Class]!
   isPublic: Boolean
+  updates: [Update]!
   createdAt: DateTime
   updatedAt: DateTime
 }
