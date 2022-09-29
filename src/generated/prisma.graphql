@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/shevchenko_yury-d70d0e/mindhive-us-back/dev
-# timestamp: Wed Sep 21 2022 11:57:13 GMT+0200 (Central European Summer Time)
+# timestamp: Thu Sep 29 2022 11:17:13 GMT+0200 (Central European Summer Time)
 
 type AggregateAssignment {
   count: Int!
@@ -2844,6 +2844,7 @@ type Class implements Node {
   studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study!]
   settings: Json
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+  talks(where: TalkWhereInput, orderBy: TalkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Talk!]
 }
 
 """A connection to a list of items."""
@@ -2872,6 +2873,7 @@ input ClassCreateInput {
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
   tags: TagCreateManyWithoutClassesInput
+  talks: TalkCreateManyWithoutClassesInput
 }
 
 input ClassCreateManyWithoutAssignmentsInput {
@@ -2909,6 +2911,11 @@ input ClassCreateManyWithoutTagsInput {
   connect: [ClassWhereUniqueInput!]
 }
 
+input ClassCreateManyWithoutTalksInput {
+  create: [ClassCreateWithoutTalksInput!]
+  connect: [ClassWhereUniqueInput!]
+}
+
 input ClassCreateOneWithoutInvitesInput {
   create: ClassCreateWithoutInvitesInput
   connect: ClassWhereUniqueInput
@@ -2929,6 +2936,7 @@ input ClassCreateWithoutAssignmentsInput {
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
   tags: TagCreateManyWithoutClassesInput
+  talks: TalkCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutCreatorInput {
@@ -2946,6 +2954,7 @@ input ClassCreateWithoutCreatorInput {
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
   tags: TagCreateManyWithoutClassesInput
+  talks: TalkCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutInvitesInput {
@@ -2963,6 +2972,7 @@ input ClassCreateWithoutInvitesInput {
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
   tags: TagCreateManyWithoutClassesInput
+  talks: TalkCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutMentorsInput {
@@ -2980,6 +2990,7 @@ input ClassCreateWithoutMentorsInput {
   assignments: AssignmentCreateManyWithoutClassesInput
   studies: StudyCreateManyWithoutClassesInput
   tags: TagCreateManyWithoutClassesInput
+  talks: TalkCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutNetworkInput {
@@ -2997,6 +3008,7 @@ input ClassCreateWithoutNetworkInput {
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
   tags: TagCreateManyWithoutClassesInput
+  talks: TalkCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutStudentsInput {
@@ -3014,6 +3026,7 @@ input ClassCreateWithoutStudentsInput {
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
   tags: TagCreateManyWithoutClassesInput
+  talks: TalkCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutStudiesInput {
@@ -3031,6 +3044,7 @@ input ClassCreateWithoutStudiesInput {
   assignments: AssignmentCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
   tags: TagCreateManyWithoutClassesInput
+  talks: TalkCreateManyWithoutClassesInput
 }
 
 input ClassCreateWithoutTagsInput {
@@ -3048,6 +3062,25 @@ input ClassCreateWithoutTagsInput {
   assignments: AssignmentCreateManyWithoutClassesInput
   mentors: ProfileCreateManyWithoutMentorInInput
   studies: StudyCreateManyWithoutClassesInput
+  talks: TalkCreateManyWithoutClassesInput
+}
+
+input ClassCreateWithoutTalksInput {
+  id: ID
+  code: String!
+  title: String!
+  description: String
+  image: String
+  largeImage: String
+  settings: Json
+  creator: ProfileCreateOneWithoutTeacherInInput!
+  students: ProfileCreateManyWithoutStudentInInput
+  invites: AuthInviteCreateManyWithoutInvitedInInput
+  network: ClassNetworkCreateManyWithoutClassesInput
+  assignments: AssignmentCreateManyWithoutClassesInput
+  mentors: ProfileCreateManyWithoutMentorInInput
+  studies: StudyCreateManyWithoutClassesInput
+  tags: TagCreateManyWithoutClassesInput
 }
 
 """An edge in a connection."""
@@ -4067,6 +4100,7 @@ input ClassUpdateInput {
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
   tags: TagUpdateManyWithoutClassesInput
+  talks: TalkUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateManyDataInput {
@@ -4171,6 +4205,18 @@ input ClassUpdateManyWithoutTagsInput {
   upsert: [ClassUpsertWithWhereUniqueWithoutTagsInput!]
 }
 
+input ClassUpdateManyWithoutTalksInput {
+  create: [ClassCreateWithoutTalksInput!]
+  connect: [ClassWhereUniqueInput!]
+  set: [ClassWhereUniqueInput!]
+  disconnect: [ClassWhereUniqueInput!]
+  delete: [ClassWhereUniqueInput!]
+  update: [ClassUpdateWithWhereUniqueWithoutTalksInput!]
+  updateMany: [ClassUpdateManyWithWhereNestedInput!]
+  deleteMany: [ClassScalarWhereInput!]
+  upsert: [ClassUpsertWithWhereUniqueWithoutTalksInput!]
+}
+
 input ClassUpdateManyWithWhereNestedInput {
   where: ClassScalarWhereInput!
   data: ClassUpdateManyDataInput!
@@ -4197,6 +4243,7 @@ input ClassUpdateWithoutAssignmentsDataInput {
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
   tags: TagUpdateManyWithoutClassesInput
+  talks: TalkUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutCreatorDataInput {
@@ -4213,6 +4260,7 @@ input ClassUpdateWithoutCreatorDataInput {
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
   tags: TagUpdateManyWithoutClassesInput
+  talks: TalkUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutInvitesDataInput {
@@ -4229,6 +4277,7 @@ input ClassUpdateWithoutInvitesDataInput {
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
   tags: TagUpdateManyWithoutClassesInput
+  talks: TalkUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutMentorsDataInput {
@@ -4245,6 +4294,7 @@ input ClassUpdateWithoutMentorsDataInput {
   assignments: AssignmentUpdateManyWithoutClassesInput
   studies: StudyUpdateManyWithoutClassesInput
   tags: TagUpdateManyWithoutClassesInput
+  talks: TalkUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutNetworkDataInput {
@@ -4261,6 +4311,7 @@ input ClassUpdateWithoutNetworkDataInput {
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
   tags: TagUpdateManyWithoutClassesInput
+  talks: TalkUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutStudentsDataInput {
@@ -4277,6 +4328,7 @@ input ClassUpdateWithoutStudentsDataInput {
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
   tags: TagUpdateManyWithoutClassesInput
+  talks: TalkUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutStudiesDataInput {
@@ -4293,6 +4345,7 @@ input ClassUpdateWithoutStudiesDataInput {
   assignments: AssignmentUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
   tags: TagUpdateManyWithoutClassesInput
+  talks: TalkUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithoutTagsDataInput {
@@ -4309,6 +4362,24 @@ input ClassUpdateWithoutTagsDataInput {
   assignments: AssignmentUpdateManyWithoutClassesInput
   mentors: ProfileUpdateManyWithoutMentorInInput
   studies: StudyUpdateManyWithoutClassesInput
+  talks: TalkUpdateManyWithoutClassesInput
+}
+
+input ClassUpdateWithoutTalksDataInput {
+  code: String
+  title: String
+  description: String
+  image: String
+  largeImage: String
+  settings: Json
+  creator: ProfileUpdateOneRequiredWithoutTeacherInInput
+  students: ProfileUpdateManyWithoutStudentInInput
+  invites: AuthInviteUpdateManyWithoutInvitedInInput
+  network: ClassNetworkUpdateManyWithoutClassesInput
+  assignments: AssignmentUpdateManyWithoutClassesInput
+  mentors: ProfileUpdateManyWithoutMentorInInput
+  studies: StudyUpdateManyWithoutClassesInput
+  tags: TagUpdateManyWithoutClassesInput
 }
 
 input ClassUpdateWithWhereUniqueWithoutAssignmentsInput {
@@ -4344,6 +4415,11 @@ input ClassUpdateWithWhereUniqueWithoutStudiesInput {
 input ClassUpdateWithWhereUniqueWithoutTagsInput {
   where: ClassWhereUniqueInput!
   data: ClassUpdateWithoutTagsDataInput!
+}
+
+input ClassUpdateWithWhereUniqueWithoutTalksInput {
+  where: ClassWhereUniqueInput!
+  data: ClassUpdateWithoutTalksDataInput!
 }
 
 input ClassUpsertWithoutInvitesInput {
@@ -4391,6 +4467,12 @@ input ClassUpsertWithWhereUniqueWithoutTagsInput {
   where: ClassWhereUniqueInput!
   update: ClassUpdateWithoutTagsDataInput!
   create: ClassCreateWithoutTagsInput!
+}
+
+input ClassUpsertWithWhereUniqueWithoutTalksInput {
+  where: ClassWhereUniqueInput!
+  update: ClassUpdateWithoutTalksDataInput!
+  create: ClassCreateWithoutTalksInput!
 }
 
 input ClassWhereInput {
@@ -4708,6 +4790,9 @@ input ClassWhereInput {
   tags_every: TagWhereInput
   tags_some: TagWhereInput
   tags_none: TagWhereInput
+  talks_every: TalkWhereInput
+  talks_some: TalkWhereInput
+  talks_none: TalkWhereInput
 }
 
 input ClassWhereUniqueInput {
@@ -20435,6 +20520,7 @@ type Study implements Node {
   scripts(where: ScriptWhereInput, orderBy: ScriptOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Script!]
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
   diagram: String
+  talks(where: TalkWhereInput, orderBy: TalkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Talk!]
 }
 
 """A connection to a list of items."""
@@ -20476,6 +20562,7 @@ input StudyCreateInput {
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
   tags: TagCreateManyWithoutStudiesInput
+  talks: TalkCreateManyWithoutStudiesInput
 }
 
 input StudyCreateManyWithoutAuthorInput {
@@ -20523,6 +20610,11 @@ input StudyCreateManyWithoutTagsInput {
   connect: [StudyWhereUniqueInput!]
 }
 
+input StudyCreateManyWithoutTalksInput {
+  create: [StudyCreateWithoutTalksInput!]
+  connect: [StudyWhereUniqueInput!]
+}
+
 input StudyCreateOneInput {
   create: StudyCreateInput
   connect: StudyWhereUniqueInput
@@ -20566,6 +20658,7 @@ input StudyCreateWithoutAuthorInput {
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
   tags: TagCreateManyWithoutStudiesInput
+  talks: TalkCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutClassesInput {
@@ -20596,6 +20689,7 @@ input StudyCreateWithoutClassesInput {
   guests: GuestCreateManyWithoutGuestParticipantInInput
   scripts: ScriptCreateManyWithoutStudiesInput
   tags: TagCreateManyWithoutStudiesInput
+  talks: TalkCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutCollaboratorsInput {
@@ -20626,6 +20720,7 @@ input StudyCreateWithoutCollaboratorsInput {
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
   tags: TagCreateManyWithoutStudiesInput
+  talks: TalkCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutConsentInput {
@@ -20656,6 +20751,7 @@ input StudyCreateWithoutConsentInput {
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
   tags: TagCreateManyWithoutStudiesInput
+  talks: TalkCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutDescriptionInProposalCardInput {
@@ -20686,6 +20782,7 @@ input StudyCreateWithoutDescriptionInProposalCardInput {
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
   tags: TagCreateManyWithoutStudiesInput
+  talks: TalkCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutGuestsInput {
@@ -20716,6 +20813,7 @@ input StudyCreateWithoutGuestsInput {
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
   tags: TagCreateManyWithoutStudiesInput
+  talks: TalkCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutParticipantsInput {
@@ -20746,6 +20844,7 @@ input StudyCreateWithoutParticipantsInput {
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
   tags: TagCreateManyWithoutStudiesInput
+  talks: TalkCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutProposalInput {
@@ -20776,6 +20875,7 @@ input StudyCreateWithoutProposalInput {
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
   tags: TagCreateManyWithoutStudiesInput
+  talks: TalkCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutReviewsInput {
@@ -20806,6 +20906,7 @@ input StudyCreateWithoutReviewsInput {
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
   tags: TagCreateManyWithoutStudiesInput
+  talks: TalkCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutScriptsInput {
@@ -20836,6 +20937,7 @@ input StudyCreateWithoutScriptsInput {
   guests: GuestCreateManyWithoutGuestParticipantInInput
   classes: ClassCreateManyWithoutStudiesInput
   tags: TagCreateManyWithoutStudiesInput
+  talks: TalkCreateManyWithoutStudiesInput
 }
 
 input StudyCreateWithoutTagsInput {
@@ -20866,6 +20968,38 @@ input StudyCreateWithoutTagsInput {
   guests: GuestCreateManyWithoutGuestParticipantInInput
   classes: ClassCreateManyWithoutStudiesInput
   scripts: ScriptCreateManyWithoutStudiesInput
+  talks: TalkCreateManyWithoutStudiesInput
+}
+
+input StudyCreateWithoutTalksInput {
+  id: ID
+  title: String!
+  slug: String!
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  public: Boolean
+  submitForPublishing: Boolean
+  components: Json
+  featured: Boolean
+  isHidden: Boolean
+  diagram: String
+  descriptionInProposalCard: ProposalCardCreateOneWithoutStudyDescriptionInput
+  author: ProfileCreateOneWithoutResearcherInInput!
+  tasks: TaskCreateManyInput
+  participants: ProfileCreateManyWithoutParticipantInInput
+  collaborators: ProfileCreateManyWithoutCollaboratorInStudyInput
+  consent: ConsentCreateManyWithoutStudiesInput
+  messages: MessageCreateManyInput
+  proposal: ProposalBoardCreateManyWithoutStudyInput
+  reviews: ReviewCreateManyWithoutStudyInput
+  guests: GuestCreateManyWithoutGuestParticipantInInput
+  classes: ClassCreateManyWithoutStudiesInput
+  scripts: ScriptCreateManyWithoutStudiesInput
+  tags: TagCreateManyWithoutStudiesInput
 }
 
 """An edge in a connection."""
@@ -21392,6 +21526,7 @@ input StudyUpdateDataInput {
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
   tags: TagUpdateManyWithoutStudiesInput
+  talks: TalkUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateInput {
@@ -21422,6 +21557,7 @@ input StudyUpdateInput {
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
   tags: TagUpdateManyWithoutStudiesInput
+  talks: TalkUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateManyDataInput {
@@ -21566,6 +21702,18 @@ input StudyUpdateManyWithoutTagsInput {
   upsert: [StudyUpsertWithWhereUniqueWithoutTagsInput!]
 }
 
+input StudyUpdateManyWithoutTalksInput {
+  create: [StudyCreateWithoutTalksInput!]
+  connect: [StudyWhereUniqueInput!]
+  set: [StudyWhereUniqueInput!]
+  disconnect: [StudyWhereUniqueInput!]
+  delete: [StudyWhereUniqueInput!]
+  update: [StudyUpdateWithWhereUniqueWithoutTalksInput!]
+  updateMany: [StudyUpdateManyWithWhereNestedInput!]
+  deleteMany: [StudyScalarWhereInput!]
+  upsert: [StudyUpsertWithWhereUniqueWithoutTalksInput!]
+}
+
 input StudyUpdateManyWithWhereNestedInput {
   where: StudyScalarWhereInput!
   data: StudyUpdateManyDataInput!
@@ -21625,6 +21773,7 @@ input StudyUpdateWithoutAuthorDataInput {
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
   tags: TagUpdateManyWithoutStudiesInput
+  talks: TalkUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutClassesDataInput {
@@ -21654,6 +21803,7 @@ input StudyUpdateWithoutClassesDataInput {
   guests: GuestUpdateManyWithoutGuestParticipantInInput
   scripts: ScriptUpdateManyWithoutStudiesInput
   tags: TagUpdateManyWithoutStudiesInput
+  talks: TalkUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutCollaboratorsDataInput {
@@ -21683,6 +21833,7 @@ input StudyUpdateWithoutCollaboratorsDataInput {
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
   tags: TagUpdateManyWithoutStudiesInput
+  talks: TalkUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutConsentDataInput {
@@ -21712,6 +21863,7 @@ input StudyUpdateWithoutConsentDataInput {
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
   tags: TagUpdateManyWithoutStudiesInput
+  talks: TalkUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutDescriptionInProposalCardDataInput {
@@ -21741,6 +21893,7 @@ input StudyUpdateWithoutDescriptionInProposalCardDataInput {
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
   tags: TagUpdateManyWithoutStudiesInput
+  talks: TalkUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutGuestsDataInput {
@@ -21770,6 +21923,7 @@ input StudyUpdateWithoutGuestsDataInput {
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
   tags: TagUpdateManyWithoutStudiesInput
+  talks: TalkUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutParticipantsDataInput {
@@ -21799,6 +21953,7 @@ input StudyUpdateWithoutParticipantsDataInput {
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
   tags: TagUpdateManyWithoutStudiesInput
+  talks: TalkUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutProposalDataInput {
@@ -21828,6 +21983,7 @@ input StudyUpdateWithoutProposalDataInput {
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
   tags: TagUpdateManyWithoutStudiesInput
+  talks: TalkUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutReviewsDataInput {
@@ -21857,6 +22013,7 @@ input StudyUpdateWithoutReviewsDataInput {
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
   tags: TagUpdateManyWithoutStudiesInput
+  talks: TalkUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutScriptsDataInput {
@@ -21886,6 +22043,7 @@ input StudyUpdateWithoutScriptsDataInput {
   guests: GuestUpdateManyWithoutGuestParticipantInInput
   classes: ClassUpdateManyWithoutStudiesInput
   tags: TagUpdateManyWithoutStudiesInput
+  talks: TalkUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithoutTagsDataInput {
@@ -21915,6 +22073,37 @@ input StudyUpdateWithoutTagsDataInput {
   guests: GuestUpdateManyWithoutGuestParticipantInInput
   classes: ClassUpdateManyWithoutStudiesInput
   scripts: ScriptUpdateManyWithoutStudiesInput
+  talks: TalkUpdateManyWithoutStudiesInput
+}
+
+input StudyUpdateWithoutTalksDataInput {
+  title: String
+  slug: String
+  shortDescription: String
+  description: String
+  settings: Json
+  image: String
+  largeImage: String
+  info: Json
+  public: Boolean
+  submitForPublishing: Boolean
+  components: Json
+  featured: Boolean
+  isHidden: Boolean
+  diagram: String
+  descriptionInProposalCard: ProposalCardUpdateOneWithoutStudyDescriptionInput
+  author: ProfileUpdateOneRequiredWithoutResearcherInInput
+  tasks: TaskUpdateManyInput
+  participants: ProfileUpdateManyWithoutParticipantInInput
+  collaborators: ProfileUpdateManyWithoutCollaboratorInStudyInput
+  consent: ConsentUpdateManyWithoutStudiesInput
+  messages: MessageUpdateManyInput
+  proposal: ProposalBoardUpdateManyWithoutStudyInput
+  reviews: ReviewUpdateManyWithoutStudyInput
+  guests: GuestUpdateManyWithoutGuestParticipantInInput
+  classes: ClassUpdateManyWithoutStudiesInput
+  scripts: ScriptUpdateManyWithoutStudiesInput
+  tags: TagUpdateManyWithoutStudiesInput
 }
 
 input StudyUpdateWithWhereUniqueWithoutAuthorInput {
@@ -21960,6 +22149,11 @@ input StudyUpdateWithWhereUniqueWithoutScriptsInput {
 input StudyUpdateWithWhereUniqueWithoutTagsInput {
   where: StudyWhereUniqueInput!
   data: StudyUpdateWithoutTagsDataInput!
+}
+
+input StudyUpdateWithWhereUniqueWithoutTalksInput {
+  where: StudyWhereUniqueInput!
+  data: StudyUpdateWithoutTalksDataInput!
 }
 
 input StudyUpsertNestedInput {
@@ -22029,6 +22223,12 @@ input StudyUpsertWithWhereUniqueWithoutTagsInput {
   where: StudyWhereUniqueInput!
   update: StudyUpdateWithoutTagsDataInput!
   create: StudyCreateWithoutTagsInput!
+}
+
+input StudyUpsertWithWhereUniqueWithoutTalksInput {
+  where: StudyWhereUniqueInput!
+  update: StudyUpdateWithoutTalksDataInput!
+  create: StudyCreateWithoutTalksInput!
 }
 
 input StudyWhereInput {
@@ -22455,6 +22655,9 @@ input StudyWhereInput {
   tags_every: TagWhereInput
   tags_some: TagWhereInput
   tags_none: TagWhereInput
+  talks_every: TalkWhereInput
+  talks_some: TalkWhereInput
+  talks_none: TalkWhereInput
 }
 
 input StudyWhereUniqueInput {
@@ -23979,6 +24182,8 @@ type Talk implements Node {
   members(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile!]
   words(where: WordWhereInput, orderBy: WordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Word!]
   settings: Json
+  studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study!]
+  classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -23999,6 +24204,8 @@ input TalkCreateInput {
   author: ProfileCreateOneWithoutAuthorOfTalkInput
   members: ProfileCreateManyWithoutMemberOfTalkInput
   words: WordCreateManyWithoutTalkInput
+  studies: StudyCreateManyWithoutTalksInput
+  classes: ClassCreateManyWithoutTalksInput
 }
 
 input TalkCreateManyWithoutAuthorInput {
@@ -24006,8 +24213,18 @@ input TalkCreateManyWithoutAuthorInput {
   connect: [TalkWhereUniqueInput!]
 }
 
+input TalkCreateManyWithoutClassesInput {
+  create: [TalkCreateWithoutClassesInput!]
+  connect: [TalkWhereUniqueInput!]
+}
+
 input TalkCreateManyWithoutMembersInput {
   create: [TalkCreateWithoutMembersInput!]
+  connect: [TalkWhereUniqueInput!]
+}
+
+input TalkCreateManyWithoutStudiesInput {
+  create: [TalkCreateWithoutStudiesInput!]
   connect: [TalkWhereUniqueInput!]
 }
 
@@ -24021,6 +24238,17 @@ input TalkCreateWithoutAuthorInput {
   settings: Json
   members: ProfileCreateManyWithoutMemberOfTalkInput
   words: WordCreateManyWithoutTalkInput
+  studies: StudyCreateManyWithoutTalksInput
+  classes: ClassCreateManyWithoutTalksInput
+}
+
+input TalkCreateWithoutClassesInput {
+  id: ID
+  settings: Json
+  author: ProfileCreateOneWithoutAuthorOfTalkInput
+  members: ProfileCreateManyWithoutMemberOfTalkInput
+  words: WordCreateManyWithoutTalkInput
+  studies: StudyCreateManyWithoutTalksInput
 }
 
 input TalkCreateWithoutMembersInput {
@@ -24028,6 +24256,17 @@ input TalkCreateWithoutMembersInput {
   settings: Json
   author: ProfileCreateOneWithoutAuthorOfTalkInput
   words: WordCreateManyWithoutTalkInput
+  studies: StudyCreateManyWithoutTalksInput
+  classes: ClassCreateManyWithoutTalksInput
+}
+
+input TalkCreateWithoutStudiesInput {
+  id: ID
+  settings: Json
+  author: ProfileCreateOneWithoutAuthorOfTalkInput
+  members: ProfileCreateManyWithoutMemberOfTalkInput
+  words: WordCreateManyWithoutTalkInput
+  classes: ClassCreateManyWithoutTalksInput
 }
 
 input TalkCreateWithoutWordsInput {
@@ -24035,6 +24274,8 @@ input TalkCreateWithoutWordsInput {
   settings: Json
   author: ProfileCreateOneWithoutAuthorOfTalkInput
   members: ProfileCreateManyWithoutMemberOfTalkInput
+  studies: StudyCreateManyWithoutTalksInput
+  classes: ClassCreateManyWithoutTalksInput
 }
 
 """An edge in a connection."""
@@ -24203,6 +24444,8 @@ input TalkUpdateInput {
   author: ProfileUpdateOneWithoutAuthorOfTalkInput
   members: ProfileUpdateManyWithoutMemberOfTalkInput
   words: WordUpdateManyWithoutTalkInput
+  studies: StudyUpdateManyWithoutTalksInput
+  classes: ClassUpdateManyWithoutTalksInput
 }
 
 input TalkUpdateManyDataInput {
@@ -24225,6 +24468,18 @@ input TalkUpdateManyWithoutAuthorInput {
   upsert: [TalkUpsertWithWhereUniqueWithoutAuthorInput!]
 }
 
+input TalkUpdateManyWithoutClassesInput {
+  create: [TalkCreateWithoutClassesInput!]
+  connect: [TalkWhereUniqueInput!]
+  set: [TalkWhereUniqueInput!]
+  disconnect: [TalkWhereUniqueInput!]
+  delete: [TalkWhereUniqueInput!]
+  update: [TalkUpdateWithWhereUniqueWithoutClassesInput!]
+  updateMany: [TalkUpdateManyWithWhereNestedInput!]
+  deleteMany: [TalkScalarWhereInput!]
+  upsert: [TalkUpsertWithWhereUniqueWithoutClassesInput!]
+}
+
 input TalkUpdateManyWithoutMembersInput {
   create: [TalkCreateWithoutMembersInput!]
   connect: [TalkWhereUniqueInput!]
@@ -24235,6 +24490,18 @@ input TalkUpdateManyWithoutMembersInput {
   updateMany: [TalkUpdateManyWithWhereNestedInput!]
   deleteMany: [TalkScalarWhereInput!]
   upsert: [TalkUpsertWithWhereUniqueWithoutMembersInput!]
+}
+
+input TalkUpdateManyWithoutStudiesInput {
+  create: [TalkCreateWithoutStudiesInput!]
+  connect: [TalkWhereUniqueInput!]
+  set: [TalkWhereUniqueInput!]
+  disconnect: [TalkWhereUniqueInput!]
+  delete: [TalkWhereUniqueInput!]
+  update: [TalkUpdateWithWhereUniqueWithoutStudiesInput!]
+  updateMany: [TalkUpdateManyWithWhereNestedInput!]
+  deleteMany: [TalkScalarWhereInput!]
+  upsert: [TalkUpsertWithWhereUniqueWithoutStudiesInput!]
 }
 
 input TalkUpdateManyWithWhereNestedInput {
@@ -24253,18 +24520,40 @@ input TalkUpdateWithoutAuthorDataInput {
   settings: Json
   members: ProfileUpdateManyWithoutMemberOfTalkInput
   words: WordUpdateManyWithoutTalkInput
+  studies: StudyUpdateManyWithoutTalksInput
+  classes: ClassUpdateManyWithoutTalksInput
+}
+
+input TalkUpdateWithoutClassesDataInput {
+  settings: Json
+  author: ProfileUpdateOneWithoutAuthorOfTalkInput
+  members: ProfileUpdateManyWithoutMemberOfTalkInput
+  words: WordUpdateManyWithoutTalkInput
+  studies: StudyUpdateManyWithoutTalksInput
 }
 
 input TalkUpdateWithoutMembersDataInput {
   settings: Json
   author: ProfileUpdateOneWithoutAuthorOfTalkInput
   words: WordUpdateManyWithoutTalkInput
+  studies: StudyUpdateManyWithoutTalksInput
+  classes: ClassUpdateManyWithoutTalksInput
+}
+
+input TalkUpdateWithoutStudiesDataInput {
+  settings: Json
+  author: ProfileUpdateOneWithoutAuthorOfTalkInput
+  members: ProfileUpdateManyWithoutMemberOfTalkInput
+  words: WordUpdateManyWithoutTalkInput
+  classes: ClassUpdateManyWithoutTalksInput
 }
 
 input TalkUpdateWithoutWordsDataInput {
   settings: Json
   author: ProfileUpdateOneWithoutAuthorOfTalkInput
   members: ProfileUpdateManyWithoutMemberOfTalkInput
+  studies: StudyUpdateManyWithoutTalksInput
+  classes: ClassUpdateManyWithoutTalksInput
 }
 
 input TalkUpdateWithWhereUniqueWithoutAuthorInput {
@@ -24272,9 +24561,19 @@ input TalkUpdateWithWhereUniqueWithoutAuthorInput {
   data: TalkUpdateWithoutAuthorDataInput!
 }
 
+input TalkUpdateWithWhereUniqueWithoutClassesInput {
+  where: TalkWhereUniqueInput!
+  data: TalkUpdateWithoutClassesDataInput!
+}
+
 input TalkUpdateWithWhereUniqueWithoutMembersInput {
   where: TalkWhereUniqueInput!
   data: TalkUpdateWithoutMembersDataInput!
+}
+
+input TalkUpdateWithWhereUniqueWithoutStudiesInput {
+  where: TalkWhereUniqueInput!
+  data: TalkUpdateWithoutStudiesDataInput!
 }
 
 input TalkUpsertWithoutWordsInput {
@@ -24288,10 +24587,22 @@ input TalkUpsertWithWhereUniqueWithoutAuthorInput {
   create: TalkCreateWithoutAuthorInput!
 }
 
+input TalkUpsertWithWhereUniqueWithoutClassesInput {
+  where: TalkWhereUniqueInput!
+  update: TalkUpdateWithoutClassesDataInput!
+  create: TalkCreateWithoutClassesInput!
+}
+
 input TalkUpsertWithWhereUniqueWithoutMembersInput {
   where: TalkWhereUniqueInput!
   update: TalkUpdateWithoutMembersDataInput!
   create: TalkCreateWithoutMembersInput!
+}
+
+input TalkUpsertWithWhereUniqueWithoutStudiesInput {
+  where: TalkWhereUniqueInput!
+  update: TalkUpdateWithoutStudiesDataInput!
+  create: TalkCreateWithoutStudiesInput!
 }
 
 input TalkWhereInput {
@@ -24394,6 +24705,12 @@ input TalkWhereInput {
   words_every: WordWhereInput
   words_some: WordWhereInput
   words_none: WordWhereInput
+  studies_every: StudyWhereInput
+  studies_some: StudyWhereInput
+  studies_none: StudyWhereInput
+  classes_every: ClassWhereInput
+  classes_some: ClassWhereInput
+  classes_none: ClassWhereInput
 }
 
 input TalkWhereUniqueInput {
@@ -27183,6 +27500,9 @@ type Word implements Node {
   message: String!
   new: Boolean
   settings: Json
+  isMain: Boolean
+  parent: Word
+  children(where: WordWhereInput, orderBy: WordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Word!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -27202,12 +27522,20 @@ input WordCreateInput {
   message: String!
   new: Boolean
   settings: Json
+  isMain: Boolean
   author: ProfileCreateOneWithoutAuthorOfWordInput
   talk: TalkCreateOneWithoutWordsInput!
+  parent: WordCreateOneWithoutChildrenInput
+  children: WordCreateManyWithoutParentInput
 }
 
 input WordCreateManyWithoutAuthorInput {
   create: [WordCreateWithoutAuthorInput!]
+  connect: [WordWhereUniqueInput!]
+}
+
+input WordCreateManyWithoutParentInput {
+  create: [WordCreateWithoutParentInput!]
   connect: [WordWhereUniqueInput!]
 }
 
@@ -27216,12 +27544,42 @@ input WordCreateManyWithoutTalkInput {
   connect: [WordWhereUniqueInput!]
 }
 
+input WordCreateOneWithoutChildrenInput {
+  create: WordCreateWithoutChildrenInput
+  connect: WordWhereUniqueInput
+}
+
 input WordCreateWithoutAuthorInput {
   id: ID
   message: String!
   new: Boolean
   settings: Json
+  isMain: Boolean
   talk: TalkCreateOneWithoutWordsInput!
+  parent: WordCreateOneWithoutChildrenInput
+  children: WordCreateManyWithoutParentInput
+}
+
+input WordCreateWithoutChildrenInput {
+  id: ID
+  message: String!
+  new: Boolean
+  settings: Json
+  isMain: Boolean
+  author: ProfileCreateOneWithoutAuthorOfWordInput
+  talk: TalkCreateOneWithoutWordsInput!
+  parent: WordCreateOneWithoutChildrenInput
+}
+
+input WordCreateWithoutParentInput {
+  id: ID
+  message: String!
+  new: Boolean
+  settings: Json
+  isMain: Boolean
+  author: ProfileCreateOneWithoutAuthorOfWordInput
+  talk: TalkCreateOneWithoutWordsInput!
+  children: WordCreateManyWithoutParentInput
 }
 
 input WordCreateWithoutTalkInput {
@@ -27229,7 +27587,10 @@ input WordCreateWithoutTalkInput {
   message: String!
   new: Boolean
   settings: Json
+  isMain: Boolean
   author: ProfileCreateOneWithoutAuthorOfWordInput
+  parent: WordCreateOneWithoutChildrenInput
+  children: WordCreateManyWithoutParentInput
 }
 
 """An edge in a connection."""
@@ -27250,6 +27611,8 @@ enum WordOrderByInput {
   new_DESC
   settings_ASC
   settings_DESC
+  isMain_ASC
+  isMain_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -27261,6 +27624,7 @@ type WordPreviousValues {
   message: String!
   new: Boolean
   settings: Json
+  isMain: Boolean
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -27358,6 +27722,10 @@ input WordScalarWhereInput {
 
   """All values that are not equal to given value."""
   new_not: Boolean
+  isMain: Boolean
+
+  """All values that are not equal to given value."""
+  isMain_not: Boolean
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -27447,20 +27815,25 @@ input WordUpdateInput {
   message: String
   new: Boolean
   settings: Json
+  isMain: Boolean
   author: ProfileUpdateOneWithoutAuthorOfWordInput
   talk: TalkUpdateOneRequiredWithoutWordsInput
+  parent: WordUpdateOneWithoutChildrenInput
+  children: WordUpdateManyWithoutParentInput
 }
 
 input WordUpdateManyDataInput {
   message: String
   new: Boolean
   settings: Json
+  isMain: Boolean
 }
 
 input WordUpdateManyMutationInput {
   message: String
   new: Boolean
   settings: Json
+  isMain: Boolean
 }
 
 input WordUpdateManyWithoutAuthorInput {
@@ -27473,6 +27846,18 @@ input WordUpdateManyWithoutAuthorInput {
   updateMany: [WordUpdateManyWithWhereNestedInput!]
   deleteMany: [WordScalarWhereInput!]
   upsert: [WordUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input WordUpdateManyWithoutParentInput {
+  create: [WordCreateWithoutParentInput!]
+  connect: [WordWhereUniqueInput!]
+  set: [WordWhereUniqueInput!]
+  disconnect: [WordWhereUniqueInput!]
+  delete: [WordWhereUniqueInput!]
+  update: [WordUpdateWithWhereUniqueWithoutParentInput!]
+  updateMany: [WordUpdateManyWithWhereNestedInput!]
+  deleteMany: [WordScalarWhereInput!]
+  upsert: [WordUpsertWithWhereUniqueWithoutParentInput!]
 }
 
 input WordUpdateManyWithoutTalkInput {
@@ -27492,18 +27877,53 @@ input WordUpdateManyWithWhereNestedInput {
   data: WordUpdateManyDataInput!
 }
 
+input WordUpdateOneWithoutChildrenInput {
+  create: WordCreateWithoutChildrenInput
+  connect: WordWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: WordUpdateWithoutChildrenDataInput
+  upsert: WordUpsertWithoutChildrenInput
+}
+
 input WordUpdateWithoutAuthorDataInput {
   message: String
   new: Boolean
   settings: Json
+  isMain: Boolean
   talk: TalkUpdateOneRequiredWithoutWordsInput
+  parent: WordUpdateOneWithoutChildrenInput
+  children: WordUpdateManyWithoutParentInput
+}
+
+input WordUpdateWithoutChildrenDataInput {
+  message: String
+  new: Boolean
+  settings: Json
+  isMain: Boolean
+  author: ProfileUpdateOneWithoutAuthorOfWordInput
+  talk: TalkUpdateOneRequiredWithoutWordsInput
+  parent: WordUpdateOneWithoutChildrenInput
+}
+
+input WordUpdateWithoutParentDataInput {
+  message: String
+  new: Boolean
+  settings: Json
+  isMain: Boolean
+  author: ProfileUpdateOneWithoutAuthorOfWordInput
+  talk: TalkUpdateOneRequiredWithoutWordsInput
+  children: WordUpdateManyWithoutParentInput
 }
 
 input WordUpdateWithoutTalkDataInput {
   message: String
   new: Boolean
   settings: Json
+  isMain: Boolean
   author: ProfileUpdateOneWithoutAuthorOfWordInput
+  parent: WordUpdateOneWithoutChildrenInput
+  children: WordUpdateManyWithoutParentInput
 }
 
 input WordUpdateWithWhereUniqueWithoutAuthorInput {
@@ -27511,15 +27931,31 @@ input WordUpdateWithWhereUniqueWithoutAuthorInput {
   data: WordUpdateWithoutAuthorDataInput!
 }
 
+input WordUpdateWithWhereUniqueWithoutParentInput {
+  where: WordWhereUniqueInput!
+  data: WordUpdateWithoutParentDataInput!
+}
+
 input WordUpdateWithWhereUniqueWithoutTalkInput {
   where: WordWhereUniqueInput!
   data: WordUpdateWithoutTalkDataInput!
+}
+
+input WordUpsertWithoutChildrenInput {
+  update: WordUpdateWithoutChildrenDataInput!
+  create: WordCreateWithoutChildrenInput!
 }
 
 input WordUpsertWithWhereUniqueWithoutAuthorInput {
   where: WordWhereUniqueInput!
   update: WordUpdateWithoutAuthorDataInput!
   create: WordCreateWithoutAuthorInput!
+}
+
+input WordUpsertWithWhereUniqueWithoutParentInput {
+  where: WordWhereUniqueInput!
+  update: WordUpdateWithoutParentDataInput!
+  create: WordCreateWithoutParentInput!
 }
 
 input WordUpsertWithWhereUniqueWithoutTalkInput {
@@ -27621,6 +28057,10 @@ input WordWhereInput {
 
   """All values that are not equal to given value."""
   new_not: Boolean
+  isMain: Boolean
+
+  """All values that are not equal to given value."""
+  isMain_not: Boolean
   createdAt: DateTime
 
   """All values that are not equal to given value."""
@@ -27667,6 +28107,10 @@ input WordWhereInput {
   updatedAt_gte: DateTime
   author: ProfileWhereInput
   talk: TalkWhereInput
+  parent: WordWhereInput
+  children_every: WordWhereInput
+  children_some: WordWhereInput
+  children_none: WordWhereInput
 }
 
 input WordWhereUniqueInput {

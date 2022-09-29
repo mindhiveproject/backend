@@ -19,6 +19,14 @@ const wordMutations = {
             },
           },
           message: args.message,
+          isMain: args.isMain,
+          parent: args.parent
+            ? {
+                connect: {
+                  id: args.parent,
+                },
+              }
+            : null,
           settings: args.settings,
         },
       },
@@ -27,9 +35,30 @@ const wordMutations = {
     return word;
   },
 
-  // update the word
+  // update the message in the chat (post in the forum)
+  async updateWord(parent, args, ctx, info) {
+    // take a copy of updates
+    const updates = { ...args };
+    // remove the ID from the updates
+    delete updates.id;
+    const word = await ctx.db.mutation.updateWord(
+      {
+        data: { ...updates },
+        where: {
+          id: args.id,
+        },
+      },
+      info
+    );
+    return word;
+  },
 
   // delete word
+  async deleteWord(parent, args, ctx, info) {
+    const where = { id: args.id };
+    await ctx.db.mutation.deleteWord({ where }, info);
+    return { message: 'You deleted the message!' };
+  },
 };
 
 module.exports = wordMutations;

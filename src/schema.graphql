@@ -238,6 +238,9 @@ type Query {
   ): [Guest]!
 
   profile(where: ProfileWhereUniqueInput): Profile
+
+  words(where: WordWhereInput): [Word]!
+  word(where: WordWhereUniqueInput): Word
 }
 
 type Mutation {
@@ -660,10 +663,12 @@ type Mutation {
     isPublic: Boolean
   ): Profile
 
-  createWord(talk: ID!, message: String!, settings: Json): Word
+  createWord(talk: ID!, message: String!, isMain: Boolean, parent: ID, settings: Json): Word
+  updateWord(id: ID!, message: String, settings: Json): Word
+  deleteWord(id: ID!): SuccessMessage
 
-  createTalk(members: [ID]!, settings: Json): Talk
-  updateTalk(id: ID!, members: [ID]!, settings: Json): Talk
+  createTalk(members: [ID], studies: [ID], classes: [ID], settings: Json): Talk
+  updateTalk(id: ID!, members: [ID], studies: [ID], classes: [ID], settings: Json): Talk
   addMembersToTalk(id: ID!, members: [ID]!): Talk
   leaveGroupChat(id: ID!): Talk
   deleteGroupChat(id: ID!): Talk

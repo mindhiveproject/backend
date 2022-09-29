@@ -4,8 +4,11 @@ const talkMutations = {
     if (!ctx.request.userId) {
       throw new Error('You must be logged in to do that!');
     }
-    // transform array of members
+    // transform arrays of IDs
     const members = args.members.map(member => ({ id: member }));
+    const classes = args.classes.map(theClass => ({ id: theClass }));
+    const studies = args.studies.map(study => ({ id: study }));
+
     const talk = await ctx.db.mutation.createTalk(
       {
         data: {
@@ -16,6 +19,12 @@ const talkMutations = {
           },
           members: {
             connect: members,
+          },
+          classes: {
+            connect: classes,
+          },
+          studies: {
+            connect: studies,
           },
           settings: args.settings,
         },

@@ -132,6 +132,7 @@ type Class {
   studies: [Study]! @relation(name:"StudyClasses")
   settings: Json
   tags: [Tag]! @relation(name:"TagClasses")
+  talks: [Talk]! @relation(name:"ClassTalks")
 }
 
 type ClassNetwork {
@@ -209,6 +210,7 @@ type Study {
   scripts: [Script]! @relation(name:"ScriptStudies")
   tags: [Tag]! @relation(name:"TagStudies")
   diagram: String
+  talks: [Talk]! @relation(name:"StudyTalks")
 }
 
 type Task {
@@ -378,6 +380,9 @@ type Word {
   message: String!
   new: Boolean
   settings: Json
+  isMain: Boolean
+  parent: Word @relation(name:"PostComments")
+  children: [Word]! @relation(name:"PostComments")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -388,6 +393,8 @@ type Talk {
   members: [Profile]! @relation(name:"TalkMember")
   words: [Word]! @relation(name:"TalkWords")
   settings: Json
+  studies: [Study]! @relation(name:"StudyTalks")
+  classes: [Class]! @relation(name:"ClassTalks")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

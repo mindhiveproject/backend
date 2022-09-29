@@ -59,6 +59,8 @@ const Query = {
   updates: forwardTo('db'),
 
   profile: forwardTo('db'),
+  words: forwardTo('db'),
+  word: forwardTo('db'),
 
   // return only public studies by default
   studies(parent, args, ctx, info) {
