@@ -5,6 +5,7 @@ const wordMutations = {
       throw new Error('You must be logged in to do that!');
     }
 
+    // save new message in the database
     const word = await ctx.db.mutation.createWord(
       {
         data: {
@@ -32,6 +33,58 @@ const wordMutations = {
       },
       info
     );
+
+    // create updates for all chat members
+    // 1. find the talk
+    const talk = await ctx.db.query.talk(
+      {
+        where: { id: args.talk },
+      },
+      `{ id
+        settings
+        members { id }
+        studies { id author { id } collaborators { id } }
+        classes { id creator { id } mentors { id } students { id } }
+      }`
+    );
+    // 2. find all members, members of studies and classes
+    const members = talk?.members.map(m => m.id);
+
+    const studyMembers = [
+      ...talk?.studies?.map(study => study?.author?.id),
+      ...talk?.studies?.map(study => study?.collaborators?.map(c => c?.id)),
+    ].flat(1);
+
+    const classMembers = [
+      ...talk?.classes?.map(theClass => theClass?.creator?.id),
+      ...talk?.classes?.map(theClass => theClass?.mentors?.map(m => m?.id)),
+      ...talk?.classes?.map(theClass => theClass?.students?.map(s => s?.id)),
+    ].flat(1);
+
+    // 3. remove the user's own ID from the list
+    const forUsers = [
+      ...new Set([...members, ...studyMembers, ...classMembers]),
+    ].filter(id => !!id && id !== ctx.request.userId);
+
+    // 4. create an update for all members
+    await forUsers.map(async user => {
+      await ctx.db.mutation.createUpdate(
+        {
+          data: {
+            user: {
+              connect: { id: user },
+            },
+            updateArea: 'CHAT',
+            link: '/dashboard/chat',
+            content: {
+              message: `There is a new message in the chat ${talk?.settings?.title}`,
+            },
+          },
+        },
+        `{ id }`
+      );
+    });
+
     return word;
   },
 
