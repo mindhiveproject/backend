@@ -64,6 +64,8 @@ const Query = {
   words: forwardTo('db'),
   word: forwardTo('db'),
 
+  summaryResults: forwardTo('db'),
+
   // return only public studies by default
   studies(parent, args, ctx, info) {
     return ctx.db.query.studies(

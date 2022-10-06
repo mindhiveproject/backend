@@ -75,7 +75,7 @@ const resultsMutations = {
         `{ id }`
       );
 
-      return { message: 'Created' };
+      return createdResult;
     }
 
     const updatedResult = await ctx.db.mutation.updateResult(
@@ -94,7 +94,7 @@ const resultsMutations = {
       `{ id }`
     );
 
-    return { message: 'Updated' };
+    return updatedResult;
   },
 
   // delete result
@@ -347,6 +347,53 @@ const resultsMutations = {
     return {
       message: `Result was updated to the status - ${args.status}`,
     };
+  },
+
+  // submit a new aggregated results from open API
+  async submitAggregatedResultFromAPI(parent, args, ctx, info) {
+    const summaryResult = await ctx.db.mutation.createSummaryResult(
+      {
+        data: {
+          user: args.userId
+            ? {
+                connect: { id: args.userId },
+              }
+            : null,
+          guest: args.guestId
+            ? {
+                connect: { id: args.guestId },
+              }
+            : null,
+          study: args.studyId
+            ? {
+                connect: { id: args.studyId },
+              }
+            : null,
+          template: args.templateId
+            ? {
+                connect: { id: args.templateId },
+              }
+            : null,
+          task: args.taskId
+            ? {
+                connect: { id: args.taskId },
+              }
+            : null,
+          testVersion: args.version,
+          metadataId: args.metadataId,
+          dataPolicy: args.dataPolicy,
+          fullResult: args.fullResultId
+            ? {
+                connect: { id: args.fullResultId },
+              }
+            : null,
+          data: args.data,
+        },
+      },
+      `{ id }`
+    );
+
+    return { message: 'Summary data were uploaded' };
   },
 };
 

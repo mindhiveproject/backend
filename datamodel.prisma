@@ -492,3 +492,19 @@ type Update {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
+
+type SummaryResult {
+  id: ID! @id
+  user: Profile #relationship to Profile
+  guest: Guest #relationship to Guest Profile
+  study: Study #relationship to Study
+  template: Template #relationship to Template
+  task: Task!
+  testVersion: String
+  metadataId: String
+  dataPolicy: String
+  fullResult: Result #relationship to Result
+  data: Json
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}

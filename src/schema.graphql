@@ -241,6 +241,8 @@ type Query {
 
   words(where: WordWhereInput): [Word]!
   word(where: WordWhereUniqueInput): Word
+
+  summaryResults(where: SummaryResultWhereInput): [SummaryResult]!
 }
 
 type Mutation {
@@ -348,6 +350,18 @@ type Mutation {
     resultType: ResultType
     version: String
     guestId: ID
+  ): Result
+  submitAggregatedResultFromAPI(
+    userId: ID
+    guestId: ID
+    studyId: ID
+    templateId: ID
+    taskId: ID
+    version: String
+    metadataId: String
+    dataPolicy: String
+    fullResultId: ID
+    data: Json
   ): SuccessMessage
   updateResultsInfo(id: ID!, info: Json): SuccessMessage
   createTemplate(

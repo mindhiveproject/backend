@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/shevchenko_yury-d70d0e/mindhive-us-back/dev
-# timestamp: Thu Sep 29 2022 11:17:13 GMT+0200 (Central European Summer Time)
+# timestamp: Thu Oct 06 2022 10:56:55 GMT+0200 (Central European Summer Time)
 
 type AggregateAssignment {
   count: Int!
@@ -90,6 +90,10 @@ type AggregateScript {
 }
 
 type AggregateStudy {
+  count: Int!
+}
+
+type AggregateSummaryResult {
   count: Int!
 }
 
@@ -6133,6 +6137,11 @@ input GuestCreateManyWithoutGuestParticipantInInput {
   connect: [GuestWhereUniqueInput!]
 }
 
+input GuestCreateOneInput {
+  create: GuestCreateInput
+  connect: GuestWhereUniqueInput
+}
+
 input GuestCreateOneWithoutResultsInput {
   create: GuestCreateWithoutResultsInput
   connect: GuestWhereUniqueInput
@@ -6416,6 +6425,19 @@ input GuestSubscriptionWhereInput {
   node: GuestWhereInput
 }
 
+input GuestUpdateDataInput {
+  publicId: String
+  publicReadableId: String
+  info: Json
+  generalInfo: Json
+  tasksInfo: Json
+  studiesInfo: Json
+  consentsInfo: Json
+  guestAccountExpiry: String
+  results: ResultUpdateManyWithoutGuestInput
+  guestParticipantIn: StudyUpdateManyWithoutGuestsInput
+}
+
 input GuestUpdateInput {
   publicId: String
   publicReadableId: String
@@ -6468,6 +6490,15 @@ input GuestUpdateManyWithWhereNestedInput {
   data: GuestUpdateManyDataInput!
 }
 
+input GuestUpdateOneInput {
+  create: GuestCreateInput
+  connect: GuestWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: GuestUpdateDataInput
+  upsert: GuestUpsertNestedInput
+}
+
 input GuestUpdateOneWithoutResultsInput {
   create: GuestCreateWithoutResultsInput
   connect: GuestWhereUniqueInput
@@ -6504,6 +6535,11 @@ input GuestUpdateWithoutResultsDataInput {
 input GuestUpdateWithWhereUniqueWithoutGuestParticipantInInput {
   where: GuestWhereUniqueInput!
   data: GuestUpdateWithoutGuestParticipantInDataInput!
+}
+
+input GuestUpsertNestedInput {
+  update: GuestUpdateDataInput!
+  create: GuestCreateInput!
 }
 
 input GuestUpsertWithoutResultsInput {
@@ -8464,7 +8500,6 @@ type Mutation {
   createSchool(data: SchoolCreateInput!): School!
   createClass(data: ClassCreateInput!): Class!
   createClassNetwork(data: ClassNetworkCreateInput!): ClassNetwork!
-  createResult(data: ResultCreateInput!): Result!
   createConsent(data: ConsentCreateInput!): Consent!
   createJournal(data: JournalCreateInput!): Journal!
   createPost(data: PostCreateInput!): Post!
@@ -8476,13 +8511,15 @@ type Mutation {
   createTalk(data: TalkCreateInput!): Talk!
   createAssignment(data: AssignmentCreateInput!): Assignment!
   createHomework(data: HomeworkCreateInput!): Homework!
-  createGuest(data: GuestCreateInput!): Guest!
   createScript(data: ScriptCreateInput!): Script!
   createTag(data: TagCreateInput!): Tag!
   createUpdate(data: UpdateCreateInput!): Update!
-  createStudy(data: StudyCreateInput!): Study!
+  createSummaryResult(data: SummaryResultCreateInput!): SummaryResult!
   createTemplate(data: TemplateCreateInput!): Template!
   createTask(data: TaskCreateInput!): Task!
+  createStudy(data: StudyCreateInput!): Study!
+  createGuest(data: GuestCreateInput!): Guest!
+  createResult(data: ResultCreateInput!): Result!
   createProfile(data: ProfileCreateInput!): Profile!
   createMessage(data: MessageCreateInput!): Message!
   createData(data: DataCreateInput!): Data!
@@ -8493,7 +8530,6 @@ type Mutation {
   updateSchool(data: SchoolUpdateInput!, where: SchoolWhereUniqueInput!): School
   updateClass(data: ClassUpdateInput!, where: ClassWhereUniqueInput!): Class
   updateClassNetwork(data: ClassNetworkUpdateInput!, where: ClassNetworkWhereUniqueInput!): ClassNetwork
-  updateResult(data: ResultUpdateInput!, where: ResultWhereUniqueInput!): Result
   updateConsent(data: ConsentUpdateInput!, where: ConsentWhereUniqueInput!): Consent
   updateJournal(data: JournalUpdateInput!, where: JournalWhereUniqueInput!): Journal
   updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
@@ -8505,13 +8541,15 @@ type Mutation {
   updateTalk(data: TalkUpdateInput!, where: TalkWhereUniqueInput!): Talk
   updateAssignment(data: AssignmentUpdateInput!, where: AssignmentWhereUniqueInput!): Assignment
   updateHomework(data: HomeworkUpdateInput!, where: HomeworkWhereUniqueInput!): Homework
-  updateGuest(data: GuestUpdateInput!, where: GuestWhereUniqueInput!): Guest
   updateScript(data: ScriptUpdateInput!, where: ScriptWhereUniqueInput!): Script
   updateTag(data: TagUpdateInput!, where: TagWhereUniqueInput!): Tag
   updateUpdate(data: UpdateUpdateInput!, where: UpdateWhereUniqueInput!): Update
-  updateStudy(data: StudyUpdateInput!, where: StudyWhereUniqueInput!): Study
+  updateSummaryResult(data: SummaryResultUpdateInput!, where: SummaryResultWhereUniqueInput!): SummaryResult
   updateTemplate(data: TemplateUpdateInput!, where: TemplateWhereUniqueInput!): Template
   updateTask(data: TaskUpdateInput!, where: TaskWhereUniqueInput!): Task
+  updateStudy(data: StudyUpdateInput!, where: StudyWhereUniqueInput!): Study
+  updateGuest(data: GuestUpdateInput!, where: GuestWhereUniqueInput!): Guest
+  updateResult(data: ResultUpdateInput!, where: ResultWhereUniqueInput!): Result
   updateProfile(data: ProfileUpdateInput!, where: ProfileWhereUniqueInput!): Profile
   updateMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
   updateData(data: DataUpdateInput!, where: DataWhereUniqueInput!): Data
@@ -8522,7 +8560,6 @@ type Mutation {
   deleteSchool(where: SchoolWhereUniqueInput!): School
   deleteClass(where: ClassWhereUniqueInput!): Class
   deleteClassNetwork(where: ClassNetworkWhereUniqueInput!): ClassNetwork
-  deleteResult(where: ResultWhereUniqueInput!): Result
   deleteConsent(where: ConsentWhereUniqueInput!): Consent
   deleteJournal(where: JournalWhereUniqueInput!): Journal
   deletePost(where: PostWhereUniqueInput!): Post
@@ -8534,13 +8571,15 @@ type Mutation {
   deleteTalk(where: TalkWhereUniqueInput!): Talk
   deleteAssignment(where: AssignmentWhereUniqueInput!): Assignment
   deleteHomework(where: HomeworkWhereUniqueInput!): Homework
-  deleteGuest(where: GuestWhereUniqueInput!): Guest
   deleteScript(where: ScriptWhereUniqueInput!): Script
   deleteTag(where: TagWhereUniqueInput!): Tag
   deleteUpdate(where: UpdateWhereUniqueInput!): Update
-  deleteStudy(where: StudyWhereUniqueInput!): Study
+  deleteSummaryResult(where: SummaryResultWhereUniqueInput!): SummaryResult
   deleteTemplate(where: TemplateWhereUniqueInput!): Template
   deleteTask(where: TaskWhereUniqueInput!): Task
+  deleteStudy(where: StudyWhereUniqueInput!): Study
+  deleteGuest(where: GuestWhereUniqueInput!): Guest
+  deleteResult(where: ResultWhereUniqueInput!): Result
   deleteProfile(where: ProfileWhereUniqueInput!): Profile
   deleteMessage(where: MessageWhereUniqueInput!): Message
   deleteData(where: DataWhereUniqueInput!): Data
@@ -8551,7 +8590,6 @@ type Mutation {
   upsertSchool(where: SchoolWhereUniqueInput!, create: SchoolCreateInput!, update: SchoolUpdateInput!): School!
   upsertClass(where: ClassWhereUniqueInput!, create: ClassCreateInput!, update: ClassUpdateInput!): Class!
   upsertClassNetwork(where: ClassNetworkWhereUniqueInput!, create: ClassNetworkCreateInput!, update: ClassNetworkUpdateInput!): ClassNetwork!
-  upsertResult(where: ResultWhereUniqueInput!, create: ResultCreateInput!, update: ResultUpdateInput!): Result!
   upsertConsent(where: ConsentWhereUniqueInput!, create: ConsentCreateInput!, update: ConsentUpdateInput!): Consent!
   upsertJournal(where: JournalWhereUniqueInput!, create: JournalCreateInput!, update: JournalUpdateInput!): Journal!
   upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
@@ -8563,13 +8601,15 @@ type Mutation {
   upsertTalk(where: TalkWhereUniqueInput!, create: TalkCreateInput!, update: TalkUpdateInput!): Talk!
   upsertAssignment(where: AssignmentWhereUniqueInput!, create: AssignmentCreateInput!, update: AssignmentUpdateInput!): Assignment!
   upsertHomework(where: HomeworkWhereUniqueInput!, create: HomeworkCreateInput!, update: HomeworkUpdateInput!): Homework!
-  upsertGuest(where: GuestWhereUniqueInput!, create: GuestCreateInput!, update: GuestUpdateInput!): Guest!
   upsertScript(where: ScriptWhereUniqueInput!, create: ScriptCreateInput!, update: ScriptUpdateInput!): Script!
   upsertTag(where: TagWhereUniqueInput!, create: TagCreateInput!, update: TagUpdateInput!): Tag!
   upsertUpdate(where: UpdateWhereUniqueInput!, create: UpdateCreateInput!, update: UpdateUpdateInput!): Update!
-  upsertStudy(where: StudyWhereUniqueInput!, create: StudyCreateInput!, update: StudyUpdateInput!): Study!
+  upsertSummaryResult(where: SummaryResultWhereUniqueInput!, create: SummaryResultCreateInput!, update: SummaryResultUpdateInput!): SummaryResult!
   upsertTemplate(where: TemplateWhereUniqueInput!, create: TemplateCreateInput!, update: TemplateUpdateInput!): Template!
   upsertTask(where: TaskWhereUniqueInput!, create: TaskCreateInput!, update: TaskUpdateInput!): Task!
+  upsertStudy(where: StudyWhereUniqueInput!, create: StudyCreateInput!, update: StudyUpdateInput!): Study!
+  upsertGuest(where: GuestWhereUniqueInput!, create: GuestCreateInput!, update: GuestUpdateInput!): Guest!
+  upsertResult(where: ResultWhereUniqueInput!, create: ResultCreateInput!, update: ResultUpdateInput!): Result!
   upsertProfile(where: ProfileWhereUniqueInput!, create: ProfileCreateInput!, update: ProfileUpdateInput!): Profile!
   upsertMessage(where: MessageWhereUniqueInput!, create: MessageCreateInput!, update: MessageUpdateInput!): Message!
   upsertData(where: DataWhereUniqueInput!, create: DataCreateInput!, update: DataUpdateInput!): Data!
@@ -8579,7 +8619,6 @@ type Mutation {
   updateManySchools(data: SchoolUpdateManyMutationInput!, where: SchoolWhereInput): BatchPayload!
   updateManyClasses(data: ClassUpdateManyMutationInput!, where: ClassWhereInput): BatchPayload!
   updateManyClassNetworks(data: ClassNetworkUpdateManyMutationInput!, where: ClassNetworkWhereInput): BatchPayload!
-  updateManyResults(data: ResultUpdateManyMutationInput!, where: ResultWhereInput): BatchPayload!
   updateManyConsents(data: ConsentUpdateManyMutationInput!, where: ConsentWhereInput): BatchPayload!
   updateManyJournals(data: JournalUpdateManyMutationInput!, where: JournalWhereInput): BatchPayload!
   updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
@@ -8591,13 +8630,15 @@ type Mutation {
   updateManyTalks(data: TalkUpdateManyMutationInput!, where: TalkWhereInput): BatchPayload!
   updateManyAssignments(data: AssignmentUpdateManyMutationInput!, where: AssignmentWhereInput): BatchPayload!
   updateManyHomeworks(data: HomeworkUpdateManyMutationInput!, where: HomeworkWhereInput): BatchPayload!
-  updateManyGuests(data: GuestUpdateManyMutationInput!, where: GuestWhereInput): BatchPayload!
   updateManyScripts(data: ScriptUpdateManyMutationInput!, where: ScriptWhereInput): BatchPayload!
   updateManyTags(data: TagUpdateManyMutationInput!, where: TagWhereInput): BatchPayload!
   updateManyUpdates(data: UpdateUpdateManyMutationInput!, where: UpdateWhereInput): BatchPayload!
-  updateManyStudies(data: StudyUpdateManyMutationInput!, where: StudyWhereInput): BatchPayload!
+  updateManySummaryResults(data: SummaryResultUpdateManyMutationInput!, where: SummaryResultWhereInput): BatchPayload!
   updateManyTemplates(data: TemplateUpdateManyMutationInput!, where: TemplateWhereInput): BatchPayload!
   updateManyTasks(data: TaskUpdateManyMutationInput!, where: TaskWhereInput): BatchPayload!
+  updateManyStudies(data: StudyUpdateManyMutationInput!, where: StudyWhereInput): BatchPayload!
+  updateManyGuests(data: GuestUpdateManyMutationInput!, where: GuestWhereInput): BatchPayload!
+  updateManyResults(data: ResultUpdateManyMutationInput!, where: ResultWhereInput): BatchPayload!
   updateManyProfiles(data: ProfileUpdateManyMutationInput!, where: ProfileWhereInput): BatchPayload!
   updateManyMessages(data: MessageUpdateManyMutationInput!, where: MessageWhereInput): BatchPayload!
   updateManyDatas(data: DataUpdateManyMutationInput!, where: DataWhereInput): BatchPayload!
@@ -8608,7 +8649,6 @@ type Mutation {
   deleteManySchools(where: SchoolWhereInput): BatchPayload!
   deleteManyClasses(where: ClassWhereInput): BatchPayload!
   deleteManyClassNetworks(where: ClassNetworkWhereInput): BatchPayload!
-  deleteManyResults(where: ResultWhereInput): BatchPayload!
   deleteManyConsents(where: ConsentWhereInput): BatchPayload!
   deleteManyJournals(where: JournalWhereInput): BatchPayload!
   deleteManyPosts(where: PostWhereInput): BatchPayload!
@@ -8620,13 +8660,15 @@ type Mutation {
   deleteManyTalks(where: TalkWhereInput): BatchPayload!
   deleteManyAssignments(where: AssignmentWhereInput): BatchPayload!
   deleteManyHomeworks(where: HomeworkWhereInput): BatchPayload!
-  deleteManyGuests(where: GuestWhereInput): BatchPayload!
   deleteManyScripts(where: ScriptWhereInput): BatchPayload!
   deleteManyTags(where: TagWhereInput): BatchPayload!
   deleteManyUpdates(where: UpdateWhereInput): BatchPayload!
-  deleteManyStudies(where: StudyWhereInput): BatchPayload!
+  deleteManySummaryResults(where: SummaryResultWhereInput): BatchPayload!
   deleteManyTemplates(where: TemplateWhereInput): BatchPayload!
   deleteManyTasks(where: TaskWhereInput): BatchPayload!
+  deleteManyStudies(where: StudyWhereInput): BatchPayload!
+  deleteManyGuests(where: GuestWhereInput): BatchPayload!
+  deleteManyResults(where: ResultWhereInput): BatchPayload!
   deleteManyProfiles(where: ProfileWhereInput): BatchPayload!
   deleteManyMessages(where: MessageWhereInput): BatchPayload!
   deleteManyDatas(where: DataWhereInput): BatchPayload!
@@ -12065,6 +12107,15 @@ input ProfileUpdateManyWithoutTagsInput {
 input ProfileUpdateManyWithWhereNestedInput {
   where: ProfileScalarWhereInput!
   data: ProfileUpdateManyDataInput!
+}
+
+input ProfileUpdateOneInput {
+  create: ProfileCreateInput
+  connect: ProfileWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ProfileUpdateDataInput
+  upsert: ProfileUpsertNestedInput
 }
 
 input ProfileUpdateOneRequiredInput {
@@ -17293,7 +17344,6 @@ type Query {
   schools(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [School]!
   classes(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Class]!
   classNetworks(where: ClassNetworkWhereInput, orderBy: ClassNetworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ClassNetwork]!
-  results(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Result]!
   consents(where: ConsentWhereInput, orderBy: ConsentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Consent]!
   journals(where: JournalWhereInput, orderBy: JournalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Journal]!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
@@ -17305,13 +17355,15 @@ type Query {
   talks(where: TalkWhereInput, orderBy: TalkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Talk]!
   assignments(where: AssignmentWhereInput, orderBy: AssignmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Assignment]!
   homeworks(where: HomeworkWhereInput, orderBy: HomeworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Homework]!
-  guests(where: GuestWhereInput, orderBy: GuestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Guest]!
   scripts(where: ScriptWhereInput, orderBy: ScriptOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Script]!
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag]!
   updates(where: UpdateWhereInput, orderBy: UpdateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Update]!
-  studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study]!
+  summaryResults(where: SummaryResultWhereInput, orderBy: SummaryResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SummaryResult]!
   templates(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Template]!
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task]!
+  studies(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Study]!
+  guests(where: GuestWhereInput, orderBy: GuestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Guest]!
+  results(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Result]!
   profiles(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Profile]!
   messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message]!
   datas(where: DataWhereInput, orderBy: DataOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Data]!
@@ -17322,7 +17374,6 @@ type Query {
   school(where: SchoolWhereUniqueInput!): School
   class(where: ClassWhereUniqueInput!): Class
   classNetwork(where: ClassNetworkWhereUniqueInput!): ClassNetwork
-  result(where: ResultWhereUniqueInput!): Result
   consent(where: ConsentWhereUniqueInput!): Consent
   journal(where: JournalWhereUniqueInput!): Journal
   post(where: PostWhereUniqueInput!): Post
@@ -17334,13 +17385,15 @@ type Query {
   talk(where: TalkWhereUniqueInput!): Talk
   assignment(where: AssignmentWhereUniqueInput!): Assignment
   homework(where: HomeworkWhereUniqueInput!): Homework
-  guest(where: GuestWhereUniqueInput!): Guest
   script(where: ScriptWhereUniqueInput!): Script
   tag(where: TagWhereUniqueInput!): Tag
   update(where: UpdateWhereUniqueInput!): Update
-  study(where: StudyWhereUniqueInput!): Study
+  summaryResult(where: SummaryResultWhereUniqueInput!): SummaryResult
   template(where: TemplateWhereUniqueInput!): Template
   task(where: TaskWhereUniqueInput!): Task
+  study(where: StudyWhereUniqueInput!): Study
+  guest(where: GuestWhereUniqueInput!): Guest
+  result(where: ResultWhereUniqueInput!): Result
   profile(where: ProfileWhereUniqueInput!): Profile
   message(where: MessageWhereUniqueInput!): Message
   data(where: DataWhereUniqueInput!): Data
@@ -17351,7 +17404,6 @@ type Query {
   schoolsConnection(where: SchoolWhereInput, orderBy: SchoolOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SchoolConnection!
   classesConnection(where: ClassWhereInput, orderBy: ClassOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClassConnection!
   classNetworksConnection(where: ClassNetworkWhereInput, orderBy: ClassNetworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ClassNetworkConnection!
-  resultsConnection(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ResultConnection!
   consentsConnection(where: ConsentWhereInput, orderBy: ConsentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ConsentConnection!
   journalsConnection(where: JournalWhereInput, orderBy: JournalOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): JournalConnection!
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
@@ -17363,13 +17415,15 @@ type Query {
   talksConnection(where: TalkWhereInput, orderBy: TalkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TalkConnection!
   assignmentsConnection(where: AssignmentWhereInput, orderBy: AssignmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AssignmentConnection!
   homeworksConnection(where: HomeworkWhereInput, orderBy: HomeworkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): HomeworkConnection!
-  guestsConnection(where: GuestWhereInput, orderBy: GuestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GuestConnection!
   scriptsConnection(where: ScriptWhereInput, orderBy: ScriptOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ScriptConnection!
   tagsConnection(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TagConnection!
   updatesConnection(where: UpdateWhereInput, orderBy: UpdateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UpdateConnection!
-  studiesConnection(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StudyConnection!
+  summaryResultsConnection(where: SummaryResultWhereInput, orderBy: SummaryResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SummaryResultConnection!
   templatesConnection(where: TemplateWhereInput, orderBy: TemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TemplateConnection!
   tasksConnection(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TaskConnection!
+  studiesConnection(where: StudyWhereInput, orderBy: StudyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StudyConnection!
+  guestsConnection(where: GuestWhereInput, orderBy: GuestOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GuestConnection!
+  resultsConnection(where: ResultWhereInput, orderBy: ResultOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ResultConnection!
   profilesConnection(where: ProfileWhereInput, orderBy: ProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProfileConnection!
   messagesConnection(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MessageConnection!
   datasConnection(where: DataWhereInput, orderBy: DataOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DataConnection!
@@ -17439,6 +17493,11 @@ input ResultCreateManyWithoutGuestInput {
 input ResultCreateManyWithoutUserInput {
   create: [ResultCreateWithoutUserInput!]
   connect: [ResultWhereUniqueInput!]
+}
+
+input ResultCreateOneInput {
+  create: ResultCreateInput
+  connect: ResultWhereUniqueInput
 }
 
 input ResultCreateWithoutGuestInput {
@@ -17857,6 +17916,24 @@ enum ResultType {
   MAIN
 }
 
+input ResultUpdateDataInput {
+  quantity: Int
+  data: Json
+  dataPolicy: String
+  token: String
+  payload: String
+  info: Json
+  resultType: ResultType
+  testVersion: String
+  template: TemplateUpdateOneInput
+  task: TaskUpdateOneRequiredInput
+  user: ProfileUpdateOneWithoutResultsInput
+  guest: GuestUpdateOneWithoutResultsInput
+  study: StudyUpdateOneInput
+  incrementalData: DataUpdateManyInput
+  fullData: DataUpdateOneInput
+}
+
 input ResultUpdateInput {
   quantity: Int
   data: Json
@@ -17926,6 +18003,15 @@ input ResultUpdateManyWithWhereNestedInput {
   data: ResultUpdateManyDataInput!
 }
 
+input ResultUpdateOneInput {
+  create: ResultCreateInput
+  connect: ResultWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ResultUpdateDataInput
+  upsert: ResultUpsertNestedInput
+}
+
 input ResultUpdateWithoutGuestDataInput {
   quantity: Int
   data: Json
@@ -17968,6 +18054,11 @@ input ResultUpdateWithWhereUniqueWithoutGuestInput {
 input ResultUpdateWithWhereUniqueWithoutUserInput {
   where: ResultWhereUniqueInput!
   data: ResultUpdateWithoutUserDataInput!
+}
+
+input ResultUpsertNestedInput {
+  update: ResultUpdateDataInput!
+  create: ResultCreateInput!
 }
 
 input ResultUpsertWithWhereUniqueWithoutGuestInput {
@@ -22673,7 +22764,6 @@ type Subscription {
   school(where: SchoolSubscriptionWhereInput): SchoolSubscriptionPayload
   class(where: ClassSubscriptionWhereInput): ClassSubscriptionPayload
   classNetwork(where: ClassNetworkSubscriptionWhereInput): ClassNetworkSubscriptionPayload
-  result(where: ResultSubscriptionWhereInput): ResultSubscriptionPayload
   consent(where: ConsentSubscriptionWhereInput): ConsentSubscriptionPayload
   journal(where: JournalSubscriptionWhereInput): JournalSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
@@ -22685,16 +22775,378 @@ type Subscription {
   talk(where: TalkSubscriptionWhereInput): TalkSubscriptionPayload
   assignment(where: AssignmentSubscriptionWhereInput): AssignmentSubscriptionPayload
   homework(where: HomeworkSubscriptionWhereInput): HomeworkSubscriptionPayload
-  guest(where: GuestSubscriptionWhereInput): GuestSubscriptionPayload
   script(where: ScriptSubscriptionWhereInput): ScriptSubscriptionPayload
   tag(where: TagSubscriptionWhereInput): TagSubscriptionPayload
   update(where: UpdateSubscriptionWhereInput): UpdateSubscriptionPayload
-  study(where: StudySubscriptionWhereInput): StudySubscriptionPayload
+  summaryResult(where: SummaryResultSubscriptionWhereInput): SummaryResultSubscriptionPayload
   template(where: TemplateSubscriptionWhereInput): TemplateSubscriptionPayload
   task(where: TaskSubscriptionWhereInput): TaskSubscriptionPayload
+  study(where: StudySubscriptionWhereInput): StudySubscriptionPayload
+  guest(where: GuestSubscriptionWhereInput): GuestSubscriptionPayload
+  result(where: ResultSubscriptionWhereInput): ResultSubscriptionPayload
   profile(where: ProfileSubscriptionWhereInput): ProfileSubscriptionPayload
   message(where: MessageSubscriptionWhereInput): MessageSubscriptionPayload
   data(where: DataSubscriptionWhereInput): DataSubscriptionPayload
+}
+
+type SummaryResult implements Node {
+  id: ID!
+  user: Profile
+  guest: Guest
+  study: Study
+  template: Template
+  task: Task!
+  testVersion: String
+  metadataId: String
+  dataPolicy: String
+  fullResult: Result
+  data: Json
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type SummaryResultConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [SummaryResultEdge]!
+  aggregate: AggregateSummaryResult!
+}
+
+input SummaryResultCreateInput {
+  id: ID
+  testVersion: String
+  metadataId: String
+  dataPolicy: String
+  data: Json
+  user: ProfileCreateOneInput
+  guest: GuestCreateOneInput
+  study: StudyCreateOneInput
+  template: TemplateCreateOneInput
+  task: TaskCreateOneInput!
+  fullResult: ResultCreateOneInput
+}
+
+"""An edge in a connection."""
+type SummaryResultEdge {
+  """The item at the end of the edge."""
+  node: SummaryResult!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum SummaryResultOrderByInput {
+  id_ASC
+  id_DESC
+  testVersion_ASC
+  testVersion_DESC
+  metadataId_ASC
+  metadataId_DESC
+  dataPolicy_ASC
+  dataPolicy_DESC
+  data_ASC
+  data_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type SummaryResultPreviousValues {
+  id: ID!
+  testVersion: String
+  metadataId: String
+  dataPolicy: String
+  data: Json
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type SummaryResultSubscriptionPayload {
+  mutation: MutationType!
+  node: SummaryResult
+  updatedFields: [String!]
+  previousValues: SummaryResultPreviousValues
+}
+
+input SummaryResultSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SummaryResultSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SummaryResultSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SummaryResultSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: SummaryResultWhereInput
+}
+
+input SummaryResultUpdateInput {
+  testVersion: String
+  metadataId: String
+  dataPolicy: String
+  data: Json
+  user: ProfileUpdateOneInput
+  guest: GuestUpdateOneInput
+  study: StudyUpdateOneInput
+  template: TemplateUpdateOneInput
+  task: TaskUpdateOneRequiredInput
+  fullResult: ResultUpdateOneInput
+}
+
+input SummaryResultUpdateManyMutationInput {
+  testVersion: String
+  metadataId: String
+  dataPolicy: String
+  data: Json
+}
+
+input SummaryResultWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SummaryResultWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SummaryResultWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SummaryResultWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  testVersion: String
+
+  """All values that are not equal to given value."""
+  testVersion_not: String
+
+  """All values that are contained in given list."""
+  testVersion_in: [String!]
+
+  """All values that are not contained in given list."""
+  testVersion_not_in: [String!]
+
+  """All values less than the given value."""
+  testVersion_lt: String
+
+  """All values less than or equal the given value."""
+  testVersion_lte: String
+
+  """All values greater than the given value."""
+  testVersion_gt: String
+
+  """All values greater than or equal the given value."""
+  testVersion_gte: String
+
+  """All values containing the given string."""
+  testVersion_contains: String
+
+  """All values not containing the given string."""
+  testVersion_not_contains: String
+
+  """All values starting with the given string."""
+  testVersion_starts_with: String
+
+  """All values not starting with the given string."""
+  testVersion_not_starts_with: String
+
+  """All values ending with the given string."""
+  testVersion_ends_with: String
+
+  """All values not ending with the given string."""
+  testVersion_not_ends_with: String
+  metadataId: String
+
+  """All values that are not equal to given value."""
+  metadataId_not: String
+
+  """All values that are contained in given list."""
+  metadataId_in: [String!]
+
+  """All values that are not contained in given list."""
+  metadataId_not_in: [String!]
+
+  """All values less than the given value."""
+  metadataId_lt: String
+
+  """All values less than or equal the given value."""
+  metadataId_lte: String
+
+  """All values greater than the given value."""
+  metadataId_gt: String
+
+  """All values greater than or equal the given value."""
+  metadataId_gte: String
+
+  """All values containing the given string."""
+  metadataId_contains: String
+
+  """All values not containing the given string."""
+  metadataId_not_contains: String
+
+  """All values starting with the given string."""
+  metadataId_starts_with: String
+
+  """All values not starting with the given string."""
+  metadataId_not_starts_with: String
+
+  """All values ending with the given string."""
+  metadataId_ends_with: String
+
+  """All values not ending with the given string."""
+  metadataId_not_ends_with: String
+  dataPolicy: String
+
+  """All values that are not equal to given value."""
+  dataPolicy_not: String
+
+  """All values that are contained in given list."""
+  dataPolicy_in: [String!]
+
+  """All values that are not contained in given list."""
+  dataPolicy_not_in: [String!]
+
+  """All values less than the given value."""
+  dataPolicy_lt: String
+
+  """All values less than or equal the given value."""
+  dataPolicy_lte: String
+
+  """All values greater than the given value."""
+  dataPolicy_gt: String
+
+  """All values greater than or equal the given value."""
+  dataPolicy_gte: String
+
+  """All values containing the given string."""
+  dataPolicy_contains: String
+
+  """All values not containing the given string."""
+  dataPolicy_not_contains: String
+
+  """All values starting with the given string."""
+  dataPolicy_starts_with: String
+
+  """All values not starting with the given string."""
+  dataPolicy_not_starts_with: String
+
+  """All values ending with the given string."""
+  dataPolicy_ends_with: String
+
+  """All values not ending with the given string."""
+  dataPolicy_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  user: ProfileWhereInput
+  guest: GuestWhereInput
+  study: StudyWhereInput
+  template: TemplateWhereInput
+  task: TaskWhereInput
+  fullResult: ResultWhereInput
+}
+
+input SummaryResultWhereUniqueInput {
+  id: ID
 }
 
 type Tag implements Node {
