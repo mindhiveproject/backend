@@ -253,6 +253,7 @@ type Template {
   style: String
   tasks: [Task]!
   settings: Json
+  file: String
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

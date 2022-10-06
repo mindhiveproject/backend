@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/shevchenko_yury-d70d0e/mindhive-us-back/dev
-# timestamp: Thu Oct 06 2022 10:56:55 GMT+0200 (Central European Summer Time)
+# timestamp: Thu Oct 06 2022 17:48:51 GMT+0200 (Central European Summer Time)
 
 type AggregateAssignment {
   count: Int!
@@ -26750,6 +26750,7 @@ type Template implements Node {
   style: String
   tasks(where: TaskWhereInput, orderBy: TaskOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Task!]
   settings: Json
+  file: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -26776,6 +26777,7 @@ input TemplateCreateInput {
   script: String
   style: String
   settings: Json
+  file: String
   author: ProfileCreateOneInput!
   tasks: TaskCreateManyWithoutTemplateInput
 }
@@ -26802,6 +26804,7 @@ input TemplateCreateWithoutTasksInput {
   script: String
   style: String
   settings: Json
+  file: String
   author: ProfileCreateOneInput!
 }
 
@@ -26837,6 +26840,8 @@ enum TemplateOrderByInput {
   style_DESC
   settings_ASC
   settings_DESC
+  file_ASC
+  file_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -26855,6 +26860,7 @@ type TemplatePreviousValues {
   script: String
   style: String
   settings: Json
+  file: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -26909,6 +26915,7 @@ input TemplateUpdateDataInput {
   script: String
   style: String
   settings: Json
+  file: String
   author: ProfileUpdateOneRequiredInput
   tasks: TaskUpdateManyWithoutTemplateInput
 }
@@ -26924,6 +26931,7 @@ input TemplateUpdateInput {
   script: String
   style: String
   settings: Json
+  file: String
   author: ProfileUpdateOneRequiredInput
   tasks: TaskUpdateManyWithoutTemplateInput
 }
@@ -26939,6 +26947,7 @@ input TemplateUpdateManyMutationInput {
   script: String
   style: String
   settings: Json
+  file: String
 }
 
 input TemplateUpdateOneInput {
@@ -26970,6 +26979,7 @@ input TemplateUpdateWithoutTasksDataInput {
   script: String
   style: String
   settings: Json
+  file: String
   author: ProfileUpdateOneRequiredInput
 }
 
@@ -27352,6 +27362,46 @@ input TemplateWhereInput {
 
   """All values not ending with the given string."""
   style_not_ends_with: String
+  file: String
+
+  """All values that are not equal to given value."""
+  file_not: String
+
+  """All values that are contained in given list."""
+  file_in: [String!]
+
+  """All values that are not contained in given list."""
+  file_not_in: [String!]
+
+  """All values less than the given value."""
+  file_lt: String
+
+  """All values less than or equal the given value."""
+  file_lte: String
+
+  """All values greater than the given value."""
+  file_gt: String
+
+  """All values greater than or equal the given value."""
+  file_gte: String
+
+  """All values containing the given string."""
+  file_contains: String
+
+  """All values not containing the given string."""
+  file_not_contains: String
+
+  """All values starting with the given string."""
+  file_starts_with: String
+
+  """All values not starting with the given string."""
+  file_not_starts_with: String
+
+  """All values ending with the given string."""
+  file_ends_with: String
+
+  """All values not ending with the given string."""
+  file_not_ends_with: String
   createdAt: DateTime
 
   """All values that are not equal to given value."""

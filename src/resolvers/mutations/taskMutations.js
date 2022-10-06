@@ -287,6 +287,7 @@ const taskMutations = {
           style: args.template.style,
           parameters: args.template.parameters,
           settings: args.template.settings,
+          file: args.template.file,
         },
       },
       `{ id }`
@@ -359,6 +360,7 @@ const taskMutations = {
             style: args.template.style,
             parameters: args.template.parameters,
             settings: args.template.settings,
+            file: args.template.file,
           },
           where: {
             id: preTask.template.id,

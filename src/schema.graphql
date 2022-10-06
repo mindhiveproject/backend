@@ -375,6 +375,7 @@ type Mutation {
     script: String
     style: String
     settings: Json
+    file: String
   ): Template!
   updateTemplate(
     id: ID!
@@ -385,6 +386,7 @@ type Mutation {
     script: String
     style: String
     settings: Json
+    file: String
   ): Template!
   deleteTemplate(id: ID!): Template
   createTask(
