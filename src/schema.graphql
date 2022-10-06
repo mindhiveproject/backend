@@ -207,6 +207,7 @@ type Query {
 
   countStudies(where: StudyWhereInput): StudyConnection
   countComponents(where: TaskWhereInput): TaskConnection
+  countTemplates(where: TemplateWhereInput): TemplateConnection
   countUsers(where: ProfileWhereInput): ProfileConnection
   countClasses(where: ClassWhereInput): ClassConnection
   countStudyParticipants(where: ProfileWhereInput): ProfileConnection

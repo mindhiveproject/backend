@@ -93,6 +93,22 @@ const taskQueries = {
     return componentsConnection;
   },
 
+  // count all templates
+  async countTemplates(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error('You must be logged in to do that!');
+    }
+    const templatesConnection = await ctx.db.query.templatesConnection(
+      {
+        where: {
+          ...args.where,
+        },
+      },
+      info
+    );
+    return templatesConnection;
+  },
+
   // get all tasks
   async allTasks(parent, args, ctx, info) {
     // check if the user has permission to see all users
