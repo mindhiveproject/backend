@@ -327,6 +327,7 @@ type ProposalBoard {
   checklist: Json
   reviews: [Review]! @relation(name:"ProposalReview")
   tags: [Tag]! @relation(name:"TagProposals")
+  settings: Json
 }
 
 type ProposalSection {

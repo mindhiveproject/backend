@@ -7,13 +7,14 @@ const proposalMutations = {
     const where = { id: args.id };
     const template = await ctx.db.query.proposalBoard(
       { where },
-      `{ id slug title description sections { id title position cards { id title description position content } } }`
+      `{ id slug title description settings sections { id title position cards { id title description position content } } }`
     );
 
     // make a full copy
     const argumentsToCopy = {
       title: template.title,
       description: template.description,
+      settings: template.settings,
       slug: `${template.slug}-${Date.now()}-${Math.round(
         Math.random() * 100000
       )}`, // to do where the slug should be taken from?
@@ -238,8 +239,31 @@ const proposalMutations = {
     return card;
   },
 
-  // update card
-  async updateProposalCard(parent, args, ctx, info) {
+  // update card position
+  async updateProposalCardPosition(parent, args, ctx, info) {
+    const card = await ctx.db.mutation.updateProposalCard(
+      {
+        data: {
+          section: args.sectionId
+            ? {
+                connect: {
+                  id: args.sectionId,
+                },
+              }
+            : null,
+          position: args.position,
+        },
+        where: {
+          id: args.id,
+        },
+      },
+      info
+    );
+    return card;
+  },
+
+  // update card content
+  async updateProposalCardContent(parent, args, ctx, info) {
     // add collaborators
     let assignedTo = [];
     if (args.assignedTo) {
@@ -279,22 +303,14 @@ const proposalMutations = {
     const card = await ctx.db.mutation.updateProposalCard(
       {
         data: {
-          position: args.position,
           title: args.title,
+          description: args.description,
           content: args.content,
           comment: args.comment,
-          description: args.description,
-          section: args.sectionId
-            ? {
-                connect: {
-                  id: args.sectionId,
-                },
-              }
-            : null,
+          settings: args.settings,
           assignedTo: {
             connect: assignedTo,
           },
-          settings: args.settings,
         },
         where: {
           id: args.id,

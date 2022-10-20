@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/shevchenko_yury-d70d0e/mindhive-us-back/dev
-# timestamp: Thu Oct 06 2022 17:48:51 GMT+0200 (Central European Summer Time)
+# timestamp: Thu Oct 20 2022 09:26:25 GMT+0200 (Central European Summer Time)
 
 type AggregateAssignment {
   count: Int!
@@ -14741,6 +14741,7 @@ type ProposalBoard implements Node {
   checklist: Json
   reviews(where: ReviewWhereInput, orderBy: ReviewOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Review!]
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+  settings: Json
 }
 
 """A connection to a list of items."""
@@ -14761,6 +14762,7 @@ input ProposalBoardCreateInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
   creator: ProfileCreateOneWithoutCreatorOfProposalInput
   author: ProfileCreateOneWithoutAuthorOfProposalInput
   collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
@@ -14813,6 +14815,7 @@ input ProposalBoardCreateWithoutAuthorInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
   creator: ProfileCreateOneWithoutCreatorOfProposalInput
   collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
   study: StudyCreateOneWithoutProposalInput
@@ -14829,6 +14832,7 @@ input ProposalBoardCreateWithoutCollaboratorsInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
   creator: ProfileCreateOneWithoutCreatorOfProposalInput
   author: ProfileCreateOneWithoutAuthorOfProposalInput
   study: StudyCreateOneWithoutProposalInput
@@ -14845,6 +14849,7 @@ input ProposalBoardCreateWithoutCreatorInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
   author: ProfileCreateOneWithoutAuthorOfProposalInput
   collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
   study: StudyCreateOneWithoutProposalInput
@@ -14861,6 +14866,7 @@ input ProposalBoardCreateWithoutReviewsInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
   creator: ProfileCreateOneWithoutCreatorOfProposalInput
   author: ProfileCreateOneWithoutAuthorOfProposalInput
   collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
@@ -14877,6 +14883,7 @@ input ProposalBoardCreateWithoutSectionsInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
   creator: ProfileCreateOneWithoutCreatorOfProposalInput
   author: ProfileCreateOneWithoutAuthorOfProposalInput
   collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
@@ -14893,6 +14900,7 @@ input ProposalBoardCreateWithoutStudyInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
   creator: ProfileCreateOneWithoutCreatorOfProposalInput
   author: ProfileCreateOneWithoutAuthorOfProposalInput
   collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
@@ -14909,6 +14917,7 @@ input ProposalBoardCreateWithoutTagsInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
   creator: ProfileCreateOneWithoutCreatorOfProposalInput
   author: ProfileCreateOneWithoutAuthorOfProposalInput
   collaborators: ProfileCreateManyWithoutCollaboratorOnProposalInput
@@ -14945,6 +14954,8 @@ enum ProposalBoardOrderByInput {
   isSubmitted_DESC
   checklist_ASC
   checklist_DESC
+  settings_ASC
+  settings_DESC
 }
 
 type ProposalBoardPreviousValues {
@@ -14957,6 +14968,7 @@ type ProposalBoardPreviousValues {
   updatedAt: DateTime!
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
 }
 
 input ProposalBoardScalarWhereInput {
@@ -15228,6 +15240,7 @@ input ProposalBoardUpdateInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
   creator: ProfileUpdateOneWithoutCreatorOfProposalInput
   author: ProfileUpdateOneWithoutAuthorOfProposalInput
   collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
@@ -15244,6 +15257,7 @@ input ProposalBoardUpdateManyDataInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
 }
 
 input ProposalBoardUpdateManyMutationInput {
@@ -15253,6 +15267,7 @@ input ProposalBoardUpdateManyMutationInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
 }
 
 input ProposalBoardUpdateManyWithoutAuthorInput {
@@ -15343,6 +15358,7 @@ input ProposalBoardUpdateWithoutAuthorDataInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
   creator: ProfileUpdateOneWithoutCreatorOfProposalInput
   collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
   study: StudyUpdateOneWithoutProposalInput
@@ -15358,6 +15374,7 @@ input ProposalBoardUpdateWithoutCollaboratorsDataInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
   creator: ProfileUpdateOneWithoutCreatorOfProposalInput
   author: ProfileUpdateOneWithoutAuthorOfProposalInput
   study: StudyUpdateOneWithoutProposalInput
@@ -15373,6 +15390,7 @@ input ProposalBoardUpdateWithoutCreatorDataInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
   author: ProfileUpdateOneWithoutAuthorOfProposalInput
   collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
   study: StudyUpdateOneWithoutProposalInput
@@ -15388,6 +15406,7 @@ input ProposalBoardUpdateWithoutReviewsDataInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
   creator: ProfileUpdateOneWithoutCreatorOfProposalInput
   author: ProfileUpdateOneWithoutAuthorOfProposalInput
   collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
@@ -15403,6 +15422,7 @@ input ProposalBoardUpdateWithoutSectionsDataInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
   creator: ProfileUpdateOneWithoutCreatorOfProposalInput
   author: ProfileUpdateOneWithoutAuthorOfProposalInput
   collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
@@ -15418,6 +15438,7 @@ input ProposalBoardUpdateWithoutStudyDataInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
   creator: ProfileUpdateOneWithoutCreatorOfProposalInput
   author: ProfileUpdateOneWithoutAuthorOfProposalInput
   collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput
@@ -15433,6 +15454,7 @@ input ProposalBoardUpdateWithoutTagsDataInput {
   isTemplate: Boolean
   isSubmitted: Boolean
   checklist: Json
+  settings: Json
   creator: ProfileUpdateOneWithoutCreatorOfProposalInput
   author: ProfileUpdateOneWithoutAuthorOfProposalInput
   collaborators: ProfileUpdateManyWithoutCollaboratorOnProposalInput

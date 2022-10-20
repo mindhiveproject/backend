@@ -570,6 +570,7 @@ type Mutation {
     study: ID
     isTemplate: Boolean
     sections: [ID]
+    settings: Json
   ): ProposalBoard!
   updateProposalBoard(
     id: ID!
@@ -580,6 +581,7 @@ type Mutation {
     isSubmitted: Boolean
     checklist: Json
     isTemplate: Boolean
+    settings: Json
   ): ProposalBoard!
 
   deleteProposalBoard(id: ID!): SuccessMessage
@@ -614,17 +616,20 @@ type Mutation {
     assignedTo: [String]
   ): ProposalCard!
 
-  updateProposalCard(
+  updateProposalCardPosition(
     id: ID!
-    boardId: ID!
+    sectionId: ID
+    position: Float
+  ): ProposalCard!
+
+  updateProposalCardContent(
+    id: ID!
     title: String
     description: String
     content: String
     comment: String
-    sectionId: ID
-    position: Float
-    assignedTo: [String]
     settings: Json
+    assignedTo: [String]
   ): ProposalCard!
 
   deleteProposalCard(id: ID!, boardId: ID!): ProposalCard!
