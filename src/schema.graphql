@@ -765,6 +765,11 @@ type Mutation {
   createUpdate(forUsers: [ID]!, updateArea: String, link: String, content: Json): SuccessMessage
   openUpdate(id: ID!, hasOpen: Boolean!): SuccessMessage
   deleteUpdate(id: ID!): SuccessMessage
+
+  updateUserAccount(
+    id: ID!
+    permissions: [Permission]
+  ): Profile
 }
 
 type SuccessMessage {

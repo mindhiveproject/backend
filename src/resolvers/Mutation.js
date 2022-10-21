@@ -19,6 +19,7 @@ const homeworkMutations = require('./mutations/homeworkMutations');
 const scriptMutations = require('./mutations/scriptMutations');
 const tagMutations = require('./mutations/tagMutations');
 const updateMutations = require('./mutations/updateMutations');
+const userMutations = require('./mutations/userMutations');
 
 const Mutations = {
   ...authMutations,
@@ -42,6 +43,7 @@ const Mutations = {
   ...scriptMutations,
   ...tagMutations,
   ...updateMutations,
+  ...userMutations,
 
   async createSchool(parent, args, ctx, info) {
     // TODO: Check login
