@@ -105,10 +105,10 @@ const authMutations = {
   // general sign up flow
   async signUp(parent, args, ctx, info) {
     // whether the private email address is used
-    const privateAddress = !(args.info && args.info.useTeacherEmail);
+    // const privateAddress = !(args.info && args.info.useTeacherEmail);
 
     args.username = args.username.toLowerCase().trim(); // lower case username
-    if (args.email && privateAddress) {
+    if (args.email) {
       args.email = args.email.toLowerCase().trim(); // lower case email
     } else {
       args.email = null;
@@ -127,7 +127,22 @@ const authMutations = {
       );
       if (existingEmail) {
         throw new Error(
-          `Email ${args.email} is taken. Already have an account? Login at https://mindhive.science/login.`
+          `Email ${args.email} is taken. Already have an account? Please log in at https://mindhive.science/login.`
+        );
+      }
+    }
+
+    // check whether the username is already in the system
+    if (args.username) {
+      const existingUsername = await ctx.db.query.profile(
+        {
+          where: { username: args.username },
+        },
+        `{ id }`
+      );
+      if (existingUsername) {
+        throw new Error(
+          `Username ${args.username} is taken. Already have an account? Please log in at https://mindhive.science/login.`
         );
       }
     }
@@ -140,7 +155,6 @@ const authMutations = {
     delete generalInfo.id;
     delete generalInfo.step;
     delete generalInfo.mode;
-    // delete generalInfo.consent;
     delete generalInfo.covered;
 
     // create a profile (which will have the participant auth identity)
@@ -153,13 +167,31 @@ const authMutations = {
           permissions: { set: args.permissions },
           generalInfo,
           publicReadableId: generate({ words: 3, number: false }).dashed,
+          studentIn:
+            args.permissions.includes('STUDENT') &&
+            args.class &&
+            args.class.code
+              ? {
+                  connect: {
+                    code: args.class.code,
+                  },
+                }
+              : null,
+          mentorIn:
+            args.permissions.includes('MENTOR') && args.class && args.class.code
+              ? {
+                  connect: {
+                    code: args.class.code,
+                  },
+                }
+              : null,
         },
       },
       info
     );
 
     // create an email authentication identity
-    const authEmail = await ctx.db.mutation.createAuthEmail(
+    await ctx.db.mutation.createAuthEmail(
       {
         data: {
           email: args.email,
@@ -174,61 +206,13 @@ const authMutations = {
       `{ id }`
     );
 
-    // connect the participant auth identity to profile
-    let updatedProfile = await ctx.db.mutation.updateProfile(
-      {
-        data: {
-          authEmail: {
-            connect: {
-              id: authEmail.id,
-            },
-          },
-        },
-        where: {
-          id: profile.id,
-        },
-      },
-      info
-    );
-
     // join a study if there is a study
     if (args.study) {
-      updatedProfile = await joinTheStudy(updatedProfile, args, ctx, info);
-    }
-
-    // join a class if there is a class in args.class
-    if (args.class && args.class.code) {
-      updatedProfile = await ctx.db.mutation.updateProfile(
-        {
-          data: {
-            studentIn: args.permissions.includes('STUDENT')
-              ? {
-                  connect: {
-                    code: args.class.code,
-                  },
-                }
-              : null,
-            mentorIn: args.permissions.includes('MENTOR')
-              ? {
-                  connect: {
-                    code: args.class.code,
-                  },
-                }
-              : null,
-          },
-          where: {
-            id: profile.id,
-          },
-        },
-        info
-      );
+      await joinTheStudy(profile, args, ctx, info);
     }
 
     // create the JWT token for user
-    const token = jwt.sign(
-      { userId: updatedProfile.id },
-      process.env.APP_SECRET
-    );
+    const token = jwt.sign({ userId: profile.id }, process.env.APP_SECRET);
 
     // set the jwt as a cookie on response
     ctx.response.cookie('token', token, {
@@ -239,13 +223,13 @@ const authMutations = {
     });
 
     // send confirmation email
-    // TODO remove false later!
-    if (true && privateAddress && args.email) {
+    // TODO move this part to the Home area of the Dashboard
+    if (args.email) {
       const randomBytesPromise = promisify(randomBytes);
       const confirmationToken = (await randomBytesPromise(25)).toString('hex');
       const confirmationTokenExpiry = Date.now() + 1000 * 60 * 60 * 24; // 24 hour
 
-      const res = await ctx.db.mutation.updateAuthEmail({
+      await ctx.db.mutation.updateAuthEmail({
         where: {
           email: args.email,
         },
@@ -259,7 +243,7 @@ const authMutations = {
         },
       });
 
-      const sentEmail = await client.sendEmailWithTemplate({
+      await client.sendEmailWithTemplate({
         From: 'info@mindhive.science',
         To: args.email,
         TemplateAlias: 'welcome',
@@ -276,7 +260,7 @@ const authMutations = {
     }
 
     // return user
-    return updatedProfile;
+    return profile;
   },
 
   // sign up with Google
@@ -314,6 +298,20 @@ const authMutations = {
       }
     }
 
+    if (args.username) {
+      const existingUsername = await ctx.db.query.profile(
+        {
+          where: { username: args.username },
+        },
+        `{ id }`
+      );
+      if (existingUsername) {
+        throw new Error(
+          `Username ${args.username} is taken. Already have an account? Please log in at https://mindhive.science/login.`
+        );
+      }
+    }
+
     // hash the password
     const password = await bcrypt.hash(args.token, 10);
 
@@ -333,6 +331,24 @@ const authMutations = {
           permissions: { set: args.permissions },
           generalInfo,
           publicReadableId: generate({ words: 3, number: false }).dashed,
+          studentIn:
+            args.permissions.includes('STUDENT') &&
+            args.class &&
+            args.class.code
+              ? {
+                  connect: {
+                    code: args.class.code,
+                  },
+                }
+              : null,
+          mentorIn:
+            args.permissions.includes('MENTOR') && args.class && args.class.code
+              ? {
+                  connect: {
+                    code: args.class.code,
+                  },
+                }
+              : null,
         },
       },
       info
@@ -356,61 +372,14 @@ const authMutations = {
       },
       `{ id }`
     );
-    // connect the participant auth identity to profile
-    let updatedProfile = await ctx.db.mutation.updateProfile(
-      {
-        data: {
-          authEmail: {
-            connect: {
-              id: authEmail.id,
-            },
-          },
-        },
-        where: {
-          id: profile.id,
-        },
-      },
-      info
-    );
 
     // join a study if there is a study
     if (args.study) {
-      updatedProfile = await joinTheStudy(updatedProfile, args, ctx, info);
-    }
-
-    // join a class if there is a class in args.class
-    if (args.class && args.class.code) {
-      updatedProfile = await ctx.db.mutation.updateProfile(
-        {
-          data: {
-            studentIn: args.permissions.includes('STUDENT')
-              ? {
-                  connect: {
-                    code: args.class.code,
-                  },
-                }
-              : null,
-            mentorIn: args.permissions.includes('MENTOR')
-              ? {
-                  connect: {
-                    code: args.class.code,
-                  },
-                }
-              : null,
-          },
-          where: {
-            id: profile.id,
-          },
-        },
-        info
-      );
+      await joinTheStudy(profile, args, ctx, info);
     }
 
     // create the JWT token for user
-    const token = jwt.sign(
-      { userId: updatedProfile.id },
-      process.env.APP_SECRET
-    );
+    const token = jwt.sign({ userId: profile.id }, process.env.APP_SECRET);
     // set the jwt as a cookie on response
     ctx.response.cookie('token', token, {
       httpOnly: true,
@@ -419,7 +388,7 @@ const authMutations = {
       secure: process.env.NODE_ENV === 'production',
     });
     // return user
-    return updatedProfile;
+    return profile;
   },
 
   // general login for everyone with username or password
