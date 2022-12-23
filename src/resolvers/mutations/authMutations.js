@@ -764,6 +764,7 @@ const authMutations = {
           username: args.username,
           generalInfo: { ...args.info },
           isPublic: args.isPublic,
+          publicReadableId: args.publicReadableId,
         },
         where: {
           id: ctx.request.userId,

@@ -684,14 +684,27 @@ type Mutation {
     password: String
     info: Json
     isPublic: Boolean
+    publicReadableId: String
   ): Profile
 
-  createWord(talk: ID!, message: String!, isMain: Boolean, parent: ID, settings: Json): Word
+  createWord(
+    talk: ID!
+    message: String!
+    isMain: Boolean
+    parent: ID
+    settings: Json
+  ): Word
   updateWord(id: ID!, message: String, settings: Json): Word
   deleteWord(id: ID!): SuccessMessage
 
   createTalk(members: [ID], studies: [ID], classes: [ID], settings: Json): Talk
-  updateTalk(id: ID!, members: [ID], studies: [ID], classes: [ID], settings: Json): Talk
+  updateTalk(
+    id: ID!
+    members: [ID]
+    studies: [ID]
+    classes: [ID]
+    settings: Json
+  ): Talk
   addMembersToTalk(id: ID!, members: [ID]!): Talk
   leaveGroupChat(id: ID!): Talk
   deleteGroupChat(id: ID!): Talk
@@ -762,14 +775,16 @@ type Mutation {
   updateTag(id: ID!, title: String, description: String): Tag!
   deleteTag(id: ID!): SuccessMessage
 
-  createUpdate(forUsers: [ID]!, updateArea: String, link: String, content: Json): SuccessMessage
+  createUpdate(
+    forUsers: [ID]!
+    updateArea: String
+    link: String
+    content: Json
+  ): SuccessMessage
   openUpdate(id: ID!, hasOpen: Boolean!): SuccessMessage
   deleteUpdate(id: ID!): SuccessMessage
 
-  updateUserAccount(
-    id: ID!
-    permissions: [Permission]
-  ): Profile
+  updateUserAccount(id: ID!, permissions: [Permission]): Profile
 }
 
 type SuccessMessage {

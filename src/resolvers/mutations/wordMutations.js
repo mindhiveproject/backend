@@ -109,6 +109,16 @@ const wordMutations = {
   // delete word
   async deleteWord(parent, args, ctx, info) {
     const where = { id: args.id };
+    const word = await ctx.db.query.word({ where }, `{ author {id} }`);
+    const ownsWord = word.author.id === ctx.request.userId;
+    const hasPermissions = ctx.request.user.permissions.some(permission =>
+      ['ADMIN', 'TEACHER'].includes(permission)
+    );
+
+    if (!ownsWord && !hasPermissions) {
+      throw new Error(`You don't have permission to do that!`);
+    }
+
     await ctx.db.mutation.deleteWord({ where }, info);
     return { message: 'You deleted the message!' };
   },

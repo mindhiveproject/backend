@@ -106,7 +106,11 @@ const talkMutations = {
       `{ author {id} words {id}}`
     );
     const ownsChat = chat.author.id === ctx.request.userId;
-    if (!ownsChat) {
+    const hasPermissions = ctx.request.user.permissions.some(permission =>
+      ['ADMIN', 'TEACHER'].includes(permission)
+    );
+
+    if (!ownsChat && !hasPermissions) {
       throw new Error(`You don't have permission to do that!`);
     }
     // delete all messages
