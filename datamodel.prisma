@@ -15,9 +15,9 @@ enum TaskType {
 }
 
 type Profile {
-  id: ID! @id
-  username: String! @unique
-  permissions: [Permission] @scalarList(strategy: RELATION)
+  id               ID           @id
+  username         String       @unique
+  permissions      Permission[] @scalarList(strategy: RELATION)
   authEmail: [AuthEmail]!
   authToken: [AuthToken]!
   authInvite: [AuthInvite]! @relation(name:"Owner")
@@ -33,14 +33,14 @@ type Profile {
   collaboratorInTask: [Task]! @relation(name:"Taskcollaborator")
   collaboratorInConsent: [Consent]! @relation(name:"Consentcollaborator")
   consentGivenFor: [Consent]! @relation(name:"Consentparticipant")
-  image: String
-  largeImage: String
-  info: Json
-  generalInfo: Json
-  tasksInfo: Json
-  studiesInfo: Json
-  consentsInfo: Json
-  publicId: String @unique
+  image            String
+  largeImage       String
+  info             Json
+  generalInfo      Json
+  tasksInfo        Json
+  studiesInfo      Json
+  consentsInfo     Json
+  publicId         String       @unique
   journals: [Journal]! @relation(name:"CreatorOfJournal")
   posts: [Post]! @relation(name:"AuthorOfPost")
   creatorOfProposal: [ProposalBoard]! @relation(name:"CreatorOfProposalTemplate")
@@ -48,7 +48,7 @@ type Profile {
   collaboratorOnProposal: [ProposalBoard]! @relation(name:"CollaboratorOnProposal")
   assignedToProposalSection: [ProposalSection]! @relation(name:"AssignedToProposalSection")
   assignedToProposalCard: [ProposalCard]! @relation(name:"AssignedToProposalCard")
-  publicReadableId: String
+  publicReadableId String
   reviews: [Review]! @relation(name:"AuthorOfReview")
   classNetworksCreated: [ClassNetwork]! @relation(name:"Classnetworkcreator")
   authorOfWord: [Word]! @relation(name:"WordAuthor")
@@ -58,91 +58,94 @@ type Profile {
   authorOfHomework: [Homework]! @relation(name:"HomeworkAuthor")
   favoriteTasks: [Task]! @relation(name:"FavoriteTasks")
   mentorIn: [Class]! @relation(name:"ClassMentor")
-  isPublic: Boolean
+  isPublic         Boolean
   creatorOfScript: [Script]! @relation(name:"ScriptCreator")
   authorOfScript: [Script]! @relation(name:"ScriptAuthor")
   collaboratorOnScript: [Script]! @relation(name:"ScriptCollaborators")
+  creatorOfNotebook: [Notebook]! @relation(name:"NotebookCreator")
+  authorOfNotebook: [Notebook]! @relation(name:"NotebookAuthor")
+  collaboratorOnNotebook: [Notebook]! @relation(name:"NotebookCollaborators")
   tags: [Tag]! @relation(name:"TagProfiles")
   updates: [Update]! @relation(name:"PlatformUpdates")
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  createdAt        DateTime     @createdAt
+  updatedAt        DateTime     @updatedAt
 }
 
 type AuthEmail {
-  id: ID! @id
-  email: String @unique
-  password: String!
-  resetToken: String
-  resetTokenExpiry: String
-  profile: Profile!
-  settings: Json
+  id               ID      @id
+  email            String  @unique
+  password         String
+  resetToken       String
+  resetTokenExpiry String
+  profile          Profile
+  settings         Json
 }
 
 type AuthParticipant {
-  id: ID! @id
-  email: String @unique
-  password: String!
-  resetToken: String
-  resetTokenExpiry: String
-  profile: Profile!
-  settings: Json
+  id               ID      @id
+  email            String  @unique
+  password         String
+  resetToken       String
+  resetTokenExpiry String
+  profile          Profile
+  settings         Json
 }
 
 type AuthToken {
-  id: ID! @id
-  token: String! @unique
-  tokenExpiry: String
-  profile: Profile!
-  email: String @unique
+  id          ID      @id
+  token       String  @unique
+  tokenExpiry String
+  profile     Profile
+  email       String  @unique
 }
 
 type AuthInvite {
-  id: ID! @id
-  profile: Profile! @relation(name:"Owner")
-  invitedIn: Class! @relation(name:"Invite")
+  id        ID      @id
+  profile   Profile @relation(name: "Owner")
+  invitedIn Class   @relation(name: "Invite")
 }
 
 type School {
-  id: ID! @id
-  title: String!
-  description: String
-  image: String
-  largeImage: String
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
-  creator: Profile!
+  id          ID       @id
+  title       String
+  description String
+  image       String
+  largeImage  String
+  createdAt   DateTime @createdAt
+  updatedAt   DateTime @updatedAt
+  creator     Profile
   tags: [Tag]! @relation(name:"TagSchools")
 }
 
 type Class {
-  id: ID! @id
-  code: String! @unique
-  title: String!
-  description: String
-  image: String
-  largeImage: String
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
-  creator: Profile! @relation(name:"Classcreator")
+  id          ID             @id
+  code        String         @unique
+  title       String
+  description String
+  image       String
+  largeImage  String
+  createdAt   DateTime       @createdAt
+  updatedAt   DateTime       @updatedAt
+  creator     Profile        @relation(name: "Classcreator")
   students: [Profile]! @relation(name:"Studentofclass")
   invites: [AuthInvite]! @relation(name:"Invite")
-  network: [ClassNetwork] @relation(name:"Classnetwork")
+  network     ClassNetwork[] @relation(name: "Classnetwork")
   assignments: [Assignment]! @relation(name:"ClassAssignment")
   mentors: [Profile]! @relation(name:"ClassMentor")
   studies: [Study]! @relation(name:"StudyClasses")
-  settings: Json
+  settings    Json
   tags: [Tag]! @relation(name:"TagClasses")
   talks: [Talk]! @relation(name:"ClassTalks")
 }
 
 type ClassNetwork {
-  id: ID! @id
-  title: String
-  description: String
-  settings: Json
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
-  creator: Profile! @relation(name:"Classnetworkcreator")
+  id          ID       @id
+  title       String
+  description String
+  settings    Json
+  createdAt   DateTime @createdAt
+  updatedAt   DateTime @updatedAt
+  creator     Profile  @relation(name: "Classnetworkcreator")
   classes: [Class]! @relation(name:"Classnetwork")
   tags: [Tag]! @relation(name:"TagClassNetworks")
 }
@@ -154,206 +157,207 @@ enum ResultType {
 }
 
 type Result {
-  id: ID! @id
+  id              ID         @id
   template: Template #relationship to Template
-  task: Task!
+  task            Task
   user: Profile #relationship to Profile
   guest: Guest #relationship to Guest Profile
-  quantity: Int!
-  data: Json
-  dataPolicy: String
-  token: String @unique
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
-  payload: String
+  quantity        Int
+  data            Json
+  dataPolicy      String
+  token           String     @unique
+  createdAt       DateTime   @createdAt
+  updatedAt       DateTime   @updatedAt
+  payload         String
   study: Study #relationship to Study
-  info: Json
-  incrementalData: [Data] @relation(name:"Incrementaldata")
-  fullData: Data  @relation(name:"Fulldata")
-  resultType: ResultType
-  testVersion: String
+  info            Json
+  incrementalData Data[]     @relation(name: "Incrementaldata")
+  fullData        Data       @relation(name: "Fulldata")
+  resultType      ResultType
+  testVersion     String
 }
 
 type Data {
-  id: ID! @id
-  content: String
+  id      ID     @id
+  content String
 }
 
 type Study {
-  id: ID! @id
-  title: String!
-  slug: String! @unique
-  shortDescription: String
-  description: String
-  descriptionInProposalCard: ProposalCard @relation(name:"ProposalCardStudyDescription")
-  author: Profile! @relation(name:"Creatorofstudy")
+  id                        ID           @id
+  title                     String
+  slug                      String       @unique
+  shortDescription          String
+  description               String
+  descriptionInProposalCard ProposalCard @relation(name: "ProposalCardStudyDescription")
+  author                    Profile      @relation(name: "Creatorofstudy")
   tasks: [Task]!
-  settings: Json
+  settings                  Json
   participants: [Profile]! @relation(name:"Participantofstudy")
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
-  image: String
-  largeImage: String
-  info: Json
+  createdAt                 DateTime     @createdAt
+  updatedAt                 DateTime     @updatedAt
+  image                     String
+  largeImage                String
+  info                      Json
   collaborators: [Profile]! @relation(name:"Studycollaborator")
   consent: [Consent]!
   messages: [Message]!
-  public: Boolean
-  submitForPublishing: Boolean
-  components: Json
+  public                    Boolean
+  submitForPublishing       Boolean
+  components                Json
   proposal: [ProposalBoard]! @relation(name:"StudyProposal")
   reviews: [Review]! @relation(name:"StudyReview")
-  featured: Boolean
+  featured                  Boolean
   guests: [Guest]! @relation(name:"Guestparticipantofstudy")
-  isHidden: Boolean
+  isHidden                  Boolean
   classes: [Class]! @relation(name:"StudyClasses")
   scripts: [Script]! @relation(name:"ScriptStudies")
+  notebooks: [Notebook]! @relation(name:"NotebookStudies")
   tags: [Tag]! @relation(name:"TagStudies")
-  diagram: String
+  diagram                   String
   talks: [Talk]! @relation(name:"StudyTalks")
 }
 
 type Task {
-  id: ID! @id
-  title: String!
-  subtitle: String
-  slug: String! @unique
-  description: String
-  descriptionForParticipants: String
-  template: Template
-  author: Profile! @relation(name:"Creatoroftask")
-  parameters: Json
-  settings: Json
-  link: String
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  id                         ID       @id
+  title                      String
+  subtitle                   String
+  slug                       String   @unique
+  description                String
+  descriptionForParticipants String
+  template                   Template
+  author                     Profile  @relation(name: "Creatoroftask")
+  parameters                 Json
+  settings                   Json
+  link                       String
+  createdAt                  DateTime @createdAt
+  updatedAt                  DateTime @updatedAt
   collaborators: [Profile]! @relation(name:"Taskcollaborator")
-  consent: Consent
-  public: Boolean
-  submitForPublishing: Boolean
-  taskType: TaskType
-  isOriginal: Boolean
-  isExternal: Boolean
+  consent                    Consent
+  public                     Boolean
+  submitForPublishing        Boolean
+  taskType                   TaskType
+  isOriginal                 Boolean
+  isExternal                 Boolean
   tags: [Tag]! @relation(name:"TagTasks")
-  image: String
-  largeImage: String
+  image                      String
+  largeImage                 String
 }
 
 type Template {
-  id: ID! @id
-  title: String!
-  slug: String! @unique
-  shortDescription: String
-  description: String
-  image: String
-  largeImage: String
-  author: Profile!
-  parameters: Json
-  script: String
-  style: String
+  id               ID       @id
+  title            String
+  slug             String   @unique
+  shortDescription String
+  description      String
+  image            String
+  largeImage       String
+  author           Profile
+  parameters       Json
+  script           String
+  style            String
   tasks: [Task]!
-  settings: Json
-  file: String
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  settings         Json
+  file             String
+  createdAt        DateTime @createdAt
+  updatedAt        DateTime @updatedAt
 }
 
 type Consent {
-  id: ID! @id
-  title: String!
-  slug: String! @unique
-  description: String
-  organization: String
-  info: Json
-  settings: Json
-  author: Profile! @relation(name:"Creatorofconsent")
+  id           ID       @id
+  title        String
+  slug         String   @unique
+  description  String
+  organization String
+  info         Json
+  settings     Json
+  author       Profile  @relation(name: "Creatorofconsent")
   collaborators: [Profile]! @relation(name:"Consentcollaborator")
   participants: [Profile]! @relation(name:"Consentparticipant")
   studies: [Study]!
   tasks: [Task]!
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  createdAt    DateTime @createdAt
+  updatedAt    DateTime @updatedAt
 }
 
 type Message {
-  id: ID! @id
-  content: String!
-  author: Profile!
-  info: Json
-  settings: Json
-  expireAt: DateTime
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  id        ID       @id
+  content   String
+  author    Profile
+  info      Json
+  settings  Json
+  expireAt  DateTime
+  createdAt DateTime @createdAt
+  updatedAt DateTime @updatedAt
 }
 
 type Journal {
-  id: ID! @id
-  title: String
-  description: String
-  creator: Profile! @relation(name:"CreatorOfJournal")
+  id          ID       @id
+  title       String
+  description String
+  creator     Profile  @relation(name: "CreatorOfJournal")
   posts: [Post]!
-  settings: Json
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  settings    Json
+  createdAt   DateTime @createdAt
+  updatedAt   DateTime @updatedAt
   tags: [Tag]! @relation(name:"TagJournals")
 }
 
 type Post {
-  id: ID! @id
-  author: Profile! @relation(name:"AuthorOfPost")
-  title: String
-  content: String
-  journal: Journal!
-  settings: Json
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  id        ID       @id
+  author    Profile  @relation(name: "AuthorOfPost")
+  title     String
+  content   String
+  journal   Journal
+  settings  Json
+  createdAt DateTime @createdAt
+  updatedAt DateTime @updatedAt
   tags: [Tag]! @relation(name:"TagPosts")
 }
 
 type ProposalBoard {
-  id: ID! @id
-  title: String!
-  slug: String! @unique
-  description: String
-  creator: Profile @relation(name:"CreatorOfProposalTemplate")
-  author: Profile @relation(name:"AuthorOfProposal")
+  id          ID       @id
+  title       String
+  slug        String   @unique
+  description String
+  creator     Profile  @relation(name: "CreatorOfProposalTemplate")
+  author      Profile  @relation(name: "AuthorOfProposal")
   collaborators: [Profile]! @relation(name:"CollaboratorOnProposal")
-  study: Study @relation(name:"StudyProposal")
-  isTemplate: Boolean
+  study       Study    @relation(name: "StudyProposal")
+  isTemplate  Boolean
   sections: [ProposalSection]!
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
-  isSubmitted: Boolean
-  checklist: Json
+  createdAt   DateTime @createdAt
+  updatedAt   DateTime @updatedAt
+  isSubmitted Boolean
+  checklist   Json
   reviews: [Review]! @relation(name:"ProposalReview")
   tags: [Tag]! @relation(name:"TagProposals")
-  settings: Json
+  settings    Json
 }
 
 type ProposalSection {
-  id: ID! @id
-  title: String!
-  description: String
-  position: Float!
-  board: ProposalBoard!
+  id          ID             @id
+  title       String
+  description String
+  position    Float
+  board       ProposalBoard
   assignedTo: [Profile]! @relation(name:"AssignedToProposalSection")
-  cards: [ProposalCard]
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  cards       ProposalCard[]
+  createdAt   DateTime       @createdAt
+  updatedAt   DateTime       @updatedAt
 }
 
 type ProposalCard {
-  id: ID! @id
-  title: String!
-  description: String
-  position: Float!
-  content: String
-  section: ProposalSection!
+  id          ID              @id
+  title       String
+  description String
+  position    Float
+  content     String
+  section     ProposalSection
   assignedTo: [Profile]! @relation(name:"AssignedToProposalCard")
-  settings: Json
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
-  comment: String
+  settings    Json
+  createdAt   DateTime        @createdAt
+  updatedAt   DateTime        @updatedAt
+  comment     String
   tags: [Tag]! @relation(name:"TagProposalCards")
   studyDescription: [Study]! @relation(name:"ProposalCardStudyDescription")
 }
@@ -364,109 +368,109 @@ enum ReviewStage {
 }
 
 type Review {
-  id: ID! @id
-  study: Study @relation(name:"StudyReview")
-  proposal: ProposalBoard @relation(name:"ProposalReview")
-  author: Profile @relation(name:"AuthorOfReview")
-  settings: Json
-  content: Json
-  stage: ReviewStage
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  id        ID            @id
+  study     Study         @relation(name: "StudyReview")
+  proposal  ProposalBoard @relation(name: "ProposalReview")
+  author    Profile       @relation(name: "AuthorOfReview")
+  settings  Json
+  content   Json
+  stage     ReviewStage
+  createdAt DateTime      @createdAt
+  updatedAt DateTime      @updatedAt
 }
 
 type Word {
-  id: ID! @id
-  author: Profile @relation(name:"WordAuthor")
-  talk: Talk! @relation(name:"TalkWords")
-  message: String!
-  new: Boolean
-  settings: Json
-  isMain: Boolean
-  parent: Word @relation(name:"PostComments")
+  id        ID       @id
+  author    Profile  @relation(name: "WordAuthor")
+  talk      Talk     @relation(name: "TalkWords")
+  message   String
+  new       Boolean
+  settings  Json
+  isMain    Boolean
+  parent    Word     @relation(name: "PostComments")
   children: [Word]! @relation(name:"PostComments")
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  createdAt DateTime @createdAt
+  updatedAt DateTime @updatedAt
 }
 
 type Talk {
-  id: ID! @id
-  author: Profile @relation(name:"TalkAuthor")
+  id        ID       @id
+  author    Profile  @relation(name: "TalkAuthor")
   members: [Profile]! @relation(name:"TalkMember")
   words: [Word]! @relation(name:"TalkWords")
-  settings: Json
+  settings  Json
   studies: [Study]! @relation(name:"StudyTalks")
   classes: [Class]! @relation(name:"ClassTalks")
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  createdAt DateTime @createdAt
+  updatedAt DateTime @updatedAt
 }
 
 type Assignment {
-  id: ID! @id
-  author: Profile @relation(name:"AssignmentAuthor")
+  id         ID       @id
+  author     Profile  @relation(name: "AssignmentAuthor")
   classes: [Class]! @relation(name:"ClassAssignment")
   homework: [Homework]! @relation(name:"ClassHomework")
-  title: String
-  content: String
-  settings: Json
-  public: Boolean
-  isTemplate: Boolean
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  title      String
+  content    String
+  settings   Json
+  public     Boolean
+  isTemplate Boolean
+  createdAt  DateTime @createdAt
+  updatedAt  DateTime @updatedAt
   tags: [Tag]! @relation(name:"TagAssignments")
 }
 
 type Homework {
-  id: ID! @id
-  author: Profile @relation(name:"HomeworkAuthor")
-  assignment: Assignment @relation(name:"ClassHomework")
-  title: String
-  content: String
-  settings: Json
-  public: Boolean
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  id         ID         @id
+  author     Profile    @relation(name: "HomeworkAuthor")
+  assignment Assignment @relation(name: "ClassHomework")
+  title      String
+  content    String
+  settings   Json
+  public     Boolean
+  createdAt  DateTime   @createdAt
+  updatedAt  DateTime   @updatedAt
   tags: [Tag]! @relation(name:"TagHomeworks")
 }
 
 type Guest {
-  id: ID! @id
-  publicId: String @unique
-  publicReadableId: String
+  id                 ID     @id
+  publicId           String @unique
+  publicReadableId   String
   results: [Result]!
   guestParticipantIn: [Study]! @relation(name:"Guestparticipantofstudy")
-  info: Json
-  generalInfo: Json
-  tasksInfo: Json
-  studiesInfo: Json
-  consentsInfo: Json
-  guestAccountExpiry: String
+  info               Json
+  generalInfo        Json
+  tasksInfo          Json
+  studiesInfo        Json
+  consentsInfo       Json
+  guestAccountExpiry String
 }
 
 type Script {
-  id: ID! @id
-  title: String!
-  slug: String! @unique
-  description: String
-  creator: Profile @relation(name:"ScriptCreator")
-  author: Profile @relation(name:"ScriptAuthor")
+  id          ID       @id
+  title       String
+  slug        String   @unique
+  description String
+  creator     Profile  @relation(name: "ScriptCreator")
+  author      Profile  @relation(name: "ScriptAuthor")
   collaborators: [Profile]! @relation(name:"ScriptCollaborators")
   studies: [Study]! @relation(name:"ScriptStudies")
-  isTemplate: Boolean
-  isPublic: Boolean
-  isFeatured: Boolean
-  settings: Json
-  content: String
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  isTemplate  Boolean
+  isPublic    Boolean
+  isFeatured  Boolean
+  settings    Json
+  content     String
+  createdAt   DateTime @createdAt
+  updatedAt   DateTime @updatedAt
   tags: [Tag]! @relation(name:"TagScripts")
 }
 
 type Tag {
-  id: ID! @id
-  title: String!
-  slug: String! @unique
-  description: String
+  id          ID       @id
+  title       String
+  slug        String   @unique
+  description String
   profiles: [Profile]! @relation(name:"TagProfiles")
   schools: [School]! @relation(name:"TagSchools")
   classes: [Class]! @relation(name:"TagClasses")
@@ -480,33 +484,53 @@ type Tag {
   assignments: [Assignment]! @relation(name:"TagAssignments")
   homeworks: [Homework]! @relation(name:"TagHomeworks")
   scripts: [Script]! @relation(name:"TagScripts")
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  notebooks: [Notebook]! @relation(name:"TagNotebooks")
+  createdAt   DateTime @createdAt
+  updatedAt   DateTime @updatedAt
 }
 
 type Update {
-  id: ID! @id
-  user: Profile! @relation(name:"PlatformUpdates")
-  updateArea: String
-  link: String
-  content: Json
-  hasOpen: Boolean
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  id         ID       @id
+  user       Profile  @relation(name: "PlatformUpdates")
+  updateArea String
+  link       String
+  content    Json
+  hasOpen    Boolean
+  createdAt  DateTime @createdAt
+  updatedAt  DateTime @updatedAt
 }
 
 type SummaryResult {
-  id: ID! @id
+  id          ID       @id
   user: Profile #relationship to Profile
   guest: Guest #relationship to Guest Profile
   study: Study #relationship to Study
   template: Template #relationship to Template
-  task: Task!
-  testVersion: String
-  metadataId: String
-  dataPolicy: String
+  task        Task
+  testVersion String
+  metadataId  String
+  dataPolicy  String
   fullResult: Result #relationship to Result
-  data: Json
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
+  data        Json
+  createdAt   DateTime @createdAt
+  updatedAt   DateTime @updatedAt
+}
+
+type Notebook {
+  id          ID       @id
+  title       String
+  slug        String   @unique
+  description String
+  creator     Profile  @relation(name: "NotebookCreator")
+  author      Profile  @relation(name: "NotebookAuthor")
+  collaborators: [Profile]! @relation(name:"NotebookCollaborators")
+  studies: [Study]! @relation(name:"NotebookStudies")
+  isTemplate  Boolean
+  isPublic    Boolean
+  isFeatured  Boolean
+  settings    Json
+  content     String
+  createdAt   DateTime @createdAt
+  updatedAt   DateTime @updatedAt
+  tags: [Tag]! @relation(name:"TagNotebooks")
 }

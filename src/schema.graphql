@@ -714,7 +714,7 @@ type Mutation {
     title: String
     content: String
     settings: Json
-    classId: ID
+    classId: [ID]
     public: Boolean
     isTemplate: Boolean
   ): Assignment
@@ -723,6 +723,7 @@ type Mutation {
     title: String
     content: String
     settings: Json
+    classId: [ID]
     public: Boolean
     isTemplate: Boolean
   ): Assignment
