@@ -7,7 +7,7 @@ const taskQueries = {
           public: true,
           ...args.where,
         },
-        orderBy: 'createdAt_DESC',
+        orderBy: args.orderBy,
       },
       info
     );
@@ -17,7 +17,7 @@ const taskQueries = {
   async myTasks(parent, args, ctx, info) {
     // check if the user has permission to see all users
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
+      throw new Error("You must be logged in");
     }
 
     // query parameters where author is the current user
@@ -38,7 +38,7 @@ const taskQueries = {
           ],
           ...args.where,
         },
-        orderBy: 'createdAt_DESC',
+        orderBy: "createdAt_DESC",
       },
       info
     );
@@ -48,7 +48,7 @@ const taskQueries = {
   async myAndAllTasks(parent, args, ctx, info) {
     // check if the user has permission to see all users
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
+      throw new Error("You must be logged in");
     }
 
     // query parameters where author is the current user
@@ -80,7 +80,7 @@ const taskQueries = {
   // count all components
   async countComponents(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
     const componentsConnection = await ctx.db.query.tasksConnection(
       {
@@ -96,7 +96,7 @@ const taskQueries = {
   // count all templates
   async countTemplates(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
     const templatesConnection = await ctx.db.query.templatesConnection(
       {
@@ -113,7 +113,7 @@ const taskQueries = {
   async allTasks(parent, args, ctx, info) {
     // check if the user has permission to see all users
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
+      throw new Error("You must be logged in");
     }
 
     // query parameters where author is the current user
@@ -130,7 +130,7 @@ const taskQueries = {
   // get my favorite tasks
   async favoriteTasks(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
 
     const profile = await ctx.db.query.profile(
@@ -142,9 +142,9 @@ const taskQueries = {
       `{ id favoriteTasks {id} }`
     );
 
-    const tasksId = profile.favoriteTasks.map(task => task.id);
+    const tasksId = profile.favoriteTasks.map((task) => task.id);
 
-    if (args.selector === 'me') {
+    if (args.selector === "me") {
       return ctx.db.query.tasks(
         {
           where: {
