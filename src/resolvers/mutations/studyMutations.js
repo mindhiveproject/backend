@@ -1,14 +1,14 @@
-const slugify = require('slugify');
+const slugify = require("slugify");
 
 const studyMutations = {
   async createStudy(parent, args, ctx, info) {
     // Check login
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
 
     args.slug = slugify(args.title, {
-      replacement: '-', // replace spaces with replacement character, defaults to `-`
+      replacement: "-", // replace spaces with replacement character, defaults to `-`
       remove: /[^a-zA-Z\d\s:]/g, // remove characters that match regex, defaults to `undefined`
       lower: true, // convert to lower case, defaults to `false`
     });
@@ -29,12 +29,12 @@ const studyMutations = {
     let collaborators = [];
     if (args.collaborators && args.collaborators.length) {
       collaborators = await Promise.all(
-        args.collaborators.map(username =>
+        args.collaborators.map((username) =>
           ctx.db.query.profile({ where: { username } }, `{ id }`)
         )
       );
       args.collaborators = [];
-      collaborators = collaborators.filter(c => c);
+      collaborators = collaborators.filter((c) => c);
     }
 
     // take a copy of updates
@@ -61,19 +61,19 @@ const studyMutations = {
           consent:
             args.consentId && args.consentId.length
               ? {
-                  connect: args.consentId.map(id => ({ id })),
+                  connect: args.consentId.map((id) => ({ id })),
                 }
               : null,
           classes:
             args.classes && args.classes.length
               ? {
-                  connect: args.classes.map(cl => ({ id: cl })),
+                  connect: args.classes.map((cl) => ({ id: cl })),
                 }
               : null,
           tags:
             args.tags && args.tags.length
               ? {
-                  connect: args.tags.map(tag => ({ id: tag })),
+                  connect: args.tags.map((tag) => ({ id: tag })),
                 }
               : null,
           descriptionInProposalCard: args.descriptionInProposalCardId
@@ -94,12 +94,12 @@ const studyMutations = {
     let collaborators = [];
     if (args.collaborators && args.collaborators.length) {
       collaborators = await Promise.all(
-        args.collaborators.map(username =>
+        args.collaborators.map((username) =>
           ctx.db.query.profile({ where: { username } }, `{ id }`)
         )
       );
       args.collaborators = [];
-      collaborators = collaborators.filter(c => c);
+      collaborators = collaborators.filter((c) => c);
     }
 
     const study = await ctx.db.query.study(
@@ -192,19 +192,19 @@ const studyMutations = {
           consent:
             args.consentId && args.consentId.length
               ? {
-                  connect: args.consentId.map(id => ({ id })),
+                  connect: args.consentId.map((id) => ({ id })),
                 }
               : null,
           classes:
             args.classes && args.classes.length
               ? {
-                  connect: args.classes.map(cl => ({ id: cl })),
+                  connect: args.classes.map((cl) => ({ id: cl })),
                 }
               : null,
           tags:
             args.tags && args.tags.length
               ? {
-                  connect: args.tags.map(tag => ({ id: tag })),
+                  connect: args.tags.map((tag) => ({ id: tag })),
                 }
               : null,
           descriptionInProposalCard: args.descriptionInProposalCardId
@@ -248,11 +248,11 @@ const studyMutations = {
     // check whether user has permissions to hide the item
     // TODO
     const ownsStudy = study.author.id === ctx.request.userId;
-    const hasPermissions = ctx.request.user.permissions.some(permission =>
-      ['ADMIN'].includes(permission)
+    const hasPermissions = ctx.request.user.permissions.some((permission) =>
+      ["ADMIN"].includes(permission)
     );
     const isCollaborator = study.collaborators
-      .map(collaborator => collaborator.id)
+      .map((collaborator) => collaborator.id)
       .includes(ctx.request.userId);
     if (!ownsStudy && !hasPermissions && !isCollaborator) {
       throw new Error(`You don't have permission to do that!`);
@@ -275,11 +275,11 @@ const studyMutations = {
     // check whether user has permissions to delete the item
     // TODO
     const ownsStudy = study.author.id === ctx.request.userId;
-    const hasPermissions = ctx.request.user.permissions.some(permission =>
-      ['ADMIN'].includes(permission)
+    const hasPermissions = ctx.request.user.permissions.some((permission) =>
+      ["ADMIN"].includes(permission)
     );
     const isCollaborator = study.collaborators
-      .map(collaborator => collaborator.id)
+      .map((collaborator) => collaborator.id)
       .includes(ctx.request.userId);
     if (!ownsStudy && !hasPermissions && !isCollaborator) {
       throw new Error(`You don't have permission to do that!`);
@@ -291,7 +291,7 @@ const studyMutations = {
 
   // update the study
   async buildStudy(parent, args, ctx, info) {
-    const tasks = args.tasks.map(task => ({ id: task }));
+    const tasks = args.tasks.map((task) => ({ id: task }));
 
     const study = await ctx.db.query.study(
       {
@@ -333,7 +333,7 @@ const studyMutations = {
   // leave the study (for participants)
   async leaveStudy(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
 
     const profile = await ctx.db.query.profile(
@@ -367,14 +367,14 @@ const studyMutations = {
       `{ id username permissions }`
     );
 
-    return { message: 'You left the study!' };
+    return { message: "You left the study!" };
   },
 
   // update the study consent (for participants)
   async updateStudyConsent(parent, args, ctx, info) {
     // Check login
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
     const profile = await ctx.db.query.profile(
       {
@@ -414,7 +414,7 @@ const studyMutations = {
   async updateUserStudyHideInDevelop(parent, args, ctx, info) {
     // Check login
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
     const profile = await ctx.db.query.profile(
       {
@@ -452,7 +452,34 @@ const studyMutations = {
       `{ id username permissions }`
     );
 
-    return { message: 'You updated the study!' };
+    return { message: "You updated the study!" };
+  },
+
+  async changeStudyAuthor(parent, args, ctx, info) {
+    const { username } = args;
+
+    if (!username) {
+      throw new Error(`You should provide a username!`);
+    }
+
+    const author = await ctx.db.query.profile(
+      {
+        where: { username },
+      },
+      `{ id }`
+    );
+
+    return ctx.db.mutation.updateStudy(
+      {
+        where: {
+          id: args.id,
+        },
+        data: {
+          author: { connect: { id: author.id } },
+        },
+      },
+      info
+    );
   },
 };
 

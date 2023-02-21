@@ -786,6 +786,8 @@ type Mutation {
   deleteUpdate(id: ID!): SuccessMessage
 
   updateUserAccount(id: ID!, permissions: [Permission]): Profile
+
+  changeStudyAuthor(id: ID!, username: String): Study
 }
 
 type SuccessMessage {
