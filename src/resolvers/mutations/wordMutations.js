@@ -2,7 +2,7 @@ const wordMutations = {
   async createWord(parent, args, ctx, info) {
     // Check login
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
 
     // save new message in the database
@@ -48,34 +48,36 @@ const wordMutations = {
       }`
     );
     // 2. find all members, members of studies and classes
-    const members = talk?.members.map(m => m.id);
+    const members = talk?.members.map((m) => m.id);
 
     const studyMembers = [
-      ...talk?.studies?.map(study => study?.author?.id),
-      ...talk?.studies?.map(study => study?.collaborators?.map(c => c?.id)),
+      ...talk?.studies?.map((study) => study?.author?.id),
+      ...talk?.studies?.map((study) => study?.collaborators?.map((c) => c?.id)),
     ].flat(1);
 
     const classMembers = [
-      ...talk?.classes?.map(theClass => theClass?.creator?.id),
-      ...talk?.classes?.map(theClass => theClass?.mentors?.map(m => m?.id)),
-      ...talk?.classes?.map(theClass => theClass?.students?.map(s => s?.id)),
+      ...talk?.classes?.map((theClass) => theClass?.creator?.id),
+      ...talk?.classes?.map((theClass) => theClass?.mentors?.map((m) => m?.id)),
+      ...talk?.classes?.map((theClass) =>
+        theClass?.students?.map((s) => s?.id)
+      ),
     ].flat(1);
 
     // 3. remove the user's own ID from the list
     const forUsers = [
       ...new Set([...members, ...studyMembers, ...classMembers]),
-    ].filter(id => !!id && id !== ctx.request.userId);
+    ].filter((id) => !!id && id !== ctx.request.userId);
 
     // 4. create an update for all members
-    await forUsers.map(async user => {
+    await forUsers.map(async (user) => {
       await ctx.db.mutation.createUpdate(
         {
           data: {
             user: {
               connect: { id: user },
             },
-            updateArea: 'CHAT',
-            link: '/dashboard/chat',
+            updateArea: "CHAT",
+            link: `/dashboard/chat/${args.talk}`,
             content: {
               message: `There is a new message in the chat ${talk?.settings?.title}`,
             },
@@ -111,8 +113,8 @@ const wordMutations = {
     const where = { id: args.id };
     const word = await ctx.db.query.word({ where }, `{ author {id} }`);
     const ownsWord = word.author.id === ctx.request.userId;
-    const hasPermissions = ctx.request.user.permissions.some(permission =>
-      ['ADMIN', 'TEACHER'].includes(permission)
+    const hasPermissions = ctx.request.user.permissions.some((permission) =>
+      ["ADMIN", "TEACHER"].includes(permission)
     );
 
     if (!ownsWord && !hasPermissions) {
@@ -120,7 +122,7 @@ const wordMutations = {
     }
 
     await ctx.db.mutation.deleteWord({ where }, info);
-    return { message: 'You deleted the message!' };
+    return { message: "You deleted the message!" };
   },
 };
 
