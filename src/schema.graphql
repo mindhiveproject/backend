@@ -758,6 +758,7 @@ type Mutation {
     isTemplate: Boolean
     isPublic: Boolean
     isFeatured: Boolean
+    studyId: ID
   ): Script!
   copyScript(id: ID!): Script!
   updateScript(

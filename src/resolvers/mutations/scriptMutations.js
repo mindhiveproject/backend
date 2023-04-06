@@ -1,10 +1,13 @@
-const uniqid = require('uniqid');
+const uniqid = require("uniqid");
 
 const scriptMutations = {
   // create new script
   async createScript(parent, args, ctx, info) {
+    const scriptData = { ...args };
+    // remove the study id
+    delete scriptData.studyId;
     // create slug
-    args.slug = uniqid();
+    scriptData.slug = uniqid();
     // create new script
     const script = await ctx.db.mutation.createScript(
       {
@@ -14,7 +17,14 @@ const scriptMutations = {
               id: ctx.request.userId,
             },
           },
-          ...args,
+          studies: args.studyId
+            ? {
+                connect: {
+                  id: args.studyId,
+                },
+              }
+            : null,
+          ...scriptData,
         },
       },
       info
