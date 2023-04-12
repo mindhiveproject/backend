@@ -2,14 +2,14 @@ const usersQueries = {
   // get all usernames (but not participants)
   async allUsernames(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
     const users = await ctx.db.query.profiles({}, info);
     const notParticipants = users.filter(
-      user =>
-        user.permissions.includes('TEACHER') ||
-        user.permissions.includes('STUDENT') ||
-        user.permissions.includes('SCIENTIST')
+      (user) =>
+        user.permissions.includes("TEACHER") ||
+        user.permissions.includes("STUDENT") ||
+        user.permissions.includes("SCIENTIST")
     );
     return notParticipants;
   },
@@ -17,7 +17,7 @@ const usersQueries = {
   // get all public usernames (people in the class, admin and scientists)
   async allPublicUsernames(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
 
     const me = await ctx.db.query.profile(
@@ -31,20 +31,20 @@ const usersQueries = {
 
     // get all classes
     const classIds = [
-      ...me.studentIn?.map(c => c.id),
-      ...me.teacherIn?.map(c => c.id),
-      ...me.mentorIn?.map(c => c.id),
+      ...me.studentIn?.map((c) => c.id),
+      ...me.teacherIn?.map((c) => c.id),
+      ...me.mentorIn?.map((c) => c.id),
     ];
     // get all classes in the class networks
     const allClassInNetworkIds = [
-      ...me.studentIn?.map(c => c.network?.classes?.map(cl => cl.id)),
-      ...me.teacherIn?.map(c => c.network?.classes?.map(cl => cl.id)),
-      ...me.mentorIn?.map(c => c.network?.classes?.map(cl => cl.id)),
+      ...me.studentIn?.map((c) => c.network?.classes?.map((cl) => cl.id)),
+      ...me.teacherIn?.map((c) => c.network?.classes?.map((cl) => cl.id)),
+      ...me.mentorIn?.map((c) => c.network?.classes?.map((cl) => cl.id)),
     ].flat();
     // merge ids
     const allClassIds = [
       ...new Set([...classIds, ...allClassInNetworkIds]),
-    ].filter(id => !!id);
+    ].filter((id) => !!id);
 
     const users = await ctx.db.query.profiles(
       {
@@ -74,29 +74,69 @@ const usersQueries = {
 
   // study participants
   async participantsInStudy(parent, args, ctx, info) {
-    // 1. check if the user has permission to see the study (Scientist of this study) or Admin
-    const { where } = args;
-    // const mystudy = await ctx.db.query.study(
-    //   { where },
-    //   `{ id title author {id} collaborators {id}}`
-    // );
-    // const ownsStudy = mystudy.author.id === ctx.request.userId;
-    // const hasPermissions = ctx.request.user.permissions.some(permission =>
-    //   ['ADMIN'].includes(permission)
-    // );
-    // let collaboratorInStudy;
-    // if (mystudy.collaborators) {
-    //   const collaboratorsIds = mystudy.collaborators.map(
-    //     collaborator => collaborator.id
-    //   );
-    //   collaboratorInStudy = collaboratorsIds.includes(ctx.request.userId);
-    // }
-    //
-    // if (!ownsStudy && !hasPermissions && !collaboratorInStudy) {
-    //   throw new Error(`You don't have permission to do that!`);
-    // }
-    return ctx.db.query.profiles({ where }, info);
+    const participants = await ctx.db.query.profiles(
+      {
+        where: {
+          participantIn_some: { id: args.studyId },
+          OR: [
+            { publicId_contains: args.search },
+            { publicReadableId_contains: args.search },
+          ],
+        },
+      },
+      info
+    );
+    const participantsInfo = participants.map((p) => ({
+      ...p,
+      info: { type: "User" },
+    }));
+
+    const guests = await ctx.db.query.guests(
+      {
+        where: {
+          guestParticipantIn_some: { id: args.studyId },
+          OR: [
+            { publicId_contains: args.search },
+            { publicReadableId_contains: args.search },
+          ],
+        },
+      },
+      info
+    );
+    const guestsInfo = guests.map((g) => ({
+      ...g,
+      info: { type: "Guest" },
+    }));
+    console.log(participantsInfo);
+
+    return [...participantsInfo, ...guestsInfo];
   },
+
+  // study participants
+  // async participantsInStudy(parent, args, ctx, info) {
+  //   // 1. check if the user has permission to see the study (Scientist of this study) or Admin
+  //   const { where } = args;
+  //   // const mystudy = await ctx.db.query.study(
+  //   //   { where },
+  //   //   `{ id title author {id} collaborators {id}}`
+  //   // );
+  //   // const ownsStudy = mystudy.author.id === ctx.request.userId;
+  //   // const hasPermissions = ctx.request.user.permissions.some(permission =>
+  //   //   ['ADMIN'].includes(permission)
+  //   // );
+  //   // let collaboratorInStudy;
+  //   // if (mystudy.collaborators) {
+  //   //   const collaboratorsIds = mystudy.collaborators.map(
+  //   //     collaborator => collaborator.id
+  //   //   );
+  //   //   collaboratorInStudy = collaboratorsIds.includes(ctx.request.userId);
+  //   // }
+  //   //
+  //   // if (!ownsStudy && !hasPermissions && !collaboratorInStudy) {
+  //   //   throw new Error(`You don't have permission to do that!`);
+  //   // }
+  //   return ctx.db.query.profiles({ where }, info);
+  // },
 
   // study guest participants
   async guestParticipantsInStudy(parent, args, ctx, info) {
@@ -113,13 +153,13 @@ const usersQueries = {
       `{ id title author {id} collaborators {id}}`
     );
     const ownsStudy = mystudy.author.id === ctx.request.userId;
-    const hasPermissions = ctx.request.user.permissions.some(permission =>
-      ['ADMIN'].includes(permission)
+    const hasPermissions = ctx.request.user.permissions.some((permission) =>
+      ["ADMIN"].includes(permission)
     );
     let collaboratorInStudy;
     if (mystudy.collaborators) {
       const collaboratorsIds = mystudy.collaborators.map(
-        collaborator => collaborator.id
+        (collaborator) => collaborator.id
       );
       collaboratorInStudy = collaboratorsIds.includes(ctx.request.userId);
     }
@@ -133,7 +173,7 @@ const usersQueries = {
 
   async student(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
     // TODO check authorization (being an admin or a teacher of the class)
 
@@ -152,7 +192,7 @@ const usersQueries = {
   // query a participant of a study
   async participant(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
     // TODO check authorization (being an admin or a researcher of the study)
 
@@ -171,7 +211,7 @@ const usersQueries = {
   // query a guest participant of a study
   async guestParticipant(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
 
     const participant = await ctx.db.query.guest(
@@ -189,7 +229,7 @@ const usersQueries = {
   // count all users
   async countUsers(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
     const profilesConnection = await ctx.db.query.profilesConnection({}, info);
     return profilesConnection;
@@ -199,7 +239,7 @@ const usersQueries = {
   async countStudyParticipants(parent, args, ctx, info) {
     const { where } = args;
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
     return ctx.db.query.profilesConnection({ where }, info);
   },
@@ -208,7 +248,7 @@ const usersQueries = {
   async countStudyGuestParticipants(parent, args, ctx, info) {
     const { where } = args;
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
     return ctx.db.query.guestsConnection({ where }, info);
   },

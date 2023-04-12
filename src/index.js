@@ -1,11 +1,11 @@
 // here the server starts (entry point of the application)
 // environment variables (to store the frontend url, prisma endpoint, prisma and app secret keys, and the port number)
-require('dotenv').config({ path: 'variables.env' });
-const jwt = require('jsonwebtoken');
+require("dotenv").config({ path: "variables.env" });
+const jwt = require("jsonwebtoken");
 
-const cookieParser = require('cookie-parser');
-const createServer = require('./createServer');
-const db = require('./db');
+const cookieParser = require("cookie-parser");
+const createServer = require("./createServer");
+const db = require("./db");
 
 const server = createServer();
 
@@ -32,7 +32,7 @@ server.express.use(async (req, res, next) => {
     {
       where: { id: req.userId },
     },
-    '{ id username permissions }'
+    "{ id username permissions }"
   );
   req.user = user;
   next();
@@ -49,9 +49,9 @@ server.start(
       ],
     },
     // https://github.com/expressjs/body-parser#bodyparserjsonoptions
-    bodyParserOptions: { limit: '100mb', type: 'application/json' },
+    bodyParserOptions: { limit: "100mb", type: "application/json" },
   },
-  deets => {
+  (deets) => {
     console.log(`Server is running on port http://localhost:${deets.port}`);
   }
 );

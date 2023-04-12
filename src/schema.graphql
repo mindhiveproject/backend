@@ -224,12 +224,7 @@ type Query {
   updates(where: UpdateWhereInput): [Update]!
   myUpdates(orderBy: UpdateOrderByInput): [Update]!
 
-  participantsInStudy(
-    where: ProfileWhereInput
-    orderBy: ProfileOrderByInput
-    skip: Int
-    first: Int
-  ): [Profile]!
+  participantsInStudy(studyId: ID!, search: String): [Profile]!
 
   guestParticipantsInStudy(
     where: GuestWhereInput
