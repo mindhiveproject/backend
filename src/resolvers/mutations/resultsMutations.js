@@ -57,13 +57,13 @@ const resultsMutations = {
             payload,
             token,
             incrementalData:
-              payload === 'incremental'
+              payload === "incremental"
                 ? {
                     connect: { id: data.id },
                   }
                 : null,
             fullData:
-              payload === 'full'
+              payload === "full"
                 ? {
                     connect: { id: data.id },
                   }
@@ -84,7 +84,7 @@ const resultsMutations = {
         data: {
           quantity: result.quantity + 1,
           incrementalData:
-            payload === 'incremental'
+            payload === "incremental"
               ? {
                   connect: { id: data.id },
                 }
@@ -106,13 +106,13 @@ const resultsMutations = {
     );
     // check whether user has permissions to delete the item or it is the result of this user
     const ownsResult = result.user.id === ctx.request.userId;
-    const hasAdminPermissions = ctx.request.user.permissions.some(permission =>
-      ['ADMIN'].includes(permission)
+    const hasAdminPermissions = ctx.request.user.permissions.some(
+      (permission) => ["ADMIN"].includes(permission)
     );
     // check whether the use is the author or a collaborator of the study
     const isStudyAuthor = result.study.author.id === ctx.request.userId;
     const isStudyCollaborator = result.study.collaborators
-      .map(collaborator => collaborator.id)
+      .map((collaborator) => collaborator.id)
       .includes(ctx.request.userId);
     const hasStudyOwnerPermissions = isStudyAuthor || isStudyCollaborator;
     if (!ownsResult && !hasAdminPermissions && !hasStudyOwnerPermissions) {
@@ -148,7 +148,7 @@ const resultsMutations = {
       );
     }
 
-    if (args.info && args.info.data && args.info.data === 'no') {
+    if (args.info && args.info.data && args.info.data === "no") {
       // TODO delete the data from the database
     }
     // update profile
@@ -194,8 +194,8 @@ const resultsMutations = {
 
     const whereFull = { token: `full-${args.id}` };
     const whereIncr = { token: `incr-${args.id}` };
-    const hasPermissions = ctx.request.user.permissions.some(permission =>
-      ['ADMIN'].includes(permission)
+    const hasPermissions = ctx.request.user.permissions.some((permission) =>
+      ["ADMIN"].includes(permission)
     );
 
     // 1. find full result, check ownership and update the info on it, delete incremental result
@@ -233,7 +233,7 @@ const resultsMutations = {
           incrementalResult.incrementalData &&
           incrementalResult.incrementalData.length > 0
         ) {
-          await incrementalResult.incrementalData.map(data =>
+          await incrementalResult.incrementalData.map((data) =>
             ctx.db.mutation.deleteData({ where: { id: data.id } }, `{ id }`)
           );
         }
@@ -267,13 +267,13 @@ const resultsMutations = {
       }
     }
 
-    return { message: 'Updated' };
+    return { message: "Updated" };
   },
 
   // change the status of participant data in a specific study (called by study owner or collaborator)
   async changeStatusParticipantStudyResults(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
 
     const results = await ctx.db.mutation.updateManyResults(
@@ -301,7 +301,7 @@ const resultsMutations = {
   // change the status of participant data in a specific study (called by study owner or collaborator)
   async changeStatusGuestParticipantStudyResults(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
 
     const results = await ctx.db.mutation.updateManyResults(
@@ -329,7 +329,7 @@ const resultsMutations = {
   // change the status of specific result
   async changeResultStatus(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
 
     const results = await ctx.db.mutation.updateResult(
@@ -393,7 +393,7 @@ const resultsMutations = {
       `{ id }`
     );
 
-    return { message: 'Summary data were uploaded' };
+    return { message: "Summary data were uploaded" };
   },
 };
 

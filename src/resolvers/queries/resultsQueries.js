@@ -28,8 +28,8 @@ const resultsQueries = {
       `{ id title creator {id} }`
     );
     const ownsClass = myclass.creator.id === ctx.request.userId;
-    const hasPermissions = ctx.request.user.permissions.some(permission =>
-      ['ADMIN', 'TEACHER'].includes(permission)
+    const hasPermissions = ctx.request.user.permissions.some((permission) =>
+      ["ADMIN", "TEACHER"].includes(permission)
     );
     if (!ownsClass && !hasPermissions) {
       throw new Error(`You don't have permission to do that!`);
@@ -52,7 +52,7 @@ const resultsQueries = {
       {
         where: {
           user: {
-            id_in: myStudents.map(student => student.id),
+            id_in: myStudents.map((student) => student.id),
           },
         },
       },
@@ -62,20 +62,20 @@ const resultsQueries = {
 
   // study results
   async myStudyResults(parent, args, ctx, info) {
-    // 1. check if the user has permission to see the class (Teacher of this class) or Admin
+    // 1. check if the user has permission to see the data (Teacher of the class) or Admin
     const { where } = args;
     const mystudy = await ctx.db.query.study(
       { where },
       `{ id title author {id} collaborators {id}}`
     );
     const ownsStudy = mystudy.author.id === ctx.request.userId;
-    const hasPermissions = ctx.request.user.permissions.some(permission =>
-      ['ADMIN', 'TEACHER', 'SCIENTIST'].includes(permission)
+    const hasPermissions = ctx.request.user.permissions.some((permission) =>
+      ["ADMIN", "TEACHER", "SCIENTIST"].includes(permission)
     );
     let collaboratorInStudy;
     if (mystudy.collaborators) {
       const collaboratorsIds = mystudy.collaborators.map(
-        collaborator => collaborator.id
+        (collaborator) => collaborator.id
       );
       collaboratorInStudy = collaboratorsIds.includes(ctx.request.userId);
     }
@@ -91,6 +91,7 @@ const resultsQueries = {
           study: {
             id: mystudy.id,
           },
+          resultType: "MAIN",
         },
       },
       info
@@ -108,13 +109,13 @@ const resultsQueries = {
       `{ id title author {id} collaborators {id}}`
     );
     const ownsTask = mytask.author.id === ctx.request.userId;
-    const hasPermissions = ctx.request.user.permissions.some(permission =>
-      ['ADMIN'].includes(permission)
+    const hasPermissions = ctx.request.user.permissions.some((permission) =>
+      ["ADMIN"].includes(permission)
     );
     let collaboratorInTask;
     if (mytask.collaborators) {
       const collaboratorsIds = mytask.collaborators.map(
-        collaborator => collaborator.id
+        (collaborator) => collaborator.id
       );
       collaboratorInTask = collaboratorsIds.includes(ctx.request.userId);
     }
@@ -139,7 +140,7 @@ const resultsQueries = {
   // query all participant results
   async participantResults(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
 
     const results = await ctx.db.query.results(
@@ -170,7 +171,7 @@ const resultsQueries = {
   // query all participant results in a specific study
   async participantStudyResults(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
 
     const results = await ctx.db.query.results(

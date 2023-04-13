@@ -107,7 +107,6 @@ const usersQueries = {
       ...g,
       info: { type: "Guest" },
     }));
-    console.log(participantsInfo);
 
     return [...participantsInfo, ...guestsInfo];
   },
