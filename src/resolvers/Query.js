@@ -1,12 +1,12 @@
 // this is place to interact with databases, external API, access the file system (e.g., csv file)
-const { forwardTo } = require('prisma-binding');
-const { hasPermission } = require('../utils');
-const resultsQueries = require('./queries/resultsQueries');
-const usersQueries = require('./queries/usersQueries');
-const studiesQueries = require('./queries/studiesQueries');
-const tasksQueries = require('./queries/tasksQueries');
-const homeworksQueries = require('./queries/homeworksQueries');
-const chatsQueries = require('./queries/chatsQueries');
+const { forwardTo } = require("prisma-binding");
+const { hasPermission } = require("../utils");
+const resultsQueries = require("./queries/resultsQueries");
+const usersQueries = require("./queries/usersQueries");
+const studiesQueries = require("./queries/studiesQueries");
+const tasksQueries = require("./queries/tasksQueries");
+const homeworksQueries = require("./queries/homeworksQueries");
+const chatsQueries = require("./queries/chatsQueries");
 
 const Query = {
   ...resultsQueries,
@@ -15,56 +15,56 @@ const Query = {
   ...tasksQueries,
   ...homeworksQueries,
   ...chatsQueries,
-  schools: forwardTo('db'),
-  class: forwardTo('db'),
-  result: forwardTo('db'),
-  templates: forwardTo('db'),
-  template: forwardTo('db'),
-  study: forwardTo('db'),
-  task: forwardTo('db'),
-  consent: forwardTo('db'),
-  consents: forwardTo('db'),
-  messages: forwardTo('db'),
-  post: forwardTo('db'),
-  journals: forwardTo('db'),
-  talk: forwardTo('db'),
+  schools: forwardTo("db"),
+  class: forwardTo("db"),
+  result: forwardTo("db"),
+  templates: forwardTo("db"),
+  template: forwardTo("db"),
+  study: forwardTo("db"),
+  task: forwardTo("db"),
+  consent: forwardTo("db"),
+  consents: forwardTo("db"),
+  messages: forwardTo("db"),
+  post: forwardTo("db"),
+  journals: forwardTo("db"),
+  talk: forwardTo("db"),
 
-  proposalBoard: forwardTo('db'),
-  proposalBoards: forwardTo('db'),
-  proposalSection: forwardTo('db'),
-  proposalSections: forwardTo('db'),
-  proposalCard: forwardTo('db'),
-  proposalCards: forwardTo('db'),
+  proposalBoard: forwardTo("db"),
+  proposalBoards: forwardTo("db"),
+  proposalSection: forwardTo("db"),
+  proposalSections: forwardTo("db"),
+  proposalCard: forwardTo("db"),
+  proposalCards: forwardTo("db"),
 
-  review: forwardTo('db'),
-  reviews: forwardTo('db'),
+  review: forwardTo("db"),
+  reviews: forwardTo("db"),
 
-  classNetwork: forwardTo('db'),
-  classNetworks: forwardTo('db'),
+  classNetwork: forwardTo("db"),
+  classNetworks: forwardTo("db"),
 
-  assignments: forwardTo('db'),
-  assignment: forwardTo('db'),
-  homeworks: forwardTo('db'),
-  homework: forwardTo('db'),
+  assignments: forwardTo("db"),
+  assignment: forwardTo("db"),
+  homeworks: forwardTo("db"),
+  homework: forwardTo("db"),
 
-  datas: forwardTo('db'),
-  data: forwardTo('db'),
+  datas: forwardTo("db"),
+  data: forwardTo("db"),
 
-  guest: forwardTo('db'),
+  guest: forwardTo("db"),
 
-  script: forwardTo('db'),
-  scripts: forwardTo('db'),
+  script: forwardTo("db"),
+  scripts: forwardTo("db"),
 
-  tag: forwardTo('db'),
-  tags: forwardTo('db'),
-  update: forwardTo('db'),
-  updates: forwardTo('db'),
+  tag: forwardTo("db"),
+  tags: forwardTo("db"),
+  update: forwardTo("db"),
+  updates: forwardTo("db"),
 
-  profile: forwardTo('db'),
-  words: forwardTo('db'),
-  word: forwardTo('db'),
+  profile: forwardTo("db"),
+  words: forwardTo("db"),
+  word: forwardTo("db"),
 
-  summaryResults: forwardTo('db'),
+  summaryResults: forwardTo("db"),
 
   // return only public studies by default
   studies(parent, args, ctx, info) {
@@ -73,7 +73,7 @@ const Query = {
         where: {
           public: true,
         },
-        orderBy: 'createdAt_DESC',
+        orderBy: "createdAt_DESC",
       },
       info
     );
@@ -131,9 +131,9 @@ const Query = {
   async users(parent, args, ctx, info) {
     // check if the user has permission to see all users
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
+      throw new Error("You must be logged in");
     }
-    hasPermission(ctx.request.user, ['IT', 'ADMIN']);
+    hasPermission(ctx.request.user, ["IT", "ADMIN"]);
     // query all users
     return ctx.db.query.profiles({}, info);
   },
@@ -141,7 +141,7 @@ const Query = {
   async myResults(parent, args, ctx, info) {
     // check if the user has permission to see all users
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
+      throw new Error("You must be logged in");
     }
 
     // hasPermission(ctx.request.user, ['IT']);
@@ -161,7 +161,7 @@ const Query = {
   // count all classes
   async countClasses(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in to do that!');
+      throw new Error("You must be logged in to do that!");
     }
     const classesConnection = await ctx.db.query.classesConnection({}, info);
     return classesConnection;
@@ -175,7 +175,7 @@ const Query = {
 
   async myClasses(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
+      throw new Error("You must be logged in");
     }
 
     // query parameters where author is the current user
@@ -195,6 +195,7 @@ const Query = {
             },
           ],
         },
+        orderBy: "createdAt_DESC",
       },
       info
     );
@@ -202,7 +203,7 @@ const Query = {
 
   async myStudentClasses(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
+      throw new Error("You must be logged in");
     }
 
     // query parameters where author is the current user
@@ -221,7 +222,7 @@ const Query = {
   // to get both student and teacher classes
   async myStudentTeacherClasses(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
+      throw new Error("You must be logged in");
     }
 
     // query parameters where author is the current user
@@ -250,7 +251,7 @@ const Query = {
   async myTemplates(parent, args, ctx, info) {
     // check if the user has permission to see all users
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
+      throw new Error("You must be logged in");
     }
 
     // query parameters where author is the current user
@@ -270,7 +271,7 @@ const Query = {
   async myStudies(parent, args, ctx, info) {
     // check if the user has permission to see all users
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
+      throw new Error("You must be logged in");
     }
 
     // query parameters where author is the current user
@@ -297,7 +298,7 @@ const Query = {
             },
           ],
         },
-        orderBy: 'createdAt_DESC',
+        orderBy: "createdAt_DESC",
       },
       info
     );
@@ -307,7 +308,7 @@ const Query = {
   async myConsents(parent, args, ctx, info) {
     // check if the user has permission to see all users
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
+      throw new Error("You must be logged in");
     }
 
     // query parameters where author is the current user
@@ -327,7 +328,7 @@ const Query = {
   async myParticipatedStudies(parent, args, ctx, info) {
     // check if the user has permission to see all users
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
+      throw new Error("You must be logged in");
     }
     const profile = await ctx.db.query.profile(
       {
@@ -340,9 +341,9 @@ const Query = {
     return ctx.db.query.studies(
       {
         where: {
-          id_in: profile.participantIn.map(study => study.id),
+          id_in: profile.participantIn.map((study) => study.id),
         },
-        orderBy: 'createdAt_DESC',
+        orderBy: "createdAt_DESC",
       },
       info
     );
@@ -351,7 +352,7 @@ const Query = {
   // get only journals of the user
   async myJournals(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
+      throw new Error("You must be logged in");
     }
 
     return ctx.db.query.journals(
@@ -369,7 +370,7 @@ const Query = {
   // get only posts of the user
   async myPosts(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
+      throw new Error("You must be logged in");
     }
 
     return ctx.db.query.posts(
@@ -387,7 +388,7 @@ const Query = {
   // get scripts of the user
   async myScripts(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
+      throw new Error("You must be logged in");
     }
 
     // query parameters where author is the current user
@@ -415,7 +416,7 @@ const Query = {
   // return updates of the logged in user
   myUpdates(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
+      throw new Error("You must be logged in");
     }
     // query parameters where author is the current user
     return ctx.db.query.updates(
