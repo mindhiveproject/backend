@@ -100,3 +100,5 @@ variables.env
 
 # node-lsl folder
 node-lsl/
+
+package-lock.json

@@ -2,7 +2,7 @@ const chatsQueries = {
   // get talks of the user
   async myTalks(parent, args, ctx, info) {
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in');
+      throw new Error("You must be logged in");
     }
 
     const me = await ctx.db.query.profile(
@@ -16,13 +16,13 @@ const chatsQueries = {
 
     // get all studies and classes IDs
     const userStudies = [
-      ...me.researcherIn?.map(s => s.id),
-      ...me.collaboratorInStudy?.map(s => s.id),
+      ...me.researcherIn?.map((s) => s.id),
+      ...me.collaboratorInStudy?.map((s) => s.id),
     ];
     const userClasses = [
-      ...me.studentIn?.map(c => c.id),
-      ...me.teacherIn?.map(c => c.id),
-      ...me.mentorIn?.map(c => c.id),
+      ...me.studentIn?.map((c) => c.id),
+      ...me.teacherIn?.map((c) => c.id),
+      ...me.mentorIn?.map((c) => c.id),
     ];
 
     // query parameters where author is the current user
