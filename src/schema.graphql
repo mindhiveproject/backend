@@ -28,7 +28,7 @@ type Query {
     first: Int
   ): [Result]!
   myClassResults(where: ClassWhereUniqueInput): [Result]!
-  myStudyResults(where: StudyWhereUniqueInput): [Result]!
+  myStudyResults(where: ResultWhereInput): [Result]!
   myTaskResults(where: TaskWhereUniqueInput): [Result]!
   studyResults(slug: String!): [Result]!
   myStudyParticipants(where: StudyWhereUniqueInput): Study

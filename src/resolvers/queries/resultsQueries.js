@@ -63,9 +63,12 @@ const resultsQueries = {
   // study results
   async myStudyResults(parent, args, ctx, info) {
     // 1. check if the user has permission to see the data (Teacher of the class) or Admin
-    const { where } = args;
     const mystudy = await ctx.db.query.study(
-      { where },
+      {
+        where: {
+          id: args.where.study.id,
+        },
+      },
       `{ id title author {id} collaborators {id}}`
     );
     const ownsStudy = mystudy.author.id === ctx.request.userId;
@@ -79,23 +82,13 @@ const resultsQueries = {
       );
       collaboratorInStudy = collaboratorsIds.includes(ctx.request.userId);
     }
-
     if (!ownsStudy && !hasPermissions && !collaboratorInStudy) {
       throw new Error(`You don't have permission to do that!`);
     }
 
     // 2. query all results of the study
-    const results = await ctx.db.query.results(
-      {
-        where: {
-          study: {
-            id: mystudy.id,
-          },
-          resultType: "MAIN",
-        },
-      },
-      info
-    );
+    const { where } = args;
+    const results = await ctx.db.query.results({ where }, info);
 
     return results;
   },
