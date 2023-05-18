@@ -21,11 +21,10 @@ function createServer() {
     resolverValidationOptions: {
       requireResolversForResolveType: false,
     },
-    context: (req) => {
-      console.log(`Operation name ${req?.request?.body?.operationName}`);
-      console.log(`User ID ${req?.request?.userId}`);
-      return { ...req, db };
-    },
+    context: (req) =>
+      // console.log(`Operation name ${req?.request?.body?.operationName}`);
+      // console.log(`User ID ${req?.request?.userId}`);
+      ({ ...req, db }),
   });
 }
 

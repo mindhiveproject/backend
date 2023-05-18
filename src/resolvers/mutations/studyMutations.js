@@ -181,6 +181,13 @@ const studyMutations = {
     delete updates.tags;
     delete updates.descriptionInProposalCardId;
 
+    // validate slug
+    updates.slug = slugify(args.slug, {
+      replacement: "-", // replace spaces with replacement character, defaults to `-`
+      remove: /[^a-zA-Z\d\s:]/g, // remove characters that match regex, defaults to `undefined`
+      lower: true, // convert to lower case, defaults to `false`
+    });
+
     // run the update method
     return ctx.db.mutation.updateStudy(
       {
