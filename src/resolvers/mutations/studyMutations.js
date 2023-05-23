@@ -86,6 +86,27 @@ const studyMutations = {
       },
       info
     );
+
+    // create a connected chat
+    await ctx.db.mutation.createTalk(
+      {
+        data: {
+          author: {
+            connect: {
+              id: ctx.request.userId,
+            },
+          },
+          studies: {
+            connect: [{ id: study.id }],
+          },
+          settings: {
+            title: `Chat of ${args.title}`,
+          },
+        },
+      },
+      `{ id }`
+    );
+
     return study;
   },
 
