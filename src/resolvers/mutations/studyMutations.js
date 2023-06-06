@@ -292,6 +292,23 @@ const studyMutations = {
     );
   },
 
+  // restore the "deleted" study by admin
+  async restoreStudy(parent, args, ctx, info) {
+    const where = { id: args.id };
+    // check whether user has permissions to hide the item
+    const hasPermissions = ctx.request.user.permissions.some((permission) =>
+      ["ADMIN"].includes(permission)
+    );
+    if (!hasPermissions) {
+      throw new Error(`You don't have permission to do that!`);
+    }
+    // hide it
+    return ctx.db.mutation.updateStudy(
+      { where, data: { isHidden: false } },
+      info
+    );
+  },
+
   // delete study
   async deleteStudy(parent, args, ctx, info) {
     const where = { id: args.id };

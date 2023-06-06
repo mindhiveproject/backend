@@ -494,6 +494,7 @@ type Mutation {
   ): Study!
   manageStudyVisibility(id: ID!, public: Boolean, featured: Boolean): Study
   preDeleteStudy(id: ID!): Study
+  restoreStudy(id: ID!): Study
   deleteStudy(id: ID!): Study
   buildStudy(id: ID!, tasks: [ID]!): Study!
   joinStudy(id: ID!, info: Json, study: Json): Profile!
