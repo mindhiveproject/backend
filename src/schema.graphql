@@ -823,6 +823,7 @@ type Profile {
   mentorIn: [Class]!
   isPublic: Boolean
   updates: [Update]!
+  memberOfTalk: [Talk]!
   createdAt: DateTime
   updatedAt: DateTime
 }
