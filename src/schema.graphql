@@ -234,6 +234,7 @@ type Query {
   ): [Guest]!
 
   profile(where: ProfileWhereUniqueInput): Profile
+  profiles(where: ProfileWhereInput): [Profile]!
 
   words(where: WordWhereInput): [Word]!
   word(where: WordWhereUniqueInput): Word

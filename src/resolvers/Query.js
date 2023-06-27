@@ -61,6 +61,8 @@ const Query = {
   updates: forwardTo("db"),
 
   profile: forwardTo("db"),
+  profiles: forwardTo("db"),
+
   words: forwardTo("db"),
   word: forwardTo("db"),
 
